@@ -18,7 +18,7 @@ jobs:
       - name: Package and Release
         uses: BigWigsMods/packager@v2
         env:
-          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}    
+          GITHUB_OAUTH: ${{ secrets.REPOOCPAT }}    
       - name: Send file README.md to discord channel
         if: success()
         uses: sinshutu/upload-to-discord@v2.0.0
