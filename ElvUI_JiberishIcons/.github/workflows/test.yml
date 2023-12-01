@@ -1,0 +1,25 @@
+name: Push Commits to Discord Webhook
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+    branches:
+      - main
+jobs:
+  github-action:
+    runs-on: ubuntu-latest
+    env:
+        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone Project
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Package and Release
+        uses: BigWigsMods/packager@v2
+      - name: Send file README.md to discord channel
+        uses: sinshutu/upload-to-discord@v2.0.0
+        env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: ./*.*
