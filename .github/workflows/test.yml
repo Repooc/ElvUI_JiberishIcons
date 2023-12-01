@@ -3,8 +3,8 @@ on:
   push:
     paths-ignore:
       - '.github/**'
-    branches:
-      - main
+    tags:
+      - '**'
 jobs:
   github-action:
     runs-on: ubuntu-latest
