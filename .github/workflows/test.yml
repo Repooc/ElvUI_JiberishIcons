@@ -10,9 +10,6 @@ on:
 jobs:
   github-action:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
       - name: Clone Project
         uses: actions/checkout@v3
@@ -20,8 +17,12 @@ jobs:
           fetch-depth: 0
       - name: Package and Release
         uses: BigWigsMods/packager@v2
+        env:
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}    
       - name: Send file README.md to discord channel
         if: success()
         uses: sinshutu/upload-to-discord@v2.0.0
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}    
         with:
           args: ./*.zip
