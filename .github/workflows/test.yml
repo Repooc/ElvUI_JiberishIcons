@@ -18,8 +18,9 @@ jobs:
       - name: Package and Release
         uses: BigWigsMods/packager@v2
       - name: Send file README.md to discord channel
+        if: success()
         uses: sinshutu/upload-to-discord@v2.0.0
         env:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: ./*.*
+          args: ./*.zip
