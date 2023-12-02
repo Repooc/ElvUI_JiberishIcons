@@ -8,6 +8,12 @@ local classIcons = Engine.classIcons
 local DEVELOPERS = {
 	'|cfff48cbaRepooc|r',
 	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
+	'Blinkii',
+	'|cffff2f3cTrenchy|r',
+	'MaximumOverdrive',
+	'|cFF08E8DEBotanica|r',
+	'|cffb8bb26Thurin|r',
+	'|cffd19d3bPat|r',
 }
 
 local function SortList(a, b)
