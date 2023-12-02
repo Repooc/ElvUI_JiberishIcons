@@ -8,7 +8,7 @@ local classIcons = Engine.classIcons
 local DEVELOPERS = {
 	'|cfff48cbaRepooc|r',
 	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
-	'Blinkii',
+	E:TextGradient('Blinkii', 0, 0.64, 1, 0, 0.80, 1, 0, 0.968, 1),
 	'|cffff2f3cTrenchy|r',
 	'MaximumOverdrive',
 	'|cFF08E8DEBotanica|r',
