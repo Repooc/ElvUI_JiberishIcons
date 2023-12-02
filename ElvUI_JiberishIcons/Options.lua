@@ -10,7 +10,7 @@ local CREDITS = {
 	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
 	E:TextGradient('Blinkii', 0, 0.64, 1, 0, 0.80, 1, 0, 0.968, 1),
 	'|cffff2f3cTrenchy|r',
-	'MaximumOverdrive',
+	'|cff39FF14MaximumOverdrive|r',
 	'|cFF08E8DEBotanica|r',
 	'|cffb8bb26Thurin|r',
 	'|cffd19d3bPat|r',
