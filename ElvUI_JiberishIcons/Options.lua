@@ -1,4 +1,4 @@
-local E, L, _, P, _ = unpack(ElvUI)
+local E = unpack(ElvUI)
 local ACH = E.Libs.ACH
 local AddOnName, Engine = ...
 local module = E:GetModule(AddOnName)
