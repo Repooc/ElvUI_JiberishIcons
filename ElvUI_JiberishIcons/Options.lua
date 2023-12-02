@@ -5,7 +5,7 @@ local module = E:GetModule(AddOnName)
 
 local classIcon = Engine.classIcon
 local classIcons = Engine.classIcons
-local DEVELOPERS = {
+local CREDITS = {
 	'|cfff48cbaRepooc|r',
 	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
 	E:TextGradient('Blinkii', 0, 0.64, 1, 0, 0.80, 1, 0, 0.968, 1),
@@ -19,8 +19,8 @@ local DEVELOPERS = {
 local function SortList(a, b)
 	return E:StripString(a) < E:StripString(b)
 end
-sort(DEVELOPERS, SortList)
-DEVELOPERS = table.concat(DEVELOPERS, '|n')
+sort(CREDITS, SortList)
+CREDITS = table.concat(CREDITS, '|n')
 
 local function configTable()
 	--* Listing in the Plugin Section
@@ -54,10 +54,10 @@ local function configTable()
 	Information.args.jiberishui = ACH:Execute('JiberishUI', "Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!", 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.curseforge.com/wow/addons/jiberishui') end, nil, nil, 140)
 	Information.args.wagoprofile = ACH:Execute("Wago Profile", "Looking for some nice profile strings for ElvUI? Go check out my wago profile for some nice profiles!", 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://wago.io/p/Jiberish%231723') end, nil, nil, 140)
 
-	local Developers = ACH:Group("Developers", nil, 10)
-	Information.args.Developers = Developers
-	Developers.inline = true
-	Developers.args.developers = ACH:Description(DEVELOPERS, 1, 'medium')
+	local Credits = ACH:Group("Fabled Incarnates", nil, 10)
+	Information.args.Credits = Credits
+	Credits.inline = true
+	Credits.args.credits = ACH:Description(CREDITS, 1, 'medium')
 end
 
 tinsert(module.Configs, configTable)
