@@ -1,7 +1,7 @@
 local _, Engine = ...
 
 Engine.iconStyles = {
-	fabled = 'Fabled Icons',
+	fabled = 'Fabled',
 }
 
 Engine.iconMinSize = '1'
