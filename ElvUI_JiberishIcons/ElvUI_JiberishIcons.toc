@@ -3,11 +3,12 @@
 ## Interface-Classic: 11500
 ## Title: |cff1784d1JiberishUI|r |cff00ccffFabled Icons|r
 ## Author: Repooc, Jiberish
-## Version: 1.00
+## Version: 1.0.0
 ## Notes: Epicizing your UI with Fabled Class Icons
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
-## IconTexture: Interface\AddOns\ElvUI_JiberishIcons\logo
+## IconTexture: Interface\AddOns\ElvUI_JiberishIcons\Media\SmallLogo
 
 Init.lua
 Core.lua
+Options.lua
