@@ -14,6 +14,7 @@ local CREDITS = {
 	'|cFF08E8DEBotanica|r',
 	'|cffb8bb26Thurin|r',
 	'|cffd19d3bPat|r',
+	'|cffffb300Madlampy|r',
 }
 
 local function SortList(a, b)
