@@ -3,8 +3,8 @@ local ACH = E.Libs.ACH
 local AddOnName, Engine = ...
 local module = E:GetModule(AddOnName)
 
-local classIcon = Engine.classIcon
-local classIcons = Engine.classIcons
+local classIconPath, classIcons, iconStyles = Engine.classIconPath, Engine.classIcons, Engine.iconStyles
+
 local CREDITS = {
 	'|cfff48cbaRepooc|r',
 	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
@@ -36,14 +36,14 @@ local function configTable()
 	local StylePacks = ACH:Group('Style Packs', nil, 5)
 	JiberishIcons.args.StylePacks = StylePacks	
 	local StyleGroup
-	for iconStyle, tagTitle in next, Engine.iconStyles do
+	for iconStyle, tagTitle in next, iconStyles do
 		StyleGroup = ACH:Group(tagTitle)
 		StylePacks.args[iconStyle] = StyleGroup
 		StyleGroup.inline = true
 		
 		local classTextureString = ''
 		for _, texcoords in next, classIcons do
-			classTextureString = classTextureString..format(Engine.classIcon, iconStyle, '48', '48', texcoords)
+			classTextureString = classTextureString..format(classIconPath, iconStyle, '48', '48', texcoords)
 		end
 		StyleGroup.args[iconStyle] = ACH:Description(function() return classTextureString end, 1, nil, nil, nil, nil, nil)
 	end

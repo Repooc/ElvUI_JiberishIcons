@@ -6,7 +6,7 @@ Engine.iconStyles = {
 
 Engine.iconMinSize = '1'
 Engine.iconMaxSize = '128'
-Engine.classIcon = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:512:512:%s|t]]
+Engine.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:512:512:%s|t]]
 Engine.classIcons = {
 	WARRIOR		= '0:128:0:128',
 	MAGE		= '128:256:0:128',

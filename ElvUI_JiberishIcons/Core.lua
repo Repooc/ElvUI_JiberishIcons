@@ -7,9 +7,8 @@ module.Version = GetAddOnMetadata(AddOnName, 'Version')
 module.Title = GetAddOnMetadata(AddOnName, 'Title')
 module.Configs = {}
 
-local iconStyles = Engine.iconStyles
-local minSize, maxSize = Engine.iconMinSize, Engine.iconMaxSize
-local classIcon, classIcons = Engine.classIcon, Engine.classIcons
+local iconMinSize, iconMaxSize = Engine.iconMinSize, Engine.iconMaxSize
+local classIconPath, classIcons, iconStyles = Engine.classIconPath, Engine.classIcons, Engine.iconStyles
 
 local function GetOptions()
 	for _, func in pairs(module.Configs) do
@@ -24,12 +23,12 @@ for iconStyle, tagTitle in next, iconStyles do
 		if not UnitIsPlayer(unit) then return end
 	
 		local size = strsplit(':', args or '')
-		size = (size and size >= minSize and size <= maxSize) and size or '64'	
+		size = (size and size >= iconMinSize and size <= iconMaxSize) and size or '64'	
 		local _, class = UnitClass(unit)
 		local icon = classIcons[class]
 
 		if icon then
-			return format(classIcon, iconStyle, size, size, icon)
+			return format(classIconPath, iconStyle, size, size, icon)
 		end
 	end)
 	
