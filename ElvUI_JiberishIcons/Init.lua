@@ -4,8 +4,8 @@ Engine.iconStyles = {
 	fabled = 'Fabled',
 }
 
-Engine.iconMinSize = '1'
-Engine.iconMaxSize = '128'
+Engine.iconMinSize = 1
+Engine.iconMaxSize = 128
 Engine.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
 Engine.classIcons = {
 	WARRIOR		= '0:128:0:128',

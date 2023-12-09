@@ -23,7 +23,8 @@ for iconStyle, tagTitle in next, iconStyles do
 		if not UnitIsPlayer(unit) then return end
 	
 		local size = strsplit(':', args or '')
-		size = (size and size >= iconMinSize and size <= iconMaxSize) and size or '64'	
+		size = tonumber(size)
+		size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64	
 		local _, class = UnitClass(unit)
 		local icon = classIcons[class]
 
