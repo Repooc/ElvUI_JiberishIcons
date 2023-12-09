@@ -1,3 +1,3 @@
-v1.0.0 11/30/23
+v1.0.1 12/9/23
 
-• initial release
+• fix logic for passing size arg with the tags; example: [jiberish:icon:fabled{32}]
