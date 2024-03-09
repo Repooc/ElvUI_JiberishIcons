@@ -33,8 +33,8 @@ for iconStyle, tagTitle in next, iconStyles do
 		end
 	end)
 	
-	local description = format("This tag will display the %s icon style from Jiberish's class icon plugin!", tagTitle or '')
-	E:AddTagInfo(tag, 'Jiberish', description)
+	local description = format("This tag will display the %s icon style from %s plugin! Optional size arg is supported. Example: [%s{32}]", tagTitle or '', module.Title, tag)
+	E:AddTagInfo(tag, module.Title, description)
 end
 
 function module:Initialize()
