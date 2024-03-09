@@ -3,7 +3,7 @@
 ## Interface-Classic: 11500
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
-## Version: 1.0.1
+## Version: 1.0.2
 ## Notes: Epicizing your UI with Fabled Class Icons
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
