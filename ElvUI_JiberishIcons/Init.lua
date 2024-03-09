@@ -2,6 +2,7 @@ local _, Engine = ...
 
 Engine.iconStyles = {
 	fabled = 'Fabled',
+	fabledrealm = 'Fabled Realm',
 }
 
 Engine.iconMinSize = 1
