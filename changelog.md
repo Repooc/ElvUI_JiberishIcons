@@ -1,3 +1,3 @@
-v1.0.1 12/9/23
+v1.0.2 3/9/24
 
-• fix logic for passing size arg with the tags; example: [jiberish:icon:fabled{32}]
+• added Fabled Realm style (Examples: [jiberish:icon:fabledrealm] or [jiberish:icon:fabledrealm{32}])
