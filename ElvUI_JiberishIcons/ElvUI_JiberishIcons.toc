@@ -1,7 +1,7 @@
 ## Interface: 100200
 ## Interface-Wrath: 30403
 ## Interface-Classic: 11500
-## Title: |cff1784d1JiberishUI|r |cff00ccffFabled Icons|r
+## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
 ## Version: 1.0.1
 ## Notes: Epicizing your UI with Fabled Class Icons
