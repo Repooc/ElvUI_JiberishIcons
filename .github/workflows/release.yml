@@ -17,10 +17,10 @@ jobs:
         uses: BigWigsMods/packager@v2
         env:
           GITHUB_OAUTH: ${{ secrets.REPOOCPAT }}    
-      - name: Send file README.md to discord channel
-        if: success()
-        uses: sinshutu/upload-to-discord@v2.0.0
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}    
-        with:
-          args: ./.release/*.zip
+      # - name: Send file README.md to discord channel
+      #   if: success()
+      #   uses: sinshutu/upload-to-discord@v2.0.0
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}    
+      #   with:
+      #     args: ./.release/*.zip
