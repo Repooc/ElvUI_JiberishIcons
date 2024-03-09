@@ -1,8 +1,21 @@
 local _, Engine = ...
 
 Engine.iconStyles = {
-	fabled = 'Fabled',
-	fabledrealm = 'Fabled Realm',
+	fabled = {
+		style = 'Fabled',
+		artist = '',
+		site = '',
+	},
+	fabledrealm = {
+		style = 'Fabled Realm',
+		artist = 'Handclaw',
+		site = 'https://handclaw.artstation.com/',
+	},
+	-- fabledpixels = { --* Not yet available
+	-- 	style = 'Fabled Pixels',
+	-- 	artist = '',
+	-- 	site = '',
+	-- },
 }
 
 Engine.iconMinSize = 1

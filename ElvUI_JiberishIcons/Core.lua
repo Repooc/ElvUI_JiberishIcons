@@ -16,7 +16,7 @@ local function GetOptions()
 	end
 end
 
-for iconStyle, tagTitle in next, iconStyles do
+for iconStyle, data in next, iconStyles do
 	local tag = format('%s:%s', 'jiberish:icon', iconStyle)
 
 	E:AddTag(tag, 'PLAYER_TARGET_CHANGED', function(unit, _, args)
@@ -33,7 +33,7 @@ for iconStyle, tagTitle in next, iconStyles do
 		end
 	end)
 	
-	local description = format("This tag will display the %s icon style from %s plugin! Optional size arg is supported. Example: [%s{32}]", tagTitle or '', module.Title, tag)
+	local description = format("This tag will display the %s icon style from %s plugin! Optional size arg is supported. Example: [%s{32}]", data.style or '', module.Title, tag)
 	E:AddTagInfo(tag, module.Title, description)
 end
 

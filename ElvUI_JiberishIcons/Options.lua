@@ -35,9 +35,10 @@ local function configTable()
 	--* Style Packs Tab
 	local StylePacks = ACH:Group('Style Packs', nil, 5)
 	JiberishIcons.args.StylePacks = StylePacks	
+
 	local StyleGroup
-	for iconStyle, tagTitle in next, iconStyles do
-		StyleGroup = ACH:Group(tagTitle)
+	for iconStyle, data in next, iconStyles do
+		StyleGroup = ACH:Group(data.style)
 		StylePacks.args[iconStyle] = StyleGroup
 		StyleGroup.inline = true
 		
@@ -45,7 +46,11 @@ local function configTable()
 		for _, texcoords in next, classIcons do
 			classTextureString = classTextureString..format(classIconPath, iconStyle, '48', '48', texcoords)
 		end
-		StyleGroup.args[iconStyle] = ACH:Description(function() return classTextureString end, 1, nil, nil, nil, nil, nil)
+		StyleGroup.args.icons = ACH:Description(function() return classTextureString end, 1)
+	
+		if data.artist and data.artist ~= '' then
+			StyleGroup.args.credit = ACH:Description(format('|cffFFD100Made by |r%s%s\n%s|r', E.media.hexvaluecolor, data.artist or '', data.site or ''), 99)
+		end
 	end
 
 	--* Information Tab
