@@ -8,6 +8,7 @@
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\ElvUI_JiberishIcons\Media\SmallLogo
+## X-Curse-Project-ID: 978121
 
 Init.lua
 Core.lua
