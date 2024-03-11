@@ -1,10 +1,10 @@
 License Summary for JiberishUI Icons  
 Title: JiberishUI Icons  
-Owner: JiberishUI, LLC  
+Owner: Arthur Lorenz, aka Handclaw
 Effective Date: February 22, 2024  
 
 ### Copyright Notice
-All icons and related content included in the JiberishUI Icons addon are the property of JiberishUI. All rights reserved. 
+All icons and related content included in the JiberishUI Icons addon are the property of Arthur Lorenz, aka Handclaw. All rights reserved. 
 
 ### Grant of License
 JiberishUI grants you a non-exclusive, non-transferable, revocable license to use the JiberishUI Icons addon for your personal, non-commercial use, subject to the terms and conditions outlined in this license.
