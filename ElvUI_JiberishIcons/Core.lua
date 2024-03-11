@@ -19,7 +19,7 @@ end
 for iconStyle, data in next, iconStyles do
 	local tag = format('%s:%s', 'jiberish:icon', iconStyle)
 
-	E:AddTag(tag, 'PLAYER_TARGET_CHANGED', function(unit, _, args)
+	E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
 		if not UnitIsPlayer(unit) then return end
 	
 		local size = strsplit(':', args or '')
