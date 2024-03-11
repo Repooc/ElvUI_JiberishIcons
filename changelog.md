@@ -1,4 +1,4 @@
-v1.0.2 3/10/24
+v1.0.3 3/11/24
 
-• added Fabled Realm style (Examples: [jiberish:icon:fabledrealm] or [jiberish:icon:fabledrealm{32}])
-• added Artist credit for supported styles
+• updated License
+• updated the event used to update the icon shown on the unitframes
