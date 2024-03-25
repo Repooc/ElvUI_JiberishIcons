@@ -79,7 +79,8 @@ local colorOverrideOptions = {
 	end,
 }
 
-for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget', 'party', 'raid' } do
+-- for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget', 'party', 'raid' } do
+for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget', 'party' } do
 	blizzard.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 1, 'tab')
 
 	if unit ~= 'raid' then
@@ -120,7 +121,7 @@ blizzard.args.targettarget.order = 3
 blizzard.args.focus.order = 4
 blizzard.args.focustarget.order = 5
 blizzard.args.party.order = 6
-blizzard.args.raid.order = 7
+-- blizzard.args.raid.order = 7
 
 --* Information Tab
 local Information = ACH:Group(L["Information"], nil, 10)
@@ -173,9 +174,9 @@ function JI:BuildProfile()
 				focus = sharedDefaultValues,
 				focustarget = sharedDefaultValues,
 				party = sharedDefaultValues,
-				raid = {
-					icon = sharedDefaultValues.icon,
-				},
+				-- raid = {
+				-- 	icon = sharedDefaultValues.icon,
+				-- },
 			},
 		},
 	}
