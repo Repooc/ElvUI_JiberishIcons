@@ -1,38 +1,103 @@
-local _, Engine = ...
+local AddOnName, Engine = ...
+local JI = _G.LibStub('AceAddon-3.0'):NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceHook-3.0')
 
-Engine.iconStyles = {
+Engine[1] = JI
+Engine[2] = {}
+
+_G['ElvUI_JiberishIcons'] = Engine
+
+JI.Libs = {
+	AC = _G.LibStub('AceConfig-3.0'),
+	ACD = _G.LibStub('AceConfigDialog-3.0-ElvUI', true) or _G.LibStub('AceConfigDialog-3.0'),
+	ACH = _G.LibStub('LibAceConfigHelper'),
+	ADB = _G.LibStub('AceDB-3.0'),
+	ADBO = _G.LibStub('AceDBOptions-3.0'),
+	ACL = _G.LibStub('AceLocale-3.0-ElvUI', true) or _G.LibStub('AceLocale-3.0'),
+	EP = _G.LibStub('LibElvUIPlugin-1.0', true),
+	ACR = _G.LibStub('AceConfigRegistry-3.0'),
+	GUI = _G.LibStub('AceGUI-3.0'),
+}
+
+JI.Title = GetAddOnMetadata(AddOnName, 'Title')
+JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
+JI.Configs = {}
+JI.myName = UnitName('player')
+
+JI.iconStyles = {
 	fabled = {
-		style = 'Fabled',
-		artist = '',
-		site = '',
+		name = 'Fabled',
+		artist = 'Royroyart',
+		site = 'https://www.fiverr.com/royyanikhwani',
 	},
 	fabledrealm = {
-		style = 'Fabled Realm',
+		name = 'Fabled Realm',
 		artist = 'Handclaw',
 		site = 'https://handclaw.artstation.com/',
 	},
-	-- fabledpixels = { --* Not yet available
-	-- 	style = 'Fabled Pixels',
-	-- 	artist = '',
-	-- 	site = '',
-	-- },
+	fabledpixels = {
+		name = 'Fabled Pixels',
+		artist = 'Dragumagu',
+		site = 'https://www.artstation.com/dragumagu',
+	},
 }
 
-Engine.iconMinSize = 1
-Engine.iconMaxSize = 128
-Engine.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
-Engine.classIcons = {
-	WARRIOR		= '0:128:0:128',
-	MAGE		= '128:256:0:128',
-	ROGUE		= '256:384:0:128',
-	DRUID		= '384:512:0:128',
-	EVOKER		= '512:640:0:128',
-	HUNTER		= '0:128:128:256',
-	SHAMAN		= '128:256:128:256',
-	PRIEST		= '256:384:128:256',
-	WARLOCK		= '384:512:128:256',
-	PALADIN		= '0:128:256:384',
-	DEATHKNIGHT = '128:256:256:384',
-	MONK		= '256:384:256:384',
-	DEMONHUNTER = '384:512:256:384',
+JI.iconMinSize = 1
+JI.iconMaxSize = 128
+JI.classIconPath = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Icons\]]
+-- JI.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
+-- texCoords = { ULx, ULy, LLx, LLy, URx, URy, LRx, LRy }
+
+JI.classIcons = {
+	WARRIOR	= {
+		texString = '0:128:0:128',
+		texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },
+	},
+	MAGE = {
+		texString = '128:256:0:128',
+		texCoords = { 0.125, 0, 0.125, 0.125, 0.25, 0, 0.25, 0.125 },
+	},
+	ROGUE = {
+		texString = '256:384:0:128',
+		texCoords = { 0.25, 0, 0.25, 0.125, 0.375, 0, 0.375, 0.125 },
+	},
+	 DRUID = {
+		texString = '384:512:0:128',
+		texCoords = { 0.375, 0, 0.375, 0.125, 0.5, 0, 0.5, 0.125 },
+	},
+	EVOKER = {
+		texString = '512:640:0:128',
+		texCoords = { 0.5, 0, 0.5, 0.125, 0.625, 0, 0.625, 0.125 },
+	},
+	HUNTER = {
+		texString = '0:128:128:256',
+		texCoords = { 0, 0.125, 0, 0.25, 0.125, 0.125, 0.125, 0.25 },
+	},
+	SHAMAN = {
+		texString = '128:256:128:256',
+		texCoords = { 0.125, 0.125, 0.125, 0.25, 0.25, 0.125, 0.25, 0.25 },
+	},
+	PRIEST = {
+		texString = '256:384:128:256',
+		texCoords = { 0.25, 0.125, 0.25, 0.25, 0.375, 0.125, 0.375, 0.25 },
+	},
+	WARLOCK = {
+		texString = '384:512:128:256',
+		texCoords = { 0.375, 0.125, 0.375, 0.25, 0.5, 0.125, 0.5, 0.25 },
+	},
+	PALADIN = {
+		texString = '0:128:256:384',
+		texCoords = { 0, 0.25, 0, 0.375, 0.125, 0.25, 0.125, 0.375 },
+	},
+	DEATHKNIGHT = {
+		texString = '128:256:256:384',
+		texCoords = { 0.125, 0.25, 0.125, 0.375, 0.25, 0.25, 0.25, 0.375 },
+	},
+	MONK = {
+		texString = '256:384:256:384',
+		texCoords = { 0.25, 0.25, 0.25, 0.375, 0.375, 0.25, 0.375, 0.375 },
+	},
+	DEMONHUNTER = {
+		texString = '384:512:256:384',
+		texCoords = { 0.375, 0.25, 0.375, 0.375, 0.5, 0.25, 0.5, 0.375 },
+	},
 }

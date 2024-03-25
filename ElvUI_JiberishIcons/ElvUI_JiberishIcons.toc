@@ -1,15 +1,19 @@
-## Interface: 100205
+## Interface: 100206
 ## Interface-Wrath: 30403
 ## Interface-Classic: 11501
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
-## Version: 1.0.3
+## SavedVariables: JiberishIconsDB
+## Version: 1.0.4
 ## Notes: Epicizing your UI with Fabled Class Icons
-## RequiredDeps: ElvUI
+## OptionalDeps: ElvUI
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\ElvUI_JiberishIcons\Media\SmallLogo
 ## X-Curse-Project-ID: 978121
 
+Libs\Load_Libs.xml
 Init.lua
-Core.lua
-Options.lua
+
+Locales\Load_Locales.xml
+Core\Load_Core.xml
+
