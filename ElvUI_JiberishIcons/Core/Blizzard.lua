@@ -134,7 +134,6 @@ function JI:UpdateMedia(specific)
 				return
 			end
 		end
-
 	end
 
 	for _, frame in ipairs(singleUnits) do
