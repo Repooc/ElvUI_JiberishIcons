@@ -6,7 +6,7 @@ Effective Date: February 22, 2024
 
 ### Copyright Notice
 The Fabled Realm icons included in the JiberishUI Icons addon are the property of Arthur Lorenz, aka Handclaw. All rights reserved. 
-
+The Fabled Pixels icons included in the JiberishUI Icons are the property of Pedro Oliveira, aka Dragumagu. All rights reserved.
 ### Grant of License
 JiberishUI grants you a non-exclusive, non-transferable, revocable license to use the JiberishUI Icons addon for your personal, non-commercial use, subject to the terms and conditions outlined in this license.
 
