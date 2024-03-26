@@ -132,7 +132,7 @@ Information.args.links.inline = true
 Information.args.links.args.discord = ACH:Input(L["Discord"], L["DISCORD_MSG"], 2, nil, 'full', function() return 'https://discord.com/invite/jr5w8ArzAx' end)
 Information.args.links.args.issues = ACH:Input(L["Support Tickets"], nil, 3, nil, 'full', function() return 'https://github.com/repooc/ElvUI_JiberishIcons/issues' end)
 Information.args.links.args.jiberishui = ACH:Input('JiberishUI', "Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!", 4, nil, 'full', function() return 'https://www.curseforge.com/wow/addons/jiberishui' end)
-Information.args.links.args.wagoprofile = ACH:Input(L["Wago Profile"], L["WAGO_MSG"]"Looking for some nice profile strings for ElvUI? Go check out my wago profile for some nice profiles!", 4, nil, 'full', function() return 'https://wago.io/p/Jiberish%231723' end)
+Information.args.links.args.wagoprofile = ACH:Input(L["Wago Profile"], L["WAGO_MSG"], 4, nil, 'full', function() return 'https://wago.io/p/Jiberish%231723' end)
 
 -- TODO: Change to execture buttons if ElvUI is loaded instead? Ask Jiberish which he prefers. Don't forget the issues entry as well as these buttons were from before the big changes.
 -- Information.args.discord = ACH:Execute('Discord', "Come join the Discord server and share your ui with everyone, and maybe try someone else's...?", 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.com/invite/jr5w8ArzAx') end, nil, nil, JI:IsAddOnEnabled('ElvUI') and 140 or nil)
