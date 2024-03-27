@@ -56,7 +56,7 @@ local function CreateIcon(frame)
 	-- frame.classIcon.background:SetAllPoints(frame.classIcon)
 	-- frame.classIcon.background:SetTexture([[Interface\Tooltips\UI-Tooltip-Background]])
 
-	frame.classIcon.icon = frame.classIcon:CreateTexture(nil, 'ARTWORK', nil, 2)
+	frame.classIcon.icon = frame.classIcon:CreateTexture(nil, 'OVERLAY', nil, 2)
 	frame.classIcon.icon:SetAllPoints(frame.classIcon)
 
 	--! Possible mask support in the furture
