@@ -83,18 +83,18 @@ blizzard.args.general.args.desc = ACH:Description(ColorText(nil, "You can use th
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 blizzard.args.general.args.portrait.inline = true
 blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, "You are about to select this option for all supported units.\nDo you wish to continue?")
+blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.portrait.enable == nil end)
 blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
 blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
-blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end)
+blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.portrait.style end)
 
 blizzard.args.general.args.icon = ACH:Group(L["Icon"], nil, 3)
 blizzard.args.general.args.icon.inline = true
 blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.icon and settingTest.icon.enable) and (settingTest.icon.enable == true and 'enable') or (settingTest.icon.enable == false and 'disable') or nil end, function(info, value) settingTest.icon[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('icon', 'enable') settingTest.icon.enable = nil end)
+blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('icon', 'enable') settingTest.icon.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.icon.enable == nil end)
 blizzard.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
 blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.icon and settingTest.icon.style) and settingTest.icon.style or nil end, function(info, value) settingTest.icon[info[#info]] = value end)
-blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('icon', 'style') settingTest.icon.style = nil end)
+blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('icon', 'style') settingTest.icon.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.icon.style end)
 
 local colorOverrideOptions = {
 	name = function(info)
