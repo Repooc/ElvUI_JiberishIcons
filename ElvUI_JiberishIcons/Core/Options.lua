@@ -22,8 +22,18 @@ end
 sort(CREDITS, SortList)
 CREDITS = table.concat(CREDITS, '|n')
 
+local settingTest = { portrait = {}, icon = {} }
+local function ApplySettingsToAll(element, setting)
+	local db = JI.db.blizzard
+
+	for unit, data in next, db do
+		db[unit][element][setting] = settingTest[element][setting]
+	end
+
+	JI:UpdateMedia()
+end
+
 --* Main Header
--- JI.Options = ACH:Group(JI:IsAddOnEnabled('ElvUI') and JI.Title or '', nil, 6, 'tab')
 JI.Options = ACH:Group(JI.Title, nil, 6, 'tab')
 JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\LargeLogo]], nil, 256, 128)
 JI.Options.args.version = ACH:Header(JI.Version, 1)
@@ -65,6 +75,27 @@ end
 local blizzard = ACH:Group(L["Blizzard Frames"], nil, 6, nil)
 JI.Options.args.blizzard = blizzard
 
+--* General Section
+blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
+blizzard.args.general.args.desc = ACH:Description(ColorText(nil, "You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."), 1)
+
+
+blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
+blizzard.args.general.args.portrait.inline = true
+blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, "You are about to select this option for all supported units.\nDo you wish to continue?")
+blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
+blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
+blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end)
+
+blizzard.args.general.args.icon = ACH:Group(L["Icon"], nil, 3)
+blizzard.args.general.args.icon.inline = true
+blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.icon and settingTest.icon.enable) and (settingTest.icon.enable == true and 'enable') or (settingTest.icon.enable == false and 'disable') or nil end, function(info, value) settingTest.icon[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('icon', 'enable') settingTest.icon.enable = nil end)
+blizzard.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
+blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.icon and settingTest.icon.style) and settingTest.icon.style or nil end, function(info, value) settingTest.icon[info[#info]] = value end)
+blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('icon', 'style') settingTest.icon.style = nil end)
+
 local colorOverrideOptions = {
 	name = function(info)
 		local text = L["Class Color Override (|c%s%s|r)"]
@@ -83,7 +114,7 @@ local colorOverrideOptions = {
 for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget', 'party' } do
 	blizzard.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 1, 'tab')
 
-	if unit ~= 'raid' then
+	-- if unit ~= 'raid' then
 		local portrait = ACH:Group(L["Portrait"], nil, 5)
 		blizzard.args[unit].args.portrait = portrait
 		portrait.inline = true
@@ -98,7 +129,7 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 		background.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-3], info[#info-2]) end)
 		background.args.color = ACH:Color(L["Color"], nil, 10, true, nil, function(info) return unpack(JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]]) end, function(info, r, g, b, a) JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = { r, g, b, a } JI:UnitFramePortrait_Update(info[#info-3], info[#info-2]) end, function(info) return not JI.db.blizzard[info[#info-3]][info[#info-2]].enable or not JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 		background.args.colorOverride = ACH:Toggle(colorOverrideOptions.name, L["This will override the color option (alpha slider setting is still followed) and force the background color to show as the class color of the unit that is displayed."], 15, true, nil, 'full', function(info) local value = JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end, function(info, value) JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = (unit ~= 'player' and value and 2) or (unit == 'player' and value and 1) or (value == nil and 1) or 0 JI:UnitFramePortrait_Update(info[#info-3], info[#info-2]) end, function(info) return not JI.db.blizzard[info[#info-3]][info[#info-2]].enable or not JI.db.blizzard[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
-	end
+	-- end
 
 	local icon = ACH:Group(L["Icon"], nil, 10)
 	blizzard.args[unit].args.icon = icon
@@ -113,15 +144,15 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 	icon.args.xOffset = ACH:Range(L["xOffset"], nil, 16, { min = -150, max = 150, step = 1 }, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.yOffset = ACH:Range(L["yOffset"], nil, 17, { min = -150, max = 150, step = 1 }, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 end
--- ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
+
 --* Sort unit list manually instead of alphabetically
-blizzard.args.player.order = 1
-blizzard.args.target.order = 2
-blizzard.args.targettarget.order = 3
-blizzard.args.focus.order = 4
-blizzard.args.focustarget.order = 5
-blizzard.args.party.order = 6
--- blizzard.args.raid.order = 7
+blizzard.args.player.order = 4
+blizzard.args.target.order = 5
+blizzard.args.targettarget.order = 6
+blizzard.args.focus.order = 7
+blizzard.args.focustarget.order = 8
+blizzard.args.party.order = 9
+-- blizzard.args.raid.order = 10
 
 --* Information Tab
 local Information = ACH:Group(L["Information"], nil, 10)
