@@ -50,7 +50,7 @@ local function CreateIcon(frame)
 	frame.classIcon = CreateFrame('Frame', nil, frame)
 	frame.classIcon:SetPoint('LEFT', frame, 'RIGHT', 0, 0)
 	frame.classIcon:SetSize(32, 32)
-	frame.classIcon:SetFrameLevel(100)
+	frame.classIcon:SetFrameLevel(700)
 
 	--! Possible mask support in the furture
 	-- frame.classIcon.background = frame.classIcon:CreateTexture(nil, 'ARTWORK', nil, 1)
