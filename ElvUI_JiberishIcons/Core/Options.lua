@@ -77,7 +77,7 @@ JI.Options.args.blizzard = blizzard
 
 --* General Section
 blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
-blizzard.args.general.args.desc = ACH:Description(ColorText(nil, "You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."), 1)
+blizzard.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 
 
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
