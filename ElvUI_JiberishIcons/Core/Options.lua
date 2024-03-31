@@ -242,6 +242,7 @@ function JI:BuildOptions()
 	else
 		JI.Libs.AC:RegisterOptionsTable(AddOnName, JI.Options)
 		JI.Libs.ACD:AddToBlizOptions(AddOnName, JI.Title)
+		JI.Libs.ACD:SetDefaultSize(AddOnName, 900, 650)
 	end
 	JI.Options.args.profiles = JI.Libs.ADBO:GetOptionsTable(JI.data, true)
 	JI.Options.args.profiles.order = -2
