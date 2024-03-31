@@ -31,6 +31,7 @@ function JI:Init(event, addon)
 			JI:BuildProfile()
 
 			JI:SetupMedia() --* Setup class icon icon for frames
+			JI:SetupDetails()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
 			JI:RegisterChatCommand('jiberishicons', 'ToggleOptions')
