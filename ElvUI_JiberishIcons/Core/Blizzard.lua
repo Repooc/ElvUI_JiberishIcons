@@ -151,7 +151,7 @@ function JI:UpdateMedia(specific)
 end
 
 --* Create both icons and portraits for 'SingleUnits' and 'Party'
-function JI:SetupMedia()
+function JI:SetupBlizzardFrames()
 	--* Setup Single Units Icons and Portraits
 	for _, frame in next, singleUnits do
 		frame = _G[frame]
