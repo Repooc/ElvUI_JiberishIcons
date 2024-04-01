@@ -71,15 +71,40 @@ for iconStyle, data in next, iconStyles do
 	end
 end
 
---* Blizzard Frames Tab
+--* Shadowed Unit Frames Tab (SUF)
+--* All suf frames from their own table
+local sufUnitList = {'player', 'pet', 'pettarget', 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'party', 'partypet', 'partytarget', 'partytargettarget', 'raid', 'raidpet', 'boss', 'bosstarget', 'maintank', 'maintanktarget', 'mainassist', 'mainassisttarget', 'arena', 'arenatarget', 'arenapet', 'battleground', 'battlegroundtarget', 'battlegroundpet', 'arenatargettarget', 'battlegroundtargettarget', 'maintanktargettarget', 'mainassisttargettarget', 'bosstargettarget'}
+local suf = ACH:Group('Shadowed Unit Frames', nil, 7, nil, nil, nil, function() return false end)
+JI.Options.args.suf = suf
+
+--* General Section (SUF)
+suf.args.general = ACH:Group(L["General"], nil, 1, 'tab')
+suf.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+suf.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
+suf.args.general.args.portrait.inline = true
+suf.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+suf.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.portrait.enable == nil end)
+suf.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
+suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
+suf.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.portrait.style end)
+
+for _, unit in next, sufUnitList do
+	suf.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 2, 'tab')
+	local portrait = ACH:Group(L["Portrait"], nil, 5)
+	suf.args[unit].args.portrait = portrait
+	portrait.inline = true
+	portrait.args.header = ACH:Description(ColorText(nil, L["This will apply the selected class icon style to Blizzard's unitframes where they show a players portrait."]), 1)
+	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+end
+
+--* Blizzard Frames Tab (BlizzUI)
 local blizzard = ACH:Group(L["Blizzard Frames"], nil, 6, nil)
 JI.Options.args.blizzard = blizzard
 
---* General Section
+--* General Section (BlizzUI)
 blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
 blizzard.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
-
-
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 blizzard.args.general.args.portrait.inline = true
 blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
@@ -209,8 +234,18 @@ function JI:BuildProfile()
 				-- 	icon = sharedDefaultValues.icon,
 				-- },
 			},
+			suf = {},
 		},
 	}
+	for _, unit in pairs(sufUnitList) do
+		Defaults.profile.suf[unit] = {
+			portrait = {
+				enable = false,
+				style = 'fabled',
+			},
+		}
+	end
+
 	JI.data = JI.Libs.ADB:New('JiberishIconsDB', Defaults)
 	JI.data.RegisterCallback(JI, 'OnProfileChanged', 'SetupProfile')
 	JI.data.RegisterCallback(JI, 'OnProfileCopied', 'SetupProfile')

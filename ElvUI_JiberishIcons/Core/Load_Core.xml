@@ -4,5 +4,6 @@
 	<Script file="Options.lua"/>
 	<Script file="Details.lua"/>
 	<Script file="ElvUI.lua"/>
+	<Script file="SUF.lua"/>
 	<Script file="Blizzard.lua"/>
 </Ui>
