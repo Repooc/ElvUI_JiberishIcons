@@ -22,15 +22,18 @@ end
 sort(CREDITS, SortList)
 CREDITS = table.concat(CREDITS, '|n')
 
-local settingTest = { portrait = {}, icon = {} }
-local function ApplySettingsToAll(element, setting)
-	local db = JI.db.blizzard
+local settingTest = {}
+settingTest['blizzard'] = { portrait = {}, icon = {} }
+settingTest['suf'] = { portrait = {}, icon = {} }
+local function ApplySettingsToAll(module, element, setting, func)
+	local db = JI.db[module]
+	if not db then return end
 
 	for unit, data in next, db do
-		db[unit][element][setting] = settingTest[element][setting]
+		db[unit][element][setting] = settingTest[module][element][setting]
 	end
 
-	JI:UpdateMedia()
+	func()
 end
 
 --* Main Header
@@ -82,11 +85,11 @@ suf.args.general = ACH:Group(L["General"], nil, 1, 'tab')
 suf.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 suf.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 suf.args.general.args.portrait.inline = true
-suf.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-suf.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.portrait.enable == nil end)
+suf.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+suf.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 suf.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
-suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
-suf.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.portrait.style end)
+suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+suf.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 for _, unit in next, sufUnitList do
 	suf.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 2, 'tab')
@@ -107,19 +110,19 @@ blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
 blizzard.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 blizzard.args.general.args.portrait.inline = true
-blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.portrait and settingTest.portrait.enable) and (settingTest.portrait.enable == true and 'enable') or (settingTest.portrait.enable == false and 'disable') or nil end, function(info, value) settingTest.portrait[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('portrait', 'enable') settingTest.portrait.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.portrait.enable == nil end)
+blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
 blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
-blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('portrait', 'style') settingTest.portrait.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.portrait.style end)
+blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 blizzard.args.general.args.icon = ACH:Group(L["Icon"], nil, 3)
 blizzard.args.general.args.icon.inline = true
-blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function() return (settingTest.icon and settingTest.icon.enable) and (settingTest.icon.enable == true and 'enable') or (settingTest.icon.enable == false and 'disable') or nil end, function(info, value) settingTest.icon[info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll('icon', 'enable') settingTest.icon.enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return settingTest.icon.enable == nil end)
+blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 blizzard.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
-blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.icon and settingTest.icon.style) and settingTest.icon.style or nil end, function(info, value) settingTest.icon[info[#info]] = value end)
-blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function() ApplySettingsToAll('icon', 'style') settingTest.icon.style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function() return not settingTest.icon.style end)
+blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 local colorOverrideOptions = {
 	name = function(info)
