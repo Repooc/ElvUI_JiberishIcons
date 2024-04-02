@@ -105,9 +105,7 @@ local function UpdateSUFPortrait(module, frame)
 	if not frame.classIcon then
 		CreateIcon(frame)
 	end
-	print('Update Icon 1')
 	UpdateIcon(frame)
-	print('Update Icon 2')
 end
 
 function JI:SetupSUF()
