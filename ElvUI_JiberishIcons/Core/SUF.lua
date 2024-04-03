@@ -88,6 +88,7 @@ function JI:SetupSUF()
 	end)
 end
 
+if not JI:IsAddOnEnabled('ShadowedUnitFrames') or not ShadowUF then return end
 --! Custom SUF Module for Class Icons
 local ClassIcon = {}
 
