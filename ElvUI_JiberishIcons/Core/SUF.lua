@@ -89,6 +89,11 @@ local function UpdateSUFPortrait(module, frame)
 
 	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
 
+	if not frame.classIcon then
+		CreateIcon(frame)
+	end
+	UpdateIcon(frame)
+
 	if type ~= 'class' then return end
 
 	if db and db.portrait.enable then
@@ -101,11 +106,6 @@ local function UpdateSUFPortrait(module, frame)
 	elseif not db.portrait.enable and frame.portrait.SetTexCoord then
 		frame.portrait:SetTexCoord(0, 1, 0, 1)
 	end
-
-	if not frame.classIcon then
-		CreateIcon(frame)
-	end
-	UpdateIcon(frame)
 end
 
 function JI:SetupSUF()
