@@ -77,7 +77,7 @@ end
 --* Shadowed Unit Frames Tab (SUF)
 --* All suf frames from their own table
 local sufUnitList = {'player', 'pet', 'pettarget', 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'party', 'partypet', 'partytarget', 'partytargettarget', 'raid', 'raidpet', 'boss', 'bosstarget', 'maintank', 'maintanktarget', 'mainassist', 'mainassisttarget', 'arena', 'arenatarget', 'arenapet', 'battleground', 'battlegroundtarget', 'battlegroundpet', 'arenatargettarget', 'battlegroundtargettarget', 'maintanktargettarget', 'mainassisttargettarget', 'bosstargettarget'}
-local suf = ACH:Group('Shadowed Unit Frames', nil, 7, nil, nil, nil, function() return not JI:IsAddOnEnabled('ShadowedUnitFrames') end)
+local suf = ACH:Group('Shadowed Unit Frames', nil, 7, nil, nil, nil, nil, function() return not JI:IsAddOnEnabled('ShadowedUnitFrames') end)
 JI.Options.args.suf = suf
 
 --* General Section (SUF)
