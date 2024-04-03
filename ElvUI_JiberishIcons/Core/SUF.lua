@@ -17,21 +17,10 @@ local INVERSE = {
 	}
 }
 
-function JI:UpdateSUF(specific)
-	for frame, unit in next, cachedPortraits do
-		if specific and unit == specific then
-			ShadowUF.Layout:Reload(unit)
-		elseif not specific then
-			ShadowUF.Layout:Reload(unit)
-		end
-	end
-end
-
 local function UpdateIcon(frame)
 	if not frame or not frame.classIcon then return end
-	local unit = cachedPortraits[frame]
-	local db = JI.db.suf[unit]
 
+	local db = JI.db.suf[frame.unitType]
 	if db then
 		local _, class = UnitClass(frame.unit)
 		local icon = classIcons[class]
@@ -53,7 +42,68 @@ local function UpdateIcon(frame)
 	end
 end
 
-local function CreateIcon(frame)
+local function UpdateSUFPortrait(module, frame)
+	if not frame or not frame.unitType then return end
+	local unit = strmatch(frame.unit, 'party') and 'party' or frame.unit
+	local db = JI.db.suf[unit]
+
+	local type = ShadowUF.db.profile.units[frame.unitType].portrait.type
+	if not type then return end
+
+	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
+
+	if type ~= 'class' then return end
+
+	if db and db.portrait.enable then
+		local classToken = frame:UnitClassToken()
+		local icon = classIcons[classToken]
+		if icon then
+			frame.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
+			frame.portrait:SetTexCoord(unpack(icon.texCoords))
+		end
+	elseif not db.portrait.enable and frame.portrait.SetTexCoord then
+		frame.portrait:SetTexCoord(0, 1, 0, 1)
+	end
+end
+
+function JI:UpdateSUF(specific)
+	for frame, unit in next, cachedPortraits do
+		if specific and unit == specific then
+			ShadowUF.Layout:Reload(unit)
+		elseif not specific then
+			ShadowUF.Layout:Reload(unit)
+		end
+	end
+end
+
+function JI:SetupSUF()
+	if not JI:IsAddOnEnabled('ShadowedUnitFrames') then return end
+	JI:SecureHook(ShadowUF.modules.portrait, 'Update', UpdateSUFPortrait)
+	JI:SecureHook(ShadowUF, 'LoadUnitDefaults', function()
+		for _, unit in pairs(ShadowUF.unitList) do
+			ShadowUF.defaults.profile.units[unit].classicon = {
+				enabled = true
+			}
+		end
+	end)
+end
+
+--! Custom SUF Module for Class Icons
+local ClassIcon = {}
+
+ShadowUF:RegisterModule(ClassIcon, 'classicon')
+function ClassIcon:OnEnable(frame)
+	frame:RegisterUnitEvent('UNIT_PORTRAIT_UPDATE', ClassIcon, 'Update')
+	frame:RegisterUnitEvent('UNIT_MODEL_CHANGED', ClassIcon, 'Update')
+
+	frame:RegisterUpdateFunc(ClassIcon, 'Update')
+end
+
+--* Yes the function is empty as SUF api required it to exsist
+function ClassIcon:OnDisable(frame)
+end
+
+function ClassIcon:OnPreLayoutApply(frame)
 	if frame.classIcon then return end
 
 	frame.classIcon = CreateFrame('Frame', nil, frame)
@@ -79,36 +129,6 @@ local function CreateIcon(frame)
 	-- frame.classIcon.icon:AddMaskTexture(frame.classIcon.mask)
 end
 
-local function UpdateSUFPortrait(module, frame)
-	if not frame or not frame.unitType then return end
-	local unit = strmatch(frame.unit, 'party') and 'party' or frame.unit
-	local db = JI.db.suf[unit]
-
-	local type = ShadowUF.db.profile.units[frame.unitType].portrait.type
-	if not type then return end
-
-	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
-
-	if not frame.classIcon then
-		CreateIcon(frame)
-	end
+function ClassIcon:Update(frame)
 	UpdateIcon(frame)
-
-	if type ~= 'class' then return end
-
-	if db and db.portrait.enable then
-		local classToken = frame:UnitClassToken()
-		local icon = classIcons[classToken]
-		if icon then
-			frame.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
-			frame.portrait:SetTexCoord(unpack(icon.texCoords))
-		end
-	elseif not db.portrait.enable and frame.portrait.SetTexCoord then
-		frame.portrait:SetTexCoord(0, 1, 0, 1)
-	end
-end
-
-function JI:SetupSUF()
-	if not JI:IsAddOnEnabled('ShadowedUnitFrames') then return end
-	JI:SecureHook(ShadowUF.modules.portrait, 'Update', UpdateSUFPortrait)
 end
