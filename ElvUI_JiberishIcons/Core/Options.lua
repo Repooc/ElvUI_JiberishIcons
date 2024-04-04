@@ -83,6 +83,8 @@ JI.Options.args.suf = suf
 --* General Section (SUF)
 suf.args.general = ACH:Group(L["General"], nil, 1, 'tab')
 suf.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+
+--* Apply All (Portrait)
 suf.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 suf.args.general.args.portrait.inline = true
 suf.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
@@ -90,6 +92,15 @@ suf.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"
 suf.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
 suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 suf.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
+
+--* Apply All (Icon)
+suf.args.general.args.icon = ACH:Group(L["Icon"], nil, 3)
+suf.args.general.args.icon.inline = true
+suf.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+suf.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
+suf.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
+suf.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+suf.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 for _, unit in next, sufUnitList do
 	--* SUF Unit
@@ -125,6 +136,8 @@ JI.Options.args.blizzard = blizzard
 --* General Section (BlizzUI)
 blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
 blizzard.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+
+--* Apply All (Portrait)
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 blizzard.args.general.args.portrait.inline = true
 blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
@@ -133,6 +146,7 @@ blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
 blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
 blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
+--* Apply All (Icon)
 blizzard.args.general.args.icon = ACH:Group(L["Icon"], nil, 3)
 blizzard.args.general.args.icon.inline = true
 blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)

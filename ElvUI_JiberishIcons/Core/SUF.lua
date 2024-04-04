@@ -1,7 +1,7 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
 local classIconPath, classIcons, iconStyles = JI.classIconPath, JI.classIcons, JI.iconStyles
-local cachedPortraits = {}
+local cachedPortraits, cachedIcons = {}, {}
 
 local INVERSE = {
 	InverseAnchors = {
@@ -74,6 +74,14 @@ function JI:UpdateSUF(specific)
 			ShadowUF.Layout:Reload(unit)
 		end
 	end
+
+	for frame, unit in next, cachedIcons do
+		if specific and unit == specific then
+			ShadowUF.Layout:Reload(unit)
+		elseif not specific then
+			ShadowUF.Layout:Reload(unit)
+		end
+	end
 end
 
 function JI:SetupSUF()
@@ -106,6 +114,8 @@ end
 
 function ClassIcon:OnPreLayoutApply(frame)
 	if frame.classIcon then return end
+
+	cachedIcons[frame] = frame.unitType
 
 	frame.classIcon = CreateFrame('Frame', nil, frame)
 	frame.classIcon:SetPoint('LEFT', frame, 'RIGHT', 0, 0)
