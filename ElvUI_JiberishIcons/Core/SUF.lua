@@ -42,30 +42,6 @@ local function UpdateIcon(frame)
 	end
 end
 
-local function UpdateSUFPortrait(module, frame)
-	if not frame or not frame.unitType then return end
-	local unit = strmatch(frame.unit, 'party') and 'party' or frame.unit
-	local db = JI.db.suf[unit]
-
-	local type = ShadowUF.db.profile.units[frame.unitType].portrait.type
-	if not type then return end
-
-	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
-
-	if type ~= 'class' then return end
-
-	if db and db.portrait.enable then
-		local classToken = frame:UnitClassToken()
-		local icon = classIcons[classToken]
-		if icon then
-			frame.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
-			frame.portrait:SetTexCoord(unpack(icon.texCoords))
-		end
-	elseif not db.portrait.enable and frame.portrait.SetTexCoord then
-		frame.portrait:SetTexCoord(0, 1, 0, 1)
-	end
-end
-
 function JI:UpdateSUF(specific)
 	for frame, unit in next, cachedPortraits do
 		if specific and unit == specific then
@@ -86,10 +62,13 @@ end
 
 function JI:SetupSUF()
 	if not JI:IsAddOnEnabled('ShadowedUnitFrames') then return end
-	JI:SecureHook(ShadowUF.modules.portrait, 'Update', UpdateSUFPortrait)
+
 	JI:SecureHook(ShadowUF, 'LoadUnitDefaults', function()
 		for _, unit in pairs(ShadowUF.unitList) do
 			ShadowUF.defaults.profile.units[unit].classicon = {
+				enabled = true
+			}
+			ShadowUF.defaults.profile.units[unit].classportrait = {
 				enabled = true
 			}
 		end
@@ -97,6 +76,83 @@ function JI:SetupSUF()
 end
 
 if not JI:IsAddOnEnabled('ShadowedUnitFrames') or not ShadowUF then return end
+
+--! Custom SUF Module for Class Portrait
+local ClassPortrait = {}
+
+ShadowUF:RegisterModule(ClassPortrait, 'classportrait')
+function ClassPortrait:OnEnable(frame)
+	frame:RegisterUnitEvent('UNIT_PORTRAIT_UPDATE', ClassPortrait, 'Update')
+	frame:RegisterUnitEvent('UNIT_MODEL_CHANGED', ClassPortrait, 'Update')
+
+	frame:RegisterUpdateFunc(ClassPortrait, 'Update')
+end
+
+function ClassPortrait:OnDisable(frame)
+	frame:UnregisterAll(self)
+end
+
+function ClassPortrait:OnLayoutApply(frame)
+	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
+end
+
+function ClassPortrait:OnPreLayoutApply(frame)
+	if not frame or not ShadowUF.db.profile.units[frame.unitType].portrait then return end
+
+	if not cachedPortraits[frame] then cachedPortraits[frame] = frame.unitType end
+end
+
+function ClassPortrait:Update(frame)
+	if not frame.portrait then return end
+
+	local db = JI.db.suf[frame.unitType]
+	local classToken = frame:UnitClassToken()
+	local icon = classIcons[classToken]
+	local type = ShadowUF.db.profile.units[frame.unitType].portrait.type
+
+	if type == 'class' then
+		local classToken = frame:UnitClassToken()
+		if classToken then
+			if db.portrait.enable then
+				local icon = classIcons[classToken]
+				if icon then
+					frame.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
+					frame.portrait:SetTexCoord(unpack(icon.texCoords))
+				else
+					frame.portrait:SetTexture('')
+				end
+			else
+				local classIconAtlas = GetClassAtlas(classToken)
+				if classIconAtlas then
+					frame.portrait:SetTexCoord(0, 1, 0, 1)
+					frame.portrait:SetAtlas(classIconAtlas)
+				else
+					frame.portrait:SetTexture('')
+				end
+			end
+		else
+			frame.portrait:SetTexture('')
+		end
+	-- Use 2D character image
+	elseif type == '2D' then
+		frame.portrait:SetTexCoord(0.10, 0.90, 0.10, 0.90)
+		SetPortraitTexture(frame.portrait, frame.unitOwner)
+	-- Using 3D portrait, but the players not in range so swap to question mark
+	elseif not UnitIsVisible(frame.unitOwner) or not UnitIsConnected(frame.unitOwner) then
+		frame.portrait:ClearModel()
+		frame.portrait:SetModelScale(5.5)
+		frame.portrait:SetPosition(0, 0, -0.8)
+		frame.portrait:SetModel([[Interface\Buttons\talktomequestionmark.m2]])
+	-- Use animated 3D portrait
+	else
+		frame.portrait:ClearModel()
+		frame.portrait:SetUnit(frame.unitOwner)
+		frame.portrait:SetPortraitZoom(1)
+		frame.portrait:SetPosition(0, 0, 0)
+		frame.portrait:Show()
+	end
+end
+
 --! Custom SUF Module for Class Icons
 local ClassIcon = {}
 
@@ -110,6 +166,7 @@ end
 
 --* Yes the function is empty as SUF api required it to exsist
 function ClassIcon:OnDisable(frame)
+	frame:UnregisterAll(self)
 end
 
 function ClassIcon:OnPreLayoutApply(frame)
