@@ -22,8 +22,28 @@ end
 sort(CREDITS, SortList)
 CREDITS = table.concat(CREDITS, '|n')
 
+local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
+local elvuiUnitList = {
+	player = UF.CreateAndUpdateUF,
+	pet = UF.CreateAndUpdateUF,
+	pettarget = UF.CreateAndUpdateUF,
+	target = UF.CreateAndUpdateUF,
+	targettarget = UF.CreateAndUpdateUF,
+	targettargettarget = UF.CreateAndUpdateUF,
+	focus = UF.CreateAndUpdateUF,
+	focustarget = UF.CreateAndUpdateUF,
+	party = UF.CreateAndUpdateHeaderGroup,
+	raid1 = UF.CreateAndUpdateHeaderGroup,
+	raid2 = UF.CreateAndUpdateHeaderGroup,
+	raid3 = UF.CreateAndUpdateHeaderGroup,
+	raidpet = UF.CreateAndUpdateHeaderGroup,
+	boss = UF.CreateAndUpdateUFGroup, --MAX_BOSS_FRAMES
+	arena = UF.CreateAndUpdateUFGroup --5
+}
+
 local settingTest = {}
 settingTest['blizzard'] = { portrait = {}, icon = {} }
+settingTest['elvui'] = { portrait = {} }
 settingTest['suf'] = { portrait = {}, icon = {} }
 local function ApplySettingsToAll(module, element, setting, func)
 	local db = JI.db[module]
@@ -31,9 +51,12 @@ local function ApplySettingsToAll(module, element, setting, func)
 
 	for unit, data in next, db do
 		db[unit][element][setting] = settingTest[module][element][setting]
+		elvuiUnitList[unit](nil, unit, (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil)
 	end
 
-	func()
+	if module ~= 'elvui' then
+		func()
+	end
 end
 
 --* Main Header
@@ -72,6 +95,37 @@ for iconStyle, data in next, iconStyles do
 	if data.artist and data.artist ~= '' then
 		StyleGroup.args.credit = ACH:Description(format('|cffFFD100%s |r%s%s\n%s|r', L["Made by"], JI:IsAddOnEnabled('ElvUI') and _G.ElvUI[1].media.hexvaluecolor or '|cff1684d1', data.artist or '', data.site or ''), 99)
 	end
+end
+
+--* ElvUI Tab
+-- local elvuiUnitList = {'player', 'pet', 'pettarget', 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'party', 'raid1', 'raid2', 'raid3', 'raidpet', 'boss', 'arena' }
+local elvui = ACH:Group('ElvUI', nil, 7, nil, nil, nil, nil, function() return not JI:IsAddOnEnabled('ElvUI') end)
+JI.Options.args.elvui = elvui
+
+--* General Section (ElvUI)
+elvui.args.general = ACH:Group(L["General"], nil, 1, 'tab')
+elvui.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+
+--* Apply All (Portrait)
+elvui.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
+elvui.args.general.args.portrait.inline = true
+elvui.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
+elvui.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable') settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
+elvui.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
+elvui.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+elvui.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style') settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
+
+for unit, updateFunc in next, elvuiUnitList do
+	--* ElvUI Unit
+	elvui.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 2, 'tab')
+
+	--* Portrait (ElvUI)
+	local portrait = ACH:Group(L["Portrait"], nil, 5)
+	elvui.args[unit].args.portrait = portrait
+	portrait.inline = true
+	portrait.args.header = ACH:Description(ColorText(nil, L["This will apply the selected class icon style to ElvUI's unitframes where they show a players class icon."]), 1)
+	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value updateFunc(nil, info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 end
 
 --* Shadowed Unit Frames Tab (SUF)
@@ -268,9 +322,19 @@ function JI:BuildProfile()
 				-- 	icon = sharedDefaultValues.icon,
 				-- },
 			},
+			elvui = {},
 			suf = {},
 		},
 	}
+	for unit in pairs(elvuiUnitList) do
+		Defaults.profile.elvui[unit] = {
+			portrait = {
+				enable = false,
+				style = 'fabled',
+			},
+		}
+	end
+
 	for _, unit in pairs(sufUnitList) do
 		Defaults.profile.suf[unit] = {
 			portrait = {
