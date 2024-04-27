@@ -30,11 +30,11 @@ for iconStyle, data in next, iconStyles do
 	E:AddTagInfo(tag, JI.Title, description)
 end
 
-function JI:PortraitUpdate(unit, hasStateChanged)
+function JI:PortraitUpdate()
 	local element = self
 	if not element.useClassBase then return end
 
-	local frame = self.__owner
+	local frame = element.__owner
 	local db = JI.db.elvui[frame.unitframeType]
 
 	if db and db.portrait.enable then

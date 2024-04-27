@@ -1,7 +1,8 @@
 local JI = unpack(ElvUI_JiberishIcons)
 local L = JI.Libs.ACL:NewLocale('JiberishIcons', 'frFR')
 if not L then return end
-
+--* English is the default if no translation is found. Translate Below.
+L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."] = true
 L["Anchor Point"] = true
 L["Apply To All"] = true
 L["Background"] = true
@@ -11,11 +12,14 @@ L["Color"] = true
 L["Disabled"] = true
 L["DISCORD_MSG"] = true
 L["Discord"] = true
+L["ElvUI %s Portrait Config"] = true
+L["ElvUI %s Config"] = true
 L["Enable"] = true
 L["Enabled State"] = true
 L["Enabled"] = true
 L["Fabled Incarnates"] = true
 L["General"] = true
+L["Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!"] = true
 L["Icon Style"] = true
 L["Icon"] = true
 L["Ignored"] = true
@@ -30,11 +34,13 @@ L["Style"] = true
 L["Support Tickets"] = true
 L["TAG_HELP"] = true
 L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."] = true
-L["This will apply the selected class icon style to Blizzard's unitframes where they show a players portrait."] = true
+L["This will apply the selected class icon style to %s unitframes where they show a players portrait."] = true
+L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."] = true
 L["This will override the color option (alpha slider setting is still followed) and force the background color to show as the class color of the unit that is displayed."] = true
 L["Unit Class"] = true
 L["Wago Profile"] = true
 L["WAGO_MSG"] = true
+L["What point to anchor to the frame you set to attach to."] = true
 L["xOffset"] = true
 L["yOffset"] = true
 L["You are about to select this option for all supported units.\nDo you wish to continue?"] = true

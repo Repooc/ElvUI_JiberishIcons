@@ -24,21 +24,66 @@ CREDITS = table.concat(CREDITS, '|n')
 
 local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
 local elvuiUnitList = {
-	player = UF.CreateAndUpdateUF,
-	pet = UF.CreateAndUpdateUF,
-	pettarget = UF.CreateAndUpdateUF,
-	target = UF.CreateAndUpdateUF,
-	targettarget = UF.CreateAndUpdateUF,
-	targettargettarget = UF.CreateAndUpdateUF,
-	focus = UF.CreateAndUpdateUF,
-	focustarget = UF.CreateAndUpdateUF,
-	party = UF.CreateAndUpdateHeaderGroup,
-	raid1 = UF.CreateAndUpdateHeaderGroup,
-	raid2 = UF.CreateAndUpdateHeaderGroup,
-	raid3 = UF.CreateAndUpdateHeaderGroup,
-	raidpet = UF.CreateAndUpdateHeaderGroup,
-	boss = UF.CreateAndUpdateUFGroup, --MAX_BOSS_FRAMES
-	arena = UF.CreateAndUpdateUFGroup --5
+	player = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	pet = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	pettarget = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	target = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	targettarget = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	targettargettarget = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	focus = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	focustarget = {
+		updateFunc = UF.CreateAndUpdateUF,
+		groupName = 'individualUnits',
+	},
+	party = {
+		updateFunc = UF.CreateAndUpdateHeaderGroup,
+		groupName = 'groupUnits',
+	},
+	raid1 = {
+		updateFunc = UF.CreateAndUpdateHeaderGroup,
+		groupName = 'groupUnits',
+	},
+	raid2 = {
+		updateFunc = UF.CreateAndUpdateHeaderGroup,
+		groupName = 'groupUnits',
+	},
+	raid3 = {
+		updateFunc = UF.CreateAndUpdateHeaderGroup,
+		groupName = 'groupUnits',
+	},
+	raidpet = {
+		updateFunc = UF.CreateAndUpdateHeaderGroup,
+		groupName = 'groupUnits',
+	},
+	boss = {
+		updateFunc = UF.CreateAndUpdateUFGroup, --MAX_BOSS_FRAMES
+		groupName = 'groupUnits',
+	},
+	arena = {
+		updateFunc = UF.CreateAndUpdateUFGroup, --5
+		groupName = 'groupUnits',
+	},
 }
 
 local settingTest = {}
@@ -50,10 +95,17 @@ local function ApplySettingsToAll(module, element, setting, func)
 	if not db then return end
 
 	for unit, data in next, db do
+		--* Apply Settings to the database
 		db[unit][element][setting] = settingTest[module][element][setting]
-		elvuiUnitList[unit](nil, unit, (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil)
+
+		--* Check if ElvUI is enabled and module is set to elvui
+		if JI:IsAddOnEnabled('ElvUI') and module == 'elvui' then
+			--* Update for ElvUI UnitFrames
+			elvuiUnitList[unit].updateFunc(nil, unit, (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil)
+		end
 	end
 
+	--* Run the update function for all modules if not elvui as it is handled above
 	if module ~= 'elvui' then
 		func()
 	end
@@ -73,12 +125,13 @@ local iconStyleList = {}
 local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 local AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' }
 
-local function ColorText(color, text)
+local function ColorText(text, color)
 	if not text then return end
 	color = color or 'FFD100'
 	return format('|cff%s%s|r', color, text)
 end
 
+--* Dynamically build the groups for each style pack
 for iconStyle, data in next, iconStyles do
 	iconStyleList[iconStyle] = data.name
 
@@ -104,7 +157,7 @@ JI.Options.args.elvui = elvui
 
 --* General Section (ElvUI)
 elvui.args.general = ACH:Group(L["General"], nil, 1, 'tab')
-elvui.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+elvui.args.general.args.desc = ACH:Description(ColorText(L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 
 --* Apply All (Portrait)
 elvui.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
@@ -115,17 +168,22 @@ elvui.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
 elvui.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 elvui.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style') settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
-for unit, updateFunc in next, elvuiUnitList do
-	--* ElvUI Unit
-	elvui.args[unit] = ACH:Group(gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1'), nil, 2, 'tab')
+for unit, data in next, elvuiUnitList do
+	local unitName = gsub(gsub(unit, '(.)', strupper, 1), 't(arget)', 'T%1')
+	--* Create ElvUI Unit Entry
+	elvui.args[unit] = ACH:Group(unitName, nil, 2, 'tab')
+	elvui.args[unit].args.elvUnit = ACH:Execute(format(L["ElvUI %s Config"], unitName), L["ElvUI %s Config"], 1, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'general') end, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return not ElvUI[1].private.unitframe.enable else return true end end)
 
 	--* Portrait (ElvUI)
 	local portrait = ACH:Group(L["Portrait"], nil, 5)
 	elvui.args[unit].args.portrait = portrait
 	portrait.inline = true
-	portrait.args.header = ACH:Description(ColorText(nil, L["This will apply the selected class icon style to ElvUI's unitframes where they show a players class icon."]), 1)
-	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
-	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value updateFunc(nil, info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 1)
+	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	portrait.args.spacer = ACH:Spacer(4, 'full')
+	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 99, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end)
+	portrait.args.helpText = ACH:Description(ColorText(format(L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."], unitName, 'ElvUI'), 'FF3333'), 100, nil, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return ElvUI[1].db.unitframe.units[unit].portrait.enable else return true end end)
 end
 
 --* Shadowed Unit Frames Tab (SUF)
@@ -136,7 +194,7 @@ JI.Options.args.suf = suf
 
 --* General Section (SUF)
 suf.args.general = ACH:Group(L["General"], nil, 1, 'tab')
-suf.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+suf.args.general.args.desc = ACH:Description(ColorText(L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 
 --* Apply All (Portrait)
 suf.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
@@ -164,7 +222,7 @@ for _, unit in next, sufUnitList do
 	local portrait = ACH:Group(L["Portrait"], nil, 5)
 	suf.args[unit].args.portrait = portrait
 	portrait.inline = true
-	portrait.args.header = ACH:Description(ColorText(nil, L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."]), 1)
+	portrait.args.header = ACH:Description(ColorText(L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."]), 1)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
 	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 
@@ -173,7 +231,7 @@ for _, unit in next, sufUnitList do
 	suf.args[unit].args.icon = icon
 	icon.inline = true
 
-	icon.args.header = ACH:Description(ColorText(nil, L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
+	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
 	icon.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
@@ -189,7 +247,7 @@ JI.Options.args.blizzard = blizzard
 
 --* General Section (BlizzUI)
 blizzard.args.general = ACH:Group(L["General"], nil, 1, 'tab')
-blizzard.args.general.args.desc = ACH:Description(ColorText(nil, L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
+blizzard.args.general.args.desc = ACH:Description(ColorText(L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."]), 1)
 
 --* Apply All (Portrait)
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
@@ -232,7 +290,7 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 		blizzard.args[unit].args.portrait = portrait
 		portrait.inline = true
 
-		portrait.args.header = ACH:Description(ColorText(nil, L["This will apply the selected class icon style to Blizzard's unitframes where they show a players portrait."]), 1)
+		portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'Blizzard')), 1)
 		portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
 		portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 
@@ -248,7 +306,7 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 	blizzard.args[unit].args.icon = icon
 	icon.inline = true
 
-	icon.args.header = ACH:Description(ColorText(nil, L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
+	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
 	icon.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
@@ -275,7 +333,7 @@ Information.args.links = ACH:Group(L["Links"], nil, 1)
 Information.args.links.inline = true
 Information.args.links.args.discord = ACH:Input(L["Discord"], L["DISCORD_MSG"], 2, nil, 'full', function() return 'https://discord.com/invite/jr5w8ArzAx' end)
 Information.args.links.args.issues = ACH:Input(L["Support Tickets"], nil, 3, nil, 'full', function() return 'https://github.com/repooc/ElvUI_JiberishIcons/issues' end)
-Information.args.links.args.jiberishui = ACH:Input('JiberishUI', "Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!", 4, nil, 'full', function() return 'https://www.curseforge.com/wow/addons/jiberishui' end)
+Information.args.links.args.jiberishui = ACH:Input('JiberishUI', L["Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!"], 4, nil, 'full', function() return 'https://www.curseforge.com/wow/addons/jiberishui' end)
 Information.args.links.args.wagoprofile = ACH:Input(L["Wago Profile"], L["WAGO_MSG"], 4, nil, 'full', function() return 'https://wago.io/p/Jiberish%231723' end)
 
 -- TODO: Change to execture buttons if ElvUI is loaded instead? Ask Jiberish which he prefers. Don't forget the issues entry as well as these buttons were from before the big changes.

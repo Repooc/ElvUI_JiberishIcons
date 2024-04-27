@@ -1,7 +1,8 @@
 local JI = unpack(ElvUI_JiberishIcons)
 local L = JI.Libs.ACL:NewLocale('JiberishIcons', 'zhCN')
 if not L then return end
-
+--* English is the default if no translation is found. Translate Below.
+L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."] = true
 L["Anchor Point"] = "锚点"
 L["Apply To All"] = "应用到所有"
 L["Background"] = "背景"
@@ -11,11 +12,14 @@ L["Color"] = "颜色"
 L["Disabled"] = "停用"
 L["DISCORD_MSG"] = true
 L["Discord"] = true
+L["ElvUI %s Portrait Config"] = true
+L["ElvUI %s Config"] = true
 L["Enable"] = "启用"
 L["Enabled State"] = "启用状态"
 L["Enabled"] = "启用"
 L["Fabled Incarnates"] = true
 L["General"] = "一般"
+L["Go download JiberishUI from Curse! You can try your pick of various ElvUI profiles by using the installer!"] = true
 L["Icon Style"] = "图标样式"
 L["Icon"] = "图示"
 L["Ignored"] = "忽略"
@@ -30,11 +34,13 @@ L["Style"] = "样式"
 L["Support Tickets"] = true
 L["TAG_HELP"] = true
 L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."] = "在单位框架旁增加一个职业图标。"
-L["This will apply the selected class icon style to Blizzard's unitframes where they show a players portrait."] = "将职业图标应用到暴雪原生头像。"
+L["This will apply the selected class icon style to %s unitframes where they show a players portrait."] = true
+L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."] = true
 L["This will override the color option (alpha slider setting is still followed) and force the background color to show as the class color of the unit that is displayed."] = "将背景指定为职业颜色。这会取代自定义颜色设置，但保留透明度设置。"
 L["Unit Class"] = "单位职业"
 L["Wago Profile"] = true
 L["WAGO_MSG"] = true
+L["What point to anchor to the frame you set to attach to."] = true
 L["xOffset"] = "水平偏移"
 L["yOffset"] = "垂直偏移"
 L["You are about to select this option for all supported units.\nDo you wish to continue?"] = "确定要将设置的应用到所有框架上吗？"
