@@ -175,14 +175,14 @@ for unit, data in next, elvuiUnitList do
 	elvui.args[unit].args.elvUnit = ACH:Execute(format(L["ElvUI %s Config"], unitName), L["ElvUI %s Config"], 1, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'general') end, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return not ElvUI[1].private.unitframe.enable else return true end end)
 
 	--* Portrait (ElvUI)
-	local portrait = ACH:Group(L["Portrait"], nil, 5)
+	local portrait = ACH:Group(L["Portrait"], nil, 5, nil, nil, nil, function() return not (JI:IsAddOnEnabled('ElvUI') and ElvUI[1].db.unitframe.units[unit].portrait.enable) end)
 	elvui.args[unit].args.portrait = portrait
 	portrait.inline = true
 	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 1)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
-	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return ((JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable)) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 	portrait.args.spacer = ACH:Spacer(4, 'full')
-	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 99, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end)
+	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 99, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end, nil, nil, nil, nil, nil, function() return false end)
 	portrait.args.helpText = ACH:Description(ColorText(format(L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."], unitName, 'ElvUI'), 'FF3333'), 100, nil, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return ElvUI[1].db.unitframe.units[unit].portrait.enable else return true end end)
 end
 
