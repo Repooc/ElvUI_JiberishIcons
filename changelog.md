@@ -1,4 +1,3 @@
-v1.0.6 4/27/24
+v1.0.7 5/03/24
 
-• added ElvUI UnitFrames Portrait Support!
-• updated locale files to make it easier for people to translate
+• TOC Update for Cata v1.0.7
