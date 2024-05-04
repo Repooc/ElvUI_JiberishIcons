@@ -4,7 +4,7 @@ local JI = _G.LibStub('AceAddon-3.0'):NewAddon(AddOnName, 'AceConsole-3.0', 'Ace
 Engine[1] = JI
 Engine[2] = {}
 
-_G['ElvUI_JiberishIcons'] = Engine
+_G.ElvUI_JiberishIcons = Engine
 
 JI.Libs = {
 	AC = _G.LibStub('AceConfig-3.0'),
@@ -22,6 +22,16 @@ JI.Title = GetAddOnMetadata(AddOnName, 'Title')
 JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
 JI.Configs = {}
 JI.myName = UnitName('player')
+
+JI.locale = GetLocale()
+do -- this is different from E.locale because we need to convert for ace locale files
+	local convert = { enGB = 'enUS', esES = 'esMX', itIT = 'enUS' }
+	local gameLocale = convert[JI.locale] or JI.locale or 'enUS'
+
+	function JI:GetLocale()
+		return gameLocale
+	end
+end
 
 JI.iconStyles = {
 	fabled = {

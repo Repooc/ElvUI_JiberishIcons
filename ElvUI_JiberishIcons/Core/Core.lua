@@ -1,5 +1,4 @@
-ElvUI_JiberishIcons[2] = ElvUI_JiberishIcons[1].Libs.ACL:GetLocale('JiberishIcons', GetLocale())
-
+ElvUI_JiberishIcons[2] = ElvUI_JiberishIcons[1].Libs.ACL:GetLocale('JiberishIcons', ElvUI_JiberishIcons[1]:GetLocale())
 local JI, L = unpack(ElvUI_JiberishIcons)
 local AddOnName = ...
 local blizzOptionsOpen, separateOptionsOpen = false, false
