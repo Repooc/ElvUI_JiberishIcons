@@ -1,3 +1,3 @@
-v1.0.7 5/03/24
+v1.0.8 5/4/24
 
-• TOC Update for Cata v1.0.7
+• Fix broken locales for esES people
