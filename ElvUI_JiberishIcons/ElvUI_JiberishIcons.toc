@@ -1,10 +1,10 @@
-## Interface: 100206
+## Interface: 100207
 ## Interface-Cata: 40400
 ## Interface-Classic: 11502
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
 ## SavedVariables: JiberishIconsDB
-## Version: 1.0.8
+## Version: 1.0.9
 ## Notes: Epicizing your UI with Fabled Class Icons
 ## OptionalDeps: ElvUI, ShadowedUnitFrames
 ## DefaultState: Enabled
