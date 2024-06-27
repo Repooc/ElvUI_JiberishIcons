@@ -10,19 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      GITHUB_OAUTH: ${{ secrets.REPOOCPAT }}
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Package and Release
-        uses: BigWigsMods/packager@v2.2.2
-        env:
-          GITHUB_OAUTH: ${{ secrets.REPOOCPAT }}
-      # - name: Send file README.md to discord channel
-      #   if: success()
-      #   uses: sinshutu/upload-to-discord@v2.0.0
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      #   with:
-      #     args: ./.release/*.zip
+        uses: BigWigsMods/packager@master
