@@ -158,8 +158,8 @@ local ClassIcon = {}
 
 ShadowUF:RegisterModule(ClassIcon, 'classicon')
 function ClassIcon:OnEnable(frame)
-	frame:RegisterUnitEvent('UNIT_PORTRAIT_UPDATE', ClassIcon, 'Update')
-	frame:RegisterUnitEvent('UNIT_MODEL_CHANGED', ClassIcon, 'Update')
+	frame:RegisterUnitEvent('UNIT_PORTRAIT_UPDATE', ClassPortrait, 'Update')
+	frame:RegisterUnitEvent('UNIT_MODEL_CHANGED', ClassPortrait, 'Update')
 
 	frame:RegisterUpdateFunc(ClassIcon, 'Update')
 end
