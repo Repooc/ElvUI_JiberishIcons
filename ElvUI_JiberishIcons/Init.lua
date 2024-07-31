@@ -57,7 +57,7 @@ JI.classIconPath = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Icons\]]
 -- JI.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
 -- texCoords = { ULx, ULy, LLx, LLy, URx, URy, LRx, LRy }
 
-JI.classIcons = {
+JI.classData = {
 	WARRIOR	= {
 		texString = '0:128:0:128',
 		texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },

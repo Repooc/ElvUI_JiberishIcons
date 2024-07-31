@@ -2,7 +2,7 @@ local JI, L = unpack(ElvUI_JiberishIcons)
 local ACH = JI.Libs.ACH
 
 local AddOnName = ...
-local classIconPath, classIcons, iconStyles = JI.classIconPath, JI.classIcons, JI.iconStyles
+local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
 
 local CREDITS = {
 	'|cfff48cbaRepooc|r',
@@ -140,7 +140,7 @@ for iconStyle, data in next, iconStyles do
 	StyleGroup.inline = true
 
 	local classTextureString = ''
-	for _, iconData in next, classIcons do
+	for _, iconData in next, classData do
 		classTextureString = classTextureString..format(displayString, classIconPath, iconStyle, '48', '48', iconData.texString)
 	end
 	StyleGroup.args.icons = ACH:Description(function() return classTextureString end, 1)

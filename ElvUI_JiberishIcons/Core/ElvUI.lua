@@ -6,7 +6,7 @@ local UF = E.UnitFrames
 
 local UnitIsPlayer, UnitClass = UnitIsPlayer, UnitClass
 local iconMinSize, iconMaxSize = JI.iconMinSize, JI.iconMaxSize
-local classIconPath, classIcons, iconStyles = JI.classIconPath, JI.classIcons, JI.iconStyles
+local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
 local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 
 for iconStyle, data in next, iconStyles do
@@ -19,7 +19,7 @@ for iconStyle, data in next, iconStyles do
 		size = tonumber(size)
 		size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
 		local _, class = UnitClass(unit)
-		local icon = classIcons[class]
+		local icon = classData[class]
 
 		if icon and icon.texString then
 			return format(displayString, classIconPath, iconStyle, size, size, icon.texString)
@@ -39,7 +39,7 @@ function JI:PortraitUpdate()
 
 	if db and db.portrait.enable then
 		local _, class = UnitClass(frame.unit)
-		local icon = classIcons[class]
+		local icon = classData[class]
 
 		--* Update Icon Texture
 		element:SetTexture(format('%s%s', classIconPath, db.portrait.style or 'fabled'))

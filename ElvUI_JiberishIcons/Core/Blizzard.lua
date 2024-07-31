@@ -1,7 +1,7 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
 local UnitClass, UnitIsPlayer = UnitClass, UnitIsPlayer
-local classIconPath, classIcons, iconStyles = JI.classIconPath, JI.classIcons, JI.iconStyles
+local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
 local cachedBlizzardPortraits, cachedBlizzardClassIcons = {}, {}
 
 local INVERSE = {
@@ -25,7 +25,7 @@ local function UpdateIcon(frame)
 
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classIcons[class]
+		local icon = classData[class]
 
 		if icon and UnitIsPlayer(frame.unit) and not frame.unit ~= 'pet' then
 			--* Update Icon Holder Frame
@@ -77,7 +77,7 @@ local function UpdatePortrait(frame)
 
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classIcons[class]
+		local icon = classData[class]
 		local showPortrait = icon and db.portrait.enable and UnitIsPlayer(frame.unit)
 
 		--* Update Background Color
