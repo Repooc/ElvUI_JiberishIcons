@@ -106,8 +106,6 @@ function ClassPortrait:Update(frame)
 	if not frame.portrait then return end
 
 	local db = JI.db.suf[frame.unitType]
-	local classToken = frame:UnitClassToken()
-	local icon = classData[classToken]
 	local type = ShadowUF.db.profile.units[frame.unitType].portrait.type
 
 	if type == 'class' then
