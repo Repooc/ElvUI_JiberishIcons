@@ -1,3 +1,3 @@
-v1.1.0 6/27/24
+v1.1.1 7/31/24
 
-• fix an issue with ShadowedUF
+• toc bump
