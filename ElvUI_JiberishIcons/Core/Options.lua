@@ -113,7 +113,7 @@ end
 
 --* Main Header
 JI.Options = ACH:Group(JI.Title, nil, 6, 'tab')
-JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\LargeLogo]], nil, 256, 128)
+JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\Logo\LargeLogo]], nil, 256, 128)
 JI.Options.args.version = ACH:Header(JI.Version, 1)
 
 --* Style Packs Tab
