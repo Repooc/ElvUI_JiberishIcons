@@ -2,6 +2,7 @@ ElvUI_JiberishIcons[2] = ElvUI_JiberishIcons[1].Libs.ACL:GetLocale('JiberishIcon
 local JI, L = unpack(ElvUI_JiberishIcons)
 local AddOnName = ...
 local blizzOptionsOpen, separateOptionsOpen = false, false
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded
 
 function JI:ToggleOptions()
 	if JI:IsAddOnEnabled('ElvUI') then
