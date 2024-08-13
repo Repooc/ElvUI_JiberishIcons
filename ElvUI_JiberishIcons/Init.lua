@@ -18,6 +18,8 @@ JI.Libs = {
 	GUI = _G.LibStub('AceGUI-3.0'),
 }
 
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 JI.Title = GetAddOnMetadata(AddOnName, 'Title')
 JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
 JI.Configs = {}
