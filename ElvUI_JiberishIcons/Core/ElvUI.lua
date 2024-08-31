@@ -59,14 +59,18 @@ function JI:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 	local flag = JI.hooks[CH]:GetPFlag(specialFlag, zoneChannelID, unitGUID) or ''
 	if unitGUID then
 		local iconString = ''
-		local _, class = GetPlayerInfoByGUID(unitGUID)
-		local icon = classInfo.data[class]
-		local db = JI.db.chat
+		local data = CH:GetPlayerInfoByGUID(unitGUID)
 
-		if icon and icon.texString then
-			iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
+		if data and data.englishClass then
+			local icon = classInfo.data[data.englishClass]
+			local db = JI.db.chat
+
+			if icon and icon.texString then
+				iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
+			end
+
+			flag = flag .. iconString
 		end
-		flag = flag .. iconString
 	end
 
 	return flag
