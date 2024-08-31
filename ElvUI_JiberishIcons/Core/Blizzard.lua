@@ -1,9 +1,8 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
 local UnitClass, UnitIsPlayer = UnitClass, UnitIsPlayer
-local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
+local classInfo = JI.icons.class
 local cachedBlizzardPortraits, cachedBlizzardClassIcons = {}, {}
-
 local INVERSE = {
 	InverseAnchors = {
 		BOTTOM = 'TOP',
@@ -25,7 +24,7 @@ local function UpdateIcon(frame)
 
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classData[class]
+		local icon = classInfo.data[class]
 
 		if icon and UnitIsPlayer(frame.unit) and not frame.unit ~= 'pet' then
 			--* Update Icon Holder Frame
@@ -34,7 +33,7 @@ local function UpdateIcon(frame)
 			frame.classIcon:SetPoint(INVERSE.InverseAnchors[db.icon.anchorPoint], frame, db.icon.anchorPoint, db.icon.xOffset, db.icon.yOffset)
 
 			--* Update Icon Texture
-			frame.classIcon.icon:SetTexture(format('%s%s', classIconPath, db.icon.style))
+			frame.classIcon.icon:SetTexture(format('%s%s', classInfo.path, db.icon.style))
 			frame.classIcon.icon:SetTexCoord(unpack(icon.texCoords))
 
 			frame.classIcon:SetShown(db.icon.enable)
@@ -77,7 +76,7 @@ local function UpdatePortrait(frame)
 
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classData[class]
+		local icon = classInfo.data[class]
 		local showPortrait = icon and db.portrait.enable and UnitIsPlayer(frame.unit)
 
 		--* Update Background Color
@@ -90,7 +89,7 @@ local function UpdatePortrait(frame)
 		frame.classPortrait.background:SetColorTexture(r, g, b, a)
 
 		--* Update Portrait Texture
-		frame.classPortrait.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
+		frame.classPortrait.portrait:SetTexture(format('%s%s', classInfo.path, db.portrait.style))
 		if icon then frame.classPortrait.portrait:SetTexCoord(unpack(icon.texCoords)) end
 
 		frame.classPortrait:SetShown(showPortrait)

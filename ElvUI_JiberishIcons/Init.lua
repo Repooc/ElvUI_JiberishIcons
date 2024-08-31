@@ -35,81 +35,85 @@ do -- this is different from E.locale because we need to convert for ace locale 
 	end
 end
 
-JI.iconStyles = {
-	fabled = {
-		name = 'Fabled',
-		artist = 'Royroyart',
-		site = 'https://www.fiverr.com/royyanikhwani',
-	},
-	fabledrealm = {
-		name = 'Fabled Realm',
-		artist = 'Handclaw',
-		site = 'https://handclaw.artstation.com/',
-	},
-	fabledpixels = {
-		name = 'Fabled Pixels',
-		artist = 'Dragumagu',
-		site = 'https://www.artstation.com/dragumagu',
+JI.icons = {
+	class = {
+		path = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Class\]],
+		styles = {
+			fabled = {
+				name = 'Fabled',
+				artist = 'Royroyart',
+				site = 'https://www.fiverr.com/royyanikhwani',
+			},
+			fabledrealm = {
+				name = 'Fabled Realm',
+				artist = 'Handclaw',
+				site = 'https://handclaw.artstation.com/',
+			},
+			fabledpixels = {
+				name = 'Fabled Pixels',
+				artist = 'Dragumagu',
+				site = 'https://www.artstation.com/dragumagu',
+			},
+		},
+		data = {
+			WARRIOR	= {
+				texString = '0:128:0:128',
+				texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },
+			},
+			MAGE = {
+				texString = '128:256:0:128',
+				texCoords = { 0.125, 0, 0.125, 0.125, 0.25, 0, 0.25, 0.125 },
+			},
+			ROGUE = {
+				texString = '256:384:0:128',
+				texCoords = { 0.25, 0, 0.25, 0.125, 0.375, 0, 0.375, 0.125 },
+			},
+			 DRUID = {
+				texString = '384:512:0:128',
+				texCoords = { 0.375, 0, 0.375, 0.125, 0.5, 0, 0.5, 0.125 },
+			},
+			EVOKER = {
+				texString = '512:640:0:128',
+				texCoords = { 0.5, 0, 0.5, 0.125, 0.625, 0, 0.625, 0.125 },
+			},
+			HUNTER = {
+				texString = '0:128:128:256',
+				texCoords = { 0, 0.125, 0, 0.25, 0.125, 0.125, 0.125, 0.25 },
+			},
+			SHAMAN = {
+				texString = '128:256:128:256',
+				texCoords = { 0.125, 0.125, 0.125, 0.25, 0.25, 0.125, 0.25, 0.25 },
+			},
+			PRIEST = {
+				texString = '256:384:128:256',
+				texCoords = { 0.25, 0.125, 0.25, 0.25, 0.375, 0.125, 0.375, 0.25 },
+			},
+			WARLOCK = {
+				texString = '384:512:128:256',
+				texCoords = { 0.375, 0.125, 0.375, 0.25, 0.5, 0.125, 0.5, 0.25 },
+			},
+			PALADIN = {
+				texString = '0:128:256:384',
+				texCoords = { 0, 0.25, 0, 0.375, 0.125, 0.25, 0.125, 0.375 },
+			},
+			DEATHKNIGHT = {
+				texString = '128:256:256:384',
+				texCoords = { 0.125, 0.25, 0.125, 0.375, 0.25, 0.25, 0.25, 0.375 },
+			},
+			MONK = {
+				texString = '256:384:256:384',
+				texCoords = { 0.25, 0.25, 0.25, 0.375, 0.375, 0.25, 0.375, 0.375 },
+			},
+			DEMONHUNTER = {
+				texString = '384:512:256:384',
+				texCoords = { 0.375, 0.25, 0.375, 0.375, 0.5, 0.25, 0.5, 0.375 },
+			},
+		}
 	},
 }
 
 JI.iconMinSize = 1
 JI.iconMaxSize = 128
-JI.classIconPath = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Icons\]]
+
 -- JI.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
 -- texCoords = { ULx, ULy, LLx, LLy, URx, URy, LRx, LRy }
-
-JI.classData = {
-	WARRIOR	= {
-		texString = '0:128:0:128',
-		texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },
-	},
-	MAGE = {
-		texString = '128:256:0:128',
-		texCoords = { 0.125, 0, 0.125, 0.125, 0.25, 0, 0.25, 0.125 },
-	},
-	ROGUE = {
-		texString = '256:384:0:128',
-		texCoords = { 0.25, 0, 0.25, 0.125, 0.375, 0, 0.375, 0.125 },
-	},
-	 DRUID = {
-		texString = '384:512:0:128',
-		texCoords = { 0.375, 0, 0.375, 0.125, 0.5, 0, 0.5, 0.125 },
-	},
-	EVOKER = {
-		texString = '512:640:0:128',
-		texCoords = { 0.5, 0, 0.5, 0.125, 0.625, 0, 0.625, 0.125 },
-	},
-	HUNTER = {
-		texString = '0:128:128:256',
-		texCoords = { 0, 0.125, 0, 0.25, 0.125, 0.125, 0.125, 0.25 },
-	},
-	SHAMAN = {
-		texString = '128:256:128:256',
-		texCoords = { 0.125, 0.125, 0.125, 0.25, 0.25, 0.125, 0.25, 0.25 },
-	},
-	PRIEST = {
-		texString = '256:384:128:256',
-		texCoords = { 0.25, 0.125, 0.25, 0.25, 0.375, 0.125, 0.375, 0.25 },
-	},
-	WARLOCK = {
-		texString = '384:512:128:256',
-		texCoords = { 0.375, 0.125, 0.375, 0.25, 0.5, 0.125, 0.5, 0.25 },
-	},
-	PALADIN = {
-		texString = '0:128:256:384',
-		texCoords = { 0, 0.25, 0, 0.375, 0.125, 0.25, 0.125, 0.375 },
-	},
-	DEATHKNIGHT = {
-		texString = '128:256:256:384',
-		texCoords = { 0.125, 0.25, 0.125, 0.375, 0.25, 0.25, 0.25, 0.375 },
-	},
-	MONK = {
-		texString = '256:384:256:384',
-		texCoords = { 0.25, 0.25, 0.25, 0.375, 0.375, 0.25, 0.375, 0.375 },
-	},
-	DEMONHUNTER = {
-		texString = '384:512:256:384',
-		texCoords = { 0.375, 0.25, 0.375, 0.375, 0.5, 0.25, 0.5, 0.375 },
-	},
-}

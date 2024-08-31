@@ -1,6 +1,6 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
-local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
+local classInfo = JI.icons.class
 local cachedPortraits, cachedIcons = {}, {}
 
 local INVERSE = {
@@ -23,7 +23,7 @@ local function UpdateIcon(frame)
 	local db = JI.db.suf[frame.unitType]
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classData[class]
+		local icon = classInfo.data[class]
 
 		if icon and UnitIsPlayer(frame.unit) and not frame.unit ~= 'pet' then
 			--* Update Icon Holder Frame
@@ -32,7 +32,7 @@ local function UpdateIcon(frame)
 			frame.classIcon:SetPoint(INVERSE.InverseAnchors[db.icon.anchorPoint], frame, db.icon.anchorPoint, db.icon.xOffset, db.icon.yOffset)
 
 			--* Update Icon Texture
-			frame.classIcon.icon:SetTexture(format('%s%s', classIconPath, db.icon.style))
+			frame.classIcon.icon:SetTexture(format('%s%s', classInfo.path, db.icon.style))
 			frame.classIcon.icon:SetTexCoord(unpack(icon.texCoords))
 
 			frame.classIcon:SetShown(db.icon.enable)
@@ -112,9 +112,9 @@ function ClassPortrait:Update(frame)
 		local classToken = frame:UnitClassToken()
 		if classToken then
 			if db.portrait.enable then
-				local icon = classData[classToken]
+				local icon = classInfo.data[classToken]
 				if icon then
-					frame.portrait:SetTexture(format('%s%s', classIconPath, db.portrait.style))
+					frame.portrait:SetTexture(format('%s%s', classInfo.path, db.portrait.style))
 					frame.portrait:SetTexCoord(unpack(icon.texCoords))
 				else
 					frame.portrait:SetTexture('')

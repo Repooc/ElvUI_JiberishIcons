@@ -6,11 +6,11 @@ local UF = E.UnitFrames
 
 local UnitIsPlayer, UnitClass = UnitIsPlayer, UnitClass
 local iconMinSize, iconMaxSize = JI.iconMinSize, JI.iconMaxSize
-local classIconPath, classData, iconStyles = JI.classIconPath, JI.classData, JI.iconStyles
-local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
+local classInfo = JI.icons.class
+local classString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 
-for iconStyle, data in next, iconStyles do
-	local tag = format('%s:%s', 'jiberish:icon', iconStyle)
+for iconStyle, data in next, classInfo.styles do
+	local tag = format('%s:%s', 'jiberish:class', iconStyle)
 
 	E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
 		if not UnitIsPlayer(unit) then return end
@@ -19,10 +19,10 @@ for iconStyle, data in next, iconStyles do
 		size = tonumber(size)
 		size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
 		local _, class = UnitClass(unit)
-		local icon = classData[class]
+		local icon = classInfo.data[class]
 
 		if icon and icon.texString then
-			return format(displayString, classIconPath, iconStyle, size, size, icon.texString)
+			return format(classString, classInfo.path, iconStyle, size, size, icon.texString)
 		end
 	end)
 
@@ -39,10 +39,10 @@ function JI:PortraitUpdate()
 
 	if db and db.portrait.enable then
 		local _, class = UnitClass(frame.unit)
-		local icon = classData[class]
+		local icon = classInfo.data[class]
 
 		--* Update Icon Texture
-		element:SetTexture(format('%s%s', classIconPath, db.portrait.style or 'fabled'))
+		element:SetTexture(format('%s%s', classInfo.path, db.portrait.style or 'fabled'))
 		element:SetTexCoord(unpack(icon.texCoords))
 	end
 end
