@@ -1,15 +1,9 @@
 local JI, L = unpack(ElvUI_JiberishIcons)
 
-function JI:SetupElvUI()
-	if not JI:IsAddOnEnabled('ElvUI') then return end
-	JI:ToggleElvUIChat()
-end
-
 if not JI:IsAddOnEnabled('ElvUI') then return end
 
 local E = unpack(ElvUI)
 local UF = E.UnitFrames
-local CH = E.Chat
 
 local UnitIsPlayer, UnitClass = UnitIsPlayer, UnitClass
 local iconMinSize, iconMaxSize = JI.iconMinSize, JI.iconMaxSize
@@ -54,35 +48,3 @@ function JI:PortraitUpdate()
 	end
 end
 hooksecurefunc(UF, 'PortraitUpdate', JI.PortraitUpdate)
-
-function JI:GetPFlag(specialFlag, zoneChannelID, unitGUID)
-	local flag = JI.hooks[CH]:GetPFlag(specialFlag, zoneChannelID, unitGUID) or ''
-	if unitGUID then
-		local iconString = ''
-		local data = CH:GetPlayerInfoByGUID(unitGUID)
-
-		if data and data.englishClass then
-			local icon = classInfo.data[data.englishClass]
-			local db = JI.db.chat
-
-			if icon and icon.texString then
-				iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
-			end
-
-			flag = flag .. iconString
-		end
-	end
-
-	return flag
-end
-
-function JI:ToggleElvUIChat()
-	if not CH.Initialized then return end
-	local db = JI.db.chat
-
-	if db.enable and not JI:IsHooked(CH, 'GetPFlag') then
-		JI:RawHook(CH, 'GetPFlag', JI.GetPFlag, true)
-	elseif not db.enable and JI:IsHooked(CH, 'GetPFlag') then
-		JI:Unhook(CH, 'GetPFlag')
-	end
-end

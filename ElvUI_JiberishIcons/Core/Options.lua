@@ -111,12 +111,6 @@ local function ApplySettingsToAll(module, element, setting, func)
 	end
 end
 
-local function UpdateChat()
-	if not JI:IsAddOnEnabled('ElvUI') then return end
-
-	JI:ToggleElvUIChat()
-end
-
 --! Main Header
 JI.Options = ACH:Group(JI.Title, nil, 6, 'tab')
 JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\Logo\LargeLogo]], nil, 256, 128)
@@ -157,7 +151,7 @@ for iconStyle, data in next, classInfo.styles do
 end
 
 --! Chat
-local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat[info[#info]] end, function(info, value) JI.db.chat[info[#info]] = value UpdateChat() end)
+local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat[info[#info]] end, function(info, value) JI.db.chat[info[#info]] = value end)
 JI.Options.args.chat = chat
 chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 chat.args.spacer = ACH:Spacer(2, 'full')
