@@ -131,31 +131,34 @@ local function StripColorCodes(text)
 end
 
 local function AddMessage(frame, message, ...)
-	message = message:gsub('(|Hplayer.-|h)(.-)|h', function(link, name)
-		local playerName, serverName = link:match('|Hplayer:([^:]+)%-(.-):')
-		if serverName then
-			playerName = playerName .. '-' .. serverName
-		end
+	local db = JI.db.chat
 
-		-- Remove color codes and extract player name with server
-		local cleanName = StripColorCodes(name:match('%[(.-)%]'))
-		if cleanName then
-			cleanName = cleanName:gsub('%[', ''):gsub('%]', '')
-		end
-		local guid = JI.AuthorCache[playerName]
-
-		if guid then
-			local _, englishClass = GetPlayerInfoByGUID(guid)
-			local icon = classInfo.data[englishClass]
-			local db = JI.db.chat
-			local iconString
-			if icon and icon.texString then
-				iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
-
-				return link .. iconString .. name
+	if db and db.enable then
+		message = message:gsub('(|Hplayer.-|h)(.-)|h', function(link, name)
+			local playerName, serverName = link:match('|Hplayer:([^:]+)%-(.-):')
+			if serverName then
+				playerName = playerName .. '-' .. serverName
 			end
-		end
-	end)
+
+			-- Remove color codes and extract player name with server
+			local cleanName = StripColorCodes(name:match('%[(.-)%]'))
+			if cleanName then
+				cleanName = cleanName:gsub('%[', ''):gsub('%]', '')
+			end
+			local guid = JI.AuthorCache[playerName]
+
+			if guid then
+				local _, englishClass = GetPlayerInfoByGUID(guid)
+				local icon = classInfo.data[englishClass]
+				local iconString
+				if icon and icon.texString then
+					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
+
+					return link .. iconString .. name
+				end
+			end
+		end)
+	end
 
 	return JI.hooks[frame].AddMessage(frame, message, ...)
 end
