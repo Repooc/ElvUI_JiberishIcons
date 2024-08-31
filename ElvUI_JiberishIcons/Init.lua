@@ -24,6 +24,8 @@ JI.Title = GetAddOnMetadata(AddOnName, 'Title')
 JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
 JI.Configs = {}
 JI.myName = UnitName('player')
+JI.GuidCache = {}
+JI.AuthorCache = {}
 
 JI.locale = GetLocale()
 do -- this is different from E.locale because we need to convert for ace locale files

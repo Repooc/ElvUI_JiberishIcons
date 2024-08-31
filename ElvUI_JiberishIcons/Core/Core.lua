@@ -32,7 +32,6 @@ function JI:Init(event, addon)
 
 			JI:SetupDetails()
 			JI:SetupBlizzardFrames() --* Setup class icon icon for frames
-			JI:SetupElvUI() --* Sets up ElvUI Chat if it's initialized
 			JI:SetupSUF()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
@@ -42,6 +41,9 @@ function JI:Init(event, addon)
 
 	if event == 'PLAYER_LOGIN' then
 		JI:BuildOptions()
+		-- JI:SetupElvUI() --* Sets up ElvUI Chat if it's initialized
+		JI:SetupBlizzardChatEvents()
+
 		JI:RegisterEvent('PLAYER_ENTERING_WORLD', function() print(L["LOGIN_MSG"]) end)
 		JI:SecureHook('UnitFramePortrait_Update', 'UnitFramePortrait_Update')
 
