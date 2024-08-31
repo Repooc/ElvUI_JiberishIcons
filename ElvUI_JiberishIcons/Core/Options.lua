@@ -111,12 +111,12 @@ local function ApplySettingsToAll(module, element, setting, func)
 	end
 end
 
---* Main Header
+--! Main Header
 JI.Options = ACH:Group(JI.Title, nil, 6, 'tab')
 JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\Logo\LargeLogo]], nil, 256, 128)
 JI.Options.args.version = ACH:Header(JI.Version, 1)
 
---* Style Packs Tab
+--! Style Packs Tab
 local StylePacks = ACH:Group(L["Style Packs"], nil, 1)
 JI.Options.args.StylePacks = StylePacks
 
