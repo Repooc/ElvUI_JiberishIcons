@@ -32,6 +32,7 @@ function JI:Init(event, addon)
 
 			JI:SetupDetails()
 			JI:SetupBlizzardFrames() --* Setup class icon icon for frames
+			JI:SetupElvUI() --* Sets up ElvUI Chat if it's initialized
 			JI:SetupSUF()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')

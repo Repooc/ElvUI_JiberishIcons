@@ -111,6 +111,12 @@ local function ApplySettingsToAll(module, element, setting, func)
 	end
 end
 
+local function UpdateChat()
+	if not JI:IsAddOnEnabled('ElvUI') then return end
+
+	JI:ToggleElvUIChat()
+end
+
 --! Main Header
 JI.Options = ACH:Group(JI.Title, nil, 6, 'tab')
 JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_JiberishIcons\Media\Logo\LargeLogo]], nil, 256, 128)
@@ -149,6 +155,13 @@ for iconStyle, data in next, classInfo.styles do
 		StyleGroup.args.credit = ACH:Description(format('|cffFFD100%s |r%s%s\n%s|r', L["Made by"], JI:IsAddOnEnabled('ElvUI') and _G.ElvUI[1].media.hexvaluecolor or '|cff1684d1', data.artist or '', data.site or ''), 99)
 	end
 end
+
+--! Chat
+local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat[info[#info]] end, function(info, value) JI.db.chat[info[#info]] = value UpdateChat() end)
+JI.Options.args.chat = chat
+chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+chat.args.spacer = ACH:Spacer(2, 'full')
+chat.args.style = ACH:Select(L["Style Selection"], nil, 3, iconStyleList)
 
 --! Blizzard Frames Tab (BlizzUI)
 local blizzard = ACH:Group(L["Blizzard Frames"], nil, 50, nil)
@@ -379,6 +392,10 @@ function JI:BuildProfile()
 				-- raid = {
 				-- 	icon = sharedDefaultValues.icon,
 				-- },
+			},
+			chat = {
+				enable = false,
+				style = 'fabled',
 			},
 			elvui = {},
 			suf = {},
