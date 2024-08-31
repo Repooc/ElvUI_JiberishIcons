@@ -73,6 +73,7 @@ function JI:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 end
 
 function JI:ToggleElvUIChat()
+	if not CH.Initialized then return end
 	local db = JI.db.chat
 
 	if db.enable and not JI:IsHooked(CH, 'GetPFlag') then
