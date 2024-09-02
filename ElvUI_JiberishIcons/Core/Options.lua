@@ -151,7 +151,7 @@ for iconStyle, data in next, classInfo.styles do
 end
 
 --! Chat
-local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat[info[#info]] end, function(info, value) JI.db.chat[info[#info]] = value end)
+local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat[info[#info]] end, function(info, value) JI.db.chat[info[#info]] = value if info[#info] == 'enable' then JI:SetupChat() end end, function(info) if info[#info] == 'enable' or info[#info] == 'chat' then return false else return not JI.db.chat.enable end end)
 JI.Options.args.chat = chat
 chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 chat.args.spacer = ACH:Spacer(2, 'full')

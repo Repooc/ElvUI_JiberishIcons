@@ -41,8 +41,8 @@ function JI:Init(event, addon)
 
 	if event == 'PLAYER_LOGIN' then
 		JI:BuildOptions()
-		-- JI:SetupElvUI() --* Sets up ElvUI Chat if it's initialized
-		JI:SetupBlizzardChatEvents()
+		JI:SetupChatCache()
+		JI:ToggleChat()
 
 		JI:RegisterEvent('PLAYER_ENTERING_WORLD', function() print(L["LOGIN_MSG"]) end)
 		JI:SecureHook('UnitFramePortrait_Update', 'UnitFramePortrait_Update')
