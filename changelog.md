@@ -1,3 +1,3 @@
-v1.1.3 8/13/24
+v1.1.4 9/2/24
 
-• fix old api call in retail
+• add class icons to chat
