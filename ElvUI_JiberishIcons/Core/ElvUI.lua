@@ -12,6 +12,8 @@ local classString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 
 for iconStyle, data in next, classInfo.styles do
 	local tag = format('%s:%s', 'jiberish:class', iconStyle)
+	-- local tag = format('%s:%s', 'jiberish:class', iconStyle) --! Change to class when spec icons are added
+	local tag = format('%s:%s', 'jiberish:icon', iconStyle)
 
 	E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
 		if not UnitIsPlayer(unit) then return end
