@@ -39,10 +39,6 @@ function JI:SetupChatCache()
 	end
 end
 
-local function StripColorCodes(text)
-	return text:gsub('|c%x%x%x%x%x%x%x%x', ''):gsub('|r', '')
-end
-
 local function AddMessage(frame, message, ...)
 	local db = JI.db.chat
 
@@ -53,11 +49,6 @@ local function AddMessage(frame, message, ...)
 				playerName = playerName .. '-' .. serverName
 			end
 
-			-- Remove color codes and extract player name with server
-			local cleanName = StripColorCodes(name:match('%[(.-)%]'))
-			if cleanName then
-				cleanName = cleanName:gsub('%[', ''):gsub('%]', '')
-			end
 			local guid = JI.AuthorCache[playerName]
 
 			if guid then
