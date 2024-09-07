@@ -43,5 +43,5 @@ L["WAGO_MSG"] = "Suchst Du nach einigen netten Profilzeichenfolgen für ElvUI? S
 L["What point to anchor to the frame you set to attach to."] = "An welchem ​​Punkt soll der Rahmen verankert werden, an dem Du die Befestigung vornehmen möchtest?"
 L["xOffset"] = "X-Versatz"
 L["yOffset"] = "Y-Versatz"
-L["You are about to select this option for all supported units.\nDo you wish to continue?"] = "Du bist dabei, diese Option für alle Supporteinheiten auszuwählen.\Möchtest Du fortfahren?"
+L["You are about to select this option for all supported units.\nDo you wish to continue?"] = "Du bist dabei, diese Option für alle Supporteinheiten auszuwählen.\nMöchtest Du fortfahren?"
 L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."] = "Du kannst die folgenden Abschnitte verwenden, um die Einstellungen für alle unterstützten Frames mit dem ausgewählten Wert zu ändern, wenn Du auf die Schaltfläche „Auf alle anwenden“ klickst."
