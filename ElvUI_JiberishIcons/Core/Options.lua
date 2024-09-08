@@ -117,11 +117,10 @@ JI.Options.args.logo = ACH:Description(nil, 0, nil, [[Interface\AddOns\ElvUI_Jib
 JI.Options.args.version = ACH:Header(JI.Version, 1)
 
 --! Style Packs Tab
-local StylePacks = ACH:Group(L["Style Packs"], nil, 1)
+local StylePacks = ACH:Group(L["Style Packs"], nil, 1, 'tab')
 JI.Options.args.StylePacks = StylePacks
 
-local StyleGroup
-local iconStyleList = {}
+local classIconStyleList = {}
 local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 local AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' }
 
@@ -131,22 +130,27 @@ local function ColorText(text, color)
 	return format('|cff%s%s|r', color, text)
 end
 
+local ClassTab = ACH:Group(L["Class"], nil, 1)
+ClassTab.inline = false
+StylePacks.args.ClassTab = ClassTab
+
+local ClassGroup
 --* Dynamically build the groups for each style pack
 for iconStyle, data in next, classInfo.styles do
-	iconStyleList[iconStyle] = data.name
+	classIconStyleList[iconStyle] = data.name
 
-	StyleGroup = ACH:Group(data.name)
-	StylePacks.args[iconStyle] = StyleGroup
-	StyleGroup.inline = true
+	ClassGroup = ACH:Group(data.name)
+	ClassTab.args[iconStyle] = ClassGroup
+	ClassGroup.inline = true
 
 	local classTextureString = ''
 	for _, iconData in next, classInfo.data do
 		classTextureString = classTextureString..format(displayString, classInfo.path, iconStyle, '48', '48', iconData.texString)
 	end
-	StyleGroup.args.icons = ACH:Description(function() return classTextureString end, 1)
+	ClassGroup.args.icons = ACH:Description(function() return classTextureString end, 1)
 
 	if data.artist and data.artist ~= '' then
-		StyleGroup.args.credit = ACH:Description(format('|cffFFD100%s |r%s%s\n%s|r', L["Made by"], JI:IsAddOnEnabled('ElvUI') and _G.ElvUI[1].media.hexvaluecolor or '|cff1684d1', data.artist or '', data.site or ''), 99)
+		ClassGroup.args.credit = ACH:Description(format('|cffFFD100%s |r%s%s\n%s|r', L["Made by"], JI:IsAddOnEnabled('ElvUI') and _G.ElvUI[1].media.hexvaluecolor or '|cff1684d1', data.artist or '', data.site or ''), 99)
 	end
 end
 
@@ -155,7 +159,7 @@ local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat
 JI.Options.args.chat = chat
 chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 chat.args.spacer = ACH:Spacer(2, 'full')
-chat.args.style = ACH:Select(L["Style Selection"], nil, 3, iconStyleList)
+chat.args.style = ACH:Select(L["Style Selection"], nil, 3, classIconStyleList)
 
 --! Blizzard Frames Tab (BlizzUI)
 local blizzard = ACH:Group(L["Blizzard Frames"], nil, 50, nil)
@@ -171,7 +175,7 @@ blizzard.args.general.args.portrait.inline = true
 blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
 blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
-blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
+blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, classIconStyleList, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
 blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 --* Apply All (Icon)
@@ -180,7 +184,7 @@ blizzard.args.general.args.icon.inline = true
 blizzard.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
 blizzard.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 blizzard.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
-blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+blizzard.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, classIconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 blizzard.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 local colorOverrideOptions = {
@@ -208,7 +212,7 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 
 		portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'Blizzard')), 1)
 		portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
-		portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
+		portrait.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 
 		local background = ACH:Group(L["Background"], nil, 10, nil, nil, 'full', function(info) return not JI.db.blizzard[info[#info-3]][info[#info-2]].enable end)
 		portrait.args.background = background
@@ -224,7 +228,7 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 
 	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
-	icon.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
+	icon.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, AllPoints, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.spacer = ACH:Description('', 15)
@@ -256,7 +260,7 @@ elvui.args.general.args.portrait.inline = true
 elvui.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
 elvui.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable') settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 elvui.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
-elvui.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+elvui.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, classIconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 elvui.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style') settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 for unit, data in next, elvuiUnitList do
@@ -271,7 +275,7 @@ for unit, data in next, elvuiUnitList do
 	portrait.inline = true
 	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 1)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
-	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return ((JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable)) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return ((JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable)) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 	portrait.args.spacer = ACH:Spacer(4, 'full')
 	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 99, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end, nil, nil, nil, nil, nil, function() return false end)
 	portrait.args.helpText = ACH:Description(ColorText(format(L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."], unitName, 'ElvUI'), 'FF3333'), 100, nil, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return ElvUI[1].db.unitframe.units[unit].portrait.enable else return true end end)
@@ -293,7 +297,7 @@ suf.args.general.args.portrait.inline = true
 suf.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
 suf.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 suf.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
-suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+suf.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, classIconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 suf.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 --* Apply All (Icon)
@@ -302,7 +306,7 @@ suf.args.general.args.icon.inline = true
 suf.args.general.args.icon.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
 suf.args.general.args.icon.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 suf.args.general.args.icon.args.spacer = ACH:Spacer(3, 'full')
-suf.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, iconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
+suf.args.general.args.icon.args.style = ACH:Select(L["Icon Style"], nil, 4, classIconStyleList, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].style) and settingTest[info[#info-3]][info[#info-1]].style or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = value end)
 suf.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateSUF) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 for _, unit in next, sufUnitList do
@@ -315,7 +319,7 @@ for _, unit in next, sufUnitList do
 	portrait.inline = true
 	portrait.args.header = ACH:Description(ColorText(L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."]), 1)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
-	portrait.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
 
 	--* Icon (SUF)
 	local icon = ACH:Group(L["Icon"], nil, 10)
@@ -324,7 +328,7 @@ for _, unit in next, sufUnitList do
 
 	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
-	icon.args.style = ACH:Select(L["Style"], nil, 3, iconStyleList, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
+	icon.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, AllPoints, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.spacer = ACH:Description('', 15)
