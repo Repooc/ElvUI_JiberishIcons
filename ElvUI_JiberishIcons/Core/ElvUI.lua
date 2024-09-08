@@ -43,10 +43,12 @@ function JI:PortraitUpdate()
 	if db and db.portrait.enable then
 		local _, class = UnitClass(frame.unit)
 		local icon = classInfo.data[class]
+		local texture = format('%s%s', classInfo.path, db.portrait.style or 'fabled') or nil
+		local texCoords = icon and icon.texCoords or { 0, 1, 0, 1 }
 
 		--* Update Icon Texture
-		element:SetTexture(format('%s%s', classInfo.path, db.portrait.style or 'fabled'))
-		element:SetTexCoord(unpack(icon.texCoords))
+		element:SetTexture(texture)
+		element:SetTexCoord(unpack(texCoords))
 	end
 end
 hooksecurefunc(UF, 'PortraitUpdate', JI.PortraitUpdate)
