@@ -43,8 +43,8 @@ local function AddMessage(frame, message, ...)
 	local db = JI.db.chat
 
 	if db and db.enable then
-		message = message:gsub('(|Hplayer.-|h)(.-)|h', function(link, name)
-			local playerName, serverName = link:match('|Hplayer:([^:]+)%-(.-):')
+		message = message:gsub('(|Hplayer.-|h.-|h)', function(playerLink)
+			local playerName, serverName = playerLink:match('|Hplayer:([^:]+)%-(.-):')
 			if serverName then
 				playerName = playerName .. '-' .. serverName
 			end
@@ -58,9 +58,11 @@ local function AddMessage(frame, message, ...)
 				if icon and icon.texString then
 					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
 
-					return link .. iconString .. name
+					return iconString .. playerLink
 				end
 			end
+
+			return playerLink
 		end)
 	end
 
