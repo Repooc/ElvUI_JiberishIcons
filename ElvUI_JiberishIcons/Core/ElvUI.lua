@@ -39,9 +39,6 @@ for iconStyle, data in next, classInfo.styles do
 			return format(classString, classInfo.path, iconStyle, size, size, icon.texString)
 		end
 	end)
-
-	local description = format(L["TAG_HELP"], data.name or '', JI.Title, tag)
-	E:AddTagInfo(tag, JI.Title, description)
 end
 
 --! New Format for class icons
@@ -62,6 +59,9 @@ for iconStyle, data in next, classInfo.styles do
 				return format(classString, classInfo.path, iconStyle, size, size, icon.texString)
 			end
 		end)
+
+		local description = format(L["TAG_HELP"], data.name or '', JI.Title, tag)
+		E:AddTagInfo(tag, JI.Title, description)
 	end
 
 	do
