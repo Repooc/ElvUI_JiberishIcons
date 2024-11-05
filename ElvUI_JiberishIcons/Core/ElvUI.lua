@@ -19,12 +19,6 @@ for iconStyle, data in next, classInfo.styles do
 	E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
 		if not UnitIsPlayer(unit) then return end
 
-		local size = strsplit(':', args or '')
-		size = tonumber(size)
-		size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
-		local _, class = UnitClass(unit)
-		local icon = classInfo.data[class]
-
 		local nameplate = unit:match("^nameplate%d+$")
 		if nameplate then
 			unit = 'nameplate'
@@ -33,10 +27,6 @@ for iconStyle, data in next, classInfo.styles do
 		if not WarningMsgSent[unit] then
 			E:Print(format('|cffFF3300Warning|r: The tag, %s[%s]|r, is depreciated. Swap all instances of the tag with the new format, %s[jiberish:class:%s]|r.|nThis tag was found on the %s unit, which may help you locate the tag in the config.', E.media.hexvaluecolor, tag, E.media.hexvaluecolor, iconStyle, unit or 'unknown'))
 			WarningMsgSent[unit] = true
-		end
-
-		if icon and icon.texString then
-			return format(classString, classInfo.path, iconStyle, size, size, icon.texString)
 		end
 	end)
 end
