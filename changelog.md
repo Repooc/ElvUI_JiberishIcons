@@ -1,5 +1,4 @@
-v1.1.7 10/21/24
+v1.1.8 11/5/24
 
-• Depreciated ElvUI tag format, jiberish:icon in exchange for jiberish:class as a better name
-• Added warning message that will display once per session, per instance of the old formatted tag.
-• Added reverse option for class tags [jiberish:class:<stylename>:reverse]
+• Added option to override ElvUI's Portrait backdrop color and transparent setting
+• The depreciated ElvUI tag format, jiberish:icon will no longer display an icon, the warning messages will remain until next version release. Go update the tag to the new class one asap!
