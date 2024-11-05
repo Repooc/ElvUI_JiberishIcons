@@ -106,6 +106,14 @@ function JI:PortraitUpdate()
 		--* Update Icon Texture
 		element:SetTexture(texture)
 		element:SetTexCoord(unpack(texCoords))
+
+		if db.portrait.backdrop.enable and element.backdrop then
+			element.backdrop:SetTemplate(db.portrait.backdrop.transparent and 'Transparent', nil, nil, nil, true)
+
+			if db.portrait.backdrop.colorOverride then
+				element.backdrop:SetBackdropColor(unpack(db.portrait.backdrop.color))
+			end
+		end
 	end
 end
 hooksecurefunc(UF, 'PortraitUpdate', JI.PortraitUpdate)

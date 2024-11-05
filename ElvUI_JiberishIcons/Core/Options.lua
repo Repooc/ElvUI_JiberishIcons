@@ -273,12 +273,21 @@ for unit, data in next, elvuiUnitList do
 	local portrait = ACH:Group(L["Portrait"], nil, 5, nil, nil, nil, function() return not (JI:IsAddOnEnabled('ElvUI') and ElvUI[1].db.unitframe.units[unit].portrait.enable) end)
 	elvui.args[unit].args.portrait = portrait
 	portrait.inline = true
-	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 1)
-	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
-	portrait.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return ((JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable)) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
-	portrait.args.spacer = ACH:Spacer(4, 'full')
-	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 99, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end, nil, nil, nil, nil, nil, function() return false end)
-	portrait.args.helpText = ACH:Description(ColorText(format(L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."], unitName, 'ElvUI'), 'FF3333'), 100, nil, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return ElvUI[1].db.unitframe.units[unit].portrait.enable else return true end end)
+	portrait.args.elvuiConfig = ACH:Execute(format(L["ElvUI %s Portrait Config"], unitName), format(L["ElvUI %s Portrait Config"], unitName), 1, function() JI.Libs.ACD:SelectGroup('ElvUI', 'unitframe', data.groupName, unit, 'portrait') end, nil, nil, nil, nil, nil, function() return false end)
+	portrait.args.helpText = ACH:Description(ColorText(format(L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."], unitName, 'ElvUI'), 'FF3333'), 2, nil, nil, nil, nil, nil, nil, function() if JI:IsAddOnEnabled('ElvUI') then return ElvUI[1].db.unitframe.units[unit].portrait.enable else return true end end)
+	portrait.args.spacer = ACH:Spacer(3, 'full')
+	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 4)
+	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 5, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
+	portrait.args.style = ACH:Select(L["Style"], nil, 6, classIconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return ((JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable)) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+
+	local backdrop = ACH:Group(L["Backdrop"], nil, 10)
+	portrait.args.backdrop = backdrop
+	backdrop.inline = true
+	backdrop.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-3], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
+	backdrop.args.spacer = ACH:Spacer(2, 'full')
+	backdrop.args.transparent = ACH:Toggle(L["Transparent"], nil, 3, nil, nil, nil, function(info) return JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-3]) end)
+	backdrop.args.colorOverride = ACH:Toggle(L["Color Override"], nil, 4, nil, nil, nil, function(info) return JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-3]) end)
+	backdrop.args.color = ACH:Color(L["Color"], nil, 5, true, nil, function(info) return unpack(JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]]) end, function(info, r, g, b, a) JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = { r, g, b, a } data.updateFunc(nil, info[#info-3]) end)
 end
 
 --! Shadowed Unit Frames Tab (SUF)
@@ -404,6 +413,12 @@ function JI:BuildProfile()
 			portrait = {
 				enable = false,
 				style = 'fabled',
+				backdrop = {
+					enable = false,
+					colorOverride = false,
+					color = { 0, 0, 0, 0.5 },
+					transparent = false,
+				},
 			},
 		}
 	end
