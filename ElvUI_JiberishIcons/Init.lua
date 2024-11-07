@@ -51,6 +51,11 @@ JI.icons = {
 				artist = 'Handclaw',
 				site = 'https://handclaw.artstation.com/',
 			},
+			fabledrealmv2 = {
+				name = 'Fabled Realm v2',
+				artist = 'Handclaw (Recolor by Caith)',
+				site = 'https://handclaw.artstation.com/',
+			},
 			fabledpixels = {
 				name = 'Fabled Pixels',
 				artist = 'Dragumagu',
