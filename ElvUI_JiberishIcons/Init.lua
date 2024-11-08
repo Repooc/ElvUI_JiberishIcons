@@ -61,6 +61,11 @@ JI.icons = {
 				artist = 'Dragumagu',
 				site = 'https://www.artstation.com/dragumagu',
 			},
+			fabledpixelsv2 = {
+				name = 'Fabled Pixels v2',
+				artist = 'Dragumagu (Recolor by Caith)',
+				site = 'https://www.artstation.com/dragumagu',
+			},
 		},
 		data = {
 			WARRIOR	= {
