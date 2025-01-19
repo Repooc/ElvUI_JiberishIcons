@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
-      GITHUB_OAUTH: ${{ secrets.REPOOCPAT }}
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
