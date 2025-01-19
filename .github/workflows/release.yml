@@ -1,4 +1,4 @@
-name: Push Commits to Discord Webhook
+name: Release
 on:
   push:
     tags:
