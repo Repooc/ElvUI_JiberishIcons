@@ -1,4 +1,3 @@
-v1.1.9 11/15/24
+v1.2.0 1/19/25
 
-• [New] Fabled Realm v2 icon added
-• [New] Fabled Pixels v2 icon added
+• [Info] Bump TOC Game Versions
