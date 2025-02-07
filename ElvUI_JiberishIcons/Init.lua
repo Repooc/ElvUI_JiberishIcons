@@ -46,15 +46,10 @@ JI.icons = {
 				artist = 'Royroyart',
 				site = 'https://www.fiverr.com/royyanikhwani',
 			},
-			fabledrealm = {
-				name = 'Fabled Realm',
-				artist = 'Handclaw',
-				site = 'https://handclaw.artstation.com/',
-			},
-			fabledrealmv2 = {
-				name = 'Fabled Realm v2',
-				artist = 'Handclaw (Recolor by Caith)',
-				site = 'https://handclaw.artstation.com/',
+			fabledcore = {
+				name = 'Fabled Core',
+				artist = 'Penguin aka Jiberish',
+				site = 'https://jiberishui.com/',
 			},
 			fabledpixels = {
 				name = 'Fabled Pixels',
@@ -65,6 +60,16 @@ JI.icons = {
 				name = 'Fabled Pixels v2',
 				artist = 'Dragumagu (Recolor by Caith)',
 				site = 'https://www.artstation.com/dragumagu',
+			},
+			fabledrealm = {
+				name = 'Fabled Realm',
+				artist = 'Handclaw',
+				site = 'https://handclaw.artstation.com/',
+			},
+			fabledrealmv2 = {
+				name = 'Fabled Realm v2',
+				artist = 'Handclaw (Recolor by Caith)',
+				site = 'https://handclaw.artstation.com/',
 			},
 		},
 		data = {
