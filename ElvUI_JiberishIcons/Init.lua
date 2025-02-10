@@ -51,6 +51,11 @@ JI.icons = {
 				artist = 'Penguin aka Jiberish',
 				site = 'https://jiberishui.com/',
 			},
+			fabledmyth = {
+				name = 'Fabled Myth',
+				artist = 'Penguin aka Jiberish',
+				site = 'https://jiberishui.com/',
+			},
 			fabledpixels = {
 				name = 'Fabled Pixels',
 				artist = 'Dragumagu',
