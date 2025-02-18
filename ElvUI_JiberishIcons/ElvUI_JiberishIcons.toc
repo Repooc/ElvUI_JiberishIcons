@@ -8,6 +8,7 @@
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\ElvUI_JiberishIcons\Media\Logo\SmallLogo
 ## X-Curse-Project-ID: 978121
+## X-Wago-ID: 96E7kPGg
 
 Libs\Load_Libs.xml
 Init.lua
