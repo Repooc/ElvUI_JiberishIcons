@@ -1,4 +1,4 @@
-## Interface: 110007, 40401, 11506
+## Interface: 110007, 40402, 11506
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
 ## SavedVariables: JiberishIconsDB
