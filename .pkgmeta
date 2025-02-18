@@ -5,3 +5,5 @@ manual-changelog:
 move-folders:
     ElvUI_JiberishIcons/ElvUI_JiberishIcons: ElvUI_JiberishIcons
 enable-toc-creation: yes
+ignore:
+    - images
