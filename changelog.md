@@ -1,4 +1,3 @@
 v1.2.2 2/18/25
 
-• [Fix] Adjusted Fabled Myth & Fabled Core icons to fit better with Blinkii's addon
-• [Update] Update toc for Cata 4.4.2
+• [Update] Added addon to Wago! No in game changes made this time around!
