@@ -36,6 +36,7 @@ function JI:Init(event, addon)
 			JI:SetupSUF()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
+			JI:RegisterChatCommand('jib', 'ToggleOptions')
 			JI:RegisterChatCommand('jiberishicons', 'ToggleOptions')
 		end
 	end
