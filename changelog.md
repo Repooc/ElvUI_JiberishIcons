@@ -1,3 +1,3 @@
-v1.2.3 2/18/25
+v1.2.4 2/27/25
 
-• [Update] Added addon to Wago! No in game changes made this time around!
+• [Update] Bump toc
