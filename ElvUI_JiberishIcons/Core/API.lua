@@ -4,6 +4,7 @@ local JI = unpack(ElvUI_JiberishIcons)
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 local utf8len, utf8sub, modf = string.utf8len, string.utf8sub, math.modf
+local pairs, gsub = pairs, gsub
 
 function JI:IsAddOnEnabled(addon)
 	if C_AddOns_GetAddOnEnableState then
@@ -52,4 +53,21 @@ do
 		for i = ignoreTextures and 2 or 1, #d do s = gsub(s,d[i],'') end
 		return s
 	end
+end
+
+function JI:CopyTable(current, default, merge)
+	if type(current) ~= 'table' then
+		current = {}
+	end
+
+	if type(default) == 'table' then
+		for option, value in pairs(default) do
+			local isTable = type(value) == 'table'
+			if not merge or (isTable or current[option] == nil) then
+				current[option] = (isTable and JI:CopyTable(current[option], value, merge)) or value
+			end
+		end
+	end
+
+	return current
 end
