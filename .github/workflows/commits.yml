@@ -1,0 +1,27 @@
+name: Push Commits to Discord Webhook
+on:
+  push:
+    tags:
+        - "!**"
+    paths-ignore:
+      - '.github/**'
+    branches:
+      - "**"
+jobs:
+  Discord_Notification:
+    runs-on: ubuntu-22.04
+    env:
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      WAGO_API_TOKEN: ${{ secrets.WAGO_API_KEY }}
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Workaround checkout issues
+      run: |
+        git fetch --tags --force
+    - name: Package and release
+      uses: BigWigsMods/packager@master
+      with:
+        args: -n "{package-name}-{project-version}"
