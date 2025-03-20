@@ -1,18 +1,10 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
 --* Most of the API is from ElvUI/Simpy to maintain backwards compatibility if ElvUI is disabled
-local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
-local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 local utf8len, utf8sub, modf = string.utf8len, string.utf8sub, math.modf
 local pairs, gsub = pairs, gsub
 
-function JI:IsAddOnEnabled(addon)
-	if C_AddOns_GetAddOnEnableState then
-		return C_AddOns_GetAddOnEnableState(addon, JI.myName) == 2
-	else
-		return GetAddOnEnableState(JI.myName, addon) == 2
-	end
-end
+local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
 
 -- Text Gradient by Simpy
 function JI:TextGradient(text, ...)
@@ -71,3 +63,190 @@ function JI:CopyTable(current, default, merge)
 
 	return current
 end
+
+JI.dataHelper = {
+	class = {
+		WARRIOR	= {
+			texString = '0:128:0:128',
+			texStringLarge = '0:500:0:500',
+			texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },
+		},
+		MAGE = {
+			texString = '128:256:0:128',
+			texStringLarge = '500:1000:0:500',
+			texCoords = { 0.125, 0, 0.125, 0.125, 0.25, 0, 0.25, 0.125 },
+		},
+		ROGUE = {
+			texString = '256:384:0:128',
+			texStringLarge = '1000:1500:0:500',
+			texCoords = { 0.25, 0, 0.25, 0.125, 0.375, 0, 0.375, 0.125 },
+		},
+		DRUID = {
+			texString = '384:512:0:128',
+			texStringLarge = '1500:2000:0:500',
+			texCoords = { 0.375, 0, 0.375, 0.125, 0.5, 0, 0.5, 0.125 },
+		},
+		EVOKER = {
+			texString = '512:640:0:128',
+			texStringLarge = '2000:2500:0:500',
+			texCoords = { 0.5, 0, 0.5, 0.125, 0.625, 0, 0.625, 0.125 },
+		},
+		HUNTER = {
+			texString = '0:128:128:256',
+			texStringLarge = '0:500:500:1000',
+			texCoords = { 0, 0.125, 0, 0.25, 0.125, 0.125, 0.125, 0.25 },
+		},
+		SHAMAN = {
+			texString = '128:256:128:256',
+			texStringLarge = '500:1000:500:1000',
+			texCoords = { 0.125, 0.125, 0.125, 0.25, 0.25, 0.125, 0.25, 0.25 },
+		},
+		PRIEST = {
+			texString = '256:384:128:256',
+			texStringLarge = '1000:1500:500:1000',
+			texCoords = { 0.25, 0.125, 0.25, 0.25, 0.375, 0.125, 0.375, 0.25 },
+		},
+		WARLOCK = {
+			texString = '384:512:128:256',
+			texStringLarge = '1500:2000:500:1000',
+			texCoords = { 0.375, 0.125, 0.375, 0.25, 0.5, 0.125, 0.5, 0.25 },
+		},
+		PALADIN = {
+			texString = '0:128:256:384',
+			texStringLarge = '0:500:1000:1500',
+			texCoords = { 0, 0.25, 0, 0.375, 0.125, 0.25, 0.125, 0.375 },
+		},
+		DEATHKNIGHT = {
+			texString = '128:256:256:384',
+			texStringLarge = '500:1000:1000:1500',
+			texCoords = { 0.125, 0.25, 0.125, 0.375, 0.25, 0.25, 0.25, 0.375 },
+		},
+		MONK = {
+			texString = '256:384:256:384',
+			texStringLarge = '1000:1500:1000:1500',
+			texCoords = { 0.25, 0.25, 0.25, 0.375, 0.375, 0.25, 0.375, 0.375 },
+		},
+		DEMONHUNTER = {
+			texString = '384:512:256:384',
+			texStringLarge = '1500:2000:1000:1500',
+			texCoords = { 0.375, 0.25, 0.375, 0.375, 0.5, 0.25, 0.5, 0.375 },
+		},
+	},
+	spec = {
+		-- DEATHKNIGHT	= { 250, 251, 252 },
+		-- DEMONHUNTER	= { 577, 581 },
+		-- DRUID		= { 102, 103, 104, 105 },
+		-- EVOKER		= { 1467, 1468, 1473},
+		-- HUNTER		= { 253, 254, 255 },
+		-- MAGE		= { 62, 63, 64 },
+		-- MONK		= { 268, 270, 269 },
+		-- PALADIN		= { 65, 66, 70 },
+		-- PRIEST		= { 256, 257, 258 },
+		-- ROGUE		= { 259, 260, 261 },
+		-- SHAMAN		= { 262, 263, 264 },
+		-- WARLOCK		= { 265, 266, 267 },
+		-- WARRIOR		= { 71, 72, 73 },
+		DEATHKNIGHT	= {
+			specIDs = { [250] = true, [251] = true, [252] = true, },
+		},
+		DEMONHUNTER	= {
+			specIDs = { [577] = true, [581] = true, },
+		},
+		DRUID = {
+			specIDs = { [102] = true, [103] = true, [104] = true, [105] = true, },
+		},
+		EVOKER		= {
+			specIDs = { [1467] = true, [1468] = true, [1473] = true, },
+		},
+		HUNTER		= {
+			specIDs = { [253] = true, [254] = true, [255] = true },
+		},
+		MAGE		= {
+			specIDs = { [62] = true, [63] = true, [64] = true, },
+		},
+		MONK		= {
+			specIDs = { [268] = true, [270] = true, [269] = true, },
+		},
+		PALADIN		= {
+			specIDs = { [65] = true, [66] = true, [70] = true },
+		},
+		PRIEST		= {
+			specIDs = { [256] = true, [257] = true, [258] = true },
+		},
+		ROGUE		= {
+			specIDs = { [259] = true, [260] = true, [261] = true },
+		},
+		SHAMAN		= {
+			specIDs = { [262] = true, [263] = true, [264] = true },
+		},
+		WARLOCK		= {
+			specIDs = { [265] = true, [266] = true, [267] = true},
+		},
+		WARRIOR		= {
+			specIDs = { [71] = true, [72] = true, [73] = true },
+		},
+	},
+	elvuiUnitList = {
+		player = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		pet = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		pettarget = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		target = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		targettarget = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		targettargettarget = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		focus = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		focustarget = {
+			updateFunc = UF.CreateAndUpdateUF,
+			groupName = 'individualUnits',
+		},
+		party = {
+			updateFunc = UF.CreateAndUpdateHeaderGroup,
+			groupName = 'groupUnits',
+		},
+		raid1 = {
+			updateFunc = UF.CreateAndUpdateHeaderGroup,
+			groupName = 'groupUnits',
+		},
+		raid2 = {
+			updateFunc = UF.CreateAndUpdateHeaderGroup,
+			groupName = 'groupUnits',
+		},
+		raid3 = {
+			updateFunc = UF.CreateAndUpdateHeaderGroup,
+			groupName = 'groupUnits',
+		},
+		raidpet = {
+			updateFunc = UF.CreateAndUpdateHeaderGroup,
+			groupName = 'groupUnits',
+		},
+		boss = {
+			updateFunc = UF.CreateAndUpdateUFGroup, --MAX_BOSS_FRAMES
+			groupName = 'groupUnits',
+		},
+		arena = {
+			updateFunc = UF.CreateAndUpdateUFGroup, --5
+			groupName = 'groupUnits',
+		},
+	},
+	sufUnitList = {'player', 'pet', 'pettarget', 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'party', 'partypet', 'partytarget', 'partytargettarget', 'raid', 'raidpet', 'boss', 'bosstarget', 'maintank', 'maintanktarget', 'mainassist', 'mainassisttarget', 'arena', 'arenatarget', 'arenapet', 'battleground', 'battlegroundtarget', 'battlegroundpet', 'arenatargettarget', 'battlegroundtargettarget', 'maintanktargettarget', 'mainassisttargettarget', 'bosstargettarget'}
+}

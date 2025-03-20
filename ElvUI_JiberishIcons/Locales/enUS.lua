@@ -45,3 +45,16 @@ L["xOffset"] = "xOffset"
 L["yOffset"] = "yOffset"
 L["You are about to select this option for all supported units.\nDo you wish to continue?"] = "You are about to select this option for all supported units.\nDo you wish to continue?"
 L["You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."] = "You can use the sections below to change the settings across all supported frames with the selected value at the time you click the Apply To All button."
+
+--* Locale strings that span multiple lines should be oragnized below to keep the single lined entries clean
+
+L["CUSTOM_STYLEPACK_TEXTURE_DESC"] = [=[Specify a filename located inside the World of Warcraft directory that you wish to have set as a custom style pack.
+
+Please Note:
+-The image size recommended is 1024x1024
+-You must do a complete game restart after adding a file to the folder.
+-The file type must be tga or blp format.
+
+Example: Interface\AddOns\JiberishIcons_CustomStyles\Media\Custom\
+
+Or for most users it would be easier to simply put their style pack file into your WoW folder, you would then just leave path empty.]=]

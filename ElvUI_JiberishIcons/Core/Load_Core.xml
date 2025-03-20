@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="API.lua"/>
+	<Include file ='Defaults\Load_Defaults.xml'/>
 	<Script file="Core.lua"/>
 	<Script file="Options.lua"/>
 	<Script file="Chat.lua"/>

@@ -1,8 +1,51 @@
 ElvUI_JiberishIcons[2] = ElvUI_JiberishIcons[1].Libs.ACL:GetLocale('JiberishIcons', ElvUI_JiberishIcons[1]:GetLocale())
 local JI, L = unpack(ElvUI_JiberishIcons)
 local AddOnName = ...
-local blizzOptionsOpen, separateOptionsOpen = false, false
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded
+
+local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
+JI.defaultStylePacks = {
+	class = {
+		path = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Class\]],
+		styles = {
+			fabled = {
+				name = 'Fabled',
+				artist = 'Royroyart',
+				site = 'https://www.fiverr.com/royyanikhwani',
+			},
+			fabledcore = {
+				name = 'Fabled Core',
+				artist = 'Penguin aka Jiberish',
+				site = 'https://jiberishui.com/',
+			},
+			fabledmyth = {
+				name = 'Fabled Myth',
+				artist = 'Penguin aka Jiberish',
+				site = 'https://jiberishui.com/',
+			},
+			fabledpixels = {
+				name = 'Fabled Pixels',
+				artist = 'Dragumagu',
+				site = 'https://www.artstation.com/dragumagu',
+			},
+			fabledpixelsv2 = {
+				name = 'Fabled Pixels v2',
+				artist = 'Dragumagu (Recolor by Caith)',
+				site = 'https://www.artstation.com/dragumagu',
+			},
+			fabledrealm = {
+				name = 'Fabled Realm',
+				artist = 'Handclaw',
+				site = 'https://handclaw.artstation.com/',
+			},
+			fabledrealmv2 = {
+				name = 'Fabled Realm v2',
+				artist = 'Handclaw (Recolor by Caith)',
+				site = 'https://handclaw.artstation.com/',
+			},
+		}
+	}
+}
 
 function JI:ToggleOptions()
 	if JI:IsAddOnEnabled('ElvUI') then
@@ -46,8 +89,12 @@ function JI:Init(event, addon)
 		JI:SetupChatCache()
 		JI:ToggleChat()
 
-		JI:RegisterEvent('PLAYER_ENTERING_WORLD', function() print(L["LOGIN_MSG"]) end)
+		JI:RegisterEvent('PLAYER_ENTERING_WORLD', function() local msg = format(L["LOGIN_MSG"], JI.Title) print(msg) end)
 		JI:SecureHook('UnitFramePortrait_Update', 'UnitFramePortrait_Update')
+
+		if JI:IsAddOnEnabled('ElvUI') then
+			JI:BuildElvUITags()
+		end
 
 		-- TODO: Add support for raid frames
 		-- JI:RegisterEvent('GROUP_ROSTER_UPDATE', 'UpdateBlizzardRaidFrames')

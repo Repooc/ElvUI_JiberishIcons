@@ -1,6 +1,6 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
-local classInfo = JI.icons.class
+local classInfo = JI.dataHelper.class
 
 local function SetupCache(frame, event, message, sender, _, _, _, _, _, _, _, _, _, guid)
 	if sender and guid and guid ~= '' then
@@ -53,10 +53,20 @@ local function AddMessage(frame, message, ...)
 
 			if guid then
 				local _, englishClass = GetPlayerInfoByGUID(guid)
-				local icon = classInfo.data[englishClass]
+				local icon = classInfo[englishClass]
+
+				local style = db.style or 'fabled'
+				local mergedClassStyles = JI.mergedStylePacks.class
+				local path = (mergedClassStyles.styles[style] and mergedClassStyles.styles[style].path) or mergedClassStyles.path
+
+				local fullPath = format('%s%s', path, style)
+				if not JI:IsValidTexturePath(fullPath) then
+					style = 'fabled'
+				end
+
 				local iconString
 				if icon and icon.texString then
-					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', classInfo.path, db.style, icon.texString)
+					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', path, style, icon.texString)
 
 					return iconString .. playerLink
 				end

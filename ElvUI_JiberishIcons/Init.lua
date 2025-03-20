@@ -1,8 +1,11 @@
 local AddOnName, Engine = ...
 local JI = _G.LibStub('AceAddon-3.0'):NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceHook-3.0')
+JI.DF = { profile = {}, global = {} }
 
-Engine[1] = JI
-Engine[2] = {}
+Engine[1] = JI						-- JI
+Engine[2] = {}						-- L
+Engine[3] = JI.DF.profile			-- P
+Engine[4] = JI.DF.global			-- G
 
 _G.ElvUI_JiberishIcons = Engine
 
@@ -24,8 +27,11 @@ JI.Title = GetAddOnMetadata(AddOnName, 'Title')
 JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
 JI.Configs = {}
 JI.myName = UnitName('player')
+JI.myRealm = GetRealmName()
+JI.myNameRealm = format('%s - %s', JI.myName, JI.myRealm) -- for profile keys
 JI.GuidCache = {}
 JI.AuthorCache = {}
+JI.mergedStylePacks = {}
 
 JI.locale = GetLocale()
 do -- this is different from E.locale because we need to convert for ace locale files
@@ -37,105 +43,43 @@ do -- this is different from E.locale because we need to convert for ace locale 
 	end
 end
 
-JI.icons = {
-	class = {
-		path = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Class\]],
-		styles = {
-			fabled = {
-				name = 'Fabled',
-				artist = 'Royroyart',
-				site = 'https://www.fiverr.com/royyanikhwani',
-			},
-			fabledcore = {
-				name = 'Fabled Core',
-				artist = 'Penguin aka Jiberish',
-				site = 'https://jiberishui.com/',
-			},
-			fabledmyth = {
-				name = 'Fabled Myth',
-				artist = 'Penguin aka Jiberish',
-				site = 'https://jiberishui.com/',
-			},
-			fabledpixels = {
-				name = 'Fabled Pixels',
-				artist = 'Dragumagu',
-				site = 'https://www.artstation.com/dragumagu',
-			},
-			fabledpixelsv2 = {
-				name = 'Fabled Pixels v2',
-				artist = 'Dragumagu (Recolor by Caith)',
-				site = 'https://www.artstation.com/dragumagu',
-			},
-			fabledrealm = {
-				name = 'Fabled Realm',
-				artist = 'Handclaw',
-				site = 'https://handclaw.artstation.com/',
-			},
-			fabledrealmv2 = {
-				name = 'Fabled Realm v2',
-				artist = 'Handclaw (Recolor by Caith)',
-				site = 'https://handclaw.artstation.com/',
-			},
-		},
-		data = {
-			WARRIOR	= {
-				texString = '0:128:0:128',
-				texCoords = { 0, 0, 0, 0.125, 0.125, 0, 0.125, 0.125 },
-			},
-			MAGE = {
-				texString = '128:256:0:128',
-				texCoords = { 0.125, 0, 0.125, 0.125, 0.25, 0, 0.25, 0.125 },
-			},
-			ROGUE = {
-				texString = '256:384:0:128',
-				texCoords = { 0.25, 0, 0.25, 0.125, 0.375, 0, 0.375, 0.125 },
-			},
-			DRUID = {
-				texString = '384:512:0:128',
-				texCoords = { 0.375, 0, 0.375, 0.125, 0.5, 0, 0.5, 0.125 },
-			},
-			EVOKER = {
-				texString = '512:640:0:128',
-				texCoords = { 0.5, 0, 0.5, 0.125, 0.625, 0, 0.625, 0.125 },
-			},
-			HUNTER = {
-				texString = '0:128:128:256',
-				texCoords = { 0, 0.125, 0, 0.25, 0.125, 0.125, 0.125, 0.25 },
-			},
-			SHAMAN = {
-				texString = '128:256:128:256',
-				texCoords = { 0.125, 0.125, 0.125, 0.25, 0.25, 0.125, 0.25, 0.25 },
-			},
-			PRIEST = {
-				texString = '256:384:128:256',
-				texCoords = { 0.25, 0.125, 0.25, 0.25, 0.375, 0.125, 0.375, 0.25 },
-			},
-			WARLOCK = {
-				texString = '384:512:128:256',
-				texCoords = { 0.375, 0.125, 0.375, 0.25, 0.5, 0.125, 0.5, 0.25 },
-			},
-			PALADIN = {
-				texString = '0:128:256:384',
-				texCoords = { 0, 0.25, 0, 0.375, 0.125, 0.25, 0.125, 0.375 },
-			},
-			DEATHKNIGHT = {
-				texString = '128:256:256:384',
-				texCoords = { 0.125, 0.25, 0.125, 0.375, 0.25, 0.25, 0.25, 0.375 },
-			},
-			MONK = {
-				texString = '256:384:256:384',
-				texCoords = { 0.25, 0.25, 0.25, 0.375, 0.375, 0.25, 0.375, 0.375 },
-			},
-			DEMONHUNTER = {
-				texString = '384:512:256:384',
-				texCoords = { 0.375, 0.25, 0.375, 0.375, 0.5, 0.25, 0.5, 0.375 },
-			},
-		}
-	},
-}
-
 JI.iconMinSize = 1
 JI.iconMaxSize = 128
 
+--* Personal Reference
 -- JI.classIconPath = [[|TInterface\AddOns\ElvUI_JiberishIcons\Media\Icons\%s:%s:%s:0:0:1024:1024:%s|t]]
 -- texCoords = { ULx, ULy, LLx, LLy, URx, URy, LRx, LRy }
+
+function JI:IsValidTexturePath(path)
+	if not path then return false end
+
+	local textureTest = CreateFrame('Frame'):CreateTexture(nil, 'OVERLAY')
+	textureTest:SetTexture(path)
+	local isValid = textureTest:GetTexture() ~= nil
+	textureTest:SetTexture(nil)
+
+	return isValid
+end
+
+function JI:ValidateStylePack(styleData, style)
+	if not styleData or not styleData.path or not styleData.fileName then return false end
+	local fullPath = styleData.path..styleData.fileName
+	return JI:IsValidTexturePath(fullPath)
+end
+
+function JI:MergeStylePacks()
+	wipe(JI.mergedStylePacks)
+	JI:CopyTable(JI.mergedStylePacks, JI.defaultStylePacks)
+	JI:CopyTable(JI.mergedStylePacks, JI.global.customPacks, true)
+end
+
+local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
+local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
+
+function JI:IsAddOnEnabled(addon)
+	if C_AddOns_GetAddOnEnableState then
+		return C_AddOns_GetAddOnEnableState(addon, JI.myName) == 2
+	else
+		return GetAddOnEnableState(JI.myName, addon) == 2
+	end
+end
