@@ -1,3 +1,3 @@
-v1.2.6 4/23/25
+v1.2.7 5/15/25
 
-• [Fix] Fix error with mMediaTag.lua
+• [New] Add option to disable login message
