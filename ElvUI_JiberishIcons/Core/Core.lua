@@ -67,6 +67,12 @@ function JI:ToggleOptions()
 	end
 end
 
+local function SendLoginMessage()
+	if JI.db.hideLoginMessage then return end
+	local msg = format(L["LOGIN_MSG"], JI.Title)
+	print(msg)
+end
+
 function JI:Init(event, addon)
 	if event == 'ADDON_LOADED' and (JI.Initialized or IsAddOnLoaded(AddOnName)) then
 		if addon == AddOnName then
@@ -89,7 +95,7 @@ function JI:Init(event, addon)
 		JI:SetupChatCache()
 		JI:ToggleChat()
 
-		JI:RegisterEvent('PLAYER_ENTERING_WORLD', function() local msg = format(L["LOGIN_MSG"], JI.Title) print(msg) end)
+		JI:RegisterEvent('PLAYER_ENTERING_WORLD', SendLoginMessage)
 		JI:SecureHook('UnitFramePortrait_Update', 'UnitFramePortrait_Update')
 
 		if JI:IsAddOnEnabled('ElvUI') then

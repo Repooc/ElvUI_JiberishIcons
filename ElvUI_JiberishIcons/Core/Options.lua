@@ -470,6 +470,7 @@ end
 local Information = ACH:Group(L["Information"], nil, 80)
 JI.Options.args.Information = Information
 
+Information.args.hideLoginMessage = ACH:Toggle(L["Hide Login Message"], nil, 0, nil, nil, nil, function(info) return JI.db[info[#info]] end, function(info, value) JI.db[info[#info]] = value end)
 Information.args.links = ACH:Group(L["Links"], nil, 1)
 Information.args.links.inline = true
 Information.args.links.args.discord = ACH:Input(L["Discord"], L["DISCORD_MSG"], 2, nil, 'full', function() return 'https://discord.com/invite/jr5w8ArzAx' end)
