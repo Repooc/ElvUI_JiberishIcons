@@ -1,3 +1,3 @@
-v1.2.7 5/15/25
+v1.2.8 5/16/25
 
-• [New] Add option to disable login message
+• [New] added Fabled Dimension class icons
