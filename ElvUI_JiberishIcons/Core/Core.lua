@@ -18,6 +18,11 @@ JI.defaultStylePacks = {
 				artist = 'Penguin aka Jiberish',
 				site = 'https://jiberishui.com/',
 			},
+			fableddimension = {
+				name = 'Fabled Dimension',
+				artist = 'Dragumagu',
+				site = 'https://www.artstation.com/dragumagu',
+			},
 			fabledmyth = {
 				name = 'Fabled Myth',
 				artist = 'Penguin aka Jiberish',
