@@ -11,7 +11,7 @@ function JI:Setup_mMediaTag()
 		local fullPath = format('%s%s', path, iconStyle)
 		if JI:IsValidTexturePath(fullPath) then
 			mMT:AddClassIcons(iconStyle, fullPath, 'default', data.name)
-			JI:Print('Added '..data.name..' to mMediaTag.')
+			JI:Print('Added '..data.name..' to mMediaTag with style key of '..iconStyle..'.\nTexture Path: '..fullPath)
 		else
 			JI:Print('Failed to add '..data.name..' to mMediaTag with style key of '..iconStyle..'.\nTexture Path: '..fullPath)
 		end
