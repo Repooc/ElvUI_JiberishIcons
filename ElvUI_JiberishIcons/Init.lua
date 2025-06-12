@@ -69,8 +69,22 @@ end
 
 function JI:MergeStylePacks()
 	wipe(JI.mergedStylePacks)
+
+	-- First copy all default style packs
 	JI:CopyTable(JI.mergedStylePacks, JI.defaultStylePacks)
-	JI:CopyTable(JI.mergedStylePacks, JI.global.customPacks, true)
+
+	-- Then merge custom packs, but only if they don't override existing keys
+	if JI.global and JI.global.customPacks and JI.global.customPacks.class and JI.global.customPacks.class.styles then
+		for key, data in pairs(JI.global.customPacks.class.styles) do
+			-- Only add custom styles if they don't already exist in default styles
+			if not JI.mergedStylePacks.class.styles[key] then
+				-- Validate the style pack before adding it
+				if JI:ValidateStylePack(data) then
+					JI.mergedStylePacks.class.styles[key] = JI:CopyTable({}, data)
+				end
+			end
+		end
+	end
 end
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
