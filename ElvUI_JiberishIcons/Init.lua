@@ -83,3 +83,7 @@ function JI:IsAddOnEnabled(addon)
 		return GetAddOnEnableState(JI.myName, addon) == 2
 	end
 end
+
+function JI:Print(...)
+	_G.DEFAULT_CHAT_FRAME:AddMessage(strjoin('', JI.Title, ':|r ', ...))
+end
