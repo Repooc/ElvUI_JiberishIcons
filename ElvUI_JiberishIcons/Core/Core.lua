@@ -51,7 +51,7 @@ JI.defaultStylePacks = {
 			intothevoid = {
 				name = 'Into The VOID',
 				artist = 'Handclaw Icons Reimagined by JiberishUI',
-				site = 'https://jiberishui.com/',
+				site = 'https://handclaw.artstation.com/',
 			},
 		}
 	}
