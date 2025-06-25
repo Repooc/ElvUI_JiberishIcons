@@ -48,6 +48,11 @@ JI.defaultStylePacks = {
 				artist = 'Handclaw (Recolor by Caith)',
 				site = 'https://handclaw.artstation.com/',
 			},
+			intothevoid = {
+				name = 'Into The VOID',
+				artist = 'Handclaw Icons Reimagined by JiberishUI',
+				site = 'https://jiberishui.com/',
+			},
 		}
 	}
 }
