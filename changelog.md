@@ -1,3 +1,3 @@
-v1.3.1 6/25/25
+v1.3.2 6/25/25
 
-• [Update] Updated url for Into the VOID pack.
+• [Update] Updated Into the VOID style pack
