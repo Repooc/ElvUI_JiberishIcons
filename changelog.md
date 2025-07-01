@@ -1,3 +1,3 @@
-v1.3.2 6/25/25
+v1.3.3 7/1/25
 
-• [Update] Updated Into the VOID style pack
+• [Update] Bump toc for MoP Support
