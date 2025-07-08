@@ -1,3 +1,3 @@
-v1.3.3 7/1/25
+v1.3.4 7/?/25
 
-• [Update] Bump toc for MoP Support
+• [Update] Details dropdown now displays an icon from the actual style instead of the default mage icon.
