@@ -1,3 +1,3 @@
-v1.3.5 1/14/26
+v1.3.6 1/21/26
 
-• [Update] toc updates for TBC, Retail, MOP
+• [Update] TOC Update for Midnight Prepatch
