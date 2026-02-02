@@ -89,13 +89,21 @@ end
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
+local IsAddOnLoaded = _G.C_AddOns and _G.C_AddOns.IsAddOnLoaded
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 function JI:IsAddOnEnabled(addon)
-	if C_AddOns_GetAddOnEnableState then
-		return C_AddOns_GetAddOnEnableState(addon, JI.myName) == 2
-	else
-		return GetAddOnEnableState(JI.myName, addon) == 2
-	end
+    if isRetail then --in retail addons can be enabled but not loaded due to being incompatible, so only check for them being loaded instead
+        if IsAddOnLoaded(addon) then
+            return true
+        else
+            return false
+        end
+    elseif C_AddOns_GetAddOnEnableState then
+        return C_AddOns_GetAddOnEnableState(addon, JI.myName) == 2
+    else
+        return GetAddOnEnableState(JI.myName, addon) == 2
+    end
 end
 
 function JI:Print(...)
