@@ -9,7 +9,4 @@ ElvUI Users: The addon pack will add a Tag in ElvUI > Available Tags > Jiberish 
 
 General Users: This supports changing the icons in Details! as well! Details Options -> Bars: General -> Icons -> Texture dropdown
 
-Want to try these out on a profile I made? Try out the Colossal Edit: https://wago.io/oMlDXLyMa
-
-Please join the discord if you have any questions/concerns: https://discord.gg/jiberish
-My Discord has several FREE ElvUI & Details Profiles to choose from! 
+Please join the discord if you have any questions/concerns: https://discord.gg/mJKdmm9KGr
