@@ -1,3 +1,3 @@
-v1.3.6 1/21/26
+v1.3.7 2/02/26
 
-• [Update] TOC Update for Midnight Prepatch
+• [Update] Add Eltruism Functionality & Version Update
