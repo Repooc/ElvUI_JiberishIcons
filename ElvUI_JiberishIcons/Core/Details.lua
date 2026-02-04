@@ -13,3 +13,16 @@ function JI:SetupDetails()
         end
     end
 end
+
+function JI:SetupEltruismIconPacks()
+    if not JI:IsAddOnEnabled('ElvUI_EltreumUI') then return end
+    local mergedClassStyles = JI.mergedStylePacks.class
+
+	for iconStyle, data in next, mergedClassStyles.styles do
+		local path = (mergedClassStyles.styles[iconStyle] and mergedClassStyles.styles[iconStyle].path) or mergedClassStyles.path
+		local fullPath = format('%s%s', path, iconStyle)
+		if JI:IsValidTexturePath(fullPath) then
+			ElvUI_EltreumUI:AddDamageMeterIconPack(data.name,data.name,false,fullPath)
+        end
+    end
+end
