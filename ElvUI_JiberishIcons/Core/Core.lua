@@ -93,6 +93,7 @@ function JI:Init(event, addon)
 			JI:SetupBlizzardFrames() --* Setup class icon icon for frames
 			JI:Setup_mMediaTag()
 			JI:Setup_Eltruism()
+			JI:SetupEltruismIconPacks()
 			JI:SetupSUF()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
