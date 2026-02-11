@@ -1,3 +1,3 @@
-v1.4.0 2/04/26
+v1.4.1 2/11/26
 
-• [Update] Add Eltruism Functionality & Version Update + EltreumUI TOC addition
+• [Update] Retail TOC, Platynator Support
