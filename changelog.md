@@ -1,3 +1,4 @@
-v1.4.1 2/11/26
+v1.4.2 2/12/26
 
-• [Update] Retail TOC, Platynator Support
+• [Update] Platynator Support Removed as it was added to changelog when not working/implemented
+• [Fix] Protect error with ElvUI_EltreumUI addon
