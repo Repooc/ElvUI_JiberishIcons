@@ -46,8 +46,9 @@ function JI:BuildElvUITags()
 				size = tonumber(size)
 				size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
 				local _, class = UnitClass(unit)
-				local icon = classInfo[class]
+				if E:IsSecretValue(class) then return end
 
+				local icon = classInfo[class]
 				if icon and icon.texString then
 					return format(classString, path, iconStyle, size, size, icon.texString)
 				end
@@ -67,6 +68,7 @@ function JI:BuildElvUITags()
 				size = tonumber(size)
 				size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
 				local _, class = UnitClass(unit)
+				if E:IsSecretValue(class) then return end
 				local icon = classInfo[class]
 
 				if icon and icon.texString then
@@ -74,6 +76,7 @@ function JI:BuildElvUITags()
 
 					local x1, x2, y1, y2 = strsplit(':', texString)
 					texString = format('%s:%s:%s:%s', x2, x1, y1, y2)
+
 					return format(classString, path, iconStyle, size, size, texString)
 				end
 			end)

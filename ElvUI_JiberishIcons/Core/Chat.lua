@@ -42,7 +42,7 @@ end
 local function AddMessage(frame, message, ...)
 	local db = JI.db.chat
 
-	if db and db.enable then
+	if db and db.enable and not issecretvalue(message) then
 		message = message:gsub('(|Hplayer.-|h.-|h)', function(playerLink)
 			local playerName, serverName = playerLink:match('|Hplayer:([^:]+)%-(.-):')
 			if serverName then
