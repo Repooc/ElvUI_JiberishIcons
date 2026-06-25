@@ -1,3 +1,4 @@
-v1.4.4 5/28/26
+v1.4.5 6/25/26
 
-• [Update] TOC for new patch
+• [Update] Ace lib
+• [Fix] Prevent error with secrets
