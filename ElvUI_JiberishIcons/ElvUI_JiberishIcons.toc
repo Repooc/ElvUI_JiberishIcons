@@ -1,8 +1,8 @@
-## Interface: 120005, 50503, 11508, 20505
+## Interface: 120100, 50504, 11509, 20506
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
 ## SavedVariables: JiberishIconsDB
-## Version: 1.4.5
+## Version: 1.4.6
 ## Notes: Epicizing your UI with Fabled Class Icons
 ## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI
 ## DefaultState: Enabled
