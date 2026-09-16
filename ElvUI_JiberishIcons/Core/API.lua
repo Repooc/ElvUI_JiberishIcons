@@ -65,6 +65,7 @@ function JI:CopyTable(current, default, merge)
 end
 
 JI.dataHelper = {
+	ellesmereUnitList = { 'player', 'target', 'focus', 'targettarget', 'focustarget' },
 	class = {
 		WARRIOR	= {
 			texString = '0:128:0:128',

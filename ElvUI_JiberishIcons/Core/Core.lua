@@ -94,6 +94,7 @@ function JI:Init(event, addon)
 			JI:Setup_Eltruism()
 			JI:SetupEltruismIconPacks()
 			JI:SetupSUF()
+			JI:SetupEllesmereUI()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
 			JI:RegisterChatCommand('jib', 'ToggleOptions')

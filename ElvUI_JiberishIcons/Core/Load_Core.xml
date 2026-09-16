@@ -9,5 +9,6 @@
 	<Script file="Eltruism.lua"/>
 	<Script file="Platynator.lua"/>
 	<Script file="SUF.lua"/>
+	<Script file="EllesmereUI.lua"/>
 	<Script file="Blizzard.lua"/>
 </Ui>

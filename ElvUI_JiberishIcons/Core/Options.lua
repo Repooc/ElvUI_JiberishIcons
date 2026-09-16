@@ -466,6 +466,45 @@ for _, unit in next, sufUnitList do
 	icon.args.yOffset = ACH:Range(L["yOffset"], nil, 17, { min = -150, max = 150, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 end
 
+--! EllesmereUI: independent class icons, with no portrait settings involved.
+local ellesmere = ACH:Group('EllesmereUI', nil, 60, 'tab', nil, nil, nil,
+	function() return not JI:IsAddOnEnabled('EllesmereUIUnitFrames') end)
+JI.Options.args.ellesmereui = ellesmere
+ellesmere.args.description = ACH:Description(L["ELLESMERE_ICONS_DESC"], 0)
+
+local ellesmereNames = { player = L["Player"], target = L["Target"], focus = L["Focus"],
+	targettarget = L["Target of Target"], focustarget = L["Focus Target"] }
+for index, unit in ipairs(JI.dataHelper.ellesmereUnitList) do
+	local function GetSettings() return JI.db.ellesmereui[unit].icon end
+	local function Disabled() return not GetSettings().enable end
+	local group = ACH:Group(ellesmereNames[unit], nil, index, nil,
+		function(info)
+			local value = GetSettings()[info[#info]]
+			if info[#info] == 'style' and not JI.mergedStylePacks.class.styles[value] then return 'fabled' end
+			return value
+		end,
+		function(info, value)
+			GetSettings()[info[#info]] = value
+			JI:UpdateEllesmereUI()
+		end)
+	ellesmere.args[unit] = group
+	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.style = ACH:Select(L["Style"], nil, 2, classIconStyleList, nil, nil, nil, nil, Disabled)
+	group.args.size = ACH:Range(L["Size"], nil, 3, { min = 8, max = 128, step = 1 }, nil, nil, nil, Disabled)
+	group.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."],
+		4, AllPoints, nil, nil, nil, nil, Disabled)
+	group.args.xOffset = ACH:Range(L["xOffset"], nil, 5, { min = -150, max = 150, step = 1 }, nil, nil, nil, Disabled)
+	group.args.yOffset = ACH:Range(L["yOffset"], nil, 6, { min = -150, max = 150, step = 1 }, nil, nil, nil, Disabled)
+	group.args.applyAll = ACH:Execute(L["Apply To All"], L["ELLESMERE_APPLY_ALL_DESC"], 7,
+		function()
+			local settings = JI:CopyTable({}, GetSettings())
+			for _, key in ipairs(JI.dataHelper.ellesmereUnitList) do
+				JI.db.ellesmereui[key].icon = JI:CopyTable({}, settings)
+			end
+			JI:UpdateEllesmereUI()
+		end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"])
+end
+
 --! Information Tab
 local Information = ACH:Group(L["Information"], nil, 80)
 JI.Options.args.Information = Information
@@ -517,6 +556,7 @@ end
 function JI:BuildProfile()
 	local Defaults = {
 		profile = {
+			ellesmereui = JI:CopyTable({}, JI.DF.profile.ellesmereui),
 			blizzard = {
 				player = sharedDefaultValues,
 				target = sharedDefaultValues,
@@ -603,6 +643,7 @@ end
 function JI:SetupProfile()
 	JI.db = JI.data.profile
 	JI:UpdateMedia()
+	JI:UpdateEllesmereUI()
 end
 
 function JI:GetOptions()

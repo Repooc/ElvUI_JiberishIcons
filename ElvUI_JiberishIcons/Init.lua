@@ -85,6 +85,7 @@ function JI:MergeStylePacks()
 			end
 		end
 	end
+	if JI.UpdateEllesmereUI then JI:UpdateEllesmereUI() end
 end
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState

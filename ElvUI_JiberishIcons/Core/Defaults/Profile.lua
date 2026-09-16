@@ -22,6 +22,20 @@ P.chat = {
 
 P.elvui = {}
 P.suf = {}
+P.ellesmereui = {}
+
+for _, unit in ipairs(JI.dataHelper.ellesmereUnitList) do
+    P.ellesmereui[unit] = {
+        icon = {
+            enable = false,
+            style = 'fabled',
+            size = 32,
+            anchorPoint = 'RIGHT',
+            xOffset = 0,
+            yOffset = 0,
+        },
+    }
+end
 
 for unit in pairs(elvuiUnitList) do
     P.elvui[unit] = {
