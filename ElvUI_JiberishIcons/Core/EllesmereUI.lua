@@ -58,7 +58,7 @@ local function Paint(frame)
 	if not info then texture:Hide(); return end
 
 	texture:SetTexture(TexturePath(settings.style))
-	texture:SetTexCoord(unpack(info.texCoords))
+	texture:SetTexCoord(JI:GetIconTexCoords(info.texCoords, settings.reverse))
 	texture:Show()
 end
 

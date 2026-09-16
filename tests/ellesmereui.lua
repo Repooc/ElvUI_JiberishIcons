@@ -10,11 +10,12 @@ local function fixture(loaded)
 	env._G = env
 	local world, timers, objects = {}, {}, {}
 	local secret = {}
-	local state = { combat = false, loaded = loaded ~= false }
+	local state = { combat = false, loaded = loaded ~= false, addons = {} }
 	env.issecretvalue = function(v) return rawequal(v, secret) end
 	env.securecallfunction = function(fn, ...) return fn(...) end
 	env.wipe = function(t) for k in pairs(t) do t[k] = nil end; return t end
 	env.format, env.gsub, env.strupper, env.sort = string.format, string.gsub, string.upper, table.sort
+	env.strsplit = function(separator, value) return value:match('^([^'..separator..']*)') end
 	env.GetRealmName = function() return 'Realm' end
 	env.UnitName = function() return 'Tester' end
 	env.UnitRace = function() return 'Human', 'HUMAN' end
@@ -28,7 +29,7 @@ local function fixture(loaded)
 	env.WOW_PROJECT_ID, env.WOW_PROJECT_MAINLINE = 1, 1
 	env.C_AddOns = {
 		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.4.6' end,
-		IsAddOnLoaded = function(name) return name == 'EllesmereUIUnitFrames' and state.loaded end,
+		IsAddOnLoaded = function(name) return (name == 'EllesmereUIUnitFrames' and state.loaded) or state.addons[name] end,
 	}
 	env.C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
 	local methods = {}
@@ -44,10 +45,13 @@ local function fixture(loaded)
 		if changed and self.scripts.OnShow then self.scripts.OnShow(self) end
 	end
 	function methods:Hide() self.shown = false end
+	function methods:SetShown(shown) if shown then self:Show() else self:Hide() end end
 	function methods:IsShown() return self.shown and (not self.parent or self.parent:IsShown()) end
 	function methods:SetTexture(path) self.path = path end
 	function methods:GetTexture() return self.path and not self.path:find('missing', 1, true) and self.path or nil end
 	function methods:SetTexCoord(...) self.coords = {...} end
+	function methods:SetColorTexture(...) self.color = {...} end
+	function methods:AddMaskTexture(mask) self.mask = mask end
 	function methods:EnableMouse(on) self.mouse = on end
 	function methods:SetFrameLevel(level) self.level = level end
 	function methods:GetFrameLevel() return self.level or 1 end
@@ -68,6 +72,7 @@ local function fixture(loaded)
 	end
 	env.CreateFrame = function(_, _, parent) return object('Frame', parent) end
 	function methods:CreateTexture() return object('Texture', self) end
+	function methods:CreateMaskTexture() return object('Mask', self) end
 	env.hooksecurefunc = function(owner, name, fn)
 		local original = owner[name]
 		owner[name] = function(...) original(...); fn(...) end
@@ -124,7 +129,7 @@ local function fixture(loaded)
 	end
 	local function icon(f) return f.children[1] and f.children[1].children[1] end
 	return { env = env, JI = JI, ns = ns, world = world, state = state, secret = secret,
-		flush = flush, fire = fire, frame = frame, icon = icon, objects = objects }
+		flush = flush, fire = fire, frame = frame, icon = icon, objects = objects, load = load }
 end
 
 local function test(name, fn)
@@ -267,6 +272,149 @@ test('replacement frame retires the previous icon', function()
 	f.ns.frames.target = replacement; f.ns.Engine.Attach(replacement, 'target'); f.flush()
 	expect(not f.icon(old):IsShown()); expect(f.icon(replacement):IsShown())
 	old:Hide(); old:Show(); expect(not f.icon(old):IsShown()); equal(#old.children, 1)
+end)
+
+test('horizontal reversal stays within each atlas cell and leaves shared coordinates unchanged', function()
+	local f = fixture()
+	for _, data in pairs(f.JI.dataHelper.class) do
+		local original = {unpack(data.texCoords)}
+		local reverse = {f.JI:GetIconTexCoords(data.texCoords, true)}
+		for i = 1, 4 do equal(reverse[i], original[i + 4]); equal(reverse[i + 4], original[i]) end
+		local normal = {f.JI:GetIconTexCoords(data.texCoords, false)}
+		for i = 1, 8 do equal(normal[i], original[i]); equal(data.texCoords[i], original[i]) end
+	end
+	equal(table.concat({f.JI:GetIconTexCoords({0.1, 0.3, 0.2, 0.4}, true)}, ':'), '0.3:0.1:0.2:0.4')
+	equal(f.JI:GetIconTexString('128:256:0:128', true), '256:128:0:128')
+	equal(f.JI:GetIconTexString('128:256:0:128', false), '128:256:0:128')
+end)
+
+test('Reverse defaults off in every configurable icon and portrait tab', function()
+	local f = fixture()
+	equal(f.JI.db.chat.reverse, false)
+	expect(f.JI.Options.args.chat.args.reverse)
+	for _, module in ipairs({'blizzard', 'elvui', 'suf', 'ellesmereui'}) do
+		for unit, settings in pairs(f.JI.db[module]) do
+			for _, element in ipairs({'icon', 'portrait'}) do
+				if settings[element] then
+					equal(settings[element].reverse, false)
+					local group = f.JI.Options.args[module].args[unit]
+					if module ~= 'ellesmereui' then group = group.args[element] end
+					expect(group.args.reverse)
+				end
+			end
+		end
+	end
+end)
+
+test('Ellesmere reverse is independent per frame, live in combat, copied and reset with profiles', function()
+	local f = fixture()
+	local player, target = f.frame('player', 'MAGE'), f.frame('target', 'MAGE')
+	f.ns.frames = {player = player, target = target}
+	f.JI.db.ellesmereui.player.icon.enable = true; f.JI.db.ellesmereui.target.icon.enable = true
+	f.JI:SetupEllesmereUI(); f.flush()
+	local controls = f.JI.Options.args.ellesmereui.args.target.args
+	f.state.combat = true
+	controls.reverse.set(nil, true)
+	equal(f.icon(target).coords[1], 0.25); equal(f.icon(player).coords[1], 0.125)
+	controls.reverse.set(nil, false); equal(f.icon(target).coords[1], 0.125)
+	f.state.combat = false
+	controls.reverse.set(nil, true); controls.applyAll.func()
+	for _, key in ipairs(f.JI.dataHelper.ellesmereUnitList) do equal(f.JI.db.ellesmereui[key].icon.reverse, true) end
+	equal(f.icon(player).coords[1], 0.25)
+	local original = f.JI.data:GetCurrentProfile()
+	f.JI.data:SetProfile('Reverse test'); equal(f.JI.db.ellesmereui.target.icon.reverse, false)
+	f.JI.data:CopyProfile(original); equal(f.icon(target).coords[1], 0.25)
+	f.JI.data:ResetProfile(); equal(f.JI.db.ellesmereui.target.icon.reverse, false)
+end)
+
+test('Blizzard icon and portrait reverse independently and General applies normal/reverse', function()
+	local f = fixture()
+	f.load('Core/Blizzard.lua')
+	local target = f.frame('target'); target.unit = 'target'; target.portrait = target:CreateTexture()
+	f.env.TargetFrame = target
+	f.JI:SetupBlizzardFrames()
+	local db = f.JI.db.blizzard.target
+	db.icon.enable = true; db.portrait.enable = true
+	f.JI:UpdateMedia()
+	local controls = f.JI.Options.args.blizzard.args.target.args
+	controls.icon.args.reverse.set(nil, true)
+	equal(target.classIcon.icon.coords[1], 0.25); equal(target.classPortrait.portrait.coords[1], 0.125)
+	controls.portrait.args.reverse.set(nil, true)
+	equal(target.classPortrait.portrait.coords[1], 0.25)
+	controls.icon.args.reverse.set(nil, false)
+	equal(target.classIcon.icon.coords[1], 0.125); equal(target.classPortrait.portrait.coords[1], 0.25)
+	local bulk = f.JI.Options.args.blizzard.args.general.args.icon.args
+	for _, value in ipairs({'reverse', 'normal'}) do
+		bulk.reverse.set(nil, value); expect(not bulk.confirmReverse.disabled())
+		bulk.confirmReverse.func()
+		for _, settings in pairs(f.JI.db.blizzard) do equal(settings.icon.reverse, value == 'reverse') end
+		expect(bulk.confirmReverse.disabled())
+	end
+end)
+
+test('SUF reverses icons and class portraits, and restores normal orientation', function()
+	local f = fixture(); f.state.addons.ShadowedUnitFrames = true
+	local modules = {}
+	f.env.ShadowUF = { db = { profile = { units = { target = { portrait = { type = 'class' } } } } }, Layout = {} }
+	function f.env.ShadowUF:RegisterModule(module, name) modules[name] = module end
+	f.load('Core/SUF.lua')
+	local target = f.frame('target'); target.unit = 'target'; target.unitType = 'target'; target.portrait = target:CreateTexture()
+	function target:UnitClassToken() return f.world.target.class end
+	function f.env.ShadowUF.Layout:Reload()
+		modules.classportrait:Update(target); modules.classicon:Update(target)
+	end
+	modules.classportrait:OnLayoutApply(target); modules.classicon:OnPreLayoutApply(target)
+	f.JI.db.suf.target.portrait.enable = true; f.JI.db.suf.target.icon.enable = true
+	f.JI:UpdateSUF()
+	local controls = f.JI.Options.args.suf.args.target.args
+	controls.portrait.args.reverse.set(nil, true)
+	equal(target.portrait.coords[1], 0.25); equal(target.classIcon.icon.coords[1], 0.125)
+	controls.icon.args.reverse.set(nil, true); equal(target.classIcon.icon.coords[1], 0.25)
+	controls.portrait.args.reverse.set(nil, false); equal(target.portrait.coords[1], 0.125)
+	controls.icon.args.reverse.set(nil, false); equal(target.classIcon.icon.coords[1], 0.125)
+end)
+
+test('ElvUI portrait reversal and existing reverse tags render the same atlas cell', function()
+	local f = fixture(); f.state.addons.ElvUI = true
+	local tags = {}
+	local E = { UnitFrames = { PortraitUpdate = function() end } }
+	function E:AddTag(name, _, fn) tags[name] = fn end
+	function E:AddTagInfo() end
+	E.IsSecretValue = function(_, value) return f.env.issecretvalue(value) end
+	f.env.ElvUI = {E}
+	f.load('Core/ElvUI.lua')
+	local target = f.frame('target'); target.unit = 'target'; target.unitframeType = 'target'
+	local portrait = target:CreateTexture(); portrait.__owner = target; portrait.useClassBase = true
+	f.JI.dataHelper.elvuiUnitList.target.updateFunc = function() E.UnitFrames.PortraitUpdate(portrait) end
+	f.JI.db.elvui.target.portrait.enable = true
+	local reverse = f.JI.Options.args.elvui.args.target.args.portrait.args.reverse
+	reverse.set(nil, true); equal(portrait.coords[1], 0.25)
+	reverse.set(nil, false); equal(portrait.coords[1], 0.125)
+	f.JI:BuildElvUITags()
+	expect(tags['jiberish:class:fabled']('target', nil, '32'):find(':128:256:0:128|t', 1, true))
+	expect(tags['jiberish:class:fabled:reverse']('target', nil, '32'):find(':256:128:0:128|t', 1, true))
+end)
+
+test('Chat reverse affects new messages without reinstalling chat hooks', function()
+	local f = fixture(); f.load('Core/Chat.lua')
+	local chat = f.frame('player'); function chat:GetID() return 1 end
+	local received
+	chat.AddMessage = function(_, message) received = message end
+	f.env.CHAT_FRAMES = {'ChatFrame1'}; f.env.ChatFrame1 = chat
+	f.JI.hooks = {}
+	function f.JI:IsHooked(frame) return self.hooks[frame] ~= nil end
+	function f.JI:RawHook(frame, name, fn)
+		self.hooks[frame] = {[name] = frame[name]}; frame[name] = fn
+	end
+	f.env.GetPlayerInfoByGUID = function() return 'Mage', 'MAGE' end
+	f.JI.AuthorCache['Tester-Realm'] = 'guid'
+	f.JI.db.chat.enable = true; f.JI:SetupChat()
+	local message = '|Hplayer:Tester-Realm:1|h[Tester]|h hello'
+	chat:AddMessage(message); expect(received:find(':128:256:0:128|t', 1, true))
+	f.JI.Options.args.chat.args.reverse.set(nil, true)
+	chat:AddMessage(message); expect(received:find(':256:128:0:128|t', 1, true))
+	f.JI.Options.args.chat.args.reverse.set(nil, false)
+	chat:AddMessage(message); expect(received:find(':128:256:0:128|t', 1, true))
 end)
 
 print(passed..' integration tests passed')

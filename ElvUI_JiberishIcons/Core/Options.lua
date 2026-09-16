@@ -176,6 +176,33 @@ end
 local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 local AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' }
 
+local function AddReverseToggle(group, getSettings, update)
+	group.args.reverse = ACH:Toggle(L["Reverse"], L["REVERSE_ICON_DESC"], group.args.style.order + 0.1,
+		nil, nil, nil,
+		function() return getSettings().reverse end,
+		function(_, value)
+			getSettings().reverse = value
+			if update then update() end
+		end,
+		group.args.style.disabled or function() return not getSettings().enable end)
+end
+
+local function AddReverseBulk(group, module, element, update)
+	group.args.reverse = ACH:Select(L["Reverse"], L["REVERSE_ICON_DESC"], 6,
+		{ normal = L["Normal"], reverse = L["Reverse"] }, nil, nil,
+		function()
+			local value = settingTest[module][element].reverse
+			if value ~= nil then return value and 'reverse' or 'normal' end
+		end,
+		function(_, value) settingTest[module][element].reverse = value == 'reverse' end)
+	group.args.confirmReverse = ACH:Execute(L["Apply To All"], nil, 7,
+		function()
+			ApplySettingsToAll(module, element, 'reverse', update)
+			settingTest[module][element].reverse = nil
+		end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"],
+		nil, nil, nil, function() return settingTest[module][element].reverse == nil end)
+end
+
 local ClassTab = ACH:Group(L["Class Styles (Stock)"], nil, 1)
 ClassTab.inline = false
 StylePacks.args.ClassTab = ClassTab
@@ -273,6 +300,7 @@ JI.Options.args.chat = chat
 chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 chat.args.spacer = ACH:Spacer(2, 'full')
 chat.args.style = ACH:Select(L["Style Selection"], nil, 3, classIconStyleList, nil, nil, function(info) local value = JI.db.chat[info[#info]] return JI.mergedStylePacks.class.styles[value] or 'fabled' end)
+AddReverseToggle(chat, function() return JI.db.chat end)
 
 --! Blizzard Frames Tab (BlizzUI)
 local blizzard = ACH:Group(L["Blizzard Frames"], nil, 50, nil)
@@ -326,6 +354,8 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 		portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'Blizzard')), 1)
 		portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
 		portrait.args.style = ACH:Select(L["Style"], nil, 3, function() return classIconStyleList() end, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
+		AddReverseToggle(portrait, function() return JI.db.blizzard[unit].portrait end,
+			function() JI:UnitFramePortrait_Update(unit, 'portrait') end)
 
 		local background = ACH:Group(L["Background"], nil, 10, nil, nil, 'full', function(info) return not JI.db.blizzard[info[#info-3]][info[#info-2]].enable end)
 		portrait.args.background = background
@@ -342,6 +372,8 @@ for _, unit in next, { 'player', 'target', 'targettarget', 'focus', 'focustarget
 	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end)
 	icon.args.style = ACH:Select(L["Style"], nil, 3, function() return classIconStyleList() end, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
+	AddReverseToggle(icon, function() return JI.db.blizzard[unit].icon end,
+		function() JI:UnitFramePortrait_Update(unit, 'icon') end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, AllPoints, nil, nil, function(info) return JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.blizzard[info[#info-2]][info[#info-1]][info[#info]] = value JI:UnitFramePortrait_Update(info[#info-2], info[#info-1]) end, function(info) return not JI.db.blizzard[info[#info-2]][info[#info-1]].enable end)
 	icon.args.spacer = ACH:Description('', 15)
@@ -391,6 +423,8 @@ for unit, data in next, elvuiUnitList do
 	portrait.args.header = ACH:Description(ColorText(format(L["This will apply the selected class icon style to %s unitframes where they show a players portrait."], 'ElvUI')), 4)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 5, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2], (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
 	portrait.args.style = ACH:Select(L["Style"], nil, 6, classIconStyleList, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-2]) end, function(info) return (JI:IsAddOnEnabled('ElvUI') and not ElvUI[1].db.unitframe.units[unit].portrait.enable) or not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	AddReverseToggle(portrait, function() return JI.db.elvui[unit].portrait end,
+		function() data.updateFunc(nil, unit, (unit == 'boss' and MAX_BOSS_FRAMES) or (unit == 'arena' and 5) or nil) end)
 
 	local backdrop = ACH:Group(L["Backdrop"], nil, 10, nil, function(info) return JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-4]][info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value data.updateFunc(nil, info[#info-3]) end, function(info) if info[#info] == 'enable' then return not (JI:IsAddOnEnabled('ElvUI') and ElvUI[1].db.unitframe.units[unit].portrait.enable and JI.db.elvui[unit].portrait.enable) else return not (JI:IsAddOnEnabled('ElvUI') and ElvUI[1].db.unitframe.units[unit].portrait.enable and JI.db.elvui[unit].portrait.enable and JI.db.elvui[unit].portrait.backdrop.enable) end end)
 	portrait.args.backdrop = backdrop
@@ -450,6 +484,8 @@ for _, unit in next, sufUnitList do
 	portrait.args.header = ACH:Description(ColorText(L["This will apply the selected class icon style to SUF's unitframes where they show a players class icon."]), 1)
 	portrait.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
 	portrait.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) local selectedStyle = getValidSelectedStyle(JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]]) return selectedStyle end, function(info, value) JI.db[info[#info-3]][info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db[info[#info-3]][info[#info-2]][info[#info-1]].enable end)
+	AddReverseToggle(portrait, function() return JI.db.suf[unit].portrait end,
+		function() JI:UpdateSUF(unit) end)
 
 	--* Icon (SUF)
 	local icon = ACH:Group(L["Icon"], nil, 10)
@@ -459,12 +495,20 @@ for _, unit in next, sufUnitList do
 	icon.args.header = ACH:Description(ColorText(L["This will add an icon that will show the class of the unit that is displayed in the unitframe that the icon is attached to."]), 1)
 	icon.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end)
 	icon.args.style = ACH:Select(L["Style"], nil, 3, classIconStyleList, nil, nil, function(info) local selectedStyle = getValidSelectedStyle(JI.db.suf[info[#info-2]][info[#info-1]][info[#info]])  return selectedStyle end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
+	AddReverseToggle(icon, function() return JI.db.suf[unit].icon end,
+		function() JI:UpdateSUF(unit) end)
 	icon.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 128, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, AllPoints, nil, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.spacer = ACH:Description('', 15)
 	icon.args.xOffset = ACH:Range(L["xOffset"], nil, 16, { min = -150, max = 150, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 	icon.args.yOffset = ACH:Range(L["yOffset"], nil, 17, { min = -150, max = 150, step = 1 }, nil, function(info) return JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) JI.db.suf[info[#info-2]][info[#info-1]][info[#info]] = value ShadowUF.Layout:Reload(info[#info-2]) end, function(info) return not JI.db.suf[info[#info-2]][info[#info-1]].enable end)
 end
+
+AddReverseBulk(blizzard.args.general.args.portrait, 'blizzard', 'portrait', function() JI:UpdateMedia() end)
+AddReverseBulk(blizzard.args.general.args.icon, 'blizzard', 'icon', function() JI:UpdateMedia() end)
+AddReverseBulk(elvui.args.general.args.portrait, 'elvui', 'portrait')
+AddReverseBulk(suf.args.general.args.portrait, 'suf', 'portrait', function() JI:UpdateSUF() end)
+AddReverseBulk(suf.args.general.args.icon, 'suf', 'icon', function() JI:UpdateSUF() end)
 
 --! EllesmereUI: independent class icons, with no portrait settings involved.
 local ellesmere = ACH:Group('EllesmereUI', nil, 60, 'tab', nil, nil, nil,
@@ -490,6 +534,7 @@ for index, unit in ipairs(JI.dataHelper.ellesmereUnitList) do
 	ellesmere.args[unit] = group
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.style = ACH:Select(L["Style"], nil, 2, classIconStyleList, nil, nil, nil, nil, Disabled)
+	AddReverseToggle(group, GetSettings, function() JI:UpdateEllesmereUI() end)
 	group.args.size = ACH:Range(L["Size"], nil, 3, { min = 8, max = 128, step = 1 }, nil, nil, nil, Disabled)
 	group.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."],
 		4, AllPoints, nil, nil, nil, nil, Disabled)
@@ -531,6 +576,7 @@ local sharedDefaultValues = {
 	portrait = {
 		enable = false,
 		style = 'fabled',
+		reverse = false,
 		background = {
 			enable = true,
 			colorOverride = 0,
@@ -540,6 +586,7 @@ local sharedDefaultValues = {
 	icon = {
 		enable = false,
 		style = 'fabled',
+		reverse = false,
 		size = 32,
 		anchorPoint = 'RIGHT',
 		xOffset = 0,
@@ -571,6 +618,7 @@ function JI:BuildProfile()
 			chat = {
 				enable = false,
 				style = 'fabled',
+				reverse = false,
 			},
 			elvui = {},
 			suf = {},
@@ -597,6 +645,7 @@ function JI:BuildProfile()
 			portrait = {
 				enable = false,
 				style = 'fabled',
+				reverse = false,
 				backdrop = {
 					enable = false,
 					colorOverride = false,
@@ -612,10 +661,12 @@ function JI:BuildProfile()
 			portrait = {
 				enable = false,
 				style = 'fabled',
+				reverse = false,
 			},
 			icon = {
 				enable = false,
 				style = 'fabled',
+				reverse = false,
 				size = 32,
 				anchorPoint = 'RIGHT',
 				xOffset = 0,

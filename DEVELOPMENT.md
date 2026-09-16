@@ -50,7 +50,9 @@ git diff --check
 The test suite loads the actual addon initialization, options, defaults,
 AceDB callbacks, and EllesmereUI adapter against mocked WoW frames. It exercises
 readiness, repeated setup, unit identity, combat deferral, inherited visibility,
-custom styles, profile changes, Apply to All, and replacement frames. It does
+custom styles, profile changes, Apply to All, and replacement frames. It also
+loads the Blizzard, SUF, ElvUI and Chat rendering paths to check per-element
+horizontal reversal, bulk Normal/Reverse settings, and existing ElvUI tags. It does
 not simulate WoW's secure execution or GPU rendering.
 
 Syntax-check Lua files with `luac -p`; strip a leading UTF-8 BOM in memory when
@@ -78,6 +80,11 @@ does not. Development documentation and tests are excluded from addon packages.
   and reload. Disable icons and confirm only Jiberish-owned artwork disappears.
 - With EllesmereUI disabled, smoke-test Blizzard, ElvUI, SUF and Details where
   installed. Confirm absent integrations do not cause Lua errors.
+- For each icon/portrait settings tab, toggle Reverse on Target while leaving
+  Player normal. Check that only the chosen artwork mirrors horizontally, stays
+  on the same class, and returns to normal when unchecked. Test Normal/Reverse
+  bulk application, custom styles and profile persistence. Chat changes should
+  affect newly displayed messages; existing ElvUI reverse tags should still work.
 
 Record completed checks in the pull request. Automated test success does not
 establish that the in-game checklist has passed.

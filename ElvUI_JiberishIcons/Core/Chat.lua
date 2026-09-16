@@ -66,7 +66,7 @@ local function AddMessage(frame, message, ...)
 
 				local iconString
 				if icon and icon.texString then
-					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', path, style, icon.texString)
+					iconString = format('|T%s%s:0:0:0:0:1024:1024:%s|t', path, style, JI:GetIconTexString(icon.texString, db.reverse))
 
 					return iconString .. playerLink
 				end

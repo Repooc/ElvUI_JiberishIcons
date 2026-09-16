@@ -45,7 +45,7 @@ local function UpdateIcon(frame)
 
 			--* Update Icon Texture
 			frame.classIcon.icon:SetTexture(fullPath)
-			frame.classIcon.icon:SetTexCoord(unpack(icon.texCoords))
+			frame.classIcon.icon:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.icon.reverse))
 
 			frame.classIcon:SetShown(db.icon.enable)
 		elseif frame.classIcon then
@@ -111,7 +111,7 @@ local function UpdatePortrait(frame)
 
 		--* Update Portrait Texture
 		frame.classPortrait.portrait:SetTexture(fullPath)
-		if icon then frame.classPortrait.portrait:SetTexCoord(unpack(icon.texCoords)) end
+		if icon then frame.classPortrait.portrait:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.portrait.reverse)) end
 
 		frame.classPortrait:SetShown(showPortrait)
 		frame.classPortrait.background:SetShown(showPortrait and db.portrait.background.enable)
