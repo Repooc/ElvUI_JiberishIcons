@@ -5,7 +5,7 @@ local passed = 0
 local function expect(value, message) assert(value, message or 'expectation failed') end
 local function equal(actual, expected) assert(actual == expected, tostring(actual)..' ~= '..tostring(expected)) end
 
-local function fixture(loaded)
+local function fixture(loaded, client)
 	local env = setmetatable({}, { __index = _G })
 	env._G = env
 	local world, timers, objects = {}, {}, {}
@@ -31,6 +31,23 @@ local function fixture(loaded)
 		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.4.6' end,
 		IsAddOnLoaded = function(name) return (name == 'EllesmereUIUnitFrames' and state.loaded) or state.addons[name] end,
 	}
+	if client then
+		env.WOW_PROJECT_ID = 2 -- Exercise the non-Mainline path.
+		env.issecretvalue = nil
+		env.C_AddOns.GetAddOnEnableState = function(name, character)
+			equal(character, 'Tester')
+			return env.C_AddOns.IsAddOnLoaded(name) and 2 or 0
+		end
+		if client == 'legacy' then
+			env.GetAddOnMetadata = env.C_AddOns.GetAddOnMetadata
+			env.IsAddOnLoaded = env.C_AddOns.IsAddOnLoaded
+			env.GetAddOnEnableState = function(character, name)
+				equal(character, 'Tester')
+				return env.IsAddOnLoaded(name) and 2 or 0
+			end
+			env.C_AddOns = nil
+		end
+	end
 	env.C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
 	local methods = {}
 	function methods:SetScript(event, fn) self.scripts[event] = fn end
@@ -395,8 +412,8 @@ test('ElvUI portrait reversal and existing reverse tags render the same atlas ce
 	expect(tags['jiberish:class:fabled:reverse']('target', nil, '32'):find(':256:128:0:128|t', 1, true))
 end)
 
-test('Chat reverse affects new messages without reinstalling chat hooks', function()
-	local f = fixture(); f.load('Core/Chat.lua')
+local function checkChat(f)
+	f.load('Core/Chat.lua')
 	local chat = f.frame('player'); function chat:GetID() return 1 end
 	local received
 	chat.AddMessage = function(_, message) received = message end
@@ -415,6 +432,29 @@ test('Chat reverse affects new messages without reinstalling chat hooks', functi
 	chat:AddMessage(message); expect(received:find(':256:128:0:128|t', 1, true))
 	f.JI.Options.args.chat.args.reverse.set(nil, false)
 	chat:AddMessage(message); expect(received:find(':128:256:0:128|t', 1, true))
+	if f.env.issecretvalue then
+		chat:AddMessage(f.secret); equal(received, f.secret)
+	end
+end
+
+test('Chat reverse affects new messages without reinstalling chat hooks', function()
+	checkChat(fixture())
 end)
+
+for _, client in ipairs({'modern', 'legacy'}) do
+	test(client..' Classic APIs support initialization, standalone options and Chat reversal', function()
+		local f = fixture(false, client)
+		equal(f.JI.Version, '1.4.6')
+		expect(not f.JI:IsAddOnEnabled('ShadowedUnitFrames'))
+		f.state.addons.ShadowedUnitFrames = true
+		expect(f.JI:IsAddOnEnabled('ShadowedUnitFrames'))
+		f.JI:SetupEllesmereUI(); f.flush()
+		expect(f.JI.Options.args.ellesmereui.hidden())
+		local opened
+		f.JI.Libs.ACD.Open = function(_, name) opened = name end
+		f.JI:ToggleOptions(); equal(opened, 'ElvUI_JiberishIcons')
+		checkChat(f)
+	end)
+end
 
 print(passed..' integration tests passed')

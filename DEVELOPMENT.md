@@ -13,6 +13,18 @@ behavior. Tagged releases use the separate **Release** workflow. Merging a PR
 does not itself publish a stable release. Leave publishing credentials on the
 upstream repository and coordinate version/tag selection with its maintainers.
 
+For a stable release, update the TOC version and dated changelog on the feature
+branch, validate the package, and merge the pull request into upstream `main`.
+Create an annotated version tag (for example, `1.4.6`) on that merged upstream
+commit and push the tag to `upstream`. Verify the **Release** workflow completes
+and reports successful CurseForge and Wago uploads. A tag pushed only to the fork
+does not publish the official addon; the fork has no publishing credentials.
+
+Keep one comma-separated `Interface` line in the TOC for supported clients.
+For 1.4.6 these are Retail `120100`, Mists `50504`, Wrath `38002`, TBC `20506`,
+and Classic Era `11509`, matching ElvUI v15.26's client-specific TOCs. Interface
+metadata declares compatibility; it does not replace testing on those clients.
+
 ## Linked WoW installation
 
 On this development machine, the Retail AddOns entry
@@ -52,8 +64,11 @@ AceDB callbacks, and EllesmereUI adapter against mocked WoW frames. It exercises
 readiness, repeated setup, unit identity, combat deferral, inherited visibility,
 custom styles, profile changes, Apply to All, and replacement frames. It also
 loads the Blizzard, SUF, ElvUI and Chat rendering paths to check per-element
-horizontal reversal, bulk Normal/Reverse settings, and existing ElvUI tags. It does
-not simulate WoW's secure execution or GPU rendering.
+horizontal reversal, bulk Normal/Reverse settings, and existing ElvUI tags.
+Classic API fixtures cover modern and legacy addon APIs, opening standalone
+options without SettingsPanel, and chat reversal without the Retail secret API.
+The suite does not simulate WoW's secure execution or GPU rendering, or establish
+that each Classic client has passed in-game testing.
 
 Syntax-check Lua files with `luac -p`; strip a leading UTF-8 BOM in memory when
 checking unchanged vendored libraries, since WoW accepts it but stock Lua 5.1

@@ -21,10 +21,10 @@ JI.Libs = {
 	GUI = _G.LibStub('AceGUI-3.0'),
 }
 
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 
 JI.Title = GetAddOnMetadata(AddOnName, 'Title')
-JI.Version = tonumber(GetAddOnMetadata(AddOnName, 'Version'))
+JI.Version = GetAddOnMetadata(AddOnName, 'Version')
 JI.Configs = {}
 JI.myName = UnitName('player')
 JI.myRealm = GetRealmName()
@@ -90,7 +90,7 @@ end
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
-local IsAddOnLoaded = _G.C_AddOns and _G.C_AddOns.IsAddOnLoaded
+local IsAddOnLoaded = (_G.C_AddOns and _G.C_AddOns.IsAddOnLoaded) or _G.IsAddOnLoaded
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 function JI:IsAddOnEnabled(addon)
