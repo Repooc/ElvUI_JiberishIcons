@@ -1,4 +1,3 @@
-v1.4.5 6/25/26
+v1.4.6 8/27/26
 
-• [Update] Ace lib
-• [Fix] Prevent error with secrets
+• [Update] TOC
