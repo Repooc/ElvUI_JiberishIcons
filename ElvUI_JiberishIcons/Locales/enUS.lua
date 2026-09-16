@@ -2,6 +2,16 @@ local JI = unpack(ElvUI_JiberishIcons)
 local L = JI.Libs.ACL:NewLocale('JiberishIcons', 'enUS', true, true)
 
 --* English is the default if no translation is found.
+L["Reverse"] = "Reverse"
+L["Normal"] = "Normal"
+L["REVERSE_ICON_DESC"] = "Flip the class icon horizontally so it faces the opposite direction."
+L["Player"] = "Player"
+L["Target"] = "Target"
+L["Focus"] = "Focus"
+L["Target of Target"] = "Target of Target"
+L["Focus Target"] = "Focus Target"
+L["ELLESMERE_ICONS_DESC"] = "Add movable class icons to active EllesmereUI unit frames. Portrait settings do not affect these icons. Icons follow their frame's visibility and only appear for players with an available class. Position and size changes made in combat apply after combat."
+L["ELLESMERE_APPLY_ALL_DESC"] = "Copy this frame's icon settings, including its enabled state, style, reverse direction, size and position, to all five supported EllesmereUI frames."
 L["%s portrait is disabled in %s, click the button to quickly navigate to the proper section."] = "%s portrait is disabled in %s, click the button to quickly navigate to the proper section."
 L["Anchor Point"] = "Anchor Point"
 L["Apply To All"] = "Apply To All"

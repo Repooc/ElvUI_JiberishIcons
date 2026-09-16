@@ -64,7 +64,25 @@ function JI:CopyTable(current, default, merge)
 	return current
 end
 
+-- Mirror within the selected atlas cell; never mutate the shared class coordinates.
+function JI:GetIconTexCoords(coords, reverse)
+	if not reverse then return unpack(coords) end
+	if #coords == 8 then
+		-- Texture corners are UL, LL, UR, LR. Swap the left/right corner pairs.
+		return coords[5], coords[6], coords[7], coords[8], coords[1], coords[2], coords[3], coords[4]
+	end
+	return coords[2], coords[1], coords[3], coords[4]
+end
+
+function JI:GetIconTexString(texString, reverse)
+	if not reverse then return texString end
+	local left, right, top, bottom = texString:match('^([^:]+):([^:]+):([^:]+):([^:]+)$')
+	if not left then return texString end
+	return format('%s:%s:%s:%s', right, left, top, bottom)
+end
+
 JI.dataHelper = {
+	ellesmereUnitList = { 'player', 'target', 'focus', 'targettarget', 'focustarget' },
 	class = {
 		WARRIOR	= {
 			texString = '0:128:0:128',

@@ -18,16 +18,33 @@ P.blizzard = {
 P.chat = {
     enable = false,
     style = 'fabled',
+    reverse = false,
 }
 
 P.elvui = {}
 P.suf = {}
+P.ellesmereui = {}
+
+for _, unit in ipairs(JI.dataHelper.ellesmereUnitList) do
+    P.ellesmereui[unit] = {
+        icon = {
+            enable = false,
+            style = 'fabled',
+            reverse = false,
+            size = 32,
+            anchorPoint = 'RIGHT',
+            xOffset = 0,
+            yOffset = 0,
+        },
+    }
+end
 
 for unit in pairs(elvuiUnitList) do
     P.elvui[unit] = {
         portrait = {
             enable = false,
             style = 'fabled',
+            reverse = false,
             backdrop = {
                 enable = false,
                 colorOverride = false,
@@ -43,10 +60,12 @@ for _, unit in pairs(sufUnitList) do
         portrait = {
             enable = false,
             style = 'fabled',
+            reverse = false,
         },
         icon = {
             enable = false,
             style = 'fabled',
+            reverse = false,
             size = 32,
             anchorPoint = 'RIGHT',
             xOffset = 0,

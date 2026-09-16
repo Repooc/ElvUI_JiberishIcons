@@ -72,10 +72,7 @@ function JI:BuildElvUITags()
 				local icon = classInfo[class]
 
 				if icon and icon.texString then
-					local texString = icon.texString
-
-					local x1, x2, y1, y2 = strsplit(':', texString)
-					texString = format('%s:%s:%s:%s', x2, x1, y1, y2)
+					local texString = JI:GetIconTexString(icon.texString, true)
 
 					return format(classString, path, iconStyle, size, size, texString)
 				end
@@ -109,7 +106,7 @@ function JI:PortraitUpdate()
 
 		--* Update Icon Texture
 		element:SetTexture(fullPath)
-		element:SetTexCoord(unpack(texCoords))
+		element:SetTexCoord(JI:GetIconTexCoords(texCoords, db.portrait.reverse))
 
 		if db.portrait.backdrop.enable and element.backdrop then
 			element.backdrop:SetTemplate(db.portrait.backdrop.transparent and 'Transparent', nil, nil, nil, true)

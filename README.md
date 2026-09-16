@@ -9,4 +9,12 @@ ElvUI Users: The addon pack will add a Tag in ElvUI > Available Tags > Jiberish 
 
 General Users: This supports changing the icons in Details! as well! Details Options -> Bars: General -> Icons -> Texture dropdown
 
+EllesmereUI Users (9.1.8): Open `/ji` → **EllesmereUI**, select Player, Target, Focus, Target of Target, or Focus Target, and enable the icon. Choose a style, size, anchor point, and X/Y offsets to place it around that unit frame. **Apply To All** copies that frame's complete icon settings to the other four frames. All icons start disabled.
+
+These are independent icons: EllesmereUI's portraits and embedded artwork are unchanged, and its portrait settings do not need adjusting. The EllesmereUI Unit Frames module and the chosen unit frame must be active. Icons follow frame visibility/fading and hide for NPCs, pets, or unavailable class information. Creation, size, and position changes wait until combat ends. Party/raid frames and other EllesmereUI icon locations are not included.
+
+**Reverse icons:** Enable **Reverse** beside the style selector to mirror the artwork horizontally. For a symmetrical layout, leave Player normal and enable Reverse on Target. This option is available for EllesmereUI icons, Blizzard icons/portraits, ElvUI portraits, Shadowed Unit Frames icons/portraits, and Chat icons. Every setting defaults to off and is saved in your JiberishIcons profile. Blizzard, ElvUI and SUF offer Normal/Reverse with Apply To All under General; EllesmereUI's Apply To All includes the reverse setting. Chat reversal applies to new messages. ElvUI custom text tags retain their existing reverse form, for example `[jiberish:class:fabled:reverse{32}]`.
+
+For local development, testing, and the contribution/release process, see [DEVELOPMENT.md](DEVELOPMENT.md).
+
 Please join the discord if you have any questions/concerns: https://discord.gg/mJKdmm9KGr

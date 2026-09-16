@@ -1,7 +1,7 @@
 ElvUI_JiberishIcons[2] = ElvUI_JiberishIcons[1].Libs.ACL:GetLocale('JiberishIcons', ElvUI_JiberishIcons[1]:GetLocale())
 local JI, L = unpack(ElvUI_JiberishIcons)
 local AddOnName = ...
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 
 local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
 JI.defaultStylePacks = {
@@ -63,7 +63,7 @@ function JI:ToggleOptions()
 		_G.ElvUI[1]:ToggleOptions()
 		JI.Libs.ACD:SelectGroup('ElvUI', 'jiberishicons')
 	else
-		if SettingsPanel:IsShown() then
+		if SettingsPanel and SettingsPanel:IsShown() then
 			SettingsPanel:ExitWithCommit(true)
 			return
 		end
@@ -94,6 +94,7 @@ function JI:Init(event, addon)
 			JI:Setup_Eltruism()
 			JI:SetupEltruismIconPacks()
 			JI:SetupSUF()
+			JI:SetupEllesmereUI()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')
 			JI:RegisterChatCommand('jib', 'ToggleOptions')

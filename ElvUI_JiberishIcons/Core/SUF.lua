@@ -38,7 +38,7 @@ local function UpdateIcon(frame)
 
 			--* Update Icon Texture
 			frame.classIcon.icon:SetTexture(fullPath)
-			frame.classIcon.icon:SetTexCoord(unpack(icon.texCoords))
+			frame.classIcon.icon:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.icon.reverse))
 
 			frame.classIcon:SetShown(db.icon.enable)
 		elseif frame.classIcon then
@@ -127,7 +127,7 @@ function ClassPortrait:Update(frame)
 					if not JI:IsValidTexturePath(fullPath) then fullPath = format('%s%s', mergedStylePacks.path, 'fabled') end
 
 					frame.portrait:SetTexture(fullPath)
-					frame.portrait:SetTexCoord(unpack(icon.texCoords))
+					frame.portrait:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.portrait.reverse))
 				else
 					frame.portrait:SetTexture('')
 				end
