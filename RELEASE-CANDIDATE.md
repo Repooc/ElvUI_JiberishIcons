@@ -1,6 +1,6 @@
-# Jiberish Icons 1.5.0-rc.4
+# Pre-release validation: Fabled packs (1.5.0-rc.4)
 
-Local candidate prepared September 29, 2026. Publishing and stable tagging are pending in-game acceptance.
+Historical validation record for the September 29, 2026 candidate. The user requested publication as stable version 1.4.7 after merging PR #12. The release keeps the candidate artwork and runtime fixes, with the final version and consolidated changelog. Automated checks are recorded below; in-game UI automation was not performed.
 
 ## Contents
 
@@ -55,6 +55,6 @@ This machine's Retail addon already links to this checkout. Fully exit and resta
 6. Select the race style in Chat; new player messages with known identity should show the right race. Check Fabled Regalia in Details!/Eltruism when installed, and verify earlier stock/custom packs still work.
 7. Smoke-test with each optional integration disabled. Record the actual client build and addon versions tested; the compatibility TOC alone does not establish Classic-client acceptance.
 
-## Release after acceptance
+## Stable release
 
-Record in-game results and address any defects. Coordinate the final version/tag with upstream maintainers, replace the candidate version and changelog heading with the agreed stable version, rerun the automated checks and rebuild the ZIP. Follow `DEVELOPMENT.md` for PR, merge and upstream tagging. Branch pushes can publish alpha builds, so this preparation does not push a branch or tag.
+The selected stable version is `1.4.7`. The final TOC and changelog are prepared separately from this archived candidate record. Follow `DEVELOPMENT.md` for PR, merge, annotated upstream tagging, and verification of CurseForge/Wago uploads. The local stable archive is `dist/ElvUI_JiberishIcons-1.4.7.zip`; historical candidate hashes above still refer to rc.4.

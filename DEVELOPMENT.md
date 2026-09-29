@@ -111,10 +111,11 @@ does not. Development documentation and tests are excluded from addon packages.
 Record completed checks in the pull request. Automated test success does not
 establish that the in-game checklist has passed.
 
-## Fabled Regalia / Fabled Azeroth candidate
+## Fabled Regalia / Fabled Azeroth validation
 
-See [RELEASE-CANDIDATE.md](RELEASE-CANDIDATE.md) for the new packs' in-game checks
-and candidate status. Generated source artwork stays under `artwork/fabled/`;
+See [RELEASE-CANDIDATE.md](RELEASE-CANDIDATE.md) for the new packs' in-game checklist
+and archived candidate validation. The stable release version is 1.4.7.
+Generated source artwork stays under `artwork/fabled/`;
 only the two final TGA files belong in the installed addon. The source artwork,
 tools and candidate documents are excluded by `.pkgmeta`.
 

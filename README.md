@@ -5,7 +5,7 @@ Visit [The Igloo](https://theigloo.io/) for JiberishUI.
 
 You can access this addon in game with the command /ji or /jiberishicons
 
-The current candidate includes WoW Forever beta compatibility for client 1.60.1 / Interface 16001, alongside the existing Retail and Classic compatibility entries. See [candidate testing notes](RELEASE-CANDIDATE.md) for verified checks and remaining in-game acceptance.
+Version 1.4.7 includes WoW Forever beta compatibility for client 1.60.1 / Interface 16001, alongside the existing Retail and Classic compatibility entries. See [validation notes](RELEASE-CANDIDATE.md) for automated checks and the in-game test checklist.
 
 Check the screenshots for how to use the addon and get some inspiration for your setup!
 
