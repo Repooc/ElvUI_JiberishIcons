@@ -28,12 +28,15 @@ local function fixture(loaded, client)
 	env.InCombatLockdown = function() return state.combat end
 	env.WOW_PROJECT_ID, env.WOW_PROJECT_MAINLINE = 1, 1
 	env.C_AddOns = {
-		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.4.6' end,
+		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.5.0-rc.4' end,
 		IsAddOnLoaded = function(name) return (name == 'EllesmereUIUnitFrames' and state.loaded) or state.addons[name] end,
 	}
 	if client then
 		env.WOW_PROJECT_ID = 2 -- Exercise the non-Mainline path.
-		env.issecretvalue = nil
+		if client ~= 'forever' then env.issecretvalue = nil end
+		if client == 'forever' then
+			env.GetBuildInfo = function() return '1.60.1', '70009', 'Sep 28 2026', 16001 end
+		end
 		env.C_AddOns.GetAddOnEnableState = function(name, character)
 			equal(character, 'Tester')
 			return env.C_AddOns.IsAddOnLoaded(name) and 2 or 0
@@ -389,6 +392,15 @@ test('SUF reverses icons and class portraits, and restores normal orientation', 
 	controls.icon.args.reverse.set(nil, true); equal(target.classIcon.icon.coords[1], 0.25)
 	controls.portrait.args.reverse.set(nil, false); equal(target.portrait.coords[1], 0.125)
 	controls.icon.args.reverse.set(nil, false); equal(target.classIcon.icon.coords[1], 0.125)
+	f.env.UnitRace = function() return 'Undead', 'Scourge' end
+	f.JI.db.suf.target.portrait.style = 'fabledazeroth'
+	f.JI.db.suf.target.icon.style = 'fabledregalia'
+	f.JI:UpdateSUF()
+	expect(target.portrait.path:find('Media\\Race\\fabledazeroth', 1, true))
+	equal(target.portrait.coords[1], 0.875)
+	expect(target.classIcon.icon.path:find('Media\\Class\\fabledregalia', 1, true))
+	f.world.target.class = f.secret
+	f.JI:UpdateSUF(); equal(target.portrait.path, '')
 end)
 
 test('ElvUI portrait reversal and existing reverse tags render the same atlas cell', function()
@@ -410,6 +422,8 @@ test('ElvUI portrait reversal and existing reverse tags render the same atlas ce
 	f.JI:BuildElvUITags()
 	expect(tags['jiberish:class:fabled']('target', nil, '32'):find(':128:256:0:128|t', 1, true))
 	expect(tags['jiberish:class:fabled:reverse']('target', nil, '32'):find(':256:128:0:128|t', 1, true))
+	expect(tags['jiberish:class:fabledcore']('target', nil, '32'):find(':32:32:0:0:2048:2048:256:512:0:256|t', 1, true))
+	expect(tags['jiberish:class:fabledcore:reverse']('target', nil, '32'):find(':2048:2048:512:256:0:256|t', 1, true))
 end)
 
 local function checkChat(f)
@@ -432,6 +446,18 @@ local function checkChat(f)
 	chat:AddMessage(message); expect(received:find(':256:128:0:128|t', 1, true))
 	f.JI.Options.args.chat.args.reverse.set(nil, false)
 	chat:AddMessage(message); expect(received:find(':128:256:0:128|t', 1, true))
+	f.JI.db.chat.style = 'fabledcore'
+	chat:AddMessage(message); expect(received:find(':2048:2048:256:512:0:256|t', 1, true))
+	f.JI.Options.args.chat.args.reverse.set(nil, true)
+	chat:AddMessage(message); expect(received:find(':2048:2048:512:256:0:256|t', 1, true))
+	f.JI.Options.args.chat.args.reverse.set(nil, false)
+	f.env.GetPlayerInfoByGUID = function() return 'Mage', 'MAGE', 'Undead', 'Scourge' end
+	f.JI.db.chat.style = 'fabledazeroth'
+	chat:AddMessage(message)
+	expect(received:find('Media\\Race\\fabledazeroth', 1, true))
+	expect(received:find(':2048:2048:1792:2048:0:256|t', 1, true))
+	f.env.GetPlayerInfoByGUID = function() return 'Mage', 'MAGE' end
+	chat:AddMessage(message); equal(received, message)
 	if f.env.issecretvalue then
 		chat:AddMessage(f.secret); equal(received, f.secret)
 	end
@@ -444,7 +470,7 @@ end)
 for _, client in ipairs({'modern', 'legacy'}) do
 	test(client..' Classic APIs support initialization, standalone options and Chat reversal', function()
 		local f = fixture(false, client)
-		equal(f.JI.Version, '1.4.6')
+		equal(f.JI.Version, '1.5.0-rc.4')
 		expect(not f.JI:IsAddOnEnabled('ShadowedUnitFrames'))
 		f.state.addons.ShadowedUnitFrames = true
 		expect(f.JI:IsAddOnEnabled('ShadowedUnitFrames'))
@@ -456,5 +482,154 @@ for _, client in ipairs({'modern', 'legacy'}) do
 		checkChat(f)
 	end)
 end
+
+test('Fabled packs register independently and race lookup covers every atlas cell', function()
+	local f = fixture()
+	equal(f.JI.mergedStylePacks.class.styles.fabledregalia.name, 'Fabled Regalia')
+	equal(f.JI.mergedStylePacks.race.styles.fabledazeroth.name, 'Fabled Azeroth')
+	equal(f.JI.mergedStylePacks.class.styles.fabledazeroth, nil)
+	equal(#f.JI.dataHelper.raceOrder, 26)
+	local cells = {}
+	for _, entry in ipairs(f.JI.dataHelper.raceOrder) do
+		local icon, path = f.JI:GetIdentityIcon('MAGE', entry[1], 'fabledazeroth')
+		expect(icon); expect(path:find('Media\\Race\\fabledazeroth', 1, true))
+		expect(not cells[icon.texString]); cells[icon.texString] = true
+		for _, coordinate in ipairs(icon.texCoords) do expect(coordinate >= 0 and coordinate <= 1) end
+	end
+	equal(f.JI:GetIdentityIcon('MAGE', 'Earthen', 'fabledazeroth'), f.JI.dataHelper.race.EARTHENDWARF)
+	equal(f.JI:GetIdentityIcon('MAGE', 'Undead', 'fabledazeroth'), f.JI.dataHelper.race.SCOURGE)
+	equal(f.JI:GetIdentityIcon('MAGE', 'Haranir', 'fabledazeroth').texString, '128:256:384:512')
+	equal(f.JI:GetIdentityIcon('MAGE', nil, 'fabledazeroth'), nil)
+	equal(f.JI:GetIdentityIcon('MAGE', f.secret, 'fabledazeroth'), nil)
+	local values = f.JI.Options.args.ellesmereui.args.target.args.style.values()
+	equal(values.fabledregalia, 'Fabled Regalia'); expect(values.fabledazeroth)
+	expect(f.JI.Options.args.StylePacks.args.RaceTab.args.fabledazeroth)
+end)
+
+test('Ellesmere switches race cells on identity changes and hides restricted races', function()
+	local f = fixture()
+	local target = f.frame('target', 'MAGE')
+	f.ns.frames = { target = target }
+	local race = 'Scourge'
+	f.env.UnitRace = function() return 'Race', race end
+	local db = f.JI.db.ellesmereui.target.icon
+	db.enable, db.style = true, 'fabledazeroth'
+	f.JI:SetupEllesmereUI(); f.flush()
+	equal(f.icon(target).coords[1], 0.875)
+	expect(f.icon(target).path:find('Media\\Race\\fabledazeroth', 1, true))
+	race = 'Haranir'; f.ns.Engine.RepaintAll(target)
+	equal(f.icon(target).coords[1], 0.125); equal(f.icon(target).coords[2], 0.375)
+	db.reverse = true; f.ns.Engine.RepaintAll(target)
+	equal(f.icon(target).coords[1], 0.25)
+	race = f.secret; f.ns.Engine.RepaintAll(target); expect(not f.icon(target):IsShown())
+	race = nil; f.ns.Engine.RepaintAll(target); expect(not f.icon(target):IsShown())
+	race = 'Human'; f.ns.Engine.RepaintAll(target); expect(f.icon(target):IsShown())
+	db.style = 'fabledregalia'; f.JI:UpdateEllesmereUI()
+	expect(f.icon(target).path:find('Media\\Class\\fabledregalia', 1, true))
+end)
+
+test('Blizzard race icon and class portrait can select separate packs', function()
+	local f = fixture(); f.load('Core/Blizzard.lua')
+	local target = f.frame('target'); target.unit = 'target'; target.portrait = target:CreateTexture()
+	f.env.TargetFrame = target
+	f.env.UnitRace = function() return 'Race', 'Vulpera' end
+	f.JI:SetupBlizzardFrames()
+	local db = f.JI.db.blizzard.target
+	db.icon.enable, db.icon.style = true, 'fabledazeroth'
+	db.portrait.enable, db.portrait.style = true, 'fabledregalia'
+	f.JI:UpdateMedia()
+	expect(target.classIcon.icon.path:find('Media\\Race\\fabledazeroth', 1, true))
+	equal(target.classIcon.icon.coords[1], 0.875); equal(target.classIcon.icon.coords[2], 0.25)
+	expect(target.classPortrait.portrait.path:find('Media\\Class\\fabledregalia', 1, true))
+	equal(target.classPortrait.portrait.coords[1], 0.125)
+end)
+
+test('Missing race texture falls back to the class texture and class coordinates together', function()
+	local f = fixture()
+	f.JI.mergedStylePacks.race.styles.fabledazeroth.path = 'missing\\'
+	f.JI:ClearIconStyleCache()
+	local icon, path, textureSize = f.JI:GetIdentityIcon('MAGE', 'Scourge', 'fabledazeroth')
+	equal(icon, f.JI.dataHelper.class.MAGE)
+	equal(path, f.JI.defaultStylePacks.class.path..'fabled')
+	equal(textureSize, 1024)
+	expect(f.JI:GetIconMarkup(icon, path, 32, false, textureSize):find(':1024:1024:128:256:0:128|t', 1, true))
+end)
+
+test('Blizzard Apply To All can select and enable race portraits', function()
+	local f = fixture()
+	local controls = f.JI.Options.args.blizzard.args.general.args.portrait.args
+	local info = {'blizzard', 'general', 'portrait', 'style'}
+	controls.style.set(info, 'fabledazeroth')
+	equal(controls.style.get(info), 'fabledazeroth')
+	controls.confirmStyle.func(info)
+	for _, settings in pairs(f.JI.db.blizzard) do equal(settings.portrait.style, 'fabledazeroth') end
+	info[4] = 'enable'
+	controls.enable.set(info, 'enable'); controls.confirmEnable.func(info)
+	for _, settings in pairs(f.JI.db.blizzard) do equal(settings.portrait.enable, true) end
+end)
+
+test('ElvUI race tags support size, reversal and unavailable identity', function()
+	local f = fixture(); f.state.addons.ElvUI = true
+	local tags = {}; local E = { UnitFrames = { PortraitUpdate = function() end } }
+	function E:AddTag(name, _, fn) tags[name] = fn end
+	function E:AddTagInfo() end
+	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua')
+	f.frame('target'); local race = 'Haranir'
+	f.env.UnitRace = function() return 'Race', race end
+	f.JI:BuildElvUITags()
+	local normal = tags['jiberish:race:fabledazeroth']
+	expect(normal('target', nil, '48'):find(':48:48:0:0:2048:2048:256:512:768:1024|t', 1, true))
+	expect(tags['jiberish:race:fabledazeroth:reverse']('target', nil, '48'):find(':512:256:768:1024|t', 1, true))
+	race = f.secret; equal(normal('target'), nil)
+	race = 'UnknownRace'; equal(normal('target'), nil)
+end)
+
+test('Forever beta supports race icons and chat with modern APIs on a non-Mainline client', function()
+	local f = fixture(true, 'forever')
+	equal(select(4, f.env.GetBuildInfo()), 16001)
+	local target = f.frame('target'); f.ns.frames = {target = target}
+	f.JI.db.ellesmereui.target.icon.enable = true
+	f.JI.db.ellesmereui.target.icon.style = 'fabledazeroth'
+	f.env.UnitRace = function() return 'Night Elf', 'NightElf' end
+	f.JI:SetupEllesmereUI(); f.flush()
+	expect(f.icon(target):IsShown()); equal(f.icon(target).coords[1], 0.25)
+	f.env.UnitRace = function() return 'Restricted', f.secret end
+	f.ns.Engine.RepaintAll(target); expect(not f.icon(target):IsShown())
+	checkChat(f)
+end)
+
+test('Forever skips enabled but unloaded optional integrations', function()
+	local f = fixture(false, 'forever')
+	f.env.C_AddOns.GetAddOnEnableState = function() return 2 end
+	-- Init cached the API at load, so reload it with an enabled-only client state.
+	f.load('Init.lua', 'ElvUI_JiberishIcons', {})
+	expect(not f.JI:IsAddOnEnabled('ElvUI'))
+	expect(not f.JI:IsAddOnEnabled('EllesmereUIUnitFrames'))
+	f.state.addons.ElvUI = true; expect(f.JI:IsAddOnEnabled('ElvUI'))
+end)
+
+test('HD packs keep normalized cells and scale markup/previews without changing older packs', function()
+	local f = fixture()
+	for _, style in ipairs({'fabledcore', 'fabledregalia', 'fabledazeroth'}) do
+		local icon, path, size = f.JI:GetIdentityIcon('MAGE', 'Haranir', style)
+		equal(size, 2048)
+		local left, right, top, bottom = icon.texString:match('^(%d+):(%d+):(%d+):(%d+)$')
+		local markup = f.JI:GetIconMarkup(icon, path, 128, false, size)
+		expect(markup:find(':128:128:0:0:2048:2048:', 1, true))
+		equal(f.JI:GetIconTexString(icon.texString, false, size), string.format('%d:%d:%d:%d', left*2, right*2, top*2, bottom*2))
+		equal(f.JI:GetIconTexString(icon.texString, true, size), string.format('%d:%d:%d:%d', right*2, left*2, top*2, bottom*2))
+		equal(icon.texCoords[1], left/1024)
+	end
+	local groups = f.JI.Options.args.StylePacks.args
+	expect(groups.ClassTab.args.fabledcore.args.icons.name():find(':2048:2048:', 1, true))
+	expect(groups.ClassTab.args.fabledregalia.args.icons.name():find(':2048:2048:', 1, true))
+	expect(groups.RaceTab.args.fabledazeroth.args.HARANIR.name:find(':2048:2048:256:512:768:1024|t', 1, true))
+	for _, style in ipairs({'fabled', 'fableddimension', 'fabledmyth', 'fabledpixels', 'fabledpixelsv2', 'fabledrealm', 'fabledrealmv2', 'intothevoid'}) do
+		local oldIcon, oldPath, oldSize = f.JI:GetIdentityIcon('MAGE', nil, style)
+		equal(oldSize, 1024)
+		expect(f.JI:GetIconMarkup(oldIcon, oldPath, 128, false, oldSize):find(':1024:1024:128:256:0:128|t', 1, true))
+		equal(oldIcon.texString, '128:256:0:128')
+	end
+end)
 
 print(passed..' integration tests passed')

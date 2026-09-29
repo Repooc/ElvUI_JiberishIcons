@@ -1,5 +1,4 @@
 local JI = unpack(ElvUI_JiberishIcons)
-local classInfo = JI.dataHelper.class
 local cachedPortraits, cachedIcons = {}, {}
 
 local INVERSE = {
@@ -21,16 +20,9 @@ local function UpdateIcon(frame)
 	local db = JI.db.suf[frame.unitType]
 
 	if db then
-		local _, class = UnitClass(frame.unit)
-		local icon = classInfo[class]
-		local style = db.icon.style
-		local mergedStylePacks = JI.mergedStylePacks.class
-		local path = (mergedStylePacks.styles[style] and mergedStylePacks.styles[style].path) or mergedStylePacks.path
-		local fullPath = format('%s%s', path, style)
+		local icon, fullPath = JI:GetUnitIcon(frame.unit, db.icon.style)
 
-		if not JI:IsValidTexturePath(fullPath) then fullPath = format('%s%s', mergedStylePacks.path, 'fabled') end
-
-		if icon and UnitIsPlayer(frame.unit) and not frame.unit ~= 'pet' then
+		if icon and frame.unit ~= 'pet' then
 			--* Update Icon Holder Frame
 			frame.classIcon:SetSize(db.icon.size, db.icon.size)
 			frame.classIcon:ClearAllPoints()
@@ -113,19 +105,11 @@ function ClassPortrait:Update(frame)
 
 	if type == 'class' then
 		local classToken = frame:UnitClassToken()
-		if classToken then
+		if (not issecretvalue or not issecretvalue(classToken)) and classToken then
 			local db = JI.db.suf[frame.unitType]
 			if db.portrait.enable then
-				local icon = classInfo[classToken]
+				local icon, fullPath = JI:GetUnitIcon(frame.unit, db.portrait.style, classToken)
 				if icon then
-					local mergedStylePacks = JI.mergedStylePacks.class
-					local style = db.portrait.style
-					local path = (mergedStylePacks.styles[style] and mergedStylePacks.styles[style].path) or mergedStylePacks.path
-					local fullPath = format('%s%s', path, style)
-
-					--* Fallback to Fabled if it can't find the texture
-					if not JI:IsValidTexturePath(fullPath) then fullPath = format('%s%s', mergedStylePacks.path, 'fabled') end
-
 					frame.portrait:SetTexture(fullPath)
 					frame.portrait:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.portrait.reverse))
 				else

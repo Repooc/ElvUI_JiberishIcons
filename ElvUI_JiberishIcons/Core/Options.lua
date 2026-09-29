@@ -170,10 +170,12 @@ local function classIconStyleList()
 	for iconStyle, data in next, JI.mergedStylePacks.class.styles do
 		classIconStyleList[iconStyle] = data.name
 	end
+	for iconStyle, data in pairs(JI.mergedStylePacks.race.styles) do
+		classIconStyleList[iconStyle] = data.name..' (Race)'
+	end
 
 	return classIconStyleList
 end
-local displayString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 local AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' }
 
 local function AddReverseToggle(group, getSettings, update)
@@ -217,9 +219,12 @@ for iconStyle, data in next, classStyleInfo.styles do
 
 	local classTextureString = ''
 	for _, iconData in next, classInfo do
-		classTextureString = classTextureString..format(displayString, classStyleInfo.path, iconStyle, '48', '48', iconData.texString)
+		classTextureString = classTextureString..JI:GetIconMarkup(iconData, classStyleInfo.path..iconStyle, 48, false, data.textureSize)
 	end
 	ClassGroup.args.icons = ACH:Description(function() return classTextureString end, 1)
+	if data.description then
+		ClassGroup.args.description = ACH:Description(data.description..'\n'..(data.source or ''), 98)
+	end
 
 	if data.artist and data.artist ~= '' then
 		ClassGroup.args.credit = ACH:Description(format('|cffFFD100%s |r%s%s\n%s|r', L["Made by"], JI:IsAddOnEnabled('ElvUI') and _G.ElvUI[1].media.hexvaluecolor or '|cff1684d1', data.artist or '', data.site or ''), 99)
@@ -227,6 +232,21 @@ for iconStyle, data in next, classStyleInfo.styles do
 end
 
 --! Custom Tab (Style Packs)
+local RaceTab = ACH:Group('Race Styles (Stock)', nil, 1.5)
+StylePacks.args.RaceTab = RaceTab
+for iconStyle, data in pairs(JI.defaultStylePacks.race.styles) do
+	local group = ACH:Group(data.name)
+	RaceTab.args[iconStyle] = group
+	group.args.description = ACH:Description((data.description and data.description..'\n'..(data.source or '')..'\n\n' or '')..
+		'Choose Fabled Azeroth in an icon or portrait Style selector to display the unit\'s race. Faction variants share their race emblem.', 0)
+	for index, entry in ipairs(JI.dataHelper.raceOrder) do
+		local icon = JI.dataHelper.race[entry[1]]
+		group.args[entry[1]] = ACH:Description(JI:GetIconMarkup(icon, JI.defaultStylePacks.race.path..iconStyle,
+			48, false, data.textureSize)..' '..entry[2], index, 'normal')
+	end
+	group.args.credit = ACH:Description(data.artist..'\n'..data.site, 99)
+end
+
 StylePacks.args.Display = ACH:Group(L["Class Styles (Custom)"], nil, 2, nil, function(info) return JI.global.newStyleInfo[info[#info]] end, function(info, value) JI.global.newStyleInfo[info[#info]] = value end)
 StylePacks.args.Display.inline = false
 
@@ -249,7 +269,7 @@ function JI:BuildCustomStylePacks()
 
 		local classTextureString = ''
 		for _, iconData in next, classInfo do
-			classTextureString = classTextureString..format(displayString, data.path, iconStyle, '48', '48', iconData.texString)
+			classTextureString = classTextureString..JI:GetIconMarkup(iconData, data.path..iconStyle, 48, false, data.textureSize)
 		end
 		ClassGroup.args.icons = ACH:Description(function() return classTextureString end, 1)
 
@@ -299,7 +319,7 @@ local chat = ACH:Group(L["Chat"], nil, 20, nil, function(info) return JI.db.chat
 JI.Options.args.chat = chat
 chat.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 chat.args.spacer = ACH:Spacer(2, 'full')
-chat.args.style = ACH:Select(L["Style Selection"], nil, 3, classIconStyleList, nil, nil, function(info) local value = JI.db.chat[info[#info]] return JI.mergedStylePacks.class.styles[value] or 'fabled' end)
+chat.args.style = ACH:Select(L["Style Selection"], nil, 3, classIconStyleList, nil, nil, function(info) local value = JI.db.chat[info[#info]] return JI:GetStyleInfo(value) and value or 'fabled' end)
 AddReverseToggle(chat, function() return JI.db.chat end)
 
 --! Blizzard Frames Tab (BlizzUI)
@@ -314,9 +334,9 @@ blizzard.args.general.args.desc = ACH:Description(ColorText(L["You can use the s
 blizzard.args.general.args.portrait = ACH:Group(L["Portrait"], nil, 2)
 blizzard.args.general.args.portrait.inline = true
 blizzard.args.general.args.portrait.args.enable = ACH:Select(L["Enabled State"], nil, 1, { enable = L["Enabled"], disable = L["Disabled"] }, nil, nil, function(info) return (settingTest[info[#info-3]][info[#info-1]] and settingTest[info[#info-3]][info[#info-1]].enable) and (settingTest[info[#info-3]][info[#info-1]].enable == true and 'enable') or (settingTest[info[#info-3]][info[#info-1]].enable == false and 'disable') or nil end, function(info, value) settingTest[info[#info-3]][info[#info-1]][info[#info]] = (value == 'enable' and true) or (value == 'disable' and false) end)
-blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function() ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
+blizzard.args.general.args.portrait.args.confirmEnable = ACH:Execute(L["Apply To All"], nil, 2, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'enable', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].enable = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return settingTest[info[#info-3]][info[#info-1]].enable == nil end)
 blizzard.args.general.args.portrait.args.spacer = ACH:Spacer(3, 'full')
-blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, function() return classIconStyleList() end, nil, nil, function(info) return (settingTest.portrait and settingTest.portrait.style) and settingTest.portrait.style or nil end, function(info, value) settingTest.portrait[info[#info]] = value end)
+blizzard.args.general.args.portrait.args.style = ACH:Select(L["Style Selection"], nil, 4, function() return classIconStyleList() end, nil, nil, function(info) return settingTest.blizzard.portrait.style end, function(info, value) settingTest.blizzard.portrait.style = value end)
 blizzard.args.general.args.portrait.args.confirmStyle = ACH:Execute(L["Apply To All"], nil, 5, function(info) ApplySettingsToAll(info[#info-3], info[#info-1], 'style', JI.UpdateMedia) settingTest[info[#info-3]][info[#info-1]].style = nil end, nil, L["You are about to select this option for all supported units.\nDo you wish to continue?"], nil, nil, nil, function(info) return not settingTest[info[#info-3]][info[#info-1]].style end)
 
 --* Apply All (Icon)
@@ -466,9 +486,9 @@ suf.args.general.args.icon.args.confirmStyle = ACH:Execute(L["Apply To All"], ni
 
 local function getValidSelectedStyle(style)
 	if not style then return 'fabled' end
-	local mergedClassStyles = JI.mergedStylePacks.class
-	local path = mergedClassStyles.styles[style] and mergedClassStyles.styles[style].path or mergedClassStyles.path
-	local fullPath = format('%s%s', path, style)
+	local data, path = JI:GetStyleInfo(style)
+	if not data then return 'fabled' end
+	local fullPath = (data.path or path)..style
 	if not JI:IsValidTexturePath(fullPath) then style = 'fabled' end
 	return style
 end
@@ -524,7 +544,7 @@ for index, unit in ipairs(JI.dataHelper.ellesmereUnitList) do
 	local group = ACH:Group(ellesmereNames[unit], nil, index, nil,
 		function(info)
 			local value = GetSettings()[info[#info]]
-			if info[#info] == 'style' and not JI.mergedStylePacks.class.styles[value] then return 'fabled' end
+			if info[#info] == 'style' and not JI:GetStyleInfo(value) then return 'fabled' end
 			return value
 		end,
 		function(info, value)

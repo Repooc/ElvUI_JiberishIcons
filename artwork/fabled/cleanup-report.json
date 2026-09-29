@@ -1,0 +1,288 @@
+[
+  {
+    "id": "class_warrior",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "class_paladin",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 19015,
+    "minLight": 114,
+    "maxLight": 228,
+    "maxChroma": 9
+  },
+  {
+    "id": "class_hunter",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 40638,
+    "minLight": 188.33333333333334,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "class_rogue",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 19924,
+    "minLight": 189,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "class_priest",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "class_deathknight",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 10257,
+    "minLight": 104.66666666666667,
+    "maxLight": 223,
+    "maxChroma": 9
+  },
+  {
+    "id": "class_shaman",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 28973,
+    "minLight": 118.33333333333334,
+    "maxLight": 261.33333333333337,
+    "maxChroma": 14
+  },
+  {
+    "id": "class_mage",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 15865,
+    "minLight": 119,
+    "maxLight": 231.33333333333334,
+    "maxChroma": 9
+  },
+  {
+    "id": "class_warlock",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "class_monk",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "class_druid",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 30981,
+    "minLight": 125.66666666666666,
+    "maxLight": 271,
+    "maxChroma": 14
+  },
+  {
+    "id": "class_demonhunter",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 24528,
+    "minLight": 106.66666666666667,
+    "maxLight": 222.66666666666666,
+    "maxChroma": 9
+  },
+  {
+    "id": "class_evoker",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 20623,
+    "minLight": 186.66666666666666,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_human",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 17995,
+    "minLight": 108.33333333333333,
+    "maxLight": 222.66666666666666,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_dwarf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 12665,
+    "minLight": 103.33333333333333,
+    "maxLight": 217.66666666666666,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_nightelf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 24482,
+    "minLight": 116,
+    "maxLight": 223.66666666666666,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_gnome",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 12173,
+    "minLight": 187.33333333333334,
+    "maxLight": 271,
+    "maxChroma": 11
+  },
+  {
+    "id": "race_draenei",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 20008,
+    "minLight": 111,
+    "maxLight": 225,
+    "maxChroma": 9
+  },
+  {
+    "id": "race_worgen",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_orc",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 24999,
+    "minLight": 191,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_scourge",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "black",
+    "removedRimPixels": 32640,
+    "minLight": 0,
+    "maxLight": 20,
+    "maxChroma": 7
+  },
+  {
+    "id": "race_tauren",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_troll",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_bloodelf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 23432,
+    "minLight": 194,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_goblin",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_pandaren",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 23713,
+    "minLight": 192,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_dracthyr",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_voidelf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 30299,
+    "minLight": 211,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_lightforgeddraenei",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 10891,
+    "minLight": 120,
+    "maxLight": 225,
+    "maxChroma": 9
+  },
+  {
+    "id": "race_darkirondwarf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 13835,
+    "minLight": 194,
+    "maxLight": 271,
+    "maxChroma": 8
+  },
+  {
+    "id": "race_kultiran",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 18894,
+    "minLight": 105,
+    "maxLight": 219,
+    "maxChroma": 9
+  },
+  {
+    "id": "race_mechagnome",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_nightborne",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "black",
+    "removedRimPixels": 21508,
+    "minLight": 0,
+    "maxLight": 20,
+    "maxChroma": 7
+  },
+  {
+    "id": "race_highmountaintauren",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 28891,
+    "minLight": 118,
+    "maxLight": 221.66666666666666,
+    "maxChroma": 9
+  },
+  {
+    "id": "race_magharorc",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_zandalaritroll",
+    "method": "Preserved original alpha"
+  },
+  {
+    "id": "race_vulpera",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "checkerboard",
+    "removedRimPixels": 28732,
+    "minLight": 190.33333333333334,
+    "maxLight": 271,
+    "maxChroma": 14
+  },
+  {
+    "id": "race_earthendwarf",
+    "method": "macOS Vision foreground mask and connected neutral-background cleanup",
+    "background": "black",
+    "removedRimPixels": 20303,
+    "minLight": 0,
+    "maxLight": 20,
+    "maxChroma": 7
+  },
+  {
+    "id": "race_haranir",
+    "method": "Preserved original alpha"
+  }
+]

@@ -77,7 +77,7 @@ function JI:MergeStylePacks()
 	if JI.global and JI.global.customPacks and JI.global.customPacks.class and JI.global.customPacks.class.styles then
 		for key, data in pairs(JI.global.customPacks.class.styles) do
 			-- Only add custom styles if they don't already exist in default styles
-			if not JI.mergedStylePacks.class.styles[key] then
+			if not JI:GetStyleInfo(key) then
 				-- Validate the style pack before adding it
 				if JI:ValidateStylePack(data) then
 					JI.mergedStylePacks.class.styles[key] = JI:CopyTable({}, data)
@@ -85,26 +85,24 @@ function JI:MergeStylePacks()
 			end
 		end
 	end
+	JI:ClearIconStyleCache()
 	if JI.UpdateEllesmereUI then JI:UpdateEllesmereUI() end
 end
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 local IsAddOnLoaded = (_G.C_AddOns and _G.C_AddOns.IsAddOnLoaded) or _G.IsAddOnLoaded
-local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-
 function JI:IsAddOnEnabled(addon)
-    if isRetail then --in retail addons can be enabled but not loaded due to being incompatible, so only check for them being loaded instead
-        if IsAddOnLoaded(addon) then
-            return true
-        else
-            return false
-        end
+    -- Enabled addons can still be incompatible or not loaded, including on
+    -- Forever's modern client. Only access an integration after it has loaded.
+    if IsAddOnLoaded then
+        return IsAddOnLoaded(addon) and true or false
     elseif C_AddOns_GetAddOnEnableState then
         return C_AddOns_GetAddOnEnableState(addon, JI.myName) == 2
-    else
+    elseif GetAddOnEnableState then
         return GetAddOnEnableState(JI.myName, addon) == 2
     end
+    return false
 end
 
 function JI:Print(...)

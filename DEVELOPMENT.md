@@ -56,6 +56,7 @@ Run from the repository root with Lua 5.1:
 
 ```sh
 lua5.1 tests/ellesmereui.lua
+lua5.1 tests/acegui-checkbox.lua
 git diff --check
 ```
 
@@ -69,6 +70,12 @@ Classic API fixtures cover modern and legacy addon APIs, opening standalone
 options without SettingsPanel, and chat reversal without the Retail secret API.
 The suite does not simulate WoW's secure execution or GPU rendering, or establish
 that each Classic client has passed in-game testing.
+
+`tests/acegui-checkbox.lua` loads the bundled AceGUI core and actual checkbox
+widget with the old global `SetDesaturation` absent. It covers creation,
+checked/disabled/tristate visuals, clicks, callbacks, sounds, recycling and
+registration over an older widget version. This catches the reported options
+panel failure rather than substituting a mock for the affected widget.
 
 Syntax-check Lua files with `luac -p`; strip a leading UTF-8 BOM in memory when
 checking unchanged vendored libraries, since WoW accepts it but stock Lua 5.1
@@ -103,3 +110,35 @@ does not. Development documentation and tests are excluded from addon packages.
 
 Record completed checks in the pull request. Automated test success does not
 establish that the in-game checklist has passed.
+
+## Fabled Regalia / Fabled Azeroth candidate
+
+See [RELEASE-CANDIDATE.md](RELEASE-CANDIDATE.md) for the new packs' in-game checks
+and candidate status. Generated source artwork stays under `artwork/fabled/`;
+only the two final TGA files belong in the installed addon. The source artwork,
+tools and candidate documents are excluded by `.pkgmeta`.
+
+With Node.js/Sharp and Python/Pillow available, rebuild and verify the assets:
+
+```sh
+node tools/build-fabled.cjs
+python3 tools/verify-fabled.py
+python3 tools/build-fabledcore.py
+python3 tools/verify-fabledcore.py
+lua5.1 tests/ellesmereui.lua
+lua5.1 tests/acegui-checkbox.lua
+python3 tools/package-candidate.py
+```
+
+The artwork verifier independently decodes the TGA files, compares their RGBA
+pixels against the PNGs and individual cells, checks alpha margins and empty
+cells, and checks every class/race coordinate against the addon lookup. The
+local packager reads the TOC version and writes an installable ZIP and checksum
+to ignored `dist/`. It verifies every packaged file against the source, gives
+files ordinary non-executable permissions, and does not push or publish.
+
+Fabled Core's original files and its separate 256px export are documented in
+`artwork/fabledcore/README.md`. Its verifier also checks that every other texture
+remains byte-identical to rc.3. Core uses lossless RLE; Regalia and Azeroth retain
+their existing uncompressed exports. Each 2048px sheet requires 16 MiB of decoded
+RGBA memory before runtime overhead. The other eight older sets stay at 1024px.

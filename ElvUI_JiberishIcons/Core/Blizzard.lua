@@ -1,7 +1,6 @@
 local JI = unpack(ElvUI_JiberishIcons)
 
 local UnitClass, UnitIsPlayer = UnitClass, UnitIsPlayer
-local classInfo = JI.dataHelper.class
 local classStyleInfo = JI.defaultStylePacks.class
 local cachedBlizzardPortraits, cachedBlizzardClassIcons = {}, {}
 local INVERSE = {
@@ -24,19 +23,9 @@ local function UpdateIcon(frame)
 	local db = JI.db.blizzard[unit]
 
 	if db then
-		local _, class = UnitClass(frame.unit)
-		local icon = classInfo[class]
+		local icon, fullPath = JI:GetUnitIcon(frame.unit, db.icon.style)
 
-		if icon and UnitIsPlayer(frame.unit) and not frame.unit ~= 'pet' then
-			local style = db.portrait.style or 'fabled'
-			local mergedClassStyles = JI.mergedStylePacks.class
-			local path = (mergedClassStyles.styles[style] and mergedClassStyles.styles[style].path) or mergedClassStyles.path
-
-			local fullPath = format('%s%s', path, style)
-			if not JI:IsValidTexturePath(fullPath) then
-				--* Fallback to Fabled if it can't find the texture
-				fullPath = format('%s%s', mergedClassStyles.path, 'fabled')
-			end
+		if icon and frame.unit ~= 'pet' then
 
 			--* Update Icon Holder Frame
 			frame.classIcon:SetSize(db.icon.size, db.icon.size)
@@ -87,22 +76,12 @@ local function UpdatePortrait(frame)
 
 	if db then
 		local _, class = UnitClass(frame.unit)
-		local icon = classInfo[class]
-		local showPortrait = icon and db.portrait.enable and UnitIsPlayer(frame.unit)
-
-		local style = db.portrait.style or 'fabled'
-		local mergedClassStyles = JI.mergedStylePacks.class
-		local path = (mergedClassStyles.styles[style] and mergedClassStyles.styles[style].path) or mergedClassStyles.path
-
-		local fullPath = format('%s%s', path, style)
-		if not JI:IsValidTexturePath(fullPath) then
-			--* Fallback to Fabled if it can't find the texture
-			fullPath = format('%s%s', mergedClassStyles.path, 'fabled')
-		end
+		local icon, fullPath = JI:GetUnitIcon(frame.unit, db.portrait.style, class)
+		local showPortrait = icon and db.portrait.enable
 
 		--* Update Background Color
 		local r, g, b, a = unpack(db.portrait.background.color)
-		if db.portrait.background.colorOverride == 2 then
+		if db.portrait.background.colorOverride == 2 and not (issecretvalue and issecretvalue(class)) and class then
 			r, g, b = GetClassColor(class)
 		elseif db.portrait.background.colorOverride == 1 then
 			r, g, b = GetClassColor(select(2, UnitClass('player')))

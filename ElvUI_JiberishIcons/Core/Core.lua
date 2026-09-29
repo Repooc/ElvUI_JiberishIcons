@@ -15,8 +15,9 @@ JI.defaultStylePacks = {
 			},
 			fabledcore = {
 				name = 'Fabled Core',
+				textureSize = 2048,
 				artist = 'Penguin aka Jiberish',
-				site = 'https://jiberishui.com/',
+				site = 'https://theigloo.io/',
 			},
 			fableddimension = {
 				name = 'Fabled Dimension',
@@ -26,7 +27,7 @@ JI.defaultStylePacks = {
 			fabledmyth = {
 				name = 'Fabled Myth',
 				artist = 'Penguin aka Jiberish',
-				site = 'https://jiberishui.com/',
+				site = 'https://theigloo.io/',
 			},
 			fabledpixels = {
 				name = 'Fabled Pixels',
@@ -48,13 +49,34 @@ JI.defaultStylePacks = {
 				artist = 'Handclaw (Recolor by Caith)',
 				site = 'https://handclaw.artstation.com/',
 			},
+			fabledregalia = {
+				name = 'Fabled Regalia',
+				textureSize = 2048,
+				artist = 'JiberishUI',
+				site = 'https://theigloo.io/',
+				description = "Reinterpretations of Blizzard Entertainment's World of Warcraft class crests, referenced from Blizzard's official website.",
+				source = 'https://worldofwarcraft.blizzard.com/en-us/game/classes',
+			},
 			intothevoid = {
 				name = 'Into The VOID',
 				artist = 'Handclaw Icons Reimagined by JiberishUI',
 				site = 'https://handclaw.artstation.com/',
 			},
 		}
-	}
+	},
+	race = {
+		path = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Race\]],
+		styles = {
+			fabledazeroth = {
+				name = 'Fabled Azeroth',
+				textureSize = 2048,
+				artist = 'JiberishUI',
+				site = 'https://theigloo.io/',
+				description = "Reinterpretations of Blizzard Entertainment's World of Warcraft race crests, referenced from Blizzard's official website.",
+				source = 'https://worldofwarcraft.blizzard.com/en-us/game/races',
+			},
+		},
+	},
 }
 
 function JI:ToggleOptions()
