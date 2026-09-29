@@ -28,7 +28,7 @@ local function fixture(loaded, client)
 	env.InCombatLockdown = function() return state.combat end
 	env.WOW_PROJECT_ID, env.WOW_PROJECT_MAINLINE = 1, 1
 	env.C_AddOns = {
-		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.5.0-rc.4' end,
+		GetAddOnMetadata = function(_, key) return key == 'Title' and 'JiberishIcons' or '1.4.7' end,
 		IsAddOnLoaded = function(name) return (name == 'EllesmereUIUnitFrames' and state.loaded) or state.addons[name] end,
 	}
 	if client then
@@ -470,7 +470,7 @@ end)
 for _, client in ipairs({'modern', 'legacy'}) do
 	test(client..' Classic APIs support initialization, standalone options and Chat reversal', function()
 		local f = fixture(false, client)
-		equal(f.JI.Version, '1.5.0-rc.4')
+		equal(f.JI.Version, '1.4.7')
 		expect(not f.JI:IsAddOnEnabled('ShadowedUnitFrames'))
 		f.state.addons.ShadowedUnitFrames = true
 		expect(f.JI:IsAddOnEnabled('ShadowedUnitFrames'))

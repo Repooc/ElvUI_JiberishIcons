@@ -2,7 +2,7 @@
 ## Title: |cff1784d1JiberishUI|r |cff00ccffIcons|r
 ## Author: Repooc, Jiberish
 ## SavedVariables: JiberishIconsDB
-## Version: 1.5.0-rc.4
+## Version: 1.4.7
 ## Notes: Epicizing your UI with Fabled Class and Race Icons
 ## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI, EllesmereUIUnitFrames
 ## DefaultState: Enabled
