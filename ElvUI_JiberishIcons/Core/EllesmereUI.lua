@@ -1,7 +1,6 @@
 local JI = unpack(ElvUI_JiberishIcons)
 local units = JI.dataHelper.ellesmereUnitList
 local supported, frames, records, hookedEngines, hookedFrames = {}, {}, {}, {}, {}
-local texturePaths = {}
 local driver, queued
 local inverse = {
 	TOPLEFT = 'BOTTOMRIGHT', TOP = 'BOTTOM', TOPRIGHT = 'BOTTOMLEFT',
@@ -24,17 +23,6 @@ local function Settings(key)
 	return db and db[key] and db[key].icon
 end
 
-local function TexturePath(style)
-	style = style or 'fabled'
-	if texturePaths[style] then return texturePaths[style] end
-	local packs = JI.mergedStylePacks.class
-	local data = packs.styles[style]
-	local path = data and ((data.path or packs.path)..style)
-	if not path or not JI:IsValidTexturePath(path) then path = packs.path..'fabled' end
-	texturePaths[style] = path
-	return path
-end
-
 local function Paint(frame)
 	local record = records[frame]
 	if not record then return end
@@ -52,12 +40,10 @@ local function Paint(frame)
 	if IsSecret(exists) or not exists then texture:Hide(); return end
 	local player = UnitIsPlayer(unit)
 	if IsSecret(player) or not player then texture:Hide(); return end
-	local _, class = UnitClass(unit)
-	if IsSecret(class) or not class then texture:Hide(); return end
-	local info = JI.dataHelper.class[class]
+	local info, path = JI:GetUnitIcon(unit, settings.style)
 	if not info then texture:Hide(); return end
 
-	texture:SetTexture(TexturePath(settings.style))
+	texture:SetTexture(path)
 	texture:SetTexCoord(JI:GetIconTexCoords(info.texCoords, settings.reverse))
 	texture:Show()
 end
@@ -134,7 +120,7 @@ end
 
 function JI:UpdateEllesmereUI()
 	if not driver then return end
-	wipe(texturePaths)
+	JI:ClearIconStyleCache()
 	local ns = Namespace()
 	HookEngine(ns)
 	if ns and ns.frames then

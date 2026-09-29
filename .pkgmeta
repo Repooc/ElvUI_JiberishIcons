@@ -6,6 +6,10 @@ move-folders:
     ElvUI_JiberishIcons/ElvUI_JiberishIcons: ElvUI_JiberishIcons
 enable-toc-creation: yes
 ignore:
+    - dist
+    - RELEASE-CANDIDATE.md
+    - artwork
+    - tools
     - images
     - tests
     - DEVELOPMENT.md

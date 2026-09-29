@@ -6,6 +6,63 @@ local pairs, gsub = pairs, gsub
 
 local UF = JI:IsAddOnEnabled('ElvUI') and ElvUI[1].UnitFrames or ''
 
+local iconStyles = {}
+local function IsSecret(value)
+	return issecretvalue and issecretvalue(value)
+end
+
+function JI:GetStyleInfo(style)
+	if not style then return end
+	local packs = JI.mergedStylePacks
+	for _, kind in ipairs({ 'class', 'race' }) do
+		local group = packs and packs[kind]
+		if group and group.styles[style] then return group.styles[style], group.path, kind end
+	end
+end
+
+function JI:ClearIconStyleCache()
+	wipe(iconStyles)
+end
+
+-- A texture fallback must also switch its identity/coordinates back to class.
+local function ResolveStyle(style)
+	style = style or 'fabled'
+	if iconStyles[style] then return unpack(iconStyles[style]) end
+	local data, path, kind = JI:GetStyleInfo(style)
+	local fullPath = data and ((data.path or path)..style)
+	local textureSize = data and data.textureSize or 1024
+	if not fullPath or not JI:IsValidTexturePath(fullPath) then
+		fullPath, kind = JI.defaultStylePacks.class.path..'fabled', 'class'
+		textureSize = 1024
+	end
+	iconStyles[style] = { fullPath, kind, textureSize }
+	return fullPath, kind, textureSize
+end
+
+function JI:GetIdentityIcon(class, race, style)
+	local path, kind, textureSize = ResolveStyle(style)
+	local token
+	if kind == 'race' then token = race else token = class end
+	if IsSecret(token) or type(token) ~= 'string' then return nil, path, textureSize end
+	return JI.dataHelper[kind][string.upper(token)], path, textureSize
+end
+
+function JI:GetUnitIcon(unit, style, class)
+	if IsSecret(unit) or type(unit) ~= 'string' then return end
+	if IsSecret(class) then return end
+	local player = UnitIsPlayer(unit)
+	if IsSecret(player) or not player then return end
+	local _, kind = ResolveStyle(style)
+	local race
+	if kind == 'race' then
+		if not UnitRace then return end
+		_, race = UnitRace(unit)
+	elseif class == nil then
+		_, class = UnitClass(unit)
+	end
+	return JI:GetIdentityIcon(class, race, style)
+end
+
 -- Text Gradient by Simpy
 function JI:TextGradient(text, ...)
 	local msg, total = '', utf8len(text)
@@ -74,11 +131,19 @@ function JI:GetIconTexCoords(coords, reverse)
 	return coords[2], coords[1], coords[3], coords[4]
 end
 
-function JI:GetIconTexString(texString, reverse)
-	if not reverse then return texString end
+function JI:GetIconTexString(texString, reverse, textureSize)
+	local scale = (textureSize or 1024) / 1024
+	if not reverse and scale == 1 then return texString end
 	local left, right, top, bottom = texString:match('^([^:]+):([^:]+):([^:]+):([^:]+)$')
 	if not left then return texString end
-	return format('%s:%s:%s:%s', right, left, top, bottom)
+	if reverse then left, right = right, left end
+	return format('%d:%d:%d:%d', left * scale, right * scale, top * scale, bottom * scale)
+end
+
+function JI:GetIconMarkup(icon, path, size, reverse, textureSize)
+	textureSize = textureSize or 1024
+	return format('|T%s:%s:%s:0:0:%d:%d:%s|t', path, size, size, textureSize, textureSize,
+		JI:GetIconTexString(icon.texString, reverse, textureSize))
 end
 
 JI.dataHelper = {
@@ -268,3 +333,32 @@ JI.dataHelper = {
 	},
 	sufUnitList = {'player', 'pet', 'pettarget', 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'party', 'partypet', 'partytarget', 'partytargettarget', 'raid', 'raidpet', 'boss', 'bosstarget', 'maintank', 'maintanktarget', 'mainassist', 'mainassisttarget', 'arena', 'arenatarget', 'arenapet', 'battleground', 'battlegroundtarget', 'battlegroundpet', 'arenatargettarget', 'battlegroundtargettarget', 'maintanktargettarget', 'mainassisttargettarget', 'bosstargettarget'}
 }
+
+-- Canonical coordinates use a 1024px basis. Normalized UVs are resolution
+-- independent; markup converts to each style's actual texture size.
+-- Faction variants use the same race token and therefore the same emblem.
+JI.dataHelper.raceOrder = {
+	{ 'HUMAN', 'Human' }, { 'DWARF', 'Dwarf' }, { 'NIGHTELF', 'Night Elf' },
+	{ 'GNOME', 'Gnome' }, { 'DRAENEI', 'Draenei' }, { 'WORGEN', 'Worgen' },
+	{ 'ORC', 'Orc' }, { 'SCOURGE', 'Undead' }, { 'TAUREN', 'Tauren' },
+	{ 'TROLL', 'Troll' }, { 'BLOODELF', 'Blood Elf' }, { 'GOBLIN', 'Goblin' },
+	{ 'PANDAREN', 'Pandaren' }, { 'DRACTHYR', 'Dracthyr' }, { 'VOIDELF', 'Void Elf' },
+	{ 'LIGHTFORGEDDRAENEI', 'Lightforged Draenei' }, { 'DARKIRONDWARF', 'Dark Iron Dwarf' },
+	{ 'KULTIRAN', 'Kul Tiran' }, { 'MECHAGNOME', 'Mechagnome' }, { 'NIGHTBORNE', 'Nightborne' },
+	{ 'HIGHMOUNTAINTAUREN', 'Highmountain Tauren' }, { 'MAGHARORC', "Mag'har Orc" },
+	{ 'ZANDALARITROLL', 'Zandalari Troll' }, { 'VULPERA', 'Vulpera' },
+	{ 'EARTHENDWARF', 'Earthen' }, { 'HARANIR', 'Haranir' },
+}
+JI.dataHelper.race = {}
+for index, entry in ipairs(JI.dataHelper.raceOrder) do
+	local column, row = (index - 1) % 8, math.floor((index - 1) / 8)
+	local left, right, top, bottom = column / 8, (column + 1) / 8, row / 8, (row + 1) / 8
+	JI.dataHelper.race[entry[1]] = {
+		name = entry[2],
+		texString = format('%d:%d:%d:%d', column * 128, (column + 1) * 128, row * 128, (row + 1) * 128),
+		texCoords = { left, top, left, bottom, right, top, right, bottom },
+	}
+end
+JI.dataHelper.race.UNDEAD = JI.dataHelper.race.SCOURGE
+JI.dataHelper.race.EARTHEN = JI.dataHelper.race.EARTHENDWARF
+JI.dataHelper.race.MAGHAR = JI.dataHelper.race.MAGHARORC

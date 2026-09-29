@@ -5,11 +5,9 @@ if not JI:IsAddOnEnabled('ElvUI') then return end
 local E = unpack(ElvUI)
 local UF = E.UnitFrames
 
-local UnitIsPlayer, UnitClass = UnitIsPlayer, UnitClass
+local UnitIsPlayer = UnitIsPlayer
 local iconMinSize, iconMaxSize = JI.iconMinSize, JI.iconMaxSize
-local classInfo = JI.dataHelper.class
 local classStyleInfo = JI.defaultStylePacks.class
-local classString = '|T%s%s:%s:%s:0:0:1024:1024:%s|t'
 
 local WarningMsgSent = {}
 
@@ -33,53 +31,20 @@ for iconStyle in next, classStyleInfo.styles do
 end
 
 function JI:BuildElvUITags()
-	--! New Format for class icons
-	for iconStyle, data in next, JI.mergedStylePacks.class.styles do
-		local path = data.path or classStyleInfo.path
-		do
-			local tag = format('%s:%s', 'jiberish:class', iconStyle)
-
-			E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
-				if not UnitIsPlayer(unit) then return end
-
-				local size = strsplit(':', args or '')
-				size = tonumber(size)
-				size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
-				local _, class = UnitClass(unit)
-				if E:IsSecretValue(class) then return end
-
-				local icon = classInfo[class]
-				if icon and icon.texString then
-					return format(classString, path, iconStyle, size, size, icon.texString)
-				end
-			end)
-
-			local description = format(L["TAG_HELP"], data.name or '', JI.Title, tag)
-			E:AddTagInfo(tag, JI.Title, description)
-		end
-
-		do
-			local tag = format('%s:%s:reverse', 'jiberish:class', iconStyle)
-
-			E:AddTag(tag, 'UNIT_NAME_UPDATE', function(unit, _, args)
-				if not UnitIsPlayer(unit) then return end
-
-				local size = strsplit(':', args or '')
-				size = tonumber(size)
-				size = (size and (size >= iconMinSize and size <= iconMaxSize)) and size or 64
-				local _, class = UnitClass(unit)
-				if E:IsSecretValue(class) then return end
-				local icon = classInfo[class]
-
-				if icon and icon.texString then
-					local texString = JI:GetIconTexString(icon.texString, true)
-
-					return format(classString, path, iconStyle, size, size, texString)
-				end
-			end)
-
-			local description = format(L["TAG_HELP"], data.name or '', JI.Title, tag)
-			E:AddTagInfo(tag, JI.Title, description)
+	for _, kind in ipairs({ 'class', 'race' }) do
+		for iconStyle, data in pairs(JI.mergedStylePacks[kind].styles) do
+			for _, reverse in ipairs({ false, true }) do
+				local tag = format('jiberish:%s:%s%s', kind, iconStyle, reverse and ':reverse' or '')
+				E:AddTag(tag, 'UNIT_NAME_UPDATE UNIT_PORTRAIT_UPDATE', function(unit, _, args)
+					local size = tonumber(strsplit(':', args or ''))
+					size = (size and size >= iconMinSize and size <= iconMaxSize) and size or 64
+					local icon, path, textureSize = JI:GetUnitIcon(unit, iconStyle)
+					if icon then
+						return JI:GetIconMarkup(icon, path, size, reverse, textureSize)
+					end
+				end)
+				E:AddTagInfo(tag, JI.Title, format(L["TAG_HELP"], data.name or '', JI.Title, tag))
+			end
 		end
 	end
 end
@@ -92,21 +57,12 @@ function JI:PortraitUpdate()
 	local db = JI.db.elvui[frame.unitframeType]
 
 	if db and db.portrait.enable then
-		local _, class = UnitClass(frame.unit)
-		local icon, style = classInfo[class], db.portrait.style or 'fabled'
-
-		local mergedClassStyles = JI.mergedStylePacks.class
-		local path = (mergedClassStyles.styles[style] and mergedClassStyles.styles[style].path) or mergedClassStyles.path
-		local fullPath = format('%s%s', path, style)
-
-		--* Fallback to Fabled if it can't find the texture
-		if not JI:IsValidTexturePath(fullPath) then fullPath = format('%s%s', mergedClassStyles.path, 'fabled') end
-
-		local texCoords = icon and icon.texCoords or { 0, 1, 0, 1 }
+		local icon, fullPath = JI:GetUnitIcon(frame.unit, db.portrait.style)
+		if not icon then element:SetTexture(nil); return end
 
 		--* Update Icon Texture
 		element:SetTexture(fullPath)
-		element:SetTexCoord(JI:GetIconTexCoords(texCoords, db.portrait.reverse))
+		element:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.portrait.reverse))
 
 		if db.portrait.backdrop.enable and element.backdrop then
 			element.backdrop:SetTemplate(db.portrait.backdrop.transparent and 'Transparent', nil, nil, nil, true)
