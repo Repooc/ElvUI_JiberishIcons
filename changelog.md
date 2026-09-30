@@ -1,3 +1,14 @@
+# 1.4.8 — Jiberish Fabled Icons (September 30, 2026)
+
+- Rename the install folder to **JiberishIcons** and the addon to **Jiberish Fabled Icons**. Follow **UPGRADING.md** to keep existing profiles when switching folders.
+- Add **Fabled Specializations**: 40 transparent icons designed for small UI sizes, including the final glowing Holy Paladin tome, Arms Warrior axe, fire-cat Feral, Guardian paw, Mage eyes and Death Knight skulls.
+- Offer specialization icons on supported Blizzard, ElvUI, Shadowed Unit Frames and EllesmereUI frames. Add EllesmereUI Party settings and normal/mirrored ElvUI specialization tags.
+- Support Classic/Forever talent-tree point totals alongside Retail/Mists selected specializations. Unspent or tied personal builds fall back to the Regalia class crest.
+- Inspect nearby targets and party members automatically when needed and allowed. Cache confirmed results for faster retargeting, prioritize the current target, and preserve manual inspection and combat restrictions. An uncached target still requires a server response.
+- Add **Fabled Specializations (Spec)** to Details! with a dedicated atlas that preserves the artwork under its native crops.
+- Add separate opt-in **Blizzard Damage Meter** and **Ellesmere Damage Meters** settings, including class/spec styles, reverse direction and a Blizzard Edit Mode shortcut. Preserve native layout, sizing, visibility and spell icons; restore native player icons when disabled.
+- Keep existing class/race packs, profiles and external style compatibility. Ship only required addon files and licenses, with automated release validation.
+
 v1.4.7 9/29/26
 
 • [Feature] Add Fabled Regalia: 13 class crests inspired by Blizzard Entertainment's official World of Warcraft class symbols.

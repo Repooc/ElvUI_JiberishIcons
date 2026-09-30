@@ -1,6 +1,6 @@
 -- Exercise the bundled AceGUI constructor/acquire/click/recycle path without
 -- Blizzard's old global SetDesaturation helper. Run with Lua 5.1 from repo root.
-local root = 'ElvUI_JiberishIcons/Libs/Ace3/'
+local root = 'JiberishIcons/Libs/Ace3/'
 local function equal(actual, expected) assert(actual == expected, tostring(actual)..' ~= '..tostring(expected)) end
 local env = setmetatable({}, {__index = _G})
 env._G = env

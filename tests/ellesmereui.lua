@@ -1,13 +1,14 @@
 -- Run from the repository root: lua5.1 tests/ellesmereui.lua
 -- Loads the real addon defaults/options, AceDB and adapter with a small WoW UI mock.
-local root = 'ElvUI_JiberishIcons/'
+local root = 'JiberishIcons/'
 local passed = 0
 local function expect(value, message) assert(value, message or 'expectation failed') end
 local function equal(actual, expected) assert(actual == expected, tostring(actual)..' ~= '..tostring(expected)) end
 
-local function fixture(loaded, client)
+local function fixture(loaded, client, saved)
 	local env = setmetatable({}, { __index = _G })
 	env._G = env
+	env.JiberishIconsDB = saved
 	local world, timers, objects = {}, {}, {}
 	local secret = {}
 	local state = { combat = false, loaded = loaded ~= false, addons = {} }
@@ -59,6 +60,11 @@ local function fixture(loaded, client)
 		self.scripts[event] = function(...) if old then old(...) end; fn(...) end
 	end
 	function methods:RegisterEvent(event) self.events[event] = true end
+	function methods:GetAttribute(key) return self.attributes and self.attributes[key] end
+	function methods:SetAttribute(key, value)
+		self.attributes = self.attributes or {}; self.attributes[key] = value
+		if self.scripts.OnAttributeChanged then self.scripts.OnAttributeChanged(self, key, value) end
+	end
 	function methods:Show()
 		local changed = not self.shown
 		self.shown = true
@@ -68,8 +74,13 @@ local function fixture(loaded, client)
 	function methods:SetShown(shown) if shown then self:Show() else self:Hide() end end
 	function methods:IsShown() return self.shown and (not self.parent or self.parent:IsShown()) end
 	function methods:SetTexture(path) self.path = path end
-	function methods:GetTexture() return self.path and not self.path:find('missing', 1, true) and self.path or nil end
+	function methods:GetTexture()
+		if type(self.path) == 'number' then return self.path end
+		return self.path and not self.path:find('missing', 1, true) and self.path or nil
+	end
 	function methods:SetTexCoord(...) self.coords = {...} end
+	function methods:GetTexCoord() return unpack(self.coords or {0, 1, 0, 1}) end
+	function methods:SetAtlas(atlas) self.path = 'atlas:'..atlas; self.coords = {0, 1, 0, 1} end
 	function methods:SetColorTexture(...) self.color = {...} end
 	function methods:AddMaskTexture(mask) self.mask = mask end
 	function methods:EnableMouse(on) self.mouse = on end
@@ -94,6 +105,7 @@ local function fixture(loaded, client)
 	function methods:CreateTexture() return object('Texture', self) end
 	function methods:CreateMaskTexture() return object('Mask', self) end
 	env.hooksecurefunc = function(owner, name, fn)
+		if type(owner) == 'string' then owner, name, fn = env, owner, name end
 		local original = owner[name]
 		owner[name] = function(...) original(...); fn(...) end
 	end
@@ -113,18 +125,21 @@ local function fixture(loaded, client)
 	for _, lib in ipairs({ 'AceConfig-3.0', 'AceConfigDialog-3.0', 'AceDBOptions-3.0', 'AceConfigRegistry-3.0', 'AceGUI-3.0' }) do
 		env.LibStub:NewLibrary(lib, 1)
 	end
-	load('Init.lua', 'ElvUI_JiberishIcons', {})
+	load('Init.lua', 'JiberishIcons', {})
 	load('Locales/enUS.lua')
 	load('Core/API.lua')
+	load('Core/Specializations.lua')
+	load('Core/Inspection.lua')
 	load('Core/Defaults/Profile.lua')
 	load('Core/Defaults/Global.lua')
-	load('Core/Core.lua')
+	load('Core/Core.lua', 'JiberishIcons')
 	-- Formatting unrelated to this adapter uses WoW's UTF8 helpers.
 	JI.TextGradient = function(_, value) return value end
 	JI.StripString = function(_, value) return value end
 	JI.UpdateMedia = function() end
-	load('Core/Options.lua', 'ElvUI_JiberishIcons')
+	load('Core/Options.lua', 'JiberishIcons')
 	load('Core/EllesmereUI.lua')
+	load('Core/DamageMeters.lua')
 	JI:BuildProfile()
 	local ns = { Engine = { Attach = function() end, AttachPolled = function() end, RepaintAll = function() end } }
 	if state.loaded then env.EllesmereUI = { _ModuleNS = { EllesmereUIUnitFrames = ns } } end
@@ -158,7 +173,7 @@ end
 
 test('real AceDB defaults and existing integration options', function()
 	local f = fixture()
-	for _, key in ipairs(f.JI.dataHelper.ellesmereUnitList) do
+	for _, key in ipairs(f.JI.dataHelper.ellesmereSettingList) do
 		local db = f.JI.db.ellesmereui[key].icon
 		equal(db.enable, false); equal(db.style, 'fabled'); equal(db.size, 32)
 		equal(db.anchorPoint, 'RIGHT'); equal(db.xOffset, 0); equal(db.yOffset, 0)
@@ -248,7 +263,7 @@ test('settings controls and Apply to All copy all fields without aliasing', func
 		group.set({key}, value); equal(group.get({key}), value)
 	end
 	group.args.applyAll.func()
-	for _, key in ipairs(f.JI.dataHelper.ellesmereUnitList) do
+	for _, key in ipairs(f.JI.dataHelper.ellesmereSettingList) do
 		local db = f.JI.db.ellesmereui[key].icon
 		equal(db.enable, true); equal(db.style, 'fabledrealm'); equal(db.size, 48)
 		equal(db.anchorPoint, 'TOP'); equal(db.xOffset, 12); equal(db.yOffset, 18)
@@ -478,7 +493,7 @@ for _, client in ipairs({'modern', 'legacy'}) do
 		expect(f.JI.Options.args.ellesmereui.hidden())
 		local opened
 		f.JI.Libs.ACD.Open = function(_, name) opened = name end
-		f.JI:ToggleOptions(); equal(opened, 'ElvUI_JiberishIcons')
+		f.JI:ToggleOptions(); equal(opened, 'JiberishIcons')
 		checkChat(f)
 	end)
 end
@@ -602,7 +617,7 @@ test('Forever skips enabled but unloaded optional integrations', function()
 	local f = fixture(false, 'forever')
 	f.env.C_AddOns.GetAddOnEnableState = function() return 2 end
 	-- Init cached the API at load, so reload it with an enabled-only client state.
-	f.load('Init.lua', 'ElvUI_JiberishIcons', {})
+	f.load('Init.lua', 'JiberishIcons', {})
 	expect(not f.JI:IsAddOnEnabled('ElvUI'))
 	expect(not f.JI:IsAddOnEnabled('EllesmereUIUnitFrames'))
 	f.state.addons.ElvUI = true; expect(f.JI:IsAddOnEnabled('ElvUI'))
@@ -630,6 +645,1029 @@ test('HD packs keep normalized cells and scale markup/previews without changing 
 		expect(f.JI:GetIconMarkup(oldIcon, oldPath, 128, false, oldSize):find(':1024:1024:128:256:0:128|t', 1, true))
 		equal(oldIcon.texString, '128:256:0:128')
 	end
+end)
+
+test('specialization pack exposes 40 distinct cells, including Devourer, with no chat entry', function()
+	local f = fixture()
+	equal(#f.JI.dataHelper.specOrder, 40)
+	local seen = {}
+	for _, entry in ipairs(f.JI.dataHelper.specOrder) do
+		local icon, path, size = f.JI:GetIdentityIcon(entry[3], nil, 'fabledspecializations', entry[1])
+		expect(icon and not seen[icon.texString]); seen[icon.texString] = true
+		expect(path:find('Media\\Spec\\fabledspecializations', 1, true)); equal(size, 2048)
+	end
+	local devourer, path, size = f.JI:GetIdentityIcon('DEMONHUNTER', nil, 'fabledspecializations', 1480)
+	equal(devourer.texString, '896:1024:512:640')
+	expect(f.JI:GetIconMarkup(devourer, path, 32, true, size):find(':2048:1792:1024:1280|t', 1, true))
+	equal(f.JI:GetIdentityIcon('MAGE', nil, 'fabledspecializations', 1480), nil)
+	equal(f.JI:GetIdentityIcon('MAGE', nil, 'fabledspecializations', f.secret), nil)
+	local values = f.JI.Options.args.ellesmereui.args.player.args.style.values()
+	equal(values.fabledspecializations, 'Fabled Specializations (Spec)')
+	equal(f.JI.Options.args.chat.args.style.values().fabledspecializations, nil)
+	expect(f.JI.Options.args.StylePacks.args.SpecTab.args.fabledspecializations.args['1480'])
+	equal(f.env.JiberishFabledIcons, f.env.JiberishIcons)
+end)
+
+test('player specialization supports modern and legacy APIs, self aliases and restricted results', function()
+	local f = fixture(); f.world.player.class = 'MAGE'
+	local index, spec = 2, 63
+	f.env.C_SpecializationInfo = {
+		GetSpecialization = function() return index end,
+		GetSpecializationInfo = function(i) equal(i, 2); return spec end,
+	}
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.specialization[63])
+	f.frame('target', 'MAGE'); f.env.UnitIsUnit = function(unit) return unit == 'target' end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.specialization[63])
+	index = f.secret; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	index = 2; spec = f.secret; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	spec = 0; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	spec = 64
+	f.env.GetSpecialization = f.env.C_SpecializationInfo.GetSpecialization
+	f.env.GetSpecializationInfo = f.env.C_SpecializationInfo.GetSpecializationInfo
+	f.env.C_SpecializationInfo = nil
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.specialization[64])
+	f.env.GetSpecialization = nil; f.env.GetSpecializationInfo = nil
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	local count = #f.objects; f.JI:SetupSpecializationIcons(); equal(#f.objects, count)
+end)
+
+test('target specialization uses available data and hides unknown, stale-class and secret results', function()
+	local f = fixture(); f.frame('target', 'SHAMAN')
+	local inspected, cached, reads = 264, 262, 0
+	f.env.C_SpecializationInfo = {GetInspectSpecialization = function() return inspected end}
+	local raid = f.env.LibStub:NewLibrary('LibOpenRaid-1.0', 1)
+	raid.GetUnitInfo = function() reads = reads + 1; return {specId = cached} end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.specialization[264]); equal(reads, 0)
+	inspected = 0
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.specialization[262]); equal(reads, 1)
+	inspected = f.secret; equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil); equal(reads, 1)
+	inspected = 0; cached = f.secret; equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+	cached = 63; equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+	cached = 264; f.env.UnitName = function() return f.secret end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+	f.world.target.player = false; equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+end)
+
+test('missing specialization artwork falls back to class art and class coordinates together', function()
+	local f = fixture(); f.frame('target', 'MAGE')
+	f.JI.mergedStylePacks.spec.styles.fabledspecializations.path = 'missing\\'
+	f.JI:ClearIconStyleCache()
+	local icon, path, size = f.JI:GetUnitIcon('target', 'fabledspecializations')
+	equal(icon, f.JI.dataHelper.class.MAGE); equal(size, 1024)
+	equal(path, f.JI.defaultStylePacks.class.path..'fabled')
+end)
+
+test('specialization events repaint Ellesmere icons in combat without moving frames', function()
+	local f = fixture(); local player = f.frame('player', 'MAGE'); f.ns.frames = {player = player}
+	local spec = 63
+	f.env.C_SpecializationInfo = {GetSpecialization = function() return 1 end, GetSpecializationInfo = function() return spec end}
+	local db = f.JI.db.ellesmereui.player.icon; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.flush(); f.JI:SetupSpecializationIcons()
+	local count = #f.objects; f.JI:SetupSpecializationIcons(); equal(#f.objects, count)
+	equal(f.icon(player).coords[1], .375)
+	f.state.combat = true; spec = 64; f.fire('PLAYER_SPECIALIZATION_CHANGED', 'player')
+	equal(f.icon(player).coords[1], .5); expect(f.icon(player):IsShown())
+	spec = 0; f.fire('PLAYER_TALENT_UPDATE'); expect(not f.icon(player):IsShown())
+	spec = 62; f.fire('PLAYER_TALENT_UPDATE'); expect(f.icon(player):IsShown()); equal(f.icon(player).coords[1], .25)
+end)
+
+test('Blizzard spec icons and portraits refresh during combat and hide unavailable specs', function()
+	local f = fixture(); f.load('Core/Blizzard.lua')
+	local target = f.frame('target', 'MAGE'); target.unit = 'target'; target.portrait = target:CreateTexture(); f.env.TargetFrame = target
+	local spec = 63; f.env.GetInspectSpecialization = function() return spec end
+	f.JI:SetupBlizzardFrames()
+	local db = f.JI.db.blizzard.target
+	db.icon.enable = true; db.icon.style = 'fabledspecializations'
+	db.portrait.enable = true; db.portrait.style = 'fabledspecializations'; db.portrait.reverse = true
+	f.JI:UpdateMedia(); equal(target.classIcon.icon.coords[1], .375)
+	f.state.combat = true; spec = 64; f.JI:RefreshSpecializationIcons()
+	equal(target.classIcon.icon.coords[1], .5); equal(target.classPortrait.portrait.coords[1], .625)
+	spec = 0; f.JI:RefreshSpecializationIcons()
+	expect(not target.classIcon:IsShown()); expect(not target.classPortrait:IsShown()); expect(target.portrait:IsShown())
+end)
+
+test('ElvUI spec tags and portraits refresh with correct size, reversal and unknown handling', function()
+	local f = fixture(); f.state.addons.ElvUI = true
+	local tags, events = {}, {}; local E = {UnitFrames = {PortraitUpdate = function() end}}
+	function E:AddTag(name, event, fn) tags[name] = fn; events[name] = event end
+	function E:AddTagInfo() end
+	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua')
+	local target = f.frame('target', 'SHAMAN'); target.unit = 'target'; target.unitframeType = 'target'
+	local portrait = target:CreateTexture(); portrait.__owner = target; portrait.useClassBase = true
+	local spec = 264; f.env.GetInspectSpecialization = function() return spec end
+	local db = f.JI.db.elvui.target.portrait; db.enable = true; db.style = 'fabledspecializations'
+	E.UnitFrames.PortraitUpdate(portrait); equal(portrait.coords[1], .375)
+	f.JI:BuildElvUITags(); equal(events['jiberish:spec:fabledspecializations'], .5)
+	expect(tags['jiberish:spec:fabledspecializations']('target', nil, '32'):find(':2048:2048:768:1024:768:1024|t', 1, true))
+	expect(tags['jiberish:spec:fabledspecializations:reverse']('target', nil, '32'):find(':1024:768:768:1024|t', 1, true))
+	f.state.combat = true; spec = 262; f.JI:RefreshSpecializationIcons(); equal(portrait.coords[1], .125)
+	spec = 0; f.JI:RefreshSpecializationIcons(); equal(portrait.path, nil)
+	equal(tags['jiberish:spec:fabledspecializations']('target'), nil)
+end)
+
+test('SUF specialization repaint changes textures without reloading layout in combat', function()
+	local f = fixture(); f.state.addons.ShadowedUnitFrames = true
+	local modules = {}
+	f.env.ShadowUF = {db = {profile = {units = {target = {portrait = {type = 'class'}}}}}, Layout = {}}
+	function f.env.ShadowUF:RegisterModule(module, name) modules[name] = module end
+	f.load('Core/SUF.lua')
+	local target = f.frame('target', 'MAGE'); target.unit = 'target'; target.unitType = 'target'; target.portrait = target:CreateTexture()
+	function target:UnitClassToken() return f.world.target.class end
+	local spec = 63; f.env.GetInspectSpecialization = function() return spec end
+	modules.classportrait:OnLayoutApply(target); modules.classicon:OnPreLayoutApply(target)
+	local db = f.JI.db.suf.target
+	db.icon.enable = true; db.icon.style = 'fabledspecializations'; db.portrait.enable = true; db.portrait.style = 'fabledspecializations'
+	modules.classportrait:Update(target); modules.classicon:Update(target)
+	f.state.combat = true; spec = 64; f.JI:RefreshSpecializationIcons()
+	equal(target.classIcon.icon.coords[1], .5); equal(target.portrait.coords[1], .5)
+	spec = 0; f.JI:RefreshSpecializationIcons(); expect(not target.classIcon:IsShown()); equal(target.portrait.path, '')
+end)
+
+test('JiberishIcons rename preserves profiles, aliases and owned custom texture paths', function()
+	local saved = {
+		profileKeys = {['Tester - Realm'] = 'Raid'},
+		profiles = {Raid = {chat = {enable = true, style = 'fabledregalia', reverse = true}}},
+		global = {customPacks = {class = {styles = {
+			old = {name = 'Old', path = [[Interface\AddOns\ElvUI_JiberishIcons\Media\Custom\]], fileName = 'old'},
+			external = {name = 'External', path = [[Interface\AddOns\MyArt\]], fileName = 'custom'},
+		}}}},
+	}
+	local f = fixture(true, nil, saved)
+	equal(f.JI.AddOnName, 'JiberishIcons')
+	equal(f.JI.MediaPath, [[Interface\AddOns\JiberishIcons\Media\]])
+	equal(f.env.JiberishIcons, f.env.ElvUI_JiberishIcons)
+	equal(f.env.JiberishIcons, f.env.JiberishFabledIcons)
+	equal(f.JI.data:GetCurrentProfile(), 'Raid')
+	equal(f.JI.db.chat.style, 'fabledregalia'); equal(f.JI.db.chat.reverse, true)
+	equal(f.JI.global.customPacks.class.styles.old.path, [[Interface\AddOns\JiberishIcons\Media\Custom\]])
+	equal(f.JI.global.customPacks.class.styles.external.path, [[Interface\AddOns\MyArt\]])
+end)
+
+test('all 40 ElvUI specialization tags use the renamed texture, both orientations and sizes', function()
+	local f = fixture(); f.state.addons.ElvUI = true
+	local tags, infos = {}, {}; local E = {UnitFrames = {PortraitUpdate = function() end}}
+	function E:AddTag(name, event, fn) tags[name] = fn end
+	function E:AddTagInfo(name, group, help) infos[name] = help end
+	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua'); f.JI:BuildElvUITags()
+	local spec
+	f.env.GetSpecialization = function() return 1 end
+	f.env.GetSpecializationInfo = function() return spec end
+	for id, icon in pairs(f.JI.dataHelper.specialization) do
+		spec = id; f.world.player.class = icon.class
+		for _, reverse in ipairs({false, true}) do
+			local name = 'jiberish:spec:fabledspecializations'..(reverse and ':reverse' or '')
+			expect(infos[name] and infos[name]:find(name, 1, true))
+			for _, size in ipairs({1, 32, 64, 128}) do
+				local actual = tags[name]('player', nil, tostring(size))
+				local expected = f.JI:GetIconMarkup(icon, [[Interface\AddOns\JiberishIcons\Media\Spec\fabledspecializations]], size, reverse, 2048)
+				equal(actual, expected)
+			end
+			equal(tags[name]('player', nil, '999'), tags[name]('player', nil, '64'))
+		end
+	end
+	spec = f.secret; equal(tags['jiberish:spec:fabledspecializations']('player'), nil)
+end)
+
+test('modern Classic talent allocations drive Ellesmere spec art without a selected specialization', function()
+	local f = fixture(true, 'forever')
+	-- Modernized Classic has namespaced APIs but still uses talent tab counters.
+	f.env.GetBuildInfo = function() return '1.15.9', '', '', 11509 end
+	local player = f.frame('player', 'PALADIN'); f.ns.frames = {player = player}
+	local points = {0, 0, 5}
+	f.env.C_SpecializationInfo = {
+		GetSpecialization = function() return 0 end,
+		GetSpecializationInfo = function(i, inspect, pet)
+			equal(inspect, false); equal(pet, false)
+			-- Modern Classic uses return 7 for spent points, return 9 for previews.
+			return ({831, 839, 855})[i], 'Localized tree', '', 1, nil, nil, points[i], '', 99
+		end,
+	}
+	local db = f.JI.db.ellesmereui.player.icon; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.flush(); f.JI:SetupSpecializationIcons()
+	local function matches(id)
+		expect(f.icon(player):IsShown())
+		equal(f.icon(player).path, f.JI.defaultStylePacks.spec.path..'fabledspecializations')
+		local expected = f.JI.dataHelper.specialization[id].texCoords
+		for i, value in ipairs(expected) do equal(f.icon(player).coords[i], value) end
+	end
+	matches(70)
+	f.state.combat = true
+	points = {6, 0, 5}; f.fire('PLAYER_TALENT_UPDATE'); matches(65)
+	points = {0, 7, 0}; f.fire('ACTIVE_TALENT_GROUP_CHANGED'); matches(66)
+	points = {0, 0, 0}; f.fire('CHARACTER_POINTS_CHANGED')
+	expect(f.icon(player):IsShown())
+	equal(f.icon(player).path, f.JI.defaultStylePacks.class.path..'fabledregalia')
+	for i, value in ipairs(f.JI.dataHelper.class.PALADIN.texCoords) do equal(f.icon(player).coords[i], value) end
+	points = {1, 0, 2}; f.fire('PLAYER_LEVEL_UP'); matches(70)
+end)
+
+test('Classic talent tab layouts map every tree without relying on localized names or Retail IDs', function()
+	local expected = {
+		DEATHKNIGHT = {250, 251, 252}, DRUID = {102, 103, 105}, HUNTER = {253, 254, 255},
+		MAGE = {62, 63, 64}, PALADIN = {65, 66, 70}, PRIEST = {256, 257, 258},
+		ROGUE = {259, 260, 261}, SHAMAN = {262, 263, 264}, WARLOCK = {265, 266, 267},
+		WARRIOR = {71, 72, 73},
+	}
+	for _, layout in ipairs({'vanilla', 'wrath'}) do
+		local f = fixture(true, 'legacy')
+		local active = 1
+		f.env.GetActiveTalentGroup = function() return 2 end
+		f.env.GetTalentTabInfo = function(i, inspect, pet, group)
+			equal(inspect, false); equal(pet, false); equal(group, 2)
+			local points = i == active and 5 or 0
+			if layout == 'vanilla' then return 'Localized tree', 'texture', points, 'background' end
+			return 700+i, 'Localized tree', 'description', 'texture', points, 'background', 99
+		end
+		for class, specs in pairs(expected) do
+			f.world.player.class = class
+			for index, id in ipairs(specs) do
+				active = index
+				equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.specialization[id])
+			end
+		end
+	end
+end)
+
+test('Classic talent fallback handles ties, unspent points, self aliases and unavailable data', function()
+	local f = fixture(true, 'forever'); f.world.player.class = 'PALADIN'
+	f.env.GetBuildInfo = function() return '1.15.9', '', '', 11509 end
+	local points = {0, 0, 0}
+	f.env.GetTalentTabInfo = function(i) return 'Localized tree', 'texture', points[i] end
+	local icon, path, size = f.JI:GetUnitIcon('player', 'fabledspecializations')
+	equal(icon, f.JI.dataHelper.class.PALADIN); equal(size, 2048)
+	equal(path, f.JI.defaultStylePacks.class.path..'fabledregalia')
+	points = {5, 5, 0}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), icon)
+	points = {5, 5, 6}; equal(f.JI:GetUnitSpecialization('player'), 70)
+	points = {5, 5, 5}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), icon)
+	points = {f.secret, 0, 5}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	points = {nil, 0, 5}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	points = {0, 0, 5}
+	f.frame('target', 'PALADIN'); f.env.UnitIsUnit = function() return true end
+	equal(f.JI:GetUnitSpecialization('target'), 70)
+	f.env.UnitIsUnit = function() return false end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+	f.env.UnitIsUnit = function() return f.secret end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+end)
+
+test('Classic talent event registration works without Retail specialization APIs or unsupported events', function()
+	local f = fixture(true, 'legacy'); local player = f.frame('player', 'MAGE'); f.ns.frames = {player = player}
+	local active = 1
+	f.env.GetTalentTabInfo = function(i) return 'Localized tree', 'texture', i == active and 3 or 0 end
+	f.env.C_EventUtils = {IsEventValid = function(event) return event ~= 'PLAYER_SPECIALIZATION_CHANGED' end}
+	local db = f.JI.db.ellesmereui.player.icon; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.flush(); f.JI:SetupSpecializationIcons()
+	for _, obj in ipairs(f.objects) do expect(not obj.events.PLAYER_SPECIALIZATION_CHANGED) end
+	local count = #f.objects; f.JI:SetupSpecializationIcons(); equal(#f.objects, count)
+	active = 3; f.fire('CHARACTER_POINTS_CHANGED')
+	expect(f.icon(player):IsShown()); equal(f.icon(player).coords[1], .5)
+end)
+
+test('Retail and Mists use their selected specialization even if talent-tab APIs exist', function()
+	for _, project in ipairs({1, 19}) do
+		local f = fixture(); f.env.WOW_PROJECT_ID = project; f.world.player.class = 'MAGE'
+		f.env.GetBuildInfo = function() return '', '', '', project == 1 and 120100 or 50504 end
+		f.env.GetSpecialization = function() return 2 end
+		f.env.GetSpecializationInfo = function(i) equal(i, 2); return 63 end
+		f.env.GetTalentTabInfo = function() error('Selected-specialization clients must not count tree points') end
+		equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.specialization[63])
+	end
+end)
+
+-- Forever 1.60.1.70124 uses C_Traits groups, as in Blizzard's Camelot headers.
+-- The live Paladin report is Holy=6 with no currency rows for the other groups.
+local function foreverTalentsFixture()
+	local f = fixture(true, 'forever')
+	f.env.GetBuildInfo = function() return '1.60.1', '70124', '', 16001 end
+	f.state.activeGroup, f.state.staged = 1, false
+	f.state.points = {[101] = {6, 0, 0}, [202] = {0, 0, 8}}
+	f.env.C_SpecializationInfo = {
+		GetActiveSpecGroup = function() return f.state.activeGroup end,
+		GetCombatConfigIDForSpecGroup = function(group) return group == 1 and 101 or 202 end,
+		GetSpecialization = function() return 1 end,
+		GetSpecializationInfo = function() return 1486, 'Paladin', '', 1, nil, nil, 0 end,
+	}
+	f.env.GetTalentTabInfo = function() return 1486, 'Paladin', '', 1, 0 end
+	f.env.C_ClassTalents = {GetActiveConfigID = function() return f.state.activeGroup == 1 and 101 or 202 end}
+	f.env.C_Traits = {
+		ConfigHasStagedChanges = function() return f.state.staged end,
+		GetConfigInfo = function(configID) return {ID = configID, treeIDs = {1000}} end,
+		GetGroupDisplayInfoByTreeID = function(treeID)
+			equal(treeID, 1000)
+			return {{groupID = 41, displayName = 'Holy'}, {groupID = 42, displayName = 'Protection'},
+				{groupID = 43, displayName = 'Retribution'}}
+		end,
+		GetGroupCurrencyInfo = function(configID, ids)
+			equal(#ids, 3); equal(ids[1], 41); equal(ids[2], 42); equal(ids[3], 43)
+			local groups = {}
+			-- Response order need not match header order. Unspent groups are absent.
+			for index = 3, 1, -1 do
+				local spent = f.state.points[configID][index]
+				if spent ~= 0 then
+					groups[#groups+1] = {traitNodeGroupID = 40+index, currencyInfos = {{spent = spent}}}
+				end
+			end
+			return groups
+		end,
+	}
+	local player = f.frame('player', 'PALADIN'); f.ns.frames = {player = player}
+	local db = f.JI.db.ellesmereui.player.icon; db.enable = true; db.style = 'fabledspecializations'
+	return f, player
+end
+
+test('Forever live Holy 6 with absent unspent groups paints Holy instead of the class crest', function()
+	local f, player = foreverTalentsFixture()
+	f.JI:SetupEllesmereUI(); f.flush(); f.JI:SetupSpecializationIcons()
+	equal(f.JI:GetUnitSpecialization('player'), 65)
+	expect(f.icon(player):IsShown())
+	equal(f.icon(player).path, f.JI.defaultStylePacks.spec.path..'fabledspecializations')
+	for i, value in ipairs(f.JI.dataHelper.specialization[65].texCoords) do equal(f.icon(player).coords[i], value) end
+	f.state.combat = true
+	f.state.points[101] = {6, 9, 1}; f.fire('TRAIT_TREE_CURRENCY_INFO_UPDATED', 1000)
+	for i, value in ipairs(f.JI.dataHelper.specialization[66].texCoords) do equal(f.icon(player).coords[i], value) end
+	f.state.activeGroup = 2; f.fire('ACTIVE_TALENT_GROUP_CHANGED', 2, 1)
+	for i, value in ipairs(f.JI.dataHelper.specialization[70].texCoords) do equal(f.icon(player).coords[i], value) end
+end)
+
+test('Forever keeps committed spec during previews and refreshes after trait commits', function()
+	local f, player = foreverTalentsFixture()
+	f.JI:SetupEllesmereUI(); f.flush(); f.JI:SetupSpecializationIcons()
+	f.state.staged = true; f.state.points[101] = {6, 10, 0}
+	f.fire('TRAIT_TREE_CURRENCY_INFO_UPDATED', 1000)
+	equal(f.JI:GetUnitSpecialization('player'), 65)
+	f.state.staged = false; f.fire('TRAIT_CONFIG_UPDATED', 101)
+	equal(f.JI:GetUnitSpecialization('player'), 66)
+	for i, value in ipairs(f.JI.dataHelper.specialization[66].texCoords) do equal(f.icon(player).coords[i], value) end
+	f.state.activeGroup = 2; f.state.staged = true
+	-- Never reuse the first loadout's answer for a different config with staged edits.
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	f.state.staged = false; f.fire('TRAIT_CONFIG_UPDATED', 202)
+	equal(f.JI:GetUnitSpecialization('player'), 70)
+end)
+
+test('Forever group lookup handles empty/tied builds, loading, restrictions and self targets', function()
+	local f = foreverTalentsFixture()
+	f.state.points[101] = {0, 0, 0}
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.class.PALADIN)
+	f.state.points[101] = {6, 6, 0}
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.class.PALADIN)
+	f.state.points[101] = {6, 6, 7}; equal(f.JI:GetUnitSpecialization('player'), 70)
+	f.state.points[101] = {f.secret, 0, 0}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	f.state.points[101] = {6, 0, 0}
+	f.frame('target', 'PALADIN'); f.env.UnitIsUnit = function() return true end
+	equal(f.JI:GetUnitSpecialization('target'), 65)
+	f.env.UnitIsUnit = function() return false end
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+	f.env.C_Traits.GetConfigInfo = function() return nil end
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	f.env.C_Traits = nil
+	-- The legacy zero counters are not authoritative on Forever.
+	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+end)
+
+test('Forever uses active config when the combat-group helper is unavailable', function()
+	local f = foreverTalentsFixture()
+	f.env.C_SpecializationInfo.GetCombatConfigIDForSpecGroup = nil
+	equal(f.JI:GetUnitSpecialization('player'), 65)
+	f.state.activeGroup = 2; equal(f.JI:GetUnitSpecialization('player'), 70)
+end)
+
+local function partyFixture(onlyParty)
+	local f = fixture(not onlyParty)
+	f.state.addons.EllesmereUIRaidFrames = true
+	f.env.EllesmereUI = f.env.EllesmereUI or {_ModuleNS = {}}
+	local ns = {_partyAllButtons = {}, _partyFramesVisible = true,
+		_CreatePartyHeader = function() end, _RebuildPartyUnitMap = function() end,
+		_UpdatePartyVisibility = function() end, ReloadPartyFrames = function() end}
+	f.env.EllesmereUI._ModuleNS.EllesmereUIRaidFrames = ns
+	f.party = ns
+	f.partyFrame = function(unit, class)
+		local frame = f.frame(unit, class); frame._euiUnit = nil; frame:SetAttribute('unit', unit)
+		ns._partyAllButtons[#ns._partyAllButtons + 1] = frame
+		return frame
+	end
+	return f
+end
+
+test('Party works with Raid Frames alone and has independent settings', function()
+	local f = partyFixture(true)
+	expect(not f.JI.Options.args.ellesmereui.hidden())
+	expect(not f.JI.Options.args.ellesmereui.args.party.hidden())
+	expect(f.JI.Options.args.ellesmereui.args.player.hidden())
+	local first, second, self = f.partyFrame('party1', 'MAGE'), f.partyFrame('party2', 'ROGUE'), f.partyFrame('player', 'WARRIOR')
+	local db = f.JI.db.ellesmereui.party.icon
+	equal(db.enable, false); db.enable = true; db.size = 40; db.style = 'fabledregalia'
+	f.JI:SetupEllesmereUI(); f.flush()
+	for _, frame in ipairs({first, second, self}) do
+		expect(f.icon(frame):IsShown()); equal(frame.children[1].width, 40)
+		expect(f.icon(frame).path:match('fabledregalia$')); equal(#frame.children, 1)
+	end
+	equal(f.icon(first).coords[1], .125); equal(f.icon(second).coords[1], .25)
+	first:SetAlpha(.35); equal(f.icon(first):GetEffectiveAlpha(), .35)
+	first:Hide(); expect(not f.icon(first):IsShown()); first:Show(); expect(f.icon(first):IsShown())
+	f.JI.Options.args.ellesmereui.args.party.args.applyAll.func()
+	equal(f.JI.db.ellesmereui.target.icon.size, 40)
+	db.size = 64; equal(f.JI.db.ellesmereui.target.icon.size, 40)
+end)
+
+test('Party secure header reassignments repaint in combat without stale identities', function()
+	local f = partyFixture()
+	local frame = f.partyFrame('party1', 'MAGE'); f.frame('party2', 'ROGUE')
+	f.JI.db.ellesmereui.party.icon.enable = true
+	f.JI:SetupEllesmereUI(); f.flush(); equal(f.icon(frame).coords[1], .125)
+	f.state.combat = true
+	frame:SetAttribute('unit', 'party2'); equal(f.icon(frame).coords[1], .25)
+	frame:SetAttribute('unit', nil); expect(not f.icon(frame):IsShown())
+	frame:SetAttribute('unit', f.secret); expect(not f.icon(frame):IsShown())
+	frame:SetAttribute('unit', 'party2'); expect(f.icon(frame):IsShown())
+	f.world.party2.player = false; f.fire('UNIT_FLAGS', 'party2'); expect(not f.icon(frame):IsShown())
+	f.world.party2.player = true; f.fire('UNIT_FLAGS', 'party2'); expect(f.icon(frame):IsShown())
+	f.JI.db.ellesmereui.party.icon.size = 60; f.JI:UpdateEllesmereUI(); equal(frame.children[1].width, 32)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); f.flush(); equal(frame.children[1].width, 60)
+end)
+
+test('Party discovers late buttons, hides previews and retires removed buttons', function()
+	local f = partyFixture(); f.JI.db.ellesmereui.party.icon.enable = true
+	f.JI:SetupEllesmereUI(); f.flush()
+	local frame = f.partyFrame('party1', 'MAGE'); f.party._CreatePartyHeader(); f.flush()
+	expect(f.icon(frame):IsShown())
+	f.party._partyPvActive = true; f.party._UpdatePartyVisibility(); f.flush(); expect(not f.icon(frame):IsShown())
+	f.party._partyPvActive = nil; f.party._partyFramesVisible = false
+	f.party._UpdatePartyVisibility(); f.flush(); expect(not f.icon(frame):IsShown())
+	f.party._partyFramesVisible = true; f.party.ReloadPartyFrames(); f.flush(); expect(f.icon(frame):IsShown())
+	local replacement = f.partyFrame('party2', 'ROGUE'); f.party._partyAllButtons = {replacement}
+	f.party._RebuildPartyUnitMap(); f.flush(); expect(f.icon(replacement):IsShown()); expect(not f.icon(frame):IsShown())
+	frame:Hide(); frame:Show(); expect(not f.icon(frame):IsShown())
+	f.JI:UpdateEllesmereUI(); equal(#replacement.children, 1)
+end)
+
+local function inspectionFixture()
+	local f = foreverTalentsFixture()
+	f.state.now, f.state.notifies, f.state.inspectTimers, f.state.guids = 0, {}, {}, {}
+	f.env.GetTime = function() return f.state.now end
+	f.env.UnitGUID = function(unit) return f.state.guids[unit] end
+	f.env.UnitIsUnit = function(a, b)
+		local ga, gb = f.state.guids[a], f.state.guids[b]
+		return ga and gb and ga == gb or false
+	end
+	f.env.CanInspect = function(unit) return f.state.inspectable ~= false end
+	f.env.CheckInteractDistance = function() return f.state.inRange ~= false end
+	f.env.NotifyInspect = function(unit)
+		f.state.notifies[#f.state.notifies+1] = {unit = unit, guid = f.state.guids[unit], time = f.state.now}
+	end
+	f.env.ClearInspectPlayer = function() end
+	f.env.C_Timer.NewTimer = function(delay, callback)
+		local timer = {due = f.state.now + delay, callback = callback, Cancel = function(self) self.cancelled = true end}
+		f.state.inspectTimers[#f.state.inspectTimers+1] = timer
+		return timer
+	end
+	f.env.C_Traits.HasValidInspectData = function() return f.state.inspectValid end
+	local oldConfig, oldDisplays = f.env.C_Traits.GetConfigInfo, f.env.C_Traits.GetGroupDisplayInfoByTreeID
+	f.env.C_Traits.GetConfigInfo = function(id)
+		return id == -1 and {treeIDs = {1082}} or oldConfig(id)
+	end
+	f.env.C_Traits.GetGroupDisplayInfoByTreeID = function(tree)
+		if tree == 1082 then return {{groupID = 41}, {groupID = 42}, {groupID = 43}} end
+		return oldDisplays(tree)
+	end
+	f.state.guids.player = 'Player-self'
+	local flushUI = f.flush
+	f.tick = function(seconds)
+		local deadline, runs = f.state.now + seconds, 0
+		flushUI()
+		while true do
+			local nextTimer
+			for _, timer in ipairs(f.state.inspectTimers) do
+				if not timer.cancelled and timer.due <= deadline and (not nextTimer or timer.due < nextTimer.due) then nextTimer = timer end
+			end
+			if not nextTimer then break end
+			runs = runs + 1; expect(runs < 1000, 'unbounded inspection timer loop')
+			f.state.now = nextTimer.due; nextTimer.cancelled = true; nextTimer.callback(); flushUI()
+		end
+		f.state.now = deadline
+	end
+	f.flush = function() f.tick(0) end
+	f.ready = function(guid, points)
+		f.state.inspectValid, f.state.points[-1] = true, points
+		f.fire('INSPECT_READY', guid)
+	end
+	return f
+end
+
+test('Forever inspects a target automatically and paints live Enhancement 11 on the correct frame', function()
+	local f = inspectionFixture()
+	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
+	f.state.guids.target = 'Player-shaman'
+	local db = f.JI.db.ellesmereui.target.icon; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons(); f.flush()
+	equal(#f.state.notifies, 1); equal(f.state.notifies[1].unit, 'target'); expect(not f.icon(target):IsShown())
+	f.ready('Player-shaman', {0, 11, 0})
+	equal(f.JI:GetUnitSpecialization('target'), 263); equal(f.JI:GetUnitSpecialization('player'), 65)
+	expect(f.icon(target):IsShown()); expect(f.icon(target).path:match('fabledspecializations$'))
+	for i, value in ipairs(f.JI.dataHelper.specialization[263].texCoords) do equal(f.icon(target).coords[i], value) end
+	f.tick(5); equal(#f.state.notifies, 1)
+	-- The same-class replacement must not inherit the previous inspection config or cache.
+	f.state.guids.target = 'Player-new'; f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+	expect(not f.icon(target):IsShown())
+	f.ready('Player-shaman', {0, 11, 0}); expect(not f.icon(target):IsShown())
+	f.ready('Player-new', {0, 0, 12}); equal(f.JI:GetUnitSpecialization('target'), 264)
+end)
+
+test('Party inspections share GUID results with targets and use each assigned member build', function()
+	local f = inspectionFixture()
+	f.state.addons.EllesmereUIRaidFrames = true
+	local first, second = f.frame('party1', 'SHAMAN'), f.frame('party2', 'PALADIN')
+	first:SetAttribute('unit', 'party1'); second:SetAttribute('unit', 'party2')
+	f.env.EllesmereUI._ModuleNS.EllesmereUIRaidFrames = {_partyAllButtons = {first, second}, _partyFramesVisible = true}
+	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
+	f.state.guids.party1, f.state.guids.target, f.state.guids.party2 = 'Player-one', 'Player-one', 'Player-two'
+	for _, key in ipairs({'party', 'target'}) do
+		local db = f.JI.db.ellesmereui[key].icon; db.enable = true; db.style = 'fabledspecializations'
+	end
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons(); f.flush()
+	equal(#f.state.notifies, 1)
+	local requested = f.state.notifies[1]
+	expect(requested.unit == 'party1' or requested.unit == 'party2')
+	f.ready(requested.guid, requested.guid == 'Player-one' and {0, 11, 0} or {0, 0, 10})
+	f.tick(2); equal(#f.state.notifies, 2)
+	local other = f.state.notifies[2]; expect(other.guid ~= requested.guid)
+	f.ready(other.guid, other.guid == 'Player-one' and {0, 11, 0} or {0, 0, 10})
+	expect(f.icon(first):IsShown()); expect(f.icon(target):IsShown()); equal(f.JI:GetUnitSpecialization('party2'), 70)
+	f.state.combat = true; first:SetAttribute('unit', 'party2')
+	for i, value in ipairs(f.JI.dataHelper.specialization[70].texCoords) do equal(f.icon(first).coords[i], value) end
+	f.state.guids.party2 = 'Player-replacement'; f.fire('GROUP_ROSTER_UPDATE'); f.flush()
+	expect(not f.icon(first):IsShown()); expect(not f.icon(second):IsShown()); equal(#f.state.notifies, 2)
+end)
+
+test('inspection queue respects manual windows, other addons, combat and unavailable identities', function()
+	local f = inspectionFixture(); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.JI:SetupSpecializationIcons()
+	f.env.InspectFrame = f.env.CreateFrame('Frame')
+	f.JI:GetUnitSpecialization('target'); f.flush(); f.tick(5); equal(#f.state.notifies, 0)
+	f.env.InspectFrame:Hide(); f.state.combat = true; f.tick(5); equal(#f.state.notifies, 0)
+	f.state.combat = false; f.tick(1); equal(#f.state.notifies, 1)
+	f.frame('focus', 'SHAMAN'); f.state.guids.focus = 'Player-other'
+	f.env.NotifyInspect('focus'); f.ready('Player-other', {0, 11, 0})
+	equal(f.JI:GetUnitSpecialization('target'), nil)
+	f.ready('Player-target', {0, 11, 0}); equal(f.JI:GetUnitSpecialization('target'), nil)
+	f.tick(2); equal(#f.state.notifies, 3)
+	f.env.ClearInspectPlayer(); f.ready('Player-target', {0, 11, 0}); equal(f.JI:GetUnitSpecialization('target'), nil)
+	f.state.guids.target = f.secret; f.tick(10); equal(#f.state.notifies, 3)
+end)
+
+test('inspection retries are bounded, cached results expire and ties use a verified class fallback', function()
+	local f = inspectionFixture(); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.JI:SetupSpecializationIcons(); f.JI:GetUnitSpecialization('target'); f.flush(); f.tick(20)
+	equal(#f.state.notifies, 3)
+	f.JI:GetUnitSpecialization('target'); f.flush(); f.tick(5); equal(#f.state.notifies, 3)
+	f.tick(30); f.JI:GetUnitSpecialization('target'); f.flush(); equal(#f.state.notifies, 4)
+	f.ready('Player-target', {6, 6, 0})
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.class.SHAMAN)
+	f.tick(61); equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.class.SHAMAN); f.flush()
+	equal(#f.state.notifies, 5)
+	f.ready('Player-target', {f.secret, 0, 0})
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), f.JI.dataHelper.class.SHAMAN)
+	f.tick(240); equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+end)
+
+test('uninspectable distant players and restricted results never trigger unsafe requests', function()
+	local f = inspectionFixture(); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.JI:SetupSpecializationIcons(); f.state.inRange = false
+	f.JI:GetUnitSpecialization('target'); f.flush(); f.tick(10); equal(#f.state.notifies, 0)
+	f.state.inRange = true; f.env.CanInspect = function() return f.secret end
+	f.tick(5); equal(#f.state.notifies, 0)
+	f.env.CanInspect = function() return true end; f.tick(1); equal(#f.state.notifies, 1)
+	f.state.inspectValid = f.secret; f.fire('INSPECT_READY', 'Player-target')
+	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
+end)
+
+test('Forever inspection refresh reaches Blizzard target/party frames and ElvUI portraits/tags in combat', function()
+	local f = inspectionFixture(); f.load('Core/Blizzard.lua')
+	f.env.strmatch = string.match
+	local target = f.frame('target', 'SHAMAN'); target.unit = 'target'; target.portrait = target:CreateTexture()
+	local party = f.frame('party1', 'SHAMAN'); party.unit = 'party1'; party.portrait = party:CreateTexture()
+	f.env.TargetFrame, f.env.PartyFrame = target, {MemberFrame1 = party}
+	f.state.guids.target, f.state.guids.party1 = 'Player-shaman', 'Player-shaman'
+	f.JI:SetupBlizzardFrames()
+	for _, key in ipairs({'target', 'party'}) do
+		for _, kind in ipairs({'icon', 'portrait'}) do
+			local db = f.JI.db.blizzard[key][kind]; db.enable = true; db.style = 'fabledspecializations'
+		end
+	end
+	f.state.addons.ElvUI = true
+	local tags, E = {}, {UnitFrames = {PortraitUpdate = function() end}}
+	function E:AddTag(name, event, fn) tags[name] = fn end
+	function E:AddTagInfo() end
+	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua'); f.JI:BuildElvUITags()
+	target.unitframeType = 'target'; party.unitframeType = 'party'
+	local portraits = {}
+	for _, frame in ipairs({target, party}) do
+		local portrait = frame:CreateTexture(); portrait.__owner = frame; portrait.useClassBase = true
+		local db = f.JI.db.elvui[frame.unitframeType].portrait; db.enable = true; db.style = 'fabledspecializations'
+		E.UnitFrames.PortraitUpdate(portrait); portraits[#portraits+1] = portrait
+	end
+	f.JI.db.blizzard.target.icon.size = 48; f.JI.db.blizzard.target.icon.xOffset = 12
+	f.JI:UpdateMedia(); f.JI:SetupSpecializationIcons(); f.flush(); equal(#f.state.notifies, 1)
+	equal(target.classIcon.width, 48); equal(target.classIcon.point[4], 12)
+	f.state.combat = true; f.ready('Player-shaman', {0, 11, 0})
+	for _, frame in ipairs({target, party}) do
+		expect(frame.classIcon:IsShown()); expect(frame.classPortrait:IsShown()); expect(not frame.portrait:IsShown())
+		for i, value in ipairs(f.JI.dataHelper.specialization[263].texCoords) do
+			equal(frame.classIcon.icon.coords[i], value); equal(frame.classPortrait.portrait.coords[i], value)
+		end
+		equal(tags['jiberish:spec:fabledspecializations'](frame.unit, nil, '32'),
+			f.JI:GetIconMarkup(f.JI.dataHelper.specialization[263], f.JI.defaultStylePacks.spec.path..'fabledspecializations', 32, false, 2048))
+	end
+	for _, portrait in ipairs(portraits) do equal(portrait.coords[1], .25) end
+	f.state.guids.target = 'Player-new'; f.fire('PLAYER_TARGET_CHANGED')
+	expect(not target.classIcon:IsShown()); expect(party.classIcon:IsShown())
+	equal(tags['jiberish:spec:fabledspecializations']('target'), nil)
+	expect(tags['jiberish:spec:fabledspecializations']('party1'))
+	f.JI.db.blizzard.target.icon.size = 64; f.JI:RefreshSpecializationIcons(); equal(target.classIcon.width, 48)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(target.classIcon.width, 64)
+end)
+
+test('inspection prioritizes the current target and wakes exactly when the request cooldown ends', function()
+	local f = inspectionFixture()
+	for _, unit in ipairs({'party1', 'party2', 'target'}) do
+		f.frame(unit, 'SHAMAN'); f.state.guids[unit] = 'Player-'..unit
+	end
+	f.JI:SetupSpecializationIcons()
+	for _, unit in ipairs({'party1', 'party2', 'target'}) do f.JI:GetUnitSpecialization(unit) end
+	f.flush(); equal(#f.state.notifies, 1); equal(f.state.notifies[1].unit, 'target'); equal(f.state.notifies[1].time, 0)
+	f.tick(.37); f.ready('Player-target', {0, 11, 0}); f.flush()
+	f.tick(1.62); equal(#f.state.notifies, 1)
+	f.tick(.02); equal(#f.state.notifies, 2); equal(f.state.notifies[2].time, 2)
+	equal(f.state.notifies[2].unit, 'party1')
+	f.tick(.23); f.ready('Player-party1', {0, 0, 11}); f.flush()
+	f.tick(1.76); equal(#f.state.notifies, 3); equal(f.state.notifies[3].time, 4)
+	equal(f.state.notifies[3].unit, 'party2')
+end)
+
+test('new targets wake a waiting queue immediately while failed target retries yield to party members', function()
+	local f = inspectionFixture()
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	f.env.CanInspect = function(unit) return unit == 'target' or f.state.partyInRange end
+	f.JI:SetupSpecializationIcons(); f.JI:GetUnitSpecialization('party1'); f.flush(); equal(#f.state.notifies, 0)
+	f.tick(.2); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.JI:GetUnitSpecialization('target'); f.flush()
+	equal(#f.state.notifies, 1); equal(f.state.notifies[1].time, .2)
+	f.state.partyInRange = true
+	f.tick(5); equal(#f.state.notifies, 2); equal(f.state.notifies[2].unit, 'party1')
+end)
+
+test('confirmed target icons survive background refresh and zoning but not identity or spec invalidation', function()
+	local f = inspectionFixture()
+	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
+	f.state.guids.target = 'Player-target'
+	local db = f.JI.db.ellesmereui.target.icon; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons(); f.flush()
+	f.ready('Player-target', {0, 11, 0})
+	f.tick(59); f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+	equal(f.JI:GetUnitSpecialization('target'), 263); equal(#f.state.notifies, 1)
+	f.tick(2); f.fire('PLAYER_TARGET_CHANGED')
+	-- The old confirmed icon is returned synchronously, before the refresh reply.
+	equal(f.JI:GetUnitSpecialization('target'), 263); expect(f.icon(target):IsShown())
+	f.flush(); equal(#f.state.notifies, 2)
+	f.ready('Player-target', {0, 0, 12}); equal(f.JI:GetUnitSpecialization('target'), 264)
+	f.fire('PLAYER_ENTERING_WORLD', false, false)
+	equal(f.JI:GetUnitSpecialization('target'), 264); expect(f.icon(target):IsShown()); equal(#f.state.notifies, 2)
+	f.state.guids.target = 'Player-other'; f.fire('PLAYER_TARGET_CHANGED')
+	equal(f.JI:GetUnitSpecialization('target'), nil); expect(not f.icon(target):IsShown())
+	f.state.guids.target = 'Player-target'; f.fire('PLAYER_TARGET_CHANGED')
+	equal(f.JI:GetUnitSpecialization('target'), 264); expect(f.icon(target):IsShown())
+	f.tick(61); equal(f.JI:GetUnitSpecialization('target'), 264); f.flush()
+	local beforeChange = #f.state.notifies
+	f.fire('PLAYER_SPECIALIZATION_CHANGED', 'target')
+	equal(f.JI:GetUnitSpecialization('target'), nil); expect(not f.icon(target):IsShown())
+	f.ready('Player-target', {0, 0, 12}) -- delayed reply to the pre-change inspection
+	equal(f.JI:GetUnitSpecialization('target'), nil); expect(not f.icon(target):IsShown())
+	f.tick(5); equal(#f.state.notifies, beforeChange + 1)
+	f.ready('Player-target', {0, 13, 0}); equal(f.JI:GetUnitSpecialization('target'), 263)
+end)
+
+test('Retail uses a current public specialization immediately and preserves it over an older cached build', function()
+	local f = inspectionFixture()
+	f.env.GetBuildInfo = function() return '12.0.1', '', '', 120100 end
+	f.frame('target', 'MAGE'); f.state.guids.target = 'Player-mage'
+	local spec = 0
+	f.env.C_SpecializationInfo.GetInspectSpecialization = function() return spec end
+	f.JI:SetupSpecializationIcons(); f.JI:GetUnitSpecialization('target'); f.flush()
+	equal(#f.state.notifies, 1)
+	spec = 63; f.ready('Player-mage', {})
+	equal(f.JI:GetUnitSpecialization('target'), 63)
+	spec = 0; equal(f.JI:GetUnitSpecialization('target'), 63)
+	spec = 64; equal(f.JI:GetUnitSpecialization('target'), 64)
+	spec = 0; equal(f.JI:GetUnitSpecialization('target'), 64)
+	equal(#f.state.notifies, 1)
+	spec = f.secret; equal(f.JI:GetUnitSpecialization('target'), nil)
+	spec = 0; f.state.guids.target = 'Player-other'; equal(f.JI:GetUnitSpecialization('target'), nil)
+end)
+
+local function detailsFixture(client)
+	local f = fixture(false, client)
+	f.load('Core/Details.lua')
+	f.entries = {}
+	f.env.Details = {}
+	function f.env.Details:AddCustomIconSet(path, label, isSpec, icon, coords, size)
+		equal(self, f.env.Details)
+		f.entries[#f.entries + 1] = { value = path, label = label, isSpec = isSpec, icon = icon, texcoord = coords, iconsize = size }
+		return true
+	end
+	return f
+end
+
+test('Details registers a selectable specialization pack alongside every class pack, once', function()
+	local f = detailsFixture()
+	f.state.addons.Details = true
+	f.JI:SetupDetails(); f.JI:SetupDetails()
+	local classes, specs = 0, 0
+	for _, entry in ipairs(f.entries) do
+		if entry.isSpec then
+			specs = specs + 1
+			equal(entry.label, 'Fabled Specializations (Spec)')
+			equal(entry.value, [[Interface\AddOns\JiberishIcons\Media\Spec\spec_fabledspecializations]])
+			equal(entry.icon, entry.value)
+			-- Dropdown preview is Blood's first cell, not Details' unrelated logo cell.
+			equal(#entry.texcoord, 4); equal(table.concat(entry.texcoord, ','), '0,0.125,0,0.125')
+			equal(entry.iconsize[1], 16); equal(entry.iconsize[2], 16)
+		else
+			classes = classes + 1
+			equal(entry.isSpec, false); expect(entry.label:find(' %(Class%)$'))
+			expect(entry.value:find([[\Media\Class\]], 1, true))
+		end
+	end
+	equal(classes, 10); equal(specs, 1)
+end)
+
+test('Details absence and missing API are harmless on Retail, Forever and legacy clients', function()
+	for _, client in ipairs({ 'retail', 'forever', 'legacy' }) do
+		local f = detailsFixture(client ~= 'retail' and client or nil)
+		f.JI:SetupDetails(); equal(#f.entries, 0) -- global exists but addon has not loaded
+		f.state.addons.Details = true
+		local details = f.env.Details
+		f.env.Details = nil; f.JI:SetupDetails(); equal(#f.entries, 0)
+		f.env.Details = {}; f.JI:SetupDetails(); equal(#f.entries, 0)
+		f.env.Details = details; f.JI:SetupDetails(); equal(#f.entries, 11)
+	end
+end)
+
+test('Details late loading registers through the existing addon event without duplicate menu rows', function()
+	local f = detailsFixture('forever')
+	f.JI.Initialized = true
+	f.JI:SetupDetails(); equal(#f.entries, 0)
+	f.state.addons.Details = true
+	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 11)
+	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 11)
+	f.JI:Init('ADDON_LOADED', 'UnrelatedAddon'); equal(#f.entries, 11)
+end)
+
+test('Details preserves custom class filenames and skips missing or incompatible textures', function()
+	local f = detailsFixture()
+	f.state.addons.Details = true
+	f.JI.mergedStylePacks.class.styles.custom = { name = 'Custom', path = [[Interface\AddOns\Custom\]], fileName = 'actual-file' }
+	f.JI.mergedStylePacks.class.styles.broken = { name = 'Broken', path = [[Interface\AddOns\missing\]] }
+	f.JI.mergedStylePacks.spec.styles.unsupported = { name = 'Different Layout' }
+	local spec = f.JI.mergedStylePacks.spec.styles.fabledspecializations
+	local fileName = spec.detailsFileName
+	spec.detailsFileName = 'missing'
+	f.JI:SetupDetails(); equal(#f.entries, 11)
+	local found
+	for _, entry in ipairs(f.entries) do
+		expect(not entry.isSpec)
+		if entry.label == 'Custom (Class)' then
+			found = true; equal(entry.value, [[Interface\AddOns\Custom\actual-file]])
+		end
+	end
+	expect(found)
+	spec.detailsFileName = fileName
+	f.JI:SetupDetails(); equal(#f.entries, 12); equal(f.entries[12].isSpec, true)
+end)
+
+local function meterFixture(client)
+	local f = fixture(false, client)
+	-- Meter integration must not inspect live units or read combat amounts/GUIDs.
+	f.JI.GetUnitSpecialization = function() error('meter queried live talents') end
+	f.env.NotifyInspect = function() error('meter requested inspection') end
+	f.env.SetCVar = function() error('meter changed a Blizzard setting') end
+	f.windows = {}
+	function f.entry(class, spec)
+		local entry = f.frame('meter')
+		entry.texture = entry:CreateTexture()
+		entry.texture:SetTexCoord(.0625, .9, .0626, .9) -- DamageMeterEntry.xml's native crop
+		function entry:GetIcon() return self.texture end
+		-- Blizzard's UpdateIcon memoization intentionally skips identical inputs.
+		function entry:UpdateIcon()
+			local atlas = self.classFilename and self.classFilename ~= '' and (not self.specIconID or self.specIconID == 0) and self.classFilename
+			if atlas then
+				if self.iconAtlasElement ~= atlas then
+					self.iconAtlasElement, self.iconTexture = atlas, nil
+					self.texture:SetAtlas(atlas)
+				end
+			elseif self.specIconID and self.specIconID ~= 0 then
+				if self.iconTexture ~= self.specIconID then
+					self.iconTexture, self.iconAtlasElement = self.specIconID, nil
+					self.texture:SetTexture(self.specIconID)
+				end
+			else
+				self.iconTexture, self.iconAtlasElement = nil, nil
+				self.texture:SetTexture(nil)
+			end
+		end
+		function entry:Init(source)
+			self.classFilename, self.specIconID = source.class, source.spec
+			self:UpdateIcon()
+		end
+		entry:Init({class = class, spec = spec})
+		return entry
+	end
+	function f.window()
+		local w = { rows = {}, pinned = f.entry('MAGE', 135932) }
+		function w:GetScrollBox() return self end
+		function w:ForEachFrame(fn) for _, entry in ipairs(self.rows) do fn(entry) end end
+		function w:GetLocalPlayerEntry() return self.pinned end
+		function w:InitEntry(entry, source) entry:Init(source) end
+		f.windows[#f.windows + 1] = w
+		return w
+	end
+	function f.blizzard()
+		f.env.DamageMeter = {
+			ForEachSessionWindow = function(_, fn) for _, w in ipairs(f.windows) do fn(w) end end,
+			SetupSessionWindow = function() end, OnEditModeEnter = function() end, OnEditModeExit = function() end,
+		}
+		return f.env.DamageMeter
+	end
+	function f.eui()
+		local ns = { _windows = {}, RegisterDMUnlock = function() end }
+		f.env.EllesmereUI = { _ModuleNS = { EllesmereUIDamageMeters = ns } }
+		f.euiNS = ns
+		return ns
+	end
+	function f.euiWindow()
+		local function row() return { classIcon = f.frame('euiMeter'):CreateTexture() } end
+		local w = { rowPool = {row(), row()}, stickyPlayer = row() }
+		f.euiNS._windows[#f.euiNS._windows + 1] = w
+		return w
+	end
+	function f.renderEUI(w, bar, class, spec, sticky, hidden)
+		if sticky then w._stickyClassCache, w._stickySpecCache = class, spec
+		else bar._cachedClass, bar._cachedSpecIcon = class, spec end
+		if hidden then bar.classIcon:Hide(); return end
+		bar.classIcon:SetTexture(spec or 'native-class-'..class)
+		bar.classIcon:SetTexCoord(.06, .94, .06, .94)
+		bar.classIcon:Show()
+	end
+	return f
+end
+
+test('meter options default off, separate providers, exclude race styles and retain native Edit Mode controls', function()
+	local f = meterFixture()
+	local opts = f.JI.Options.args.damageMeters.args
+	equal(f.JI.db.damageMeters.blizzard.enable, false); equal(f.JI.db.damageMeters.ellesmere.enable, false)
+	local styles = opts.blizzard.args.style.values()
+	expect(styles.fabledspecializations); expect(styles.fabledregalia); equal(styles.fabledazeroth, nil)
+	opts.blizzard.set({'enable'}, true)
+	equal(opts.blizzard.get({'enable'}), true); equal(opts.ellesmere.get({'enable'}), false)
+	expect(opts.blizzard.args.editMode.disabled())
+	f.env.EditModeManagerFrame = {}; local opened = 0
+	f.env.ShowUIPanel = function(frame) equal(frame, f.env.EditModeManagerFrame); opened = opened + 1 end
+	opts.blizzard.args.editMode.func(); equal(opened, 1)
+	f.state.combat = true; expect(opts.blizzard.args.editMode.disabled())
+	opts.blizzard.args.editMode.func(); equal(opened, 1)
+end)
+
+test('meters safely no-op without either API on Retail, Forever and older Classic', function()
+	for _, client in ipairs({'retail', 'forever', 'legacy'}) do
+		local f = meterFixture(client ~= 'retail' and client or nil)
+		f.JI:SetupDamageMeters(); f.JI:SetupDamageMeters(); f.JI:UpdateDamageMeters()
+		f.fire('ADDON_LOADED', 'UnrelatedAddon'); f.fire('PLAYER_LOGIN'); f.flush()
+		equal(#f.windows, 0)
+	end
+end)
+
+test('meter spec lookup validates class, handles unknown/secret metadata and accepts current client icon IDs', function()
+	local f = meterFixture('forever')
+	f.env.GetSpecializationInfoByID = function(id) return id, 'Spec', '', id == 65 and 98765 or nil end
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI:SetupDamageMeters()
+	local cases = {{'PALADIN',135920,65},{'PALADIN',98765,65},{'SHAMAN',237581,263},{'MAGE',135846,64},{'DEMONHUNTER',7455385,1480}}
+	for _, c in ipairs(cases) do equal(f.JI:GetDamageMeterIcon('blizzard', c[1], c[2]), f.JI.dataHelper.specialization[c[3]]) end
+	for _, file in ipairs({0, 9999, 135846, f.secret}) do
+		local icon, path = f.JI:GetDamageMeterIcon('blizzard', 'PALADIN', file)
+		equal(icon, f.JI.dataHelper.class.PALADIN); expect(path:find('fabledregalia', 1, true))
+	end
+	equal(f.JI:GetDamageMeterIcon('blizzard', f.secret, 135846), nil)
+	equal(f.JI:GetDamageMeterIcon('blizzard', '', 135846), nil)
+	f.JI.db.damageMeters.blizzard.style = 'fabledazeroth'
+	equal(f.JI:GetDamageMeterIcon('blizzard', 'PALADIN', 135920), nil)
+end)
+
+test('Blizzard meters replace existing, recycled and pinned icons and restore native memoized textures', function()
+	local f = meterFixture(); local w = f.window(); local meter = f.blizzard()
+	local entry = f.entry('MAGE', 135810); w.rows[1] = entry
+	local db = f.JI.db.damageMeters.blizzard; db.enable = true
+	f.JI:SetupDamageMeters()
+	local path = [[Interface\AddOns\JiberishIcons\Media\Spec\fabledspecializations]]
+	equal(entry.texture.path, path); equal(w.pinned.texture.path, path)
+	local old = table.concat(entry.texture.coords, ',')
+	w:InitEntry(entry, {class = 'MAGE', spec = 135846})
+	expect(table.concat(entry.texture.coords, ',') ~= old)
+	equal(table.concat(entry.texture.coords, ','), table.concat(f.JI.dataHelper.specialization[64].texCoords, ','))
+	entry:UpdateIcon(); equal(entry.texture.path, path) -- native texture was memoized
+	db.enable = false; f.JI:UpdateDamageMeters()
+	equal(entry.texture.path, 135846); equal(table.concat(entry.texture.coords, ','), '0.0625,0.9,0.0626,0.9')
+	equal(w.pinned.texture.path, 135932)
+	db.enable = true; f.JI:UpdateDamageMeters()
+	w:InitEntry(entry, {class = 'MAGE', spec = 0}); expect(entry.texture.path:find('fabledregalia', 1, true))
+	db.enable = false; f.JI:UpdateDamageMeters(); equal(entry.texture.path, 'atlas:MAGE')
+	db.enable = true; f.JI:UpdateDamageMeters()
+	w:InitEntry(entry, {class = '', spec = 0}); equal(entry.texture.path, nil)
+end)
+
+test('Blizzard late loading, extra windows, combat and Edit Mode preserve visibility, sizing and spell icons', function()
+	local f = meterFixture('forever'); f.JI.db.damageMeters.blizzard.enable = true
+	f.JI:SetupDamageMeters()
+	local w = f.window(); local meter = f.blizzard()
+	f.fire('ADDON_LOADED', 'Blizzard_DamageMeter')
+	local row = f.entry('SHAMAN', 237581)
+	w.rows[1] = row; w:InitEntry(row, {class = 'SHAMAN', spec = 237581})
+	expect(row.texture.path:find('fabledspecializations', 1, true))
+	local other = f.window(); meter:SetupSessionWindow()
+	expect(other.pinned.texture.path:find('fabledspecializations', 1, true))
+	row.texture:Hide(); f.state.combat = true
+	f.JI.db.damageMeters.blizzard.reverse = true; f.JI:UpdateDamageMeters()
+	equal(row.texture.coords[1], f.JI.dataHelper.specialization[263].texCoords[5])
+	expect(not row.texture:IsShown()); equal(row.texture.width, nil); equal(row.texture.point, nil)
+	meter:OnEditModeEnter(); meter:OnEditModeExit(); expect(not row.texture:IsShown())
+	local spell = f.entry(nil, 12345) -- not in the player session pool
+	f.JI:UpdateDamageMeters(); equal(spell.texture.path, 12345)
+end)
+
+test('Ellesmere replaces ordinary and pinned rows, including deferred same-class spec changes', function()
+	local f = meterFixture(); local ns = f.eui(); local w = f.euiWindow()
+	f.JI.db.damageMeters.ellesmere.enable = true; f.JI:SetupDamageMeters()
+	local row, pinned = w.rowPool[1], w.stickyPlayer
+	f.renderEUI(w, row, 'MAGE', 135932)
+	f.renderEUI(w, pinned, 'PALADIN', 135920, true)
+	expect(row.classIcon.path:find('fabledspecializations', 1, true))
+	equal(table.concat(pinned.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[65].texCoords, ','))
+	f.env.C_Timer.After(0, function() f.renderEUI(w, row, 'MAGE', 135846) end); f.flush()
+	equal(table.concat(row.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[64].texCoords, ','))
+	f.state.combat = true
+	f.renderEUI(w, pinned, 'PALADIN', 135873, true)
+	equal(table.concat(pinned.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[70].texCoords, ','))
+	equal(row.classIcon.width, nil) -- no layout mutations, even in combat
+end)
+
+test('Ellesmere native texture/zoom restore immediately and hidden or spell rows stay under its control', function()
+	local f = meterFixture(); f.eui(); local w = f.euiWindow()
+	local row = w.rowPool[1]
+	f.renderEUI(w, row, 'MAGE', 135810) -- attach to an already painted window
+	local db = f.JI.db.damageMeters.ellesmere; db.enable = true; f.JI:SetupDamageMeters()
+	db.enable = false; f.JI:UpdateDamageMeters()
+	equal(row.classIcon.path, 135810); equal(table.concat(row.classIcon.coords, ','), '0.06,0.94,0.06,0.94')
+	db.enable = true; f.JI:UpdateDamageMeters()
+	f.renderEUI(w, row, 'MAGE', 135810, false, true) -- Ellesmere None
+	f.JI:UpdateDamageMeters(); expect(not row.classIcon:IsShown())
+	f.renderEUI(w, row, 'PALADIN', nil)
+	expect(row.classIcon.path:find('fabledregalia', 1, true))
+	db.enable = false; f.JI:UpdateDamageMeters(); equal(row.classIcon.path, 'native-class-PALADIN')
+	w.spellPool = {{classIcon = f.frame('spell'):CreateTexture()}}
+	w.spellPool[1].classIcon:SetTexture(12345)
+	db.enable = true; f.JI:UpdateDamageMeters(); equal(w.spellPool[1].classIcon.path, 12345)
+end)
+
+test('Ellesmere delayed login, newly added windows and profile rebuilds bind once without polling', function()
+	local f = meterFixture(); f.JI.db.damageMeters.ellesmere.enable = true; f.JI:SetupDamageMeters()
+	local ns = f.eui(); f.fire('ADDON_LOADED', 'EllesmereUIDamageMeters')
+	local w = f.euiWindow(); ns.RegisterDMUnlock()
+	local hook = w.rowPool[1].classIcon.SetTexture
+	f.JI:SetupDamageMeters(); ns.RegisterDMUnlock(); equal(w.rowPool[1].classIcon.SetTexture, hook)
+	f.renderEUI(w, w.rowPool[1], 'WARRIOR', 132355)
+	expect(w.rowPool[1].classIcon.path:find('fabledspecializations', 1, true))
+	local other = f.euiWindow(); ns.RegisterDMUnlock()
+	f.renderEUI(other, other.rowPool[1], 'WARRIOR', 132341)
+	equal(table.concat(other.rowPool[1].classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[73].texCoords, ','))
+	for i = #ns._windows, 1, -1 do ns._windows[i] = nil end
+	local rebuilt = f.euiWindow(); ns.RegisterDMUnlock()
+	f.renderEUI(rebuilt, rebuilt.rowPool[1], 'DRUID', 132115)
+	expect(rebuilt.rowPool[1].classIcon.path:find('fabledspecializations', 1, true)); f.flush()
+end)
+
+test('meter class/reverse choices, custom-pack refresh and AceDB profile resets update both renderers', function()
+	local f = meterFixture(); local bw = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupDamageMeters(); f.renderEUI(ew, ew.rowPool[1], 'MAGE', 135932)
+	local options = f.JI.Options.args.damageMeters.args
+	options.blizzard.set({'style'}, 'fabledregalia'); options.ellesmere.set({'style'}, 'fabledregalia')
+	options.ellesmere.args.reverse.set({}, true)
+	expect(bw.pinned.texture.path:find('fabledregalia', 1, true))
+	equal(ew.rowPool[1].classIcon.coords[1], f.JI.dataHelper.class.MAGE.texCoords[5])
+	f.JI:MergeStylePacks(); expect(ew.rowPool[1].classIcon.path:find('fabledregalia', 1, true))
+	f.JI.data:SetProfile('Other')
+	equal(bw.pinned.texture.path, 135932); equal(ew.rowPool[1].classIcon.path, 135932)
+	f.JI.data:SetProfile('Default') -- profile name is resolved by AceDB; explicitly reset whichever is active
+	f.JI.data:ResetProfile()
+	equal(f.JI.db.damageMeters.blizzard.enable, false); equal(f.JI.db.damageMeters.ellesmere.reverse, false)
 end)
 
 print(passed..' integration tests passed')
