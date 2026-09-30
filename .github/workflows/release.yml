@@ -3,18 +3,32 @@ on:
   push:
     tags:
       - '*'
-    paths-ignore:
-      - '.github/**'
+permissions:
+  contents: read
 jobs:
-  github-action:
+  validate:
+    uses: ./.github/workflows/validate.yml
+  publish:
+    needs: validate
     runs-on: ubuntu-22.04
-    env:
-      CF_API_KEY: ${{ secrets.CF_API_KEY }}
-      WAGO_API_TOKEN: ${{ secrets.WAGO_API_KEY }}
+    permissions:
+      contents: write
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Package and Release
-        uses: BigWigsMods/packager@master
+      - name: Build official package without uploading
+        uses: BigWigsMods/packager@v2
+        with:
+          args: -d -u
+      - name: Verify official package contents
+        run: python3 tools/verify-package.py .release/*.zip
+      - name: Publish verified release
+        uses: BigWigsMods/packager@v2
+        with:
+          args: -u
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_KEY }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

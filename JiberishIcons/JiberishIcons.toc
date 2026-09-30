@@ -1,0 +1,17 @@
+## Interface: 120100, 16001, 50504, 38002, 20506, 11509
+## Title: |cff1784d1Jiberish|r |cff00ccffFabled Icons|r
+## Author: Repooc, Jiberish
+## SavedVariables: JiberishIconsDB
+## Version: 1.4.8
+## Notes: Fabled class, race, and specialization icons for your UI
+## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI, EllesmereUIUnitFrames, EllesmereUIRaidFrames, EllesmereUIDamageMeters, Details
+## DefaultState: Enabled
+## IconTexture: Interface\AddOns\JiberishIcons\Media\Logo\SmallLogo
+## X-Curse-Project-ID: 978121
+## X-Wago-ID: 96E7kPGg
+
+Libs\Load_Libs.xml
+Init.lua
+
+Locales\Load_Locales.xml
+Core\Load_Core.xml

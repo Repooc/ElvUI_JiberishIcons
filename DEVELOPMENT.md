@@ -1,145 +1,103 @@
-# Local development and releases
+# Development and releases
 
-## Checkout and contribution
+## Repository contents
 
-`origin` is your fork (`jiberishxd/ElvUI_JiberishIcons`); `upstream` is
-`Repooc/ElvUI_JiberishIcons`. Start feature branches from current `upstream/main`
-and push them to your fork. Open pull requests against Repooc's `main` branch.
-The EllesmereUI feature branch is `codex/ellesmereui-support`.
+- `JiberishIcons/`: loaded Lua/XML files, required library licenses and the final game textures.
+- `tests/`: integration tests and small artwork checksum/coordinate fixtures.
+- `tools/`: release validation/packaging, optional settings migration and final-image export.
+- `images/`: the three finished previews referenced by the README; excluded from addon ZIPs.
+- `dist/`: local downloads and reports; ignored by Git and the CurseForge packager.
 
-The official branch-push workflow publishes alpha builds to CurseForge and Wago.
-Its name, **Push Commits to Discord Webhook**, does not describe its packaging
-behavior. Tagged releases use the separate **Release** workflow. Merging a PR
-does not itself publish a stable release. Leave publishing credentials on the
-upstream repository and coordinate version/tag selection with its maintainers.
+Keep artwork drafts, intermediate PNGs, extracted ZIPs and old builds outside the
+repository. Final TGA sheets are the canonical game assets. Update
+`tests/fixtures/textures.json` deliberately when artwork changes; never replace
+approved hashes merely to bypass a failure. The source check rejects files outside
+the addon, documentation, tooling, tests, workflows and approved previews.
 
-For a stable release, update the TOC version and dated changelog on the feature
-branch, validate the package, and merge the pull request into upstream `main`.
-Create an annotated version tag (for example, `1.4.6`) on that merged upstream
-commit and push the tag to `upstream`. Verify the **Release** workflow completes
-and reports successful CurseForge and Wago uploads. A tag pushed only to the fork
-does not publish the official addon; the fork has no publishing credentials.
+The local `ElvUI_JiberishIcons` compatibility link is ignored. It supports this
+machine's existing installation and must not be committed or packaged. Preparing a
+release does not install the addon or copy saved settings.
 
-Keep one comma-separated `Interface` line in the TOC for supported clients.
-For 1.4.6 these are Retail `120100`, Mists `50504`, Wrath `38002`, TBC `20506`,
-and Classic Era `11509`, matching ElvUI v15.26's client-specific TOCs. Interface
-metadata declares compatibility; it does not replace testing on those clients.
+## Checks and local download
 
-## Linked WoW installation
-
-On this development machine, the Retail AddOns entry
-`/Applications/World of Warcraft/_retail_/Interface/AddOns/ElvUI_JiberishIcons`
-links to the **inner addon folder** in this checkout, not the repository root.
-The original installed folder and copies of existing `ElvUI_JiberishIcons.lua`
-and `.lua.bak` saved-variable files are backed up outside AddOns. Those files
-contain the `JiberishIconsDB` table.
-
-- Keep **JiberishUI Icons** set to **Ignore** in WowUp while the link is active.
-  Do not reinstall or manually update it through an addon manager: that could
-  replace the link or write into the checkout.
-- Use `/reload` for edits to existing Lua files. Fully restart WoW after adding
-  files, changing the TOC/load list, or first installing this integration.
-- Switching branches also switches the addon code WoW loads on its next reload.
-- Saved settings remain in WoW's WTF directory; they are not stored in Git.
-- The initial settings backup reflects the last disk save. WoW may have newer
-  in-memory settings if it was running when the backup was taken.
-
-To restore the previous installation, exit WoW, verify that the AddOns entry is
-still a symlink to this checkout, remove **only that symlink**, and move the
-backed-up addon folder into its place. Restore saved settings only if wanted,
-while WoW is closed. Turn off WowUp's Ignore setting after restoring a normal
-installed copy. Do not delete or move the checkout to remove the link.
-
-## Automated checks
-
-Run from the repository root with Lua 5.1:
+Use Python 3.10+ with Pillow, plus Lua 5.1 and its compiler:
 
 ```sh
-lua5.1 tests/ellesmereui.lua
-lua5.1 tests/acegui-checkbox.lua
-git diff --check
+python3 tools/check-release.py
 ```
 
-The test suite loads the actual addon initialization, options, defaults,
-AceDB callbacks, and EllesmereUI adapter against mocked WoW frames. It exercises
-readiness, repeated setup, unit identity, combat deferral, inherited visibility,
-custom styles, profile changes, Apply to All, and replacement frames. It also
-loads the Blizzard, SUF, ElvUI and Chat rendering paths to check per-element
-horizontal reversal, bulk Normal/Reverse settings, and existing ElvUI tags.
-Classic API fixtures cover modern and legacy addon APIs, opening standalone
-options without SettingsPanel, and chat reversal without the Retail secret API.
-The suite does not simulate WoW's secure execution or GPU rendering, or establish
-that each Classic client has passed in-game testing.
+For custom runtime locations, pass `--lua /path/to/lua --luac /path/to/luac`.
+This verifies the source tree, every shipped Lua file, frame/meter integration
+fixtures, settings migration, artwork coordinates/transparency and the release ZIP.
+The tests do not simulate WoW's secure execution or GPU rendering.
 
-`tests/acegui-checkbox.lua` loads the bundled AceGUI core and actual checkbox
-widget with the old global `SetDesaturation` absent. It covers creation,
-checked/disabled/tristate visuals, clicks, callbacks, sounds, recycling and
-registration over an older widget version. This catches the reported options
-panel failure rather than substituting a mock for the affected widget.
-
-Syntax-check Lua files with `luac -p`; strip a leading UTF-8 BOM in memory when
-checking unchanged vendored libraries, since WoW accepts it but stock Lua 5.1
-does not. Development documentation and tests are excluded from addon packages.
-
-## In-game acceptance checklist (EllesmereUI 9.1.8)
-
-- Restart WoW, open `/ji` → EllesmereUI, and verify all five icons start disabled
-  on a new profile. Existing profiles/settings for other integrations must remain.
-- Enable and position icons on Player, Target, Focus, Target of Target, and Focus
-  Target. Check every anchor, size and offset, and Apply to All.
-- Check stock and custom artwork, including editing/deleting a selected custom
-  pack. Missing styles should display Fabled.
-- Switch targets between player classes, NPCs, pets and no target. Check focus,
-  target-of-target, focus-target and vehicle transitions. Restricted identity
-  should hide the icon rather than reuse the previous unit's class.
-- Move and hide EllesmereUI frames; check mouseover visibility and out-of-combat
-  fading. Icons must inherit visibility and must not intercept clicks.
-- Check with EllesmereUI portraits enabled and disabled. Portraits, native
-  text-bar icons, and EllesmereUI saved settings must remain unchanged.
-- Enter combat: existing icons must follow class changes; position/size/new
-  icon creation must wait until combat ends. Check for Lua errors and taint.
-- Switch, copy and reset Jiberish profiles; switch EllesmereUI profiles; zone
-  and reload. Disable icons and confirm only Jiberish-owned artwork disappears.
-- With EllesmereUI disabled, smoke-test Blizzard, ElvUI, SUF and Details where
-  installed. Confirm absent integrations do not cause Lua errors.
-- For each icon/portrait settings tab, toggle Reverse on Target while leaving
-  Player normal. Check that only the chosen artwork mirrors horizontally, stays
-  on the same class, and returns to normal when unchecked. Test Normal/Reverse
-  bulk application, custom styles and profile persistence. Chat changes should
-  affect newly displayed messages; existing ElvUI reverse tags should still work.
-
-Record completed checks in the pull request. Automated test success does not
-establish that the in-game checklist has passed.
-
-## Fabled Regalia / Fabled Azeroth validation
-
-See [RELEASE-CANDIDATE.md](RELEASE-CANDIDATE.md) for the new packs' in-game checklist
-and archived candidate validation. The stable release version is 1.4.7.
-Generated source artwork stays under `artwork/fabled/`;
-only the two final TGA files belong in the installed addon. The source artwork,
-tools and candidate documents are excluded by `.pkgmeta`.
-
-With Node.js/Sharp and Python/Pillow available, rebuild and verify the assets:
+To rebuild only the download:
 
 ```sh
-node tools/build-fabled.cjs
-python3 tools/verify-fabled.py
-python3 tools/build-fabledcore.py
-python3 tools/verify-fabledcore.py
-lua5.1 tests/ellesmereui.lua
-lua5.1 tests/acegui-checkbox.lua
-python3 tools/package-candidate.py
+python3 tools/package-release.py
 ```
 
-The artwork verifier independently decodes the TGA files, compares their RGBA
-pixels against the PNGs and individual cells, checks alpha margins and empty
-cells, and checks every class/race coordinate against the addon lookup. The
-local packager reads the TOC version and writes an installable ZIP and checksum
-to ignored `dist/`. It verifies every packaged file against the source, gives
-files ordinary non-executable permissions, and does not push or publish.
+Outputs are `dist/JiberishIcons-<version>.zip`, a SHA-256 checksum and a validation
+report. The archive contains one `JiberishIcons` folder with the required runtime
+files, library licenses, project license, changelog and upgrade guide. No artwork
+working files, previews, tests or tools are installed with the addon.
 
-Fabled Core's original files and its separate 256px export are documented in
-`artwork/fabledcore/README.md`. Its verifier also checks that every other texture
-remains byte-identical to rc.3. Core uses lossless RLE; Regalia and Azeroth retain
-their existing uncompressed exports. Each 2048px sheet requires 16 MiB of decoded
-RGBA memory before runtime overhead. The other eight older sets stay at 1024px.
+## GitHub and CurseForge
+
+The installed folder is `JiberishIcons`; the visible title is **Jiberish Fabled Icons**.
+The existing GitHub repository name and CurseForge/Wago project IDs are retained
+so existing project subscriptions continue to receive updates.
+
+Branch pushes and pull requests run validation only. Publishing runs on a version
+tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
+`## Version` in the TOC. For this release, use `1.4.8` or `v1.4.8` after reviewing
+and committing the prepared files and completing the in-game checks below.
+
+The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
+with `.pkgmeta` and Unix line endings. It builds without uploading first, verifies
+the exact archive contents, then publishes. It retains the single comma-separated
+Interface line. Required publishing configuration:
+
+- `CF_API_KEY`: CurseForge token authorized for project **978121**.
+- `WAGO_API_KEY`: token for the existing Wago project **96E7kPGg**, if Wago publishing is used.
+- GitHub's automatic `GITHUB_TOKEN`: supplied to the packager as `GITHUB_OAUTH`, with release write permission.
+
+Never put tokens in source files. A local package does not verify remote token
+permissions or publish anything. To test the official packager without uploading,
+run its `release.sh -d -e -l -u` in a clean checkout with Bash 4.3+, then validate the
+result with `python3 tools/verify-package.py /path/to/package.zip`.
+
+## Artwork and integrations
+
+`tools/verify-artwork.py` validates the runtime load graph, approved texture bytes,
+alpha, margins and mappings without needing any generation files. After editing
+the shared spec atlas, run `python3 tools/build_details_atlas.py` to rebuild the
+Details compatibility atlas, including its alternate Rogue cells and inset crops.
+
+`tools/create-social-image.py` lays out all 40 icons without labels on dark gray.
+Its default uses the game atlas; `--masters /path/to/transparent` uses larger final
+cutouts. `--background '#17191c'` controls the solid background. The output is
+`images/FabledSpecializationsSocial.png` at 3200 × 2000.
+
+The shared specialization lookup supports Retail/Mists selected specs, Classic
+talent points and Forever trait-group totals. Remote inspection is GUID-scoped,
+throttled and suspended in combat or when manual inspection has priority. Cached
+results refresh after one minute and expire after five. Explicit spec changes
+invalidate old results. Unknown/restricted units must not inherit another icon.
+
+Damage meters use each recorded combatant's class/spec metadata, with Regalia
+fallback; they do not inspect live targets. Preserve native layout, visibility,
+spell icons and restored textures when disabling the integration.
+
+## In-game acceptance
+
+**1.4.8:** The user confirmed successful in-game testing on both Retail and Forever
+on September 30, 2026 and approved release. This is user-reported live validation
+in addition to the automated checks above.
+
+1. Follow [UPGRADING.md](UPGRADING.md), fully restart WoW, confirm saved profiles and enable only the new folder.
+2. Check normal/mirrored spec icons and existing class/race packs on Blizzard, ElvUI, SUF and EllesmereUI frames. Verify ElvUI tags and profile switching.
+3. Switch talents and targets; check Classic/Forever dominant, tied and empty builds, Retail/Mists selected specs, party reassignments and unknown/restricted units. Verify manual inspection and combat behavior.
+4. Select Fabled Specializations in Details. Check current and historical combatants, fallback and crop edges, including Rogue on supported clients.
+5. Enable each optional damage-meter integration. Test Edit Mode, pinned rows, scrolling, multiple windows, hidden icons and profile changes. Disable it and confirm the native icons return. Spell drilldowns must remain unchanged.
+6. Record client/addon versions and any errors or taint before publishing. Automated checks establish packaging and fixture behavior, not complete live-game compatibility.

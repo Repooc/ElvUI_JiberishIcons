@@ -1,0 +1,80 @@
+local JI, L, P, G = unpack(JiberishIcons)
+local elvuiUnitList = JI.dataHelper.elvuiUnitList
+local sufUnitList = JI.dataHelper.sufUnitList
+
+P.blizzard = {
+    player = sharedDefaultValues,
+    target = sharedDefaultValues,
+    targettarget = sharedDefaultValues,
+    focus = sharedDefaultValues,
+    focustarget = sharedDefaultValues,
+    party = sharedDefaultValues,
+    -- raid = {
+    -- 	icon = sharedDefaultValues.icon,
+    -- },
+}
+
+
+P.chat = {
+    enable = false,
+    style = 'fabled',
+    reverse = false,
+}
+
+P.elvui = {}
+P.suf = {}
+P.ellesmereui = {}
+
+P.damageMeters = {
+    blizzard = { enable = false, style = 'fabledspecializations', reverse = false },
+    ellesmere = { enable = false, style = 'fabledspecializations', reverse = false },
+}
+
+for _, unit in ipairs(JI.dataHelper.ellesmereSettingList) do
+    P.ellesmereui[unit] = {
+        icon = {
+            enable = false,
+            style = 'fabled',
+            reverse = false,
+            size = 32,
+            anchorPoint = 'RIGHT',
+            xOffset = 0,
+            yOffset = 0,
+        },
+    }
+end
+
+for unit in pairs(elvuiUnitList) do
+    P.elvui[unit] = {
+        portrait = {
+            enable = false,
+            style = 'fabled',
+            reverse = false,
+            backdrop = {
+                enable = false,
+                colorOverride = false,
+                color = { 0, 0, 0, 0.5 },
+                transparent = false,
+            },
+        },
+    }
+end
+
+for _, unit in pairs(sufUnitList) do
+    P.suf[unit] = {
+        portrait = {
+            enable = false,
+            style = 'fabled',
+            reverse = false,
+        },
+        icon = {
+            enable = false,
+            style = 'fabled',
+            reverse = false,
+            size = 32,
+            anchorPoint = 'RIGHT',
+            xOffset = 0,
+            yOffset = 0,
+        },
+    }
+end

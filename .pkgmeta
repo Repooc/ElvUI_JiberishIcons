@@ -1,11 +1,17 @@
-package-as: ElvUI_JiberishIcons
+package-as: JiberishIcons
 manual-changelog:
     filename: changelog.md
     markup-type: markdown
 move-folders:
-    ElvUI_JiberishIcons/ElvUI_JiberishIcons: ElvUI_JiberishIcons
-enable-toc-creation: yes
+    JiberishIcons/JiberishIcons: JiberishIcons
+enable-toc-creation: no
 ignore:
+    - .github
+    - .gitattributes
+    - .gitignore
+    - .hgignore
+    - .DS_Store
+    - .release
     - dist
     - RELEASE-CANDIDATE.md
     - artwork
@@ -13,3 +19,6 @@ ignore:
     - images
     - tests
     - DEVELOPMENT.md
+    - docs
+    - README.md
+    - ElvUI_JiberishIcons

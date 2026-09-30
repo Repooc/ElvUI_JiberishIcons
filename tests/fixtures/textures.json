@@ -1,0 +1,2738 @@
+{
+  "description": "Approved final textures and cell mappings captured before cleanup; runtime textures are the canonical release assets.",
+  "textures": [
+    {
+      "path": "Media/Class/fabled.tga",
+      "sha256": "d62434a9f616dd0589735b0c0dfc936b5d5173d5c61406d08e56658eb480d7e9",
+      "rgbaSha256": "f05e83f68f4d0a1566bf8bbde1cecd2e99fe6b9cdec5e97efa99ca3584e71dba",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabled",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "b268bffe04f14cb2fdc55f0f5e8cb975d98499434654bdaebaebdf5bd2a0b07b"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "ed82aa08026e961cf7363c49ec3ea4e34587a141cc116dd3de2c4a81ab840cd9"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "10cf20afd3417adfdc616aeeb71e7623faf5e5762e1d35ee9897fc0e88af97cd"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "024646d2cc9c0327241461d85ba11d8d0beade1cc15a91762c420767ca10c77a"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "83f63aa92a971bbe51e04c924e6a09a812e3e279aadeffec52ac7ca9ee4215e9"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "14d332b8d8b9f6b7ed72176cc77a5526a1dc243b5179e862b528429c27c9ca72"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "b9de9a85deb95fe165fe0a1feaceb35317551d30b9862378c19edc8a18bb16e6"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "c58ac880a904aa79ac3a12565f9c22fbd3f7aedc0799ffba7f7c4a45e2a424bf"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "d68f427270a83d6e4bc152492e5595d5d72c746add1c0472a2f4f46f31d62344"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "010b2dfc99252000eef49ae636b37ff5395ba3128077d6766df4281e831bbb67"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "a6628c9ae501d7a198e3e175cc8123e51f78d389ccf427fbfc4a1ec1ddb7d738"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "3ba6356f10d8e8968c64dc55f24c8dea46e57b34d44d77e1be0410409a131d28"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "ccd625784b207703231f8470abaa4a1ca43defa06b03813293918645de5dd1e6"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledcore.tga",
+      "sha256": "2fb060f23ebbfe3654f3f6a703b98e8a73a4875e69c9415577bbd31a3006ab2b",
+      "rgbaSha256": "559eca5155aaf9e7c8ec6f106572ff6779fc45c389b3ed46ef0cbac4eb4d8caa",
+      "size": [
+        2048,
+        2048
+      ],
+      "kind": "Class",
+      "style": "fabledcore",
+      "cellSize": 256,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "de5a6d304f8970d7d53a83a8bf4c121213746628845deb0a442b619958c4102d"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "9b9a34230487e06fab3b2ff82ec7266e871b46cc3e864a632117f4ce4b3e1abd"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "ec2e90773fa1f32e25639fdba26dcf9129eb7055a393812c9f8a8e90bbbe4e58"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "95b65dd0d4f29a09371d4f8f02b24a5fa6e59142b7dd48cf89b8314212689ab4"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "2ac654c870ae854966bf32edf64d4d97d7e33ccc78667ed71a412e74e038f7c9"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "fd711504610e75861415f222e719348a594959f8c9ef51559c3621d09d9ab55d"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "76677b2d49bd44ed0fe791f07c88192097a6204271ce45c6c9140cd86e553f33"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "434bc251cbfbc46136b74216edc5349d745b7a7349aa32b2305727fe17f5fdd2"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "590a707848b505d82b4de2ef34a14d910ae94ac4b4b61cb20dffb529d74aaa67"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "8b91ab6836a8b0f0343e17d40fd08435bacbdfc7c3361685a4a3e035263506e6"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "5802bb11d3611aa71f1f8dd69905e0c61d5b6bfe522fc1c32edc8b5a389e2750"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "c3dffc626dfe65e9a06b02a91e9f0a51afb99b27fd92af715f63b8b41a82ea1e"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "417efc8acc811ae5bba90435e25773d55b5368ea493c9faf042e9ccf715133a9"
+        }
+      ],
+      "emptyUnusedCells": true,
+      "margin": 2
+    },
+    {
+      "path": "Media/Class/fableddimension.tga",
+      "sha256": "ffac55965468ff1feac086749342b6ebf2eeabba4093242adb1e9fc5fc3671dd",
+      "rgbaSha256": "d3476463ecf5d7b1382c95133bd00d296f1aebd13eb0ebd073f3f49599264f0b",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fableddimension",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "c534f195b98c09b120479ac69c67e8042b93e66d312a540736f223c8c016798c"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "edef2a787bd0b25f2430cd29841f0e227b52f35d4d7fc9d79116c0688b913b87"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "9d21c73aa04a028205323299ca673f864ff421969329d96bc5c64d017936f218"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "7f412b2d4e9ce65363266bdc7d8ffaeac9197c0cfce03ada6e959cd8895b9896"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "87d96d41d12bf0f91f2c75bfcab0bd180087d8edeb7d01c01a93c8834b723812"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "d88f0ea64cc3f09ee7ab2a4c9e243b3c1599e0804107bdd7453a9faea18928f0"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "5e71c4dfb9934125e99df57790b3bb1d756794d5a86e446f997b934a69f81704"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "640bb22fb3a5a275785a7170c62a28a97e7eccea95ce7c2beb98bc7d42a488d6"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "07f275c30ebb0f69fb56312c2eff9376e6694e330b63c245df6d1af2a3ffeb58"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "4e5c5dd6498f80e81e2c77b6e8024f05db3e85a5ca956f60e4c04b9f6a200462"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "c62629495af2425dca2df9dea385cad2e41fed65d13633cfaca385f80adc7179"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "2eef2f2458807d4f48c692ffef22b62749ddf16b536432c2cec0dcb7d727a399"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "2c484e2651d49c2c82bddd5a3ff48c5063c9a8ef28450e25030a29ab53c7948f"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledmyth.tga",
+      "sha256": "0d2080c3b73b0994f8e03b7eaf584a84be4f2baaa489b1459e9c2d97919196aa",
+      "rgbaSha256": "e5e8da90a06175e2a266530868661e736aa87b302f150134f163536b21b353f0",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabledmyth",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "950d4d3d0dfff3e482cbd8534fd97a751bd7d08d345c350aabc960d80e554ed5"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "d33ec0268288e36d6a2ef347cf2bfb175156275139dfde554633a0388437c1d8"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "40d31b6d0c2f62a68ee2477dc3dcb2783883936f63a6456caad8995617597100"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "5d15f9bdefd9c097343ff791d9ba60b29aebf27b8405ac172c4c958d5edd6198"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "96d58e8ff1efa469c05c875aef40985f75ae7a2f6a55073be8c2742d95d11753"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "6e3068733736ff6156082622ceb17657a2f4004fa7a882a382d45b7218dfa453"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "7f2e3a6c37ceaa5ae66474d4a93371945723729f32e84f8d71362ca7af4e0719"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "22d6e653ffde11e67cc141f5de5aba00f7d08ec9190141529fa7e7a6b08a91f3"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "49ae18a3321da99197482267b8e514096e6928907dbe2fdc5844046b681a9d93"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "1428d8a0c2e8798d5ae73b61833ed5d9d8c1eb43fc38417b7d3a599105b1331c"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "6bc2048e3dbdb4fe98769c4a6bf1056f8b19d44d2ebcee59bada55670ee7b037"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "3cbba51a86ed70232ccf5f43b4d4c7b89f137c1509b165d7a141ff3a098574b1"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "88ed1cddf1e8b8ee8217df377a9503b1c1dd34e51da94d982713adc86e5504c0"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledpixels.tga",
+      "sha256": "4a1d4dfed67eafa6993ac9b715776ed957a61bbb3ba677003b681df505b09066",
+      "rgbaSha256": "41fb043972d541a352b791f4d7cd37c9beb582e62cab1a0a690a41e6320986c5",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabledpixels",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "8bcdc534d3f355ffcd512af8b46122e5c2b92c44888ba8c3e8c732daab7ef427"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "968fd05230036a2d24aeea2b72337ede6fec6244ce80152de2ae5182cf1b49a3"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "c3af2bc45e46b3a642f1d7faccc4a7b1453c08aba5510e48289416eebd8e3e68"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "4b058d89f852077b8b735a61d9aa6e64583d94eb9efac46b4c568d1c0fda97fe"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "c06707f4b2bfc26f8e0f4cf6bca0725712f5f1d326aa99fd1d290543fab8bfdb"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "5eaca2d4404b46602febe73b369ab1cd00cc9a338d10b38bae793fa78a9bac25"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "ee756f05529d79cb6828e8c462bffda3189e9aeea72213a551fb6e4426609d52"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "557a98b1f9974ce9bca5fda470d0b7de1a194ee8739eb531040b00eec2d1c619"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "a8a984871c4663dcda111502a2d74aebb52c804e3c732a855737357dd964ccc5"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "36e49cd9c6583e4454097745485ffde7a2ba0398e65dcb7cdf2cf57e1f1a2f32"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "1480e0e9fdd1c87cf22d2a641747416cb8649afdeb0477242e1f8fbbed9c6dc4"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "6c19f9fa31756408a57d36b45b01e8844714ac7f5d9c46b5a439119eeb6e264e"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "51893c41477d5b9bd8ee3fbc78c260d7684a29b8f435b1cf32fc02411d02ce66"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledpixelsv2.tga",
+      "sha256": "5e8aaad600e85a48b5c2bf9c6bb8e9d981959141b1fe4d8ed8b6721d8d1d887e",
+      "rgbaSha256": "4863287160df41514ec7781bf372dc75f07ae170ec2afd207470ff3043fc7072",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabledpixelsv2",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "8948f6be3d54c4b5f967c5441723b2e9e463861c71cbad3d80d32e781521b3f3"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "2638df94b55e77a03b192d354b7abff22ac45cba5ee135d68e83d3c2913757bf"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "9b7102b6c2d50fbb4782a0859c7eb71dc69bffe37e9c53b844840bc78d2c53b4"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "13cef178f6155ca8bfb6e6d354e50085026643a7799ea213f2098a344b5aab0d"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "a73c3ff10415ed69a68f03b1c4772f58d5a97dd2157948acd1ef27756c7e5a6f"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "cbf13b0fcd9d0f99798ead4b6a369cac5f10186c93b5b32c8ac0f3e75fc10f3f"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "3a351de1034ef8a3a6df601f9a67035fdc5f37481ccbeb03b42711e949809b97"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "c06e1540765467f654b4ad92546b0fa63c0f87c804e782a69cd96abfaff31db5"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "e0623941c3de39e310a2875abe9b539028307f788d38cd7d7cf5345dd6a61f15"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "62f296d9676c533459c7dd84d9d157976031a2b1954f7bdfb3b64a8154c9c22f"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "b04f6764251bcaa7557dd22b2e788ee9aad83ce4793ceacd34d7942fa7efadf0"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "92e5be91887a3e65941700d4256969d8346a96c43add048a4fcb25a2c228aef3"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "b47344eaff77745acfa7f924f4219331722a683521e23bcfa11e52b3e24f6f67"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledrealm.tga",
+      "sha256": "fa387a9bdbbcd8139a5cb4e6935348f91176afe44140a035580f80c73f13bb98",
+      "rgbaSha256": "1257be8cc9242e45cd06070806d85a4c86a13a12ee32d10e72815238dd307a4e",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabledrealm",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "b5b114e3cf8f45fcc948d2a7593c3576a410a2f1afd7df5f73f72cdf005e4c31"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "a26805487b213c15ae40b1989ee67aef47e61e1310396def26d9ca97690bbf1c"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "9458440b56a0057b7ad1e2f33f5731918f40aad7b0dd7e2a1708c297ef1b0129"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "2e70cfc1cabe4ba29c70ca97476e3c76a7faadd6c9365ecbfe3f3fa88eb91727"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "8792de80bb85a446186b6a81d2c58f576417e7235ebe509fcfc87e53455b15c4"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "1129bbf3f8dbf0026838af197e66508bd8bec0217c5fc5dfcd4971e4c64d9777"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "0d05c045edd85eb61e39174da49054fc9c628170a86ced6ecd0c1324588c1463"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "46d627e0b1f875b9b51ba44fe89d45517b9b7104fdc110a228cab42f4451c0ed"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "5b66f0ca3a7ac52f55a4d7a2a65e5333fefd29ba1d08b824fee45455861643a0"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "12757b94135332f35d14c6900925ad4da3cee109bf5da7af09882fc564149daa"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "6227fdbdcde3373edc118ef44980aca129f7db953dc4c070356b25935795779d"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "90dc85d4cf72d196e1b247274be3a87d303892efc78e227aeb41f5e1d22be847"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "82c20dd6d87f5fc048d692b641446255c1380bba7024b363e7aedc5c0b44989d"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledrealmv2.tga",
+      "sha256": "8574a0dd599ce61a9f908fa386ed79a7764308b47a4a81482c86a1d3a6622801",
+      "rgbaSha256": "f3a482bd8dabecf21a3fb81ee8904ef119e2fc923445d6af115d1054c602e9f9",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "fabledrealmv2",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "a5ebd0aa7c116890d517213f59df2e78aab227d50b51e3421b024672f53b9fcf"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "67743e8950542ce096871b493998a5bc0064b63d1fc211d3192e1752eee0720e"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "5cd006312c36837c36b353f86183909cdb310e9f23ab626bdd3745ef4b960bf5"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "6973749446b0f6b926ae5eedbdbdfecba204a1848240b150741f2a41bf59f4aa"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "9bba4d3f6f399936eba826cf23e5513e45d6ed289940f4367e5e34c1ca43396c"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "ebe8f4426b863a24827daafcd4fbedbea6335c7e263e98649ec1abaad3df0e7c"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "5d540d185787cfcea48898c03ae68f78fee3f0e642405c6ae475ee95f0d43d5a"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "c2802336b8313177fe7751924848af179c31961da6550116d064f04d83c7d1f9"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "5c4ccca5d9eed95b75ac06c44f84f8dd525e8e114b2785310894c88176b88e79"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "4f0acc83f840bbe769a603ecc51b74056c0897fc4f99ab517c73ddcfcf050a6d"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "2db4fc97548f60d7d03cf6a7c07be3b01c0440d399e05ba6b54b7cfff678730a"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "1393867e7fff655af66f2c75887354a36e81516713baa22f8df69ff8f1d4255c"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "c80db00e5ff973273e918681c7e4c45fb9ce6158969357b9509e1399caf02c7f"
+        }
+      ]
+    },
+    {
+      "path": "Media/Class/fabledregalia.tga",
+      "sha256": "2faa84a20691dd26fa7725c3744c895bf3185592403f4b1cd3f875bd7733e90b",
+      "rgbaSha256": "5902e63f14b7bb3a6159767b2e5490e433bd18f9b8f745ca553aa40414279724",
+      "size": [
+        2048,
+        2048
+      ],
+      "kind": "Class",
+      "style": "fabledregalia",
+      "cellSize": 256,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "0044c47aaa8ee07e291135849ec95bda691847d6a9cd575ab161567fd38d265f"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "44e891be2fa32c98352b08fc3ca2a63e26729b19d745056b4024c34feb2c8b17"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "8f293693e52f294cd0c8eb2e0e3cd9534117ca14fc29129ddbaee9e9821d1ac1"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "56adecb3625132bf8dcf36730cd6f8fc48e8429c94a38961fb582dab32d84c1c"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "b5dbbbeface998f730d12a832dc7286b92de075cba11b406c733a6dd045aa8c9"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "791cadc1af4ebbd692cb68672d52ea40df24250631acdf7afd70180bf56670f0"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "85994b5695053124954970c71a2cf739f462f5374cdfc077fee748f492412875"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "3162dea0856fb5a87f28f263d64a53e1f550c8bc3dcd4895c3df51c4152a4cc3"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "2166309b8bc397b796cf790d29a75da4ca8f9a5770d66b0d36513396627f489a"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "bfbdfff38cafe7e31f7b8cc04e024e63a6f4f65862a95b8abc6b7896f0c65c2c"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "1107b67f72c4dc39e728c985b9b21e6e440e493d40ee9b38794461c5e872b190"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "87cfab4ba9d130603e0b20e1f3c32b35edcd47ee8ea5c09552e04b8ddb2f0ea8"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "7b0e3e5833d20798dd245dbbd74f6f679ccf8cce0ebb2fa1e1c7548594b96046"
+        }
+      ],
+      "emptyUnusedCells": true,
+      "margin": 4
+    },
+    {
+      "path": "Media/Class/intothevoid.tga",
+      "sha256": "264417ed811d664ffa6a83df82853196486511e63133643663ff6bc9fb7a87e6",
+      "rgbaSha256": "81a988e690d4ea44aaa600baec84c6bfa24c85f98ee3186417586b840dd670fc",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "Class",
+      "style": "intothevoid",
+      "cellSize": 128,
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "61a26a7af75e3aa71dabc6dc7eadefc3d163a84cb5358ed41bb0624dcd51ce47"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "9e18769312df3285597c0ccbd20116e8a80ace142d11dbda06fcc03bfff4243a"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "18053de8d8ef3b15111a5b2d8b5b536f7a676b0823ccb2bebe57343b612f5f28"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "aff5dc0c2acb35b7259aa33f82e4e4c5db45001c2c963da049caa93645da2eea"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "e60660ac22e45920c6ddb21be29a6a237f2581e35e931aa1dd7ca8212e61a17c"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "779bd83a09f3eaf7030becf49e511164c1dcfcd0afa4442f655824fc59834300"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "33981dd806ec0f9f60d5ff9ea33133552e35ff2830c4a7e8b9c37be29948b941"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "84cb3dc59695584dfb616722c983878ebd4754a273f22ca417a5acd68991fa24"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "bfb8d22c92737348df85690eef742d0e348e7cb5e5a3bf68e15ded923ad7483d"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "872debccaedeeffac9112399218c32cc52a93fc418830205843744b25129ae11"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Deathknight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "ec9d2486c167e80e4c814524285f614f33425e5fc7d2d6a51241e5fed62872ba"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "c51ba8274df17874af1ebae8a4de771e5f08f0a3b534a3c116938326590f23a3"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demonhunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "71cc1aa894129588eb8b99b63aa51fe5ea1cf5224cab8f0dab767fc02f3c24bc"
+        }
+      ]
+    },
+    {
+      "path": "Media/Logo/LargeLogo.tga",
+      "sha256": "7bbb81089156a69c41550adbd3e16007b9088e091b2be1b3baeeb088f65a78c0",
+      "rgbaSha256": "4444d2eb9bb6c4e7baeefc81ba2a22adfc038ae49d8633543cb327a08532f0d7",
+      "size": [
+        1024,
+        512
+      ],
+      "kind": "Logo",
+      "style": "LargeLogo"
+    },
+    {
+      "path": "Media/Logo/SmallLogo.tga",
+      "sha256": "8193b22a61d1a98c52d2fa1139f4c78bc19832b82cb463f94ee002a849150ac0",
+      "rgbaSha256": "150fc8d420a037a3ea503199d135e59e7a0e1426bca8e1d70a7b6ea3d709b1fa",
+      "size": [
+        64,
+        64
+      ],
+      "kind": "Logo",
+      "style": "SmallLogo"
+    },
+    {
+      "path": "Media/Race/fabledazeroth.tga",
+      "sha256": "717a80da65a6b72a2d8ebb69b41de76210437cccf49c2d9f81838839543db8e6",
+      "rgbaSha256": "4168c7889fa1d2b65c3d9373c7c1e3cc63c931471c64d8d7f87391802a263850",
+      "size": [
+        2048,
+        2048
+      ],
+      "kind": "Race",
+      "style": "fabledazeroth",
+      "cellSize": 256,
+      "icons": [
+        {
+          "id": "race_human",
+          "label": "Human",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "09b6dbeea5d7127c72186b03e701669ec6905095a3d138e343403448a1c00acd"
+        },
+        {
+          "id": "race_dwarf",
+          "label": "Dwarf",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "a790d14aa7ed5d46c8f1f567a3169b2a7cb7bdb741eac56ad6d3501040cd8ef9"
+        },
+        {
+          "id": "race_nightelf",
+          "label": "Night Elf",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "0ee03a75f691899510027641b28140fdb2fa00baa54e86bc4bc642202678c98f"
+        },
+        {
+          "id": "race_gnome",
+          "label": "Gnome",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "c4f8244df28f13b76c75d6515386d2dc85367a02803d21c44638148f65781792"
+        },
+        {
+          "id": "race_draenei",
+          "label": "Draenei",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "ce62a87ccd54fb9df9677f2c2b4ee58091f8386dd1a05dfb943e05a913db7b44"
+        },
+        {
+          "id": "race_worgen",
+          "label": "Worgen",
+          "cell": [
+            5,
+            0
+          ],
+          "rgbaSha256": "d3057384e020c94a9406980e1dfe0e58b9493807d4d14c1270b57ac6d9b57b88"
+        },
+        {
+          "id": "race_orc",
+          "label": "Orc",
+          "cell": [
+            6,
+            0
+          ],
+          "rgbaSha256": "8d8d2ee2b239dd83d9fd14b1f3262fe34a2c9d15031c6f4de8341b1f181371ad"
+        },
+        {
+          "id": "race_scourge",
+          "label": "Undead",
+          "cell": [
+            7,
+            0
+          ],
+          "rgbaSha256": "0ccba346c571174c47d6bb5147e18d7d9e6f13db8a5c267b823bee1aaf629c07"
+        },
+        {
+          "id": "race_tauren",
+          "label": "Tauren",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "747479d97d69cb3eb30336b8895ecc3af28d1971bb18556e3363b12ebd5cafa4"
+        },
+        {
+          "id": "race_troll",
+          "label": "Troll",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "cdaa69cc391c28bb89f2887c89bfa5ef33bacb37e655af425680706a7ae9ed85"
+        },
+        {
+          "id": "race_bloodelf",
+          "label": "Blood Elf",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "dde25cb2c6840213f3b6ecad3a04616c5ea9ae38077f8e5aa1c824bae9eb1e37"
+        },
+        {
+          "id": "race_goblin",
+          "label": "Goblin",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "3c82efd2f214349a4187b4cd7da37c60a35607e9ed6e97843ba9d01c52e9684d"
+        },
+        {
+          "id": "race_pandaren",
+          "label": "Pandaren",
+          "cell": [
+            4,
+            1
+          ],
+          "rgbaSha256": "1bc07c18751719e5301528dfd4620d2ac06a218838a2c863e0adfecd9f5f8588"
+        },
+        {
+          "id": "race_dracthyr",
+          "label": "Dracthyr",
+          "cell": [
+            5,
+            1
+          ],
+          "rgbaSha256": "88cc59f30760d461824e19539c1c5930392d94aae339a43bbab18f092bf3aa55"
+        },
+        {
+          "id": "race_voidelf",
+          "label": "Void Elf",
+          "cell": [
+            6,
+            1
+          ],
+          "rgbaSha256": "77e70d0a007cbb643a8797a4bd1c466278da22d864310827a5882a3a69d26cf2"
+        },
+        {
+          "id": "race_lightforgeddraenei",
+          "label": "Lightforged Draenei",
+          "cell": [
+            7,
+            1
+          ],
+          "rgbaSha256": "07ca8c6376feadd796a66c3fa8b030bd981e75d92883084bdebc0e1abb43754c"
+        },
+        {
+          "id": "race_darkirondwarf",
+          "label": "Dark Iron Dwarf",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "5995f74087bf4917cac394438aad435113a59e9916b8db224dfc4a78955f82b7"
+        },
+        {
+          "id": "race_kultiran",
+          "label": "Kul Tiran",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "0cc90673b3cc22f2b64e159f9aae40f5fb2c92f158708edf6a8d0368150d400d"
+        },
+        {
+          "id": "race_mechagnome",
+          "label": "Mechagnome",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "4a6c268c5d24340f28a82c94f2452b9504deadc5eb158650e431781197dc5d76"
+        },
+        {
+          "id": "race_nightborne",
+          "label": "Nightborne",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "b7a12b14fddb9799f95d87f022b72f57b47981cd6d1332080e5cd1285943855c"
+        },
+        {
+          "id": "race_highmountaintauren",
+          "label": "Highmountain Tauren",
+          "cell": [
+            4,
+            2
+          ],
+          "rgbaSha256": "5fb2c68b30f7a74b399bff10304a89353de9407b629531f878cc0f17127b9b48"
+        },
+        {
+          "id": "race_magharorc",
+          "label": "Mag'har Orc",
+          "cell": [
+            5,
+            2
+          ],
+          "rgbaSha256": "14859dbf35d01e07654609fefec8b89ec8cc88be651a3016b5e0c04d1e40c534"
+        },
+        {
+          "id": "race_zandalaritroll",
+          "label": "Zandalari Troll",
+          "cell": [
+            6,
+            2
+          ],
+          "rgbaSha256": "eef78f7bdb9add6995d1a32d2dee304deec57ef3bd3c3e6ab9889b410d9c29cd"
+        },
+        {
+          "id": "race_vulpera",
+          "label": "Vulpera",
+          "cell": [
+            7,
+            2
+          ],
+          "rgbaSha256": "7c59672c0d25f514f463b605a7eb5f46b88dd0254dbca9fa8645286624da1119"
+        },
+        {
+          "id": "race_earthendwarf",
+          "label": "Earthen",
+          "cell": [
+            0,
+            3
+          ],
+          "rgbaSha256": "a1e5be3f2dc090689ec3fafaeb8e869335da783f83f80e7a5ecb182fdd7cf7a4"
+        },
+        {
+          "id": "race_haranir",
+          "label": "Haranir",
+          "cell": [
+            1,
+            3
+          ],
+          "rgbaSha256": "659b46a159cb0ba2731a516bd35583fe56e56e4241c521ecfcdb80717cf7b3e6"
+        }
+      ],
+      "emptyUnusedCells": true,
+      "margin": 4
+    },
+    {
+      "path": "Media/Spec/fabledspecializations.tga",
+      "sha256": "38c5172ba510e9b6ad969b2cb8b69b2c374dcc89677aeb44609a3133ea0a0116",
+      "rgbaSha256": "5fc1b19b3d6af643a4d7a82194cbedc7b6a5d688bf0b1beeda5e199c0299d128",
+      "size": [
+        2048,
+        2048
+      ],
+      "kind": "Spec",
+      "style": "fabledspecializations",
+      "cellSize": 256,
+      "icons": [
+        {
+          "id": "death_knight_blood",
+          "label": "Blood Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Blood",
+          "specId": 250,
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "e08bd7e539cd430bfdaa4a5ba363a5228e9938a177b551d72ccd060814e153ea"
+        },
+        {
+          "id": "death_knight_frost",
+          "label": "Frost Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Frost",
+          "specId": 251,
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "de6bdffafc4373fad3aed81482ba508dff6f46869e8e6acdaab4258ba84804d7"
+        },
+        {
+          "id": "death_knight_unholy",
+          "label": "Unholy Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Unholy",
+          "specId": 252,
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "f1fc5ddd28209573ac7ece8c4a668c5be30ae5ffdc363658928e3afd8db9ecc6"
+        },
+        {
+          "id": "demon_hunter_havoc",
+          "label": "Havoc Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Havoc",
+          "specId": 577,
+          "cell": [
+            2,
+            4
+          ],
+          "rgbaSha256": "1a44e5c266f4f2bc0a8a8465bbf2cdd83879f67b87f87c73026fc4a7a28776f5"
+        },
+        {
+          "id": "demon_hunter_vengeance",
+          "label": "Vengeance Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Vengeance",
+          "specId": 581,
+          "cell": [
+            3,
+            4
+          ],
+          "rgbaSha256": "8a8e5042cfee51c6e260f299b82c7ab600286c0f208bb5933cab11727d02007f"
+        },
+        {
+          "id": "demon_hunter_devourer",
+          "label": "Devourer Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Devourer",
+          "specId": 1480,
+          "cell": [
+            7,
+            4
+          ],
+          "rgbaSha256": "9ec0d13fb6171168dfd1c65630d6de203ac7ef732f0dac430e32af8c151c3333"
+        },
+        {
+          "id": "druid_balance",
+          "label": "Balance Druid",
+          "class": "DRUID",
+          "specialization": "Balance",
+          "specId": 102,
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "4be0a107131d1085102ca580bbab9bf8e51c09add04d13a60d543caee1e68094"
+        },
+        {
+          "id": "druid_feral",
+          "label": "Feral Druid",
+          "class": "DRUID",
+          "specialization": "Feral",
+          "specId": 103,
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "a657a9e82c9fd2d60f7255d03f5cdc147dc95a23398c06eb3e2660b4de75b1a3"
+        },
+        {
+          "id": "druid_guardian",
+          "label": "Guardian Druid",
+          "class": "DRUID",
+          "specialization": "Guardian",
+          "specId": 104,
+          "cell": [
+            5,
+            0
+          ],
+          "rgbaSha256": "64002e3d70b7409faf0c150b4d43520e1ac90aa800dab47bcf63eee9e117a09e"
+        },
+        {
+          "id": "druid_restoration",
+          "label": "Restoration Druid",
+          "class": "DRUID",
+          "specialization": "Restoration",
+          "specId": 105,
+          "cell": [
+            6,
+            0
+          ],
+          "rgbaSha256": "740ed1b0ed2e8db6a6204a809c1cd54fcfbab74bcc5fe0af7c71ca1d44c79e8a"
+        },
+        {
+          "id": "hunter_beast_mastery",
+          "label": "Beast Mastery Hunter",
+          "class": "HUNTER",
+          "specialization": "Beast Mastery",
+          "specId": 253,
+          "cell": [
+            7,
+            0
+          ],
+          "rgbaSha256": "a90f6a3f02310e638b2d02b299a07826804a4b85402cc3486227ef885d9e6597"
+        },
+        {
+          "id": "hunter_marksmanship",
+          "label": "Marksmanship Hunter",
+          "class": "HUNTER",
+          "specialization": "Marksmanship",
+          "specId": 254,
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "88a8c3fcd8284a0818edaa6f55235aebdd87643362099ed6f75cf5d981e6bd1a"
+        },
+        {
+          "id": "hunter_survival",
+          "label": "Survival Hunter",
+          "class": "HUNTER",
+          "specialization": "Survival",
+          "specId": 255,
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "e9f9b5d0417ec9722ab764fe045b2e5bb7832b6a8e588d5191826799ffe1032f"
+        },
+        {
+          "id": "mage_arcane",
+          "label": "Arcane Mage",
+          "class": "MAGE",
+          "specialization": "Arcane",
+          "specId": 62,
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "79f4bd2525827e62077d02f40847b087cb9e89ac8b953f3abf86fffc5eb19642"
+        },
+        {
+          "id": "mage_fire",
+          "label": "Fire Mage",
+          "class": "MAGE",
+          "specialization": "Fire",
+          "specId": 63,
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "7385d4eada5f2d7f72e7248dcba443d31a0200a4b2c4e8e2bf4f14ba342ff58f"
+        },
+        {
+          "id": "mage_frost",
+          "label": "Frost Mage",
+          "class": "MAGE",
+          "specialization": "Frost",
+          "specId": 64,
+          "cell": [
+            4,
+            1
+          ],
+          "rgbaSha256": "6059121e54a5cf9cd4d6205608eb042b81be47d115fc05320468ce6aef4096e4"
+        },
+        {
+          "id": "monk_brewmaster",
+          "label": "Brewmaster Monk",
+          "class": "MONK",
+          "specialization": "Brewmaster",
+          "specId": 268,
+          "cell": [
+            5,
+            1
+          ],
+          "rgbaSha256": "7f0f41fad98d61de00320f34782ee193a1bc75a1f081b06c86ea0086d9208f9b"
+        },
+        {
+          "id": "monk_mistweaver",
+          "label": "Mistweaver Monk",
+          "class": "MONK",
+          "specialization": "Mistweaver",
+          "specId": 270,
+          "cell": [
+            6,
+            1
+          ],
+          "rgbaSha256": "7ee5d673e986bc51d7332cb3f91044123a1e12746830f17210f37ef6d041bd63"
+        },
+        {
+          "id": "monk_windwalker",
+          "label": "Windwalker Monk",
+          "class": "MONK",
+          "specialization": "Windwalker",
+          "specId": 269,
+          "cell": [
+            7,
+            1
+          ],
+          "rgbaSha256": "4d46cef7352fbb2287b6320e1d085f0ac3b76b1cee06c31c91d94bbd589ed0a5"
+        },
+        {
+          "id": "paladin_holy",
+          "label": "Holy Paladin",
+          "class": "PALADIN",
+          "specialization": "Holy",
+          "specId": 65,
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "dac2bdadea2fd8aaab71c890d7f309e19504c57b585fca69ee1bd8ed0f41a037"
+        },
+        {
+          "id": "paladin_protection",
+          "label": "Protection Paladin",
+          "class": "PALADIN",
+          "specialization": "Protection",
+          "specId": 66,
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "fe11d38730db5a3545bc23114b8425232b9d2afacc8c1bd475f20f4d2f081cbb"
+        },
+        {
+          "id": "paladin_retribution",
+          "label": "Retribution Paladin",
+          "class": "PALADIN",
+          "specialization": "Retribution",
+          "specId": 70,
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "5ce204d226e8607481f15e0d37163d116909d746164668ace2d6b79bb69ff559"
+        },
+        {
+          "id": "priest_discipline",
+          "label": "Discipline Priest",
+          "class": "PRIEST",
+          "specialization": "Discipline",
+          "specId": 256,
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "1a33bf19a6751cf41e99301c79fb25ec4652f3acfb21a6bd72c05f41ef1167a9"
+        },
+        {
+          "id": "priest_holy",
+          "label": "Holy Priest",
+          "class": "PRIEST",
+          "specialization": "Holy",
+          "specId": 257,
+          "cell": [
+            4,
+            2
+          ],
+          "rgbaSha256": "67323209532fff57294eec20f941aa635cf7e266e54a706923676da016ef352d"
+        },
+        {
+          "id": "priest_shadow",
+          "label": "Shadow Priest",
+          "class": "PRIEST",
+          "specialization": "Shadow",
+          "specId": 258,
+          "cell": [
+            5,
+            2
+          ],
+          "rgbaSha256": "39cab669fa95e0f06720648c256544a9eb3eb89aaa576e22059aa5f6c44ab89b"
+        },
+        {
+          "id": "rogue_assassination",
+          "label": "Assassination Rogue",
+          "class": "ROGUE",
+          "specialization": "Assassination",
+          "specId": 259,
+          "cell": [
+            6,
+            2
+          ],
+          "rgbaSha256": "e60f423677ae9cf5855a4e7b2a2608f86da03a330517ab98825910a08459e232"
+        },
+        {
+          "id": "rogue_outlaw",
+          "label": "Outlaw Rogue",
+          "class": "ROGUE",
+          "specialization": "Outlaw",
+          "specId": 260,
+          "cell": [
+            7,
+            2
+          ],
+          "rgbaSha256": "236b048dadc7fd93ca6420e26769bf4531674aec43cd2a5b51e8bc65e4e56738"
+        },
+        {
+          "id": "rogue_subtlety",
+          "label": "Subtlety Rogue",
+          "class": "ROGUE",
+          "specialization": "Subtlety",
+          "specId": 261,
+          "cell": [
+            0,
+            3
+          ],
+          "rgbaSha256": "23f7d26f1eeba8309061710ea8db874a5ff74df3370aaf1352229ed98e102674"
+        },
+        {
+          "id": "shaman_elemental",
+          "label": "Elemental Shaman",
+          "class": "SHAMAN",
+          "specialization": "Elemental",
+          "specId": 262,
+          "cell": [
+            1,
+            3
+          ],
+          "rgbaSha256": "057c57732cf53bea0cff28cccc5abcf4654b54d194462d05e21297f337fcdf4f"
+        },
+        {
+          "id": "shaman_enhancement",
+          "label": "Enhancement Shaman",
+          "class": "SHAMAN",
+          "specialization": "Enhancement",
+          "specId": 263,
+          "cell": [
+            2,
+            3
+          ],
+          "rgbaSha256": "251a1465bf249fccccb98f86b1a540d36272ddaae59486239b00039e27b5f6fe"
+        },
+        {
+          "id": "shaman_restoration",
+          "label": "Restoration Shaman",
+          "class": "SHAMAN",
+          "specialization": "Restoration",
+          "specId": 264,
+          "cell": [
+            3,
+            3
+          ],
+          "rgbaSha256": "2d658b7c5a3d8afae1577df9d99136b8a92f34a13c355a572156afa5179d56d5"
+        },
+        {
+          "id": "warlock_affliction",
+          "label": "Affliction Warlock",
+          "class": "WARLOCK",
+          "specialization": "Affliction",
+          "specId": 265,
+          "cell": [
+            4,
+            3
+          ],
+          "rgbaSha256": "b60f2baf888f424c787fefa5c12174ef267f81a242481ce54e97000bad9f1612"
+        },
+        {
+          "id": "warlock_demonology",
+          "label": "Demonology Warlock",
+          "class": "WARLOCK",
+          "specialization": "Demonology",
+          "specId": 266,
+          "cell": [
+            5,
+            3
+          ],
+          "rgbaSha256": "90b6406dc03d32772e5705be824fe104c4f02cbe892c26640b6096cf143d8ac6"
+        },
+        {
+          "id": "warlock_destruction",
+          "label": "Destruction Warlock",
+          "class": "WARLOCK",
+          "specialization": "Destruction",
+          "specId": 267,
+          "cell": [
+            6,
+            3
+          ],
+          "rgbaSha256": "2dd065a42250844663a00fa6b83646cec524c06a93cd2ea5e2913e4c9fb2a255"
+        },
+        {
+          "id": "warrior_arms",
+          "label": "Arms Warrior",
+          "class": "WARRIOR",
+          "specialization": "Arms",
+          "specId": 71,
+          "cell": [
+            7,
+            3
+          ],
+          "rgbaSha256": "3a2de18ddfd8cd70c5e4afc5e43a4ec9b1d5dd4956fadeb2818d4004f2606f8e"
+        },
+        {
+          "id": "warrior_fury",
+          "label": "Fury Warrior",
+          "class": "WARRIOR",
+          "specialization": "Fury",
+          "specId": 72,
+          "cell": [
+            0,
+            4
+          ],
+          "rgbaSha256": "d52a74ed3169665de7deadc7caa6fef611aaa6d60d14e768c5ede560ae20081d"
+        },
+        {
+          "id": "warrior_protection",
+          "label": "Protection Warrior",
+          "class": "WARRIOR",
+          "specialization": "Protection",
+          "specId": 73,
+          "cell": [
+            1,
+            4
+          ],
+          "rgbaSha256": "fb3e6276fb3397e530fbe5a8b21fd08cc8ef409e23d545d25c8a7f8d65fb7f8f"
+        },
+        {
+          "id": "evoker_devastation",
+          "label": "Devastation Evoker",
+          "class": "EVOKER",
+          "specialization": "Devastation",
+          "specId": 1467,
+          "cell": [
+            4,
+            4
+          ],
+          "rgbaSha256": "646697efd882443e1fe3188d6119093af1703e57bdfaf7471ccf8cd6315b8202"
+        },
+        {
+          "id": "evoker_preservation",
+          "label": "Preservation Evoker",
+          "class": "EVOKER",
+          "specialization": "Preservation",
+          "specId": 1468,
+          "cell": [
+            5,
+            4
+          ],
+          "rgbaSha256": "753605d12cc29d077a8fa40e697b628f78e2e2181abcf78fe9bd2c3fa2bf5a74"
+        },
+        {
+          "id": "evoker_augmentation",
+          "label": "Augmentation Evoker",
+          "class": "EVOKER",
+          "specialization": "Augmentation",
+          "specId": 1473,
+          "cell": [
+            6,
+            4
+          ],
+          "rgbaSha256": "b287bc10028c72aa74bc39ad5de60bf0688f40dd64b2beebe39b68c96309a501"
+        }
+      ],
+      "emptyUnusedCells": true,
+      "margin": 4
+    },
+    {
+      "path": "Media/Spec/spec_fabledspecializations.tga",
+      "sha256": "c4a53012eac0c707ffa4d2e70960841e0a44e7f17a6afcf9555e9a6f370dddab",
+      "rgbaSha256": "ff796047ab291569a6201951a5b74bef0da4c5ac2efe881faf9068cc29785037",
+      "size": [
+        2048,
+        2048
+      ],
+      "kind": "DetailsSpec",
+      "style": "fabledspecializations",
+      "cellSize": 256,
+      "icons": [
+        {
+          "id": "demon_hunter_havoc-details-2-4",
+          "label": "Havoc Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Havoc",
+          "specId": 577,
+          "cell": [
+            2,
+            4
+          ],
+          "rgbaSha256": "1a44e5c266f4f2bc0a8a8465bbf2cdd83879f67b87f87c73026fc4a7a28776f5"
+        },
+        {
+          "id": "demon_hunter_vengeance-details-3-4",
+          "label": "Vengeance Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Vengeance",
+          "specId": 581,
+          "cell": [
+            3,
+            4
+          ],
+          "rgbaSha256": "8a8e5042cfee51c6e260f299b82c7ab600286c0f208bb5933cab11727d02007f"
+        },
+        {
+          "id": "demon_hunter_devourer-details-7-4",
+          "label": "Devourer Demon Hunter",
+          "class": "DEMONHUNTER",
+          "specialization": "Devourer",
+          "specId": 1480,
+          "cell": [
+            7,
+            4
+          ],
+          "rgbaSha256": "9ec0d13fb6171168dfd1c65630d6de203ac7ef732f0dac430e32af8c151c3333"
+        },
+        {
+          "id": "death_knight_blood-details-0-0",
+          "label": "Blood Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Blood",
+          "specId": 250,
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "e08bd7e539cd430bfdaa4a5ba363a5228e9938a177b551d72ccd060814e153ea"
+        },
+        {
+          "id": "death_knight_frost-details-1-0",
+          "label": "Frost Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Frost",
+          "specId": 251,
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "de6bdffafc4373fad3aed81482ba508dff6f46869e8e6acdaab4258ba84804d7"
+        },
+        {
+          "id": "death_knight_unholy-details-2-0",
+          "label": "Unholy Death Knight",
+          "class": "DEATHKNIGHT",
+          "specialization": "Unholy",
+          "specId": 252,
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "f1fc5ddd28209573ac7ece8c4a668c5be30ae5ffdc363658928e3afd8db9ecc6"
+        },
+        {
+          "id": "druid_balance-details-3-0",
+          "label": "Balance Druid",
+          "class": "DRUID",
+          "specialization": "Balance",
+          "specId": 102,
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "4be0a107131d1085102ca580bbab9bf8e51c09add04d13a60d543caee1e68094"
+        },
+        {
+          "id": "druid_feral-details-4-0",
+          "label": "Feral Druid",
+          "class": "DRUID",
+          "specialization": "Feral",
+          "specId": 103,
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "a657a9e82c9fd2d60f7255d03f5cdc147dc95a23398c06eb3e2660b4de75b1a3"
+        },
+        {
+          "id": "druid_guardian-details-5-0",
+          "label": "Guardian Druid",
+          "class": "DRUID",
+          "specialization": "Guardian",
+          "specId": 104,
+          "cell": [
+            5,
+            0
+          ],
+          "rgbaSha256": "64002e3d70b7409faf0c150b4d43520e1ac90aa800dab47bcf63eee9e117a09e"
+        },
+        {
+          "id": "druid_restoration-details-6-0",
+          "label": "Restoration Druid",
+          "class": "DRUID",
+          "specialization": "Restoration",
+          "specId": 105,
+          "cell": [
+            6,
+            0
+          ],
+          "rgbaSha256": "740ed1b0ed2e8db6a6204a809c1cd54fcfbab74bcc5fe0af7c71ca1d44c79e8a"
+        },
+        {
+          "id": "hunter_beast_mastery-details-7-0",
+          "label": "Beast Mastery Hunter",
+          "class": "HUNTER",
+          "specialization": "Beast Mastery",
+          "specId": 253,
+          "cell": [
+            7,
+            0
+          ],
+          "rgbaSha256": "a90f6a3f02310e638b2d02b299a07826804a4b85402cc3486227ef885d9e6597"
+        },
+        {
+          "id": "hunter_marksmanship-details-0-1",
+          "label": "Marksmanship Hunter",
+          "class": "HUNTER",
+          "specialization": "Marksmanship",
+          "specId": 254,
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "88a8c3fcd8284a0818edaa6f55235aebdd87643362099ed6f75cf5d981e6bd1a"
+        },
+        {
+          "id": "hunter_survival-details-1-1",
+          "label": "Survival Hunter",
+          "class": "HUNTER",
+          "specialization": "Survival",
+          "specId": 255,
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "e9f9b5d0417ec9722ab764fe045b2e5bb7832b6a8e588d5191826799ffe1032f"
+        },
+        {
+          "id": "mage_arcane-details-2-1",
+          "label": "Arcane Mage",
+          "class": "MAGE",
+          "specialization": "Arcane",
+          "specId": 62,
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "42a2bb40225388c619b99938cfa19c3761307bcfd3172eb3628a448eb2db3d8c"
+        },
+        {
+          "id": "mage_fire-details-3-1",
+          "label": "Fire Mage",
+          "class": "MAGE",
+          "specialization": "Fire",
+          "specId": 63,
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "7385d4eada5f2d7f72e7248dcba443d31a0200a4b2c4e8e2bf4f14ba342ff58f"
+        },
+        {
+          "id": "mage_frost-details-4-1",
+          "label": "Frost Mage",
+          "class": "MAGE",
+          "specialization": "Frost",
+          "specId": 64,
+          "cell": [
+            4,
+            1
+          ],
+          "rgbaSha256": "6059121e54a5cf9cd4d6205608eb042b81be47d115fc05320468ce6aef4096e4"
+        },
+        {
+          "id": "monk_brewmaster-details-5-1",
+          "label": "Brewmaster Monk",
+          "class": "MONK",
+          "specialization": "Brewmaster",
+          "specId": 268,
+          "cell": [
+            5,
+            1
+          ],
+          "rgbaSha256": "7f0f41fad98d61de00320f34782ee193a1bc75a1f081b06c86ea0086d9208f9b"
+        },
+        {
+          "id": "monk_windwalker-details-7-1",
+          "label": "Windwalker Monk",
+          "class": "MONK",
+          "specialization": "Windwalker",
+          "specId": 269,
+          "cell": [
+            7,
+            1
+          ],
+          "rgbaSha256": "4d46cef7352fbb2287b6320e1d085f0ac3b76b1cee06c31c91d94bbd589ed0a5"
+        },
+        {
+          "id": "monk_mistweaver-details-6-1",
+          "label": "Mistweaver Monk",
+          "class": "MONK",
+          "specialization": "Mistweaver",
+          "specId": 270,
+          "cell": [
+            6,
+            1
+          ],
+          "rgbaSha256": "7ee5d673e986bc51d7332cb3f91044123a1e12746830f17210f37ef6d041bd63"
+        },
+        {
+          "id": "paladin_holy-details-0-2",
+          "label": "Holy Paladin",
+          "class": "PALADIN",
+          "specialization": "Holy",
+          "specId": 65,
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "dac2bdadea2fd8aaab71c890d7f309e19504c57b585fca69ee1bd8ed0f41a037"
+        },
+        {
+          "id": "paladin_protection-details-1-2",
+          "label": "Protection Paladin",
+          "class": "PALADIN",
+          "specialization": "Protection",
+          "specId": 66,
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "fe11d38730db5a3545bc23114b8425232b9d2afacc8c1bd475f20f4d2f081cbb"
+        },
+        {
+          "id": "paladin_retribution-details-2-2",
+          "label": "Retribution Paladin",
+          "class": "PALADIN",
+          "specialization": "Retribution",
+          "specId": 70,
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "ae180a847979eeac836313a011bdcd1454a894d2c4991a8075a5aa67dc50c692"
+        },
+        {
+          "id": "priest_discipline-details-3-2",
+          "label": "Discipline Priest",
+          "class": "PRIEST",
+          "specialization": "Discipline",
+          "specId": 256,
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "1a33bf19a6751cf41e99301c79fb25ec4652f3acfb21a6bd72c05f41ef1167a9"
+        },
+        {
+          "id": "priest_holy-details-4-2",
+          "label": "Holy Priest",
+          "class": "PRIEST",
+          "specialization": "Holy",
+          "specId": 257,
+          "cell": [
+            4,
+            2
+          ],
+          "rgbaSha256": "67323209532fff57294eec20f941aa635cf7e266e54a706923676da016ef352d"
+        },
+        {
+          "id": "priest_shadow-details-5-2",
+          "label": "Shadow Priest",
+          "class": "PRIEST",
+          "specialization": "Shadow",
+          "specId": 258,
+          "cell": [
+            5,
+            2
+          ],
+          "rgbaSha256": "ec7b69f2cad97ba8945985541f60a8e07136b9610c13d54b7daf6a350ca8cfd9"
+        },
+        {
+          "id": "rogue_assassination-details-6-2",
+          "label": "Assassination Rogue",
+          "class": "ROGUE",
+          "specialization": "Assassination",
+          "specId": 259,
+          "cell": [
+            6,
+            2
+          ],
+          "rgbaSha256": "e60f423677ae9cf5855a4e7b2a2608f86da03a330517ab98825910a08459e232"
+        },
+        {
+          "id": "rogue_outlaw-details-7-2",
+          "label": "Outlaw Rogue",
+          "class": "ROGUE",
+          "specialization": "Outlaw",
+          "specId": 260,
+          "cell": [
+            7,
+            2
+          ],
+          "rgbaSha256": "236b048dadc7fd93ca6420e26769bf4531674aec43cd2a5b51e8bc65e4e56738"
+        },
+        {
+          "id": "rogue_subtlety-details-0-3",
+          "label": "Subtlety Rogue",
+          "class": "ROGUE",
+          "specialization": "Subtlety",
+          "specId": 261,
+          "cell": [
+            0,
+            3
+          ],
+          "rgbaSha256": "23f7d26f1eeba8309061710ea8db874a5ff74df3370aaf1352229ed98e102674"
+        },
+        {
+          "id": "shaman_elemental-details-1-3",
+          "label": "Elemental Shaman",
+          "class": "SHAMAN",
+          "specialization": "Elemental",
+          "specId": 262,
+          "cell": [
+            1,
+            3
+          ],
+          "rgbaSha256": "057c57732cf53bea0cff28cccc5abcf4654b54d194462d05e21297f337fcdf4f"
+        },
+        {
+          "id": "shaman_enhancement-details-2-3",
+          "label": "Enhancement Shaman",
+          "class": "SHAMAN",
+          "specialization": "Enhancement",
+          "specId": 263,
+          "cell": [
+            2,
+            3
+          ],
+          "rgbaSha256": "251a1465bf249fccccb98f86b1a540d36272ddaae59486239b00039e27b5f6fe"
+        },
+        {
+          "id": "shaman_restoration-details-3-3",
+          "label": "Restoration Shaman",
+          "class": "SHAMAN",
+          "specialization": "Restoration",
+          "specId": 264,
+          "cell": [
+            3,
+            3
+          ],
+          "rgbaSha256": "2d658b7c5a3d8afae1577df9d99136b8a92f34a13c355a572156afa5179d56d5"
+        },
+        {
+          "id": "warlock_affliction-details-4-3",
+          "label": "Affliction Warlock",
+          "class": "WARLOCK",
+          "specialization": "Affliction",
+          "specId": 265,
+          "cell": [
+            4,
+            3
+          ],
+          "rgbaSha256": "b60f2baf888f424c787fefa5c12174ef267f81a242481ce54e97000bad9f1612"
+        },
+        {
+          "id": "warlock_demonology-details-5-3",
+          "label": "Demonology Warlock",
+          "class": "WARLOCK",
+          "specialization": "Demonology",
+          "specId": 266,
+          "cell": [
+            5,
+            3
+          ],
+          "rgbaSha256": "90b6406dc03d32772e5705be824fe104c4f02cbe892c26640b6096cf143d8ac6"
+        },
+        {
+          "id": "warlock_destruction-details-6-3",
+          "label": "Destruction Warlock",
+          "class": "WARLOCK",
+          "specialization": "Destruction",
+          "specId": 267,
+          "cell": [
+            6,
+            3
+          ],
+          "rgbaSha256": "2dd065a42250844663a00fa6b83646cec524c06a93cd2ea5e2913e4c9fb2a255"
+        },
+        {
+          "id": "warrior_arms-details-7-3",
+          "label": "Arms Warrior",
+          "class": "WARRIOR",
+          "specialization": "Arms",
+          "specId": 71,
+          "cell": [
+            7,
+            3
+          ],
+          "rgbaSha256": "3a2de18ddfd8cd70c5e4afc5e43a4ec9b1d5dd4956fadeb2818d4004f2606f8e"
+        },
+        {
+          "id": "warrior_fury-details-0-4",
+          "label": "Fury Warrior",
+          "class": "WARRIOR",
+          "specialization": "Fury",
+          "specId": 72,
+          "cell": [
+            0,
+            4
+          ],
+          "rgbaSha256": "d52a74ed3169665de7deadc7caa6fef611aaa6d60d14e768c5ede560ae20081d"
+        },
+        {
+          "id": "warrior_protection-details-1-4",
+          "label": "Protection Warrior",
+          "class": "WARRIOR",
+          "specialization": "Protection",
+          "specId": 73,
+          "cell": [
+            1,
+            4
+          ],
+          "rgbaSha256": "fb3e6276fb3397e530fbe5a8b21fd08cc8ef409e23d545d25c8a7f8d65fb7f8f"
+        },
+        {
+          "id": "evoker_devastation-details-4-4",
+          "label": "Devastation Evoker",
+          "class": "EVOKER",
+          "specialization": "Devastation",
+          "specId": 1467,
+          "cell": [
+            4,
+            4
+          ],
+          "rgbaSha256": "646697efd882443e1fe3188d6119093af1703e57bdfaf7471ccf8cd6315b8202"
+        },
+        {
+          "id": "evoker_preservation-details-5-4",
+          "label": "Preservation Evoker",
+          "class": "EVOKER",
+          "specialization": "Preservation",
+          "specId": 1468,
+          "cell": [
+            5,
+            4
+          ],
+          "rgbaSha256": "753605d12cc29d077a8fa40e697b628f78e2e2181abcf78fe9bd2c3fa2bf5a74"
+        },
+        {
+          "id": "evoker_augmentation-details-6-4",
+          "label": "Augmentation Evoker",
+          "class": "EVOKER",
+          "specialization": "Augmentation",
+          "specId": 1473,
+          "cell": [
+            6,
+            4
+          ],
+          "rgbaSha256": "b287bc10028c72aa74bc39ad5de60bf0688f40dd64b2beebe39b68c96309a501"
+        },
+        {
+          "id": "rogue_outlaw-details-0-6",
+          "label": "Outlaw Rogue",
+          "class": "ROGUE",
+          "specialization": "Outlaw",
+          "specId": 260,
+          "cell": [
+            0,
+            6
+          ],
+          "rgbaSha256": "236b048dadc7fd93ca6420e26769bf4531674aec43cd2a5b51e8bc65e4e56738"
+        },
+        {
+          "id": "rogue_assassination-details-1-6",
+          "label": "Assassination Rogue",
+          "class": "ROGUE",
+          "specialization": "Assassination",
+          "specId": 259,
+          "cell": [
+            1,
+            6
+          ],
+          "rgbaSha256": "e60f423677ae9cf5855a4e7b2a2608f86da03a330517ab98825910a08459e232"
+        }
+      ],
+      "emptyUnusedCells": true,
+      "margin": 4,
+      "source": "Media/Spec/fabledspecializations.tga"
+    }
+  ]
+}

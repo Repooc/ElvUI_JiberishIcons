@@ -1,0 +1,24 @@
+name: Validate addon
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+          python -m pip install Pillow
+      - name: Check addon and assets
+        run: python tools/check-release.py
