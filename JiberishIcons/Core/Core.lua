@@ -8,6 +8,13 @@ JI.defaultStylePacks = {
 	class = {
 		path = JI.MediaPath..[[Class\]],
 		styles = {
+			fabledclass = {
+				name = 'Fabled Class',
+				textureSize = 2048,
+				artist = 'JiberishUI',
+				site = 'https://theigloo.io/',
+				description = '13 class icons with bold outlines and class-colored effects, designed to match Fabled Specializations.',
+			},
 			fabled = {
 				name = 'Fabled',
 				artist = 'Royroyart',

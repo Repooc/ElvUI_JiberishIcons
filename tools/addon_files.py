@@ -9,7 +9,7 @@ ADDON = ROOT / 'JiberishIcons'
 LICENSES = {'Libs/Ace3/LICENSE.txt', 'Libs/UTF8/LICENSE.txt'}
 RELEASE_DOCS = {'LICENSE.md', 'changelog.md', 'UPGRADING.md'}
 PREVIEWS = {'FabledSpecializationsSocial.png', 'FabledRegaliaWebsiteDisplay.png',
-            'FabledAzerothWebsiteDisplay.png'}
+            'FabledAzerothWebsiteDisplay.png', 'FabledClassPreview.png'}
 
 
 def source_files():

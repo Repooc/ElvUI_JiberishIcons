@@ -1,3 +1,12 @@
+# 1.4.9 — Fabled Class (October 2, 2026)
+
+- Add **Fabled Class**: all 13 class icons in the bold illustrated style of Fabled Specializations, with thicker continuous black borders and clean transparent edges for small UI sizes.
+- Include the final Druid effects and ivory Priest handle. Select Fabled Class on supported unit frames, in chat, with normal/reversed ElvUI tags, and in Details! and Eltruism integrations.
+- Export one transparent 2048 × 2048 sheet with 256px cells and eight-pixel safety margins. Ship only required addon assets; exclude artwork drafts, previews and source archives from the addon download.
+- Improve Forever's Blizzard and Ellesmere damage-meter specialization icons by using committed player talents and GUID-matched, verified party builds when native meters supply class icons. Refresh inspections and native meter data after combat, and handle reused rows without carrying another player's artwork.
+- Retain confirmed builds through temporary API failures without extending cache expiry. Invalidate them when the active build changes; keep recorded specialization lookup for historical fights.
+- Add a conservative combat fallback for unchanged parties: after a readable meter snapshot, retain specialization art only when all possible remote members of that class share the same confirmed spec. Conflicting, unknown or expired builds retain Regalia. A new party may need one completed fight and an out-of-combat inspection; this does not provide general hidden-identity or raid specialization support.
+
 # 1.4.8 — Jiberish Fabled Icons (September 30, 2026)
 
 - Rename the install folder to **JiberishIcons** and the addon to **Jiberish Fabled Icons**. Follow **UPGRADING.md** to keep existing profiles when switching folders.

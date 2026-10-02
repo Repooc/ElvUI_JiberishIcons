@@ -129,33 +129,39 @@ local function ForeverConfigSpec(class, configID)
 end
 
 local committedForeverSpec
+local function CachedForeverSpec(class, configID, group)
+	local cached = committedForeverSpec
+	if cached and cached.class == class and (not configID or cached.configID == configID)
+		and (not group or cached.group == group) then
+		return cached.specID, cached.classFallback
+	end
+end
+
 local function ForeverTalentSpec()
 	local _, class = UnitClass('player')
 	if IsSecret(class) or type(class) ~= 'string' then return end
 	local traits, api = C_Traits, C_SpecializationInfo
 	if not traits or not traits.ConfigHasStagedChanges then return end
-	local configID
+	local configID, group
 	if api and api.GetActiveSpecGroup and api.GetCombatConfigIDForSpecGroup then
-		local group = api.GetActiveSpecGroup()
-		if not PublicNumber(group) or group <= 0 then return end
+		group = api.GetActiveSpecGroup()
+		if not PublicNumber(group) or group <= 0 then return CachedForeverSpec(class) end
 		configID = api.GetCombatConfigIDForSpecGroup(group)
 	elseif C_ClassTalents and C_ClassTalents.GetActiveConfigID then
 		configID = C_ClassTalents.GetActiveConfigID()
 	end
-	if not PublicNumber(configID) or configID <= 0 then return end
+	if not PublicNumber(configID) or configID <= 0 then return CachedForeverSpec(class, nil, group) end
 	-- Group currencies include pending edits. Keep the last committed result while
 	-- previewing, scoped to this character's active config; never read another tab.
 	local staged = traits.ConfigHasStagedChanges(configID)
-	if IsSecret(staged) or type(staged) ~= 'boolean' then return end
-	if staged then
-		if committedForeverSpec and committedForeverSpec.configID == configID and committedForeverSpec.class == class then
-			return committedForeverSpec.specID, committedForeverSpec.classFallback
-		end
-		return
+	if IsSecret(staged) or type(staged) ~= 'boolean' or staged then
+		return CachedForeverSpec(class, configID, group)
 	end
 	local specID, fallback = ForeverConfigSpec(class, configID)
-	if not specID and not fallback then return end
-	committedForeverSpec = {configID = configID, class = class, specID = specID, classFallback = not specID}
+	-- Missing/restricted talent reads are not an empty build. Keep this config's
+	-- last confirmed result; a successful zero/tied allocation still replaces it.
+	if not specID and not fallback then return CachedForeverSpec(class, configID, group) end
+	committedForeverSpec = {configID = configID, group = group, class = class, specID = specID, classFallback = not specID}
 	return specID, not specID
 end
 
@@ -242,8 +248,11 @@ function JI:GetUnitSpecialization(unit)
 	local inspect = (api and api.GetInspectSpecialization) or GetInspectSpecialization
 	if inspect then
 		local spec = inspect(unit)
-		if IsSecret(spec) then return end
-		if ValidSpec(spec) then
+		if IsSecret(spec) then
+			-- Forever's selected-spec API is not its talent-tree result. A hidden
+			-- starter ID must not block an independently verified trait inspection.
+			if not UsesForeverTalents() then return end
+		elseif ValidSpec(spec) then
 			if JI.RememberPublicSpecialization then JI:RememberPublicSpecialization(unit, spec) end
 			return spec
 		end
@@ -270,6 +279,7 @@ function JI:GetUnitSpecialization(unit)
 end
 
 function JI:RefreshSpecializationIcons()
+	if JI.RefreshDamageMeterSpecializations then JI:RefreshDamageMeterSpecializations() end
 	if JI.RefreshBlizzardSpecializations then JI:RefreshBlizzardSpecializations() end
 	if JI.RefreshSUFSpecializations then JI:RefreshSUFSpecializations() end
 	if JI.RefreshElvUISpecializations then JI:RefreshElvUISpecializations() end
@@ -295,6 +305,12 @@ function JI:SetupSpecializationIcons()
 		end
 	end
 	driver:SetScript('OnEvent', function(_, event, unit)
+		if event == 'ACTIVE_TALENT_GROUP_CHANGED' or (event == 'PLAYER_SPECIALIZATION_CHANGED'
+			and not IsSecret(unit) and unit == 'player') then
+			-- A new active build must be verified before a transient failure can
+			-- reuse it. Ordinary combat/inspection events do not clear our build.
+			committedForeverSpec = nil
+		end
 		if JI.OnSpecializationInspectEvent then JI:OnSpecializationInspectEvent(event, unit) end
 		JI:RefreshSpecializationIcons()
 	end)

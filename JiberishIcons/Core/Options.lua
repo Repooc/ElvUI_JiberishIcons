@@ -549,10 +549,10 @@ AddReverseBulk(elvui.args.general.args.portrait, 'elvui', 'portrait')
 AddReverseBulk(suf.args.general.args.portrait, 'suf', 'portrait', function() JI:UpdateSUF() end)
 AddReverseBulk(suf.args.general.args.icon, 'suf', 'icon', function() JI:UpdateSUF() end)
 
---! Damage meters use recorded class/spec metadata, not live unit inspection.
+--! Prefer recorded spec data; Forever live views can resolve verified talents.
 local meters = ACH:Group('Damage Meters', nil, 55, 'tab')
 JI.Options.args.damageMeters = meters
-meters.args.description = ACH:Description('Replace player icons with a class or specialization pack. Unknown specializations use the Fabled Regalia class crest. Spell icons keep their original artwork.', 0)
+meters.args.description = ACH:Description('Replace player icons with a class or specialization pack. In Forever, Current and Overall views use verified talents. After an out-of-combat snapshot, party combat icons can use a known spec when all matching members share it. Different or unknown specs of the same class use Regalia. A new group may need one completed fight and time for inspection. Spell icons keep their original artwork.', 0)
 local function MeterStyles()
 	local values = {}
 	for _, kind in ipairs({ 'class', 'spec' }) do

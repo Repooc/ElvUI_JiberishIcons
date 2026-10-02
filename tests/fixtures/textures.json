@@ -2,6 +2,153 @@
   "description": "Approved final textures and cell mappings captured before cleanup; runtime textures are the canonical release assets.",
   "textures": [
     {
+      "path": "Media/Class/fabledclass.tga",
+      "style": "fabledclass",
+      "name": "Fabled Class",
+      "kind": "Class",
+      "size": [
+        2048,
+        2048
+      ],
+      "cellSize": 256,
+      "margin": 8,
+      "emptyUnusedCells": true,
+      "sha256": "740d70138f45d23f04ae4d4c19c2ef35e9d9ee1a2defff3356f7d97575aff368",
+      "rgbaSha256": "55889cdf95a889c87ce48fdc50ac46b754d9c77e5d0d9db4feed33ec65b40035",
+      "icons": [
+        {
+          "id": "warrior",
+          "class": "WARRIOR",
+          "label": "Warrior",
+          "cell": [
+            0,
+            0
+          ],
+          "rgbaSha256": "a2429e35721e50fa96441c73170bcb812c62fcbd26e6936f835a470e6f71b2b7"
+        },
+        {
+          "id": "mage",
+          "class": "MAGE",
+          "label": "Mage",
+          "cell": [
+            1,
+            0
+          ],
+          "rgbaSha256": "3a47e2931fec26f480f2309567e1166d49048c1ccdf312f19a41d2be623a609a"
+        },
+        {
+          "id": "rogue",
+          "class": "ROGUE",
+          "label": "Rogue",
+          "cell": [
+            2,
+            0
+          ],
+          "rgbaSha256": "f62f2d2e42485d912dabe6045f5c85700ff036c397b3af00eeea94263c86cbd2"
+        },
+        {
+          "id": "druid",
+          "class": "DRUID",
+          "label": "Druid",
+          "cell": [
+            3,
+            0
+          ],
+          "rgbaSha256": "7199e6053ab275b4f2c521ecd0fb6df60ee098d72e1306ff55f0c2df8c540e0c"
+        },
+        {
+          "id": "evoker",
+          "class": "EVOKER",
+          "label": "Evoker",
+          "cell": [
+            4,
+            0
+          ],
+          "rgbaSha256": "dba42254724783774ff762ffc5e71215dc41de2f9075f3eb1cb56b2cf31cf8d8"
+        },
+        {
+          "id": "hunter",
+          "class": "HUNTER",
+          "label": "Hunter",
+          "cell": [
+            0,
+            1
+          ],
+          "rgbaSha256": "259ec89c5d9b589644017df39411d2c86fade9db2e7d76c124ff7c76a3bf3c06"
+        },
+        {
+          "id": "shaman",
+          "class": "SHAMAN",
+          "label": "Shaman",
+          "cell": [
+            1,
+            1
+          ],
+          "rgbaSha256": "ca18c94ce98efe6ca478e50e501cc64c37cf8601e1108f9b3430153c9b580806"
+        },
+        {
+          "id": "priest",
+          "class": "PRIEST",
+          "label": "Priest",
+          "cell": [
+            2,
+            1
+          ],
+          "rgbaSha256": "66be85c70f64e2c4165ae677f9ea338e677652d0e7ca17187a9ef3fe5cc3429c"
+        },
+        {
+          "id": "warlock",
+          "class": "WARLOCK",
+          "label": "Warlock",
+          "cell": [
+            3,
+            1
+          ],
+          "rgbaSha256": "b5980aa6acc71305b89108914c8085eaaa6e2cfa8defd7740ff6bcf3062c90d0"
+        },
+        {
+          "id": "paladin",
+          "class": "PALADIN",
+          "label": "Paladin",
+          "cell": [
+            0,
+            2
+          ],
+          "rgbaSha256": "ec702be8d52a1ae826bb83a28cbb9d6acf1ab895e2cb764107f643afa2ff2ae7"
+        },
+        {
+          "id": "deathknight",
+          "class": "DEATHKNIGHT",
+          "label": "Death Knight",
+          "cell": [
+            1,
+            2
+          ],
+          "rgbaSha256": "1f72f8dac8528d9cc8e85373c79dd1eac1e0326681c3a69593bfd8aac68ca293"
+        },
+        {
+          "id": "monk",
+          "class": "MONK",
+          "label": "Monk",
+          "cell": [
+            2,
+            2
+          ],
+          "rgbaSha256": "1eb0c58d10ca8ff6c39945c2fc671923b9ae5f2ebba6848275b5bbad63bd5817"
+        },
+        {
+          "id": "demonhunter",
+          "class": "DEMONHUNTER",
+          "label": "Demon Hunter",
+          "cell": [
+            3,
+            2
+          ],
+          "rgbaSha256": "78a7eaae06d6c0276a61657362412ee5af703588d1d7b8eb7dda2efedd11752b"
+        }
+      ]
+    },
+    {
       "path": "Media/Class/fabled.tga",
       "sha256": "d62434a9f616dd0589735b0c0dfc936b5d5173d5c61406d08e56658eb480d7e9",
       "rgbaSha256": "f05e83f68f4d0a1566bf8bbde1cecd2e99fe6b9cdec5e97efa99ca3584e71dba",

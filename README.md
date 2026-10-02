@@ -13,6 +13,13 @@ when replacing the old `ElvUI_JiberishIcons` folder. Install only one folder nam
 
 ## Icon collections
 
+**Fabled Class** includes all 13 classes in the same bold illustrated style as
+Fabled Specializations. Choose **Fabled Class** in a class-style selector for
+unit frames or chat, or **Fabled Class (Class)** in damage-meter selectors.
+The transparent 2048 × 2048 sheet uses 256px cells with eight-pixel safety margins.
+
+![Fabled Class](images/FabledClassPreview.png)
+
 **Fabled Specializations** includes all 40 specializations, including Devourer.
 The revised designs use broader silhouettes, strong outlines, fewer internal
 details and clearer color areas for small unit-frame and damage-meter icons.
@@ -25,7 +32,8 @@ use the talent tree with the most spent points. Unspent builds and tied splits
 show the Fabled Regalia class crest until a tree leads. Classic Feral Combat uses
 the Feral icon; Combat Rogue uses Outlaw. Retail and Mists use their selected spec.
 Forever reads the active build's talent-group totals, matching its talent window;
-uncommitted previews retain the last known committed icon.
+uncommitted previews retain the last known committed icon. Temporary talent-read
+failures also retain the confirmed build; changing active builds invalidates it.
 Other players display when public specialization information is available.
 When a specialization icon needs data, nearby inspectable players are inspected
 automatically outside combat. Forever uses their inspected talent-group totals;
@@ -37,7 +45,8 @@ Current targets take priority over other queued players. Requests are throttled,
 retry limits prevent spam, and manual inspection windows take priority. Unknown or
 restricted specs hide until data arrives. Older Classic clients without usable
 remote spec information can use class and race styles. These lookup and cache
-rules apply to unit frames; damage meters use their recorded specialization data.
+rules also apply to Forever's live damage-meter views when recorded specialization
+data is unavailable. Other clients and selected historical fights use recorded data.
 Chat and Eltruism retain their class/race capabilities.
 
 ![Fabled Specializations](images/FabledSpecializationsSocial.png)
@@ -60,6 +69,7 @@ unit frame's **Custom Text** field. The optional size defaults to 64 and accepts
 
 | Collection | Normal | Mirrored |
 | --- | --- | --- |
+| Fabled Class | `[jiberish:class:fabledclass{32}]` | `[jiberish:class:fabledclass:reverse{32}]` |
 | Specializations | `[jiberish:spec:fabledspecializations{32}]` | `[jiberish:spec:fabledspecializations:reverse{32}]` |
 | Regalia classes | `[jiberish:class:fabledregalia{32}]` | `[jiberish:class:fabledregalia:reverse{32}]` |
 | Azeroth races | `[jiberish:race:fabledazeroth{32}]` | `[jiberish:race:fabledazeroth:reverse{32}]` |
@@ -81,7 +91,21 @@ portrait mode; icon and portrait styles can be configured independently.
   player rows and the pinned player across its windows. Ellesmere retains sizing,
   visibility, and spell artwork. Both meter integrations start disabled, support
   Reverse, and restore native icons when disabled. Unknown recorded specs use the
-  Regalia class crest; meter icons do not trigger player inspection.
+  Regalia class crest. In **Forever**, Current and Overall views also use the
+  player's committed talent build or another player's verified talent data when
+  the meter supplies only a class icon. Nearby party/raid members, targets and
+  focus players are queued for inspection even before their meter row appears.
+  Public player IDs use the same throttled cache as unit frames, retaining
+  recent results after leaving a group. Both meters fetch fresh data after
+  combat restrictions lift. For **parties**, including the open world, a prior
+  readable meter snapshot can preserve combat icons when every possible remote
+  member of that class has the same confirmed spec. Different or unknown builds
+  of the same class still use Regalia. After reloading or changing the group,
+  complete one fight and wait for inspections before testing the next fight.
+  This conservative inference requires an unchanged roster and excludes raids,
+  enemy views and known conflicting participants. These live views reflect the
+  current build. Selected historical fights require recorded specialization
+  data and otherwise retain the class crest.
 - **Details!:** Options → Bars: General → Icons → Texture → **Fabled Specializations (Spec)**.
   Details selects the artwork from each combatant's recorded specialization and
   keeps its normal class-icon fallback when a spec is unknown. Its compatible
