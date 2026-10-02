@@ -5,7 +5,7 @@
 - `JiberishIcons/`: loaded Lua/XML files, required library licenses and the final game textures.
 - `tests/`: integration tests and small artwork checksum/coordinate fixtures.
 - `tools/`: release validation/packaging, optional settings migration and final-image export.
-- `images/`: the three finished previews referenced by the README; excluded from addon ZIPs.
+- `images/`: the four finished previews referenced by the README; excluded from addon ZIPs.
 - `dist/`: local downloads and reports; ignored by Git and the CurseForge packager.
 
 Keep artwork drafts, intermediate PNGs, extracted ZIPs and old builds outside the
@@ -50,8 +50,8 @@ so existing project subscriptions continue to receive updates.
 
 Branch pushes and pull requests run validation only. Publishing runs on a version
 tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
-`## Version` in the TOC. For this release, use `1.4.8` or `v1.4.8` after reviewing
-and committing the prepared files and completing the in-game checks below.
+`## Version` in the TOC. The stable release is `1.4.9`; publish it with the
+matching `1.4.9` tag after the release checks pass.
 
 The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
 with `.pkgmeta` and Unix line endings. It builds without uploading first, verifies
@@ -84,12 +84,60 @@ talent points and Forever trait-group totals. Remote inspection is GUID-scoped,
 throttled and suspended in combat or when manual inspection has priority. Cached
 results refresh after one minute and expire after five. Explicit spec changes
 invalidate old results. Unknown/restricted units must not inherit another icon.
+Forever's personal committed-build cache also survives unavailable talent reads
+for the same config/group, but explicit active-build changes invalidate it.
 
-Damage meters use each recorded combatant's class/spec metadata, with Regalia
-fallback; they do not inspect live targets. Preserve native layout, visibility,
-spell icons and restored textures when disabling the integration.
+Damage meters prefer each recorded combatant's class/spec metadata. Forever's
+Current/Overall views can supplement missing specs with committed player talents
+or a GUID-matched unit's verified build, using the existing inspection queue.
+An enabled live spec meter primes public group/target/focus tokens independently
+of row identities. A passive GUID-cache lookup retains already-confirmed players
+after their unit token disappears, without extending expiry. Native data is
+refetched after combat or an inactive restriction-state event; retain scrolling,
+coalesce events and do not confuse the activation event with declassification.
+Public Player GUIDs and the local-player flag identify meter players even when
+the unrelated sourceCreatureID field is restricted. A readable GUID may use its
+confirmed cache entry through a unit API outage; never use a previous row's icon
+to guess a hidden identity or extend the inspection cache lifetime.
+Those live views track current builds, not historical talent snapshots. Explicit
+historical sessions never query live talents. Unknown/ambiguous/restricted
+identities retain Regalia except for the bounded party inference below. Preserve
+native layout, visibility, spell icons and restored textures when disabling the
+integration.
+
+`DamageMeterParty.lua` snapshots the full readable native session per window.
+For restricted GUIDs only, a previously seen class/icon key may choose a spec if
+all remote party candidates of that class have the same unexpired confirmed
+build. The public local-player flag excludes our own build. This is conservative
+inference from the unchanged party, not recovery of a hidden GUID; never pin
+artwork to row position. Include all party members even if absent from the meter.
+Conflicting/outside/pet keys block inference. Invalidate on roster/spec changes,
+zoning and meter reset, and reject raids, enemy views and explicit historical
+sessions. Full snapshots cover off-screen participants. Empty Current sessions
+between pulls retain evidence for the unchanged party. New groups may require a
+completed fight and inspections before the next pull can use this workaround.
 
 ## In-game acceptance
+
+**1.4.9:** The user approved shipping the final Fabled Class artwork and current
+release on October 2, 2026. The user had reported rough class-icon edges in game;
+the final export adds a rounded black contour behind all 13 icons, preserving
+opaque source colors and interior details. Automated checks cover source files,
+Lua syntax, integrations, texture hashes, coordinates, transparency, margins and
+ZIP contents. No additional in-game confirmation after the border refinement
+was reported; release approval is not a claim of exhaustive live validation.
+
+Forever party icons were confirmed working after combat during candidate testing.
+The final party-consensus workaround remains deliberately bounded: it requires an
+unchanged party, an observed class/icon key and unexpired confirmed builds shared
+by all possible remote members of that class. Mixed/unknown builds, raids and
+historical/enemy views retain the documented fallbacks. It does not recover hidden
+player identities or provide general in-combat specialization support.
+
+Only `Media/Class/fabledclass.tga` ships for Fabled Class. The high-resolution PNG
+masters remain locally in ignored `dist/FabledClass-Artwork.zip`; superseded
+artwork folders, candidate packages and comparison previews are removed. Keep the
+following in-game checklist for future changes and user-reported regressions.
 
 **1.4.8:** The user confirmed successful in-game testing on both Retail and Forever
 on September 30, 2026 and approved release. This is user-reported live validation

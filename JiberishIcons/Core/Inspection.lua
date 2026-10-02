@@ -62,6 +62,17 @@ function JI:GetCachedInspection(unit)
 	end
 end
 
+-- Meter rows may outlive their party/target token. Only return a previously
+-- verified public GUID; this passive read never extends the cache lifetime.
+function JI:GetCachedInspectionByGUID(guid, class)
+	if not enabled or IsSecret(guid) or type(guid) ~= 'string'
+		or IsSecret(class) or type(class) ~= 'string' then return end
+	local entry = cache[guid]
+	if entry and entry.class == class and entry.expires > GetTime() then
+		return entry.spec, entry.fallback
+	end
+end
+
 local function StopWhenIdle()
 	if not next(requests) and timer then timer:Cancel(); timer, timerDue = nil, nil end
 end

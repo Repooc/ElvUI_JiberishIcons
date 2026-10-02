@@ -139,6 +139,7 @@ local function fixture(loaded, client, saved)
 	JI.UpdateMedia = function() end
 	load('Core/Options.lua', 'JiberishIcons')
 	load('Core/EllesmereUI.lua')
+	load('Core/DamageMeterParty.lua')
 	load('Core/DamageMeters.lua')
 	JI:BuildProfile()
 	local ns = { Engine = { Attach = function() end, AttachPolled = function() end, RepaintAll = function() end } }
@@ -500,6 +501,16 @@ end
 
 test('Fabled packs register independently and race lookup covers every atlas cell', function()
 	local f = fixture()
+	equal(f.JI.mergedStylePacks.class.styles.fabledclass.name, 'Fabled Class')
+	local classCount = 0
+	for class, expected in pairs(f.JI.dataHelper.class) do
+		local icon, path, size = f.JI:GetIdentityIcon(class, nil, 'fabledclass')
+		equal(icon, expected); equal(size, 2048)
+		equal(path, f.JI.defaultStylePacks.class.path..'fabledclass')
+		classCount = classCount + 1
+	end
+	equal(classCount, 13)
+	equal(f.JI.Options.args.chat.args.style.values().fabledclass, 'Fabled Class')
 	equal(f.JI.mergedStylePacks.class.styles.fabledregalia.name, 'Fabled Regalia')
 	equal(f.JI.mergedStylePacks.race.styles.fabledazeroth.name, 'Fabled Azeroth')
 	equal(f.JI.mergedStylePacks.class.styles.fabledazeroth, nil)
@@ -517,6 +528,7 @@ test('Fabled packs register independently and race lookup covers every atlas cel
 	equal(f.JI:GetIdentityIcon('MAGE', nil, 'fabledazeroth'), nil)
 	equal(f.JI:GetIdentityIcon('MAGE', f.secret, 'fabledazeroth'), nil)
 	local values = f.JI.Options.args.ellesmereui.args.target.args.style.values()
+	equal(values.fabledclass, 'Fabled Class')
 	equal(values.fabledregalia, 'Fabled Regalia'); expect(values.fabledazeroth)
 	expect(f.JI.Options.args.StylePacks.args.RaceTab.args.fabledazeroth)
 end)
@@ -625,7 +637,7 @@ end)
 
 test('HD packs keep normalized cells and scale markup/previews without changing older packs', function()
 	local f = fixture()
-	for _, style in ipairs({'fabledcore', 'fabledregalia', 'fabledazeroth'}) do
+	for _, style in ipairs({'fabledclass', 'fabledcore', 'fabledregalia', 'fabledazeroth'}) do
 		local icon, path, size = f.JI:GetIdentityIcon('MAGE', 'Haranir', style)
 		equal(size, 2048)
 		local left, right, top, bottom = icon.texString:match('^(%d+):(%d+):(%d+):(%d+)$')
@@ -636,6 +648,7 @@ test('HD packs keep normalized cells and scale markup/previews without changing 
 		equal(icon.texCoords[1], left/1024)
 	end
 	local groups = f.JI.Options.args.StylePacks.args
+	expect(groups.ClassTab.args.fabledclass.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.ClassTab.args.fabledcore.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.ClassTab.args.fabledregalia.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.RaceTab.args.fabledazeroth.args.HARANIR.name:find(':2048:2048:256:512:768:1024|t', 1, true))
@@ -1012,14 +1025,14 @@ test('Forever group lookup handles empty/tied builds, loading, restrictions and 
 	f.state.points[101] = {6, 6, 0}
 	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), f.JI.dataHelper.class.PALADIN)
 	f.state.points[101] = {6, 6, 7}; equal(f.JI:GetUnitSpecialization('player'), 70)
-	f.state.points[101] = {f.secret, 0, 0}; equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	f.state.points[101] = {f.secret, 0, 0}; equal(f.JI:GetUnitSpecialization('player'), 70)
 	f.state.points[101] = {6, 0, 0}
 	f.frame('target', 'PALADIN'); f.env.UnitIsUnit = function() return true end
 	equal(f.JI:GetUnitSpecialization('target'), 65)
 	f.env.UnitIsUnit = function() return false end
 	equal(f.JI:GetUnitIcon('target', 'fabledspecializations'), nil)
 	f.env.C_Traits.GetConfigInfo = function() return nil end
-	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
+	equal(f.JI:GetUnitSpecialization('player'), 65)
 	f.env.C_Traits = nil
 	-- The legacy zero counters are not authoritative on Forever.
 	equal(f.JI:GetUnitIcon('player', 'fabledspecializations'), nil)
@@ -1381,7 +1394,7 @@ test('Details registers a selectable specialization pack alongside every class p
 	local f = detailsFixture()
 	f.state.addons.Details = true
 	f.JI:SetupDetails(); f.JI:SetupDetails()
-	local classes, specs = 0, 0
+	local classes, specs, foundClass = 0, 0, false
 	for _, entry in ipairs(f.entries) do
 		if entry.isSpec then
 			specs = specs + 1
@@ -1393,11 +1406,15 @@ test('Details registers a selectable specialization pack alongside every class p
 			equal(entry.iconsize[1], 16); equal(entry.iconsize[2], 16)
 		else
 			classes = classes + 1
+			if entry.label == 'Fabled Class (Class)' then
+				foundClass = true
+				equal(entry.value, [[Interface\AddOns\JiberishIcons\Media\Class\fabledclass]])
+			end
 			equal(entry.isSpec, false); expect(entry.label:find(' %(Class%)$'))
 			expect(entry.value:find([[\Media\Class\]], 1, true))
 		end
 	end
-	equal(classes, 10); equal(specs, 1)
+	equal(classes, 11); equal(specs, 1); expect(foundClass)
 end)
 
 test('Details absence and missing API are harmless on Retail, Forever and legacy clients', function()
@@ -1408,7 +1425,7 @@ test('Details absence and missing API are harmless on Retail, Forever and legacy
 		local details = f.env.Details
 		f.env.Details = nil; f.JI:SetupDetails(); equal(#f.entries, 0)
 		f.env.Details = {}; f.JI:SetupDetails(); equal(#f.entries, 0)
-		f.env.Details = details; f.JI:SetupDetails(); equal(#f.entries, 11)
+		f.env.Details = details; f.JI:SetupDetails(); equal(#f.entries, 12)
 	end
 end)
 
@@ -1417,9 +1434,9 @@ test('Details late loading registers through the existing addon event without du
 	f.JI.Initialized = true
 	f.JI:SetupDetails(); equal(#f.entries, 0)
 	f.state.addons.Details = true
-	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 11)
-	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 11)
-	f.JI:Init('ADDON_LOADED', 'UnrelatedAddon'); equal(#f.entries, 11)
+	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 12)
+	f.JI:Init('ADDON_LOADED', 'Details'); equal(#f.entries, 12)
+	f.JI:Init('ADDON_LOADED', 'UnrelatedAddon'); equal(#f.entries, 12)
 end)
 
 test('Details preserves custom class filenames and skips missing or incompatible textures', function()
@@ -1431,7 +1448,7 @@ test('Details preserves custom class filenames and skips missing or incompatible
 	local spec = f.JI.mergedStylePacks.spec.styles.fabledspecializations
 	local fileName = spec.detailsFileName
 	spec.detailsFileName = 'missing'
-	f.JI:SetupDetails(); equal(#f.entries, 11)
+	f.JI:SetupDetails(); equal(#f.entries, 12)
 	local found
 	for _, entry in ipairs(f.entries) do
 		expect(not entry.isSpec)
@@ -1441,21 +1458,26 @@ test('Details preserves custom class filenames and skips missing or incompatible
 	end
 	expect(found)
 	spec.detailsFileName = fileName
-	f.JI:SetupDetails(); equal(#f.entries, 12); equal(f.entries[12].isSpec, true)
+	f.JI:SetupDetails(); equal(#f.entries, 13); equal(f.entries[13].isSpec, true)
 end)
 
-local function meterFixture(client)
-	local f = fixture(false, client)
+local function meterFixture(client, base)
+	local f = base or fixture(false, client)
 	-- Meter integration must not inspect live units or read combat amounts/GUIDs.
-	f.JI.GetUnitSpecialization = function() error('meter queried live talents') end
-	f.env.NotifyInspect = function() error('meter requested inspection') end
+	-- Forever live views are the exception, exercised with the real talent fixture.
+	if not base then
+		f.JI.GetUnitSpecialization = function() error('meter queried live talents') end
+		f.env.NotifyInspect = function() error('meter requested inspection') end
+	end
 	f.env.SetCVar = function() error('meter changed a Blizzard setting') end
+	f.env.Enum = {DamageMeterSessionType = {Overall = 0, Current = 1, Expired = 2}}
 	f.windows = {}
 	function f.entry(class, spec)
 		local entry = f.frame('meter')
 		entry.texture = entry:CreateTexture()
 		entry.texture:SetTexCoord(.0625, .9, .0626, .9) -- DamageMeterEntry.xml's native crop
 		function entry:GetIcon() return self.texture end
+		function entry:GetElementData() return self.elementData end
 		-- Blizzard's UpdateIcon memoization intentionally skips identical inputs.
 		function entry:UpdateIcon()
 			local atlas = self.classFilename and self.classFilename ~= '' and (not self.specIconID or self.specIconID == 0) and self.classFilename
@@ -1475,6 +1497,7 @@ local function meterFixture(client)
 			end
 		end
 		function entry:Init(source)
+			self.elementData, self.isLocalPlayer = source, source.isLocalPlayer
 			self.classFilename, self.specIconID = source.class, source.spec
 			self:UpdateIcon()
 		end
@@ -1482,9 +1505,11 @@ local function meterFixture(client)
 		return entry
 	end
 	function f.window()
-		local w = { rows = {}, pinned = f.entry('MAGE', 135932) }
+		local w = { rows = {}, pinned = f.entry('MAGE', 135932), sessionType = 1 }
+		function w:GetSessionType() return self.sessionType end
+		function w:GetSessionID() return self.sessionID end
 		function w:GetScrollBox() return self end
-		function w:ForEachFrame(fn) for _, entry in ipairs(self.rows) do fn(entry) end end
+		function w:ForEachFrame(fn) for _, entry in ipairs(self.rows) do fn(entry, entry.elementData) end end
 		function w:GetLocalPlayerEntry() return self.pinned end
 		function w:InitEntry(entry, source) entry:Init(source) end
 		f.windows[#f.windows + 1] = w
@@ -1505,17 +1530,19 @@ local function meterFixture(client)
 	end
 	function f.euiWindow()
 		local function row() return { classIcon = f.frame('euiMeter'):CreateTexture() } end
-		local w = { rowPool = {row(), row()}, stickyPlayer = row() }
+		local w = { rowPool = {row(), row()}, stickyPlayer = row(), curSession = 1, Refresh = function() end }
 		f.euiNS._windows[#f.euiNS._windows + 1] = w
 		return w
 	end
-	function f.renderEUI(w, bar, class, spec, sticky, hidden)
+	function f.renderEUI(w, bar, class, spec, sticky, hidden, source)
 		if sticky then w._stickyClassCache, w._stickySpecCache = class, spec
 		else bar._cachedClass, bar._cachedSpecIcon = class, spec end
 		if hidden then bar.classIcon:Hide(); return end
 		bar.classIcon:SetTexture(spec or 'native-class-'..class)
 		bar.classIcon:SetTexCoord(.06, .94, .06, .94)
 		bar.classIcon:Show()
+		-- Ellesmere assigns the source after painting the native icon.
+		bar._src = source or {classFilename = class, specIconID = spec}
 	end
 	return f
 end
@@ -1525,7 +1552,7 @@ test('meter options default off, separate providers, exclude race styles and ret
 	local opts = f.JI.Options.args.damageMeters.args
 	equal(f.JI.db.damageMeters.blizzard.enable, false); equal(f.JI.db.damageMeters.ellesmere.enable, false)
 	local styles = opts.blizzard.args.style.values()
-	expect(styles.fabledspecializations); expect(styles.fabledregalia); equal(styles.fabledazeroth, nil)
+	equal(styles.fabledclass, 'Fabled Class (Class)'); expect(styles.fabledspecializations); expect(styles.fabledregalia); equal(styles.fabledazeroth, nil)
 	opts.blizzard.set({'enable'}, true)
 	equal(opts.blizzard.get({'enable'}), true); equal(opts.ellesmere.get({'enable'}), false)
 	expect(opts.blizzard.args.editMode.disabled())
@@ -1668,6 +1695,451 @@ test('meter class/reverse choices, custom-pack refresh and AceDB profile resets 
 	f.JI.data:SetProfile('Default') -- profile name is resolved by AceDB; explicitly reset whichever is active
 	f.JI.data:ResetProfile()
 	equal(f.JI.db.damageMeters.blizzard.enable, false); equal(f.JI.db.damageMeters.ellesmere.reverse, false)
+end)
+
+test('Forever live PALADIN 626003 uses committed Holy talents in both damage meters', function()
+	local f = meterFixture('forever', inspectionFixture())
+	local w = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	local row = f.entry('PALADIN', 626003); w.rows[1] = row
+	row:Init({class = 'PALADIN', spec = 626003, isLocalPlayer = true})
+	w.pinned:Init({class = 'PALADIN', spec = 626003, isLocalPlayer = true})
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters()
+	f.renderEUI(ew, ew.rowPool[1], 'PALADIN', 626003, false, false, {isLocalPlayer = true})
+	f.renderEUI(ew, ew.stickyPlayer, 'PALADIN', 626003, true, false, {isLocalPlayer = true})
+	f.flush()
+	for _, texture in ipairs({row.texture, w.pinned.texture, ew.rowPool[1].classIcon, ew.stickyPlayer.classIcon}) do
+		expect(texture.path:find('fabledspecializations', 1, true), 'Forever class-only meter metadata fell back to Regalia')
+		equal(table.concat(texture.coords, ','), table.concat(f.JI.dataHelper.specialization[65].texCoords, ','))
+	end
+	-- Changes to the committed build repaint without needing a different class icon.
+	f.state.points[101] = {0, 0, 8}; f.fire('TRAIT_CONFIG_UPDATED', 101); f.flush()
+	equal(table.concat(row.texture.coords, ','), table.concat(f.JI.dataHelper.specialization[70].texCoords, ','))
+	equal(table.concat(ew.rowPool[1].classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[70].texCoords, ','))
+	f.state.points[101] = {0, 0, 0}; f.fire('TRAIT_CONFIG_UPDATED', 101); f.flush()
+	expect(row.texture.path:find('fabledregalia', 1, true))
+	expect(ew.rowPool[1].classIcon.path:find('fabledregalia', 1, true))
+end)
+
+test('Forever meter inspection identifies exact GUIDs and recycled same-class rows in both providers', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-enh'
+	local w = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	local row = f.entry('SHAMAN', 626006); w.rows[1] = row
+	row:Init({class = 'SHAMAN', spec = 626006, sourceGUID = 'Player-enh'})
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters()
+	f.renderEUI(ew, ew.rowPool[1], 'SHAMAN', 626006, false, false, {sourceGUID = 'Player-enh'})
+	f.flush(); equal(#f.state.notifies, 1); equal(f.state.notifies[1].unit, 'party1')
+	f.ready('Player-enh', {0, 11, 0}); f.flush()
+	local function shows(spec)
+		for _, texture in ipairs({row.texture, ew.rowPool[1].classIcon}) do
+			expect(texture.path:find('fabledspecializations', 1, true))
+			equal(table.concat(texture.coords, ','), table.concat(f.JI.dataHelper.specialization[spec].texCoords, ','))
+		end
+	end
+	shows(263)
+	f.frame('party2', 'SHAMAN'); f.state.guids.party2 = 'Player-resto'
+	w:InitEntry(row, {class = 'SHAMAN', spec = 626006, sourceGUID = 'Player-resto'})
+	-- Actual Ellesmere optimization: same class + same generic texture, no texture setter.
+	ew.rowPool[1]._src = {sourceGUID = 'Player-resto'}; ew.Refresh(); f.flush()
+	expect(ew.rowPool[1].classIcon.path:find('fabledregalia', 1, true))
+	f.tick(2); equal(#f.state.notifies, 2); equal(f.state.notifies[2].unit, 'party2')
+	f.ready('Player-resto', {0, 0, 11}); f.flush(); shows(264)
+	-- Equal class names never substitute for matching the combatant's GUID.
+	w:InitEntry(row, {class = 'SHAMAN', spec = 626006, sourceGUID = 'Player-unknown'})
+	ew.rowPool[1]._src = {sourceGUID = 'Player-unknown'}; ew.Refresh(); f.flush()
+	expect(row.texture.path:find('fabledregalia', 1, true))
+	expect(ew.rowPool[1].classIcon.path:find('fabledregalia', 1, true)); equal(#f.state.notifies, 2)
+end)
+
+test('Forever live meter resolution refuses historical, mismatched, pet and restricted identities', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI:SetupDamageMeters()
+	local function get(class, file, source, sessionType, sessionID)
+		return f.JI:GetDamageMeterIcon('blizzard', class, file, source, sessionType, sessionID)
+	end
+	local own = {isLocalPlayer = true, sourceGUID = f.secret}
+	for _, sessionType in ipairs({0, 1}) do
+		equal(get('PALADIN', 626003, own, sessionType), f.JI.dataHelper.specialization[65])
+	end
+	-- Any forbidden route must exit before querying talent/identity data.
+	f.JI.GetUnitSpecialization = function() error('unexpected talent read') end
+	for _, c in ipairs({
+		{own, 1, 42}, {own, 1, f.secret}, {own, 2}, {own, f.secret},
+		{f.secret, 1}, {{sourceGUID = f.secret}, 1}, {{isLocalPlayer = f.secret}, 1},
+		{{sourceGUID = 'Player-absent'}, 1}, {{sourceGUID = 'Creature-pet'}, 1},
+		{{isLocalPlayer = true, sourceCreatureID = 123}, 1}, {{isLocalPlayer = true, threatPet = true}, 1},
+	}) do equal(get('PALADIN', 626003, c[1], c[2], c[3]), f.JI.dataHelper.class.PALADIN) end
+	equal(get('PALADIN', f.secret, own, 1), f.JI.dataHelper.class.PALADIN)
+	equal(get('SHAMAN', 626006, own, 1), f.JI.dataHelper.class.SHAMAN)
+	-- A real recorded spec takes priority even for a historical fight.
+	equal(get('PALADIN', 135873, own, 1, 42), f.JI.dataHelper.specialization[70])
+	local retail = meterFixture(); retail.JI.db.damageMeters.blizzard.enable = true; retail.JI:SetupDamageMeters()
+	equal(retail.JI:GetDamageMeterIcon('blizzard', 'PALADIN', 626003, own, 1), retail.JI.dataHelper.class.PALADIN)
+end)
+
+test('Forever meter session switching, deferred paints, reverse and disabling restore the correct textures', function()
+	local f = meterFixture('forever', inspectionFixture())
+	local w = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	local row = f.entry('PALADIN', 626003); w.rows[1] = row
+	row:Init({class = 'PALADIN', spec = 626003, isLocalPlayer = true})
+	ew.Refresh = function()
+		f.env.C_Timer.After(0, function()
+			f.renderEUI(ew, ew.rowPool[1], 'PALADIN', 626003, false, false, {isLocalPlayer = true})
+		end)
+	end
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters(); ew.Refresh(); f.flush()
+	expect(ew.rowPool[1].classIcon.path:find('fabledspecializations', 1, true))
+	for _, sessionType in ipairs({0, 1}) do
+		w.sessionType, ew.curSession = sessionType, sessionType
+		f.JI:UpdateDamageMeters(); ew.Refresh(); f.flush()
+		expect(row.texture.path:find('fabledspecializations', 1, true))
+		expect(ew.rowPool[1].classIcon.path:find('fabledspecializations', 1, true))
+	end
+	w.sessionID, ew.curSessionID = 23, 23
+	f.JI:UpdateDamageMeters(); ew.Refresh(); f.flush()
+	expect(row.texture.path:find('fabledregalia', 1, true))
+	expect(ew.rowPool[1].classIcon.path:find('fabledregalia', 1, true))
+	w.sessionID, ew.curSessionID = nil, nil
+	f.JI.db.damageMeters.blizzard.reverse = true; f.JI.db.damageMeters.ellesmere.reverse = true
+	f.JI:UpdateDamageMeters(); f.flush()
+	equal(row.texture.coords[1], f.JI.dataHelper.specialization[65].texCoords[5])
+	equal(ew.rowPool[1].classIcon.coords[1], f.JI.dataHelper.specialization[65].texCoords[5])
+	f.JI.db.damageMeters.blizzard.enable = false; f.JI.db.damageMeters.ellesmere.enable = false
+	f.JI:UpdateDamageMeters(); f.flush()
+	equal(row.texture.path, 626003); equal(ew.rowPool[1].classIcon.path, 626003)
+	equal(table.concat(ew.rowPool[1].classIcon.coords, ','), '0.06,0.94,0.06,0.94')
+end)
+
+test('Forever spec meters inspect party members before rows exist and share results with public GUID rows', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-party'
+	-- Forever can restrict the selected-spec API independently of trait results.
+	f.env.C_SpecializationInfo.GetInspectSpecialization = function() return f.secret end
+	local w = f.window(); f.blizzard()
+	f.JI.db.damageMeters.blizzard.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters(); f.flush()
+	equal(#f.state.notifies, 1); equal(f.state.notifies[1].unit, 'party1')
+	f.ready('Player-party', {0, 11, 0}); f.flush()
+	equal(f.JI:GetUnitSpecialization('party1'), 263)
+	local row = f.entry('SHAMAN', 626006); w.rows[1] = row
+	w:InitEntry(row, {class = 'SHAMAN', spec = 626006, sourceGUID = 'Player-party'})
+	equal(table.concat(row.texture.coords, ','), table.concat(f.JI.dataHelper.specialization[263].texCoords, ','))
+	-- Roster changes prime new members even with no corresponding visible row.
+	f.frame('party2', 'PALADIN'); f.state.guids.party2 = 'Player-new'
+	f.fire('GROUP_ROSTER_UPDATE'); f.flush(); f.tick(2)
+	equal(#f.state.notifies, 2); equal(f.state.notifies[2].unit, 'party2')
+end)
+
+test('Forever meters refetch restricted row data after restrictions lift and keep native scrolling', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.env.C_Timer.After = function(delay, callback) f.env.C_Timer.NewTimer(delay, callback) end
+	f.env.Enum.AddOnRestrictionState = {Inactive = 0, Activating = 1, Active = 2}
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	local w = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	local row = f.entry('SHAMAN', 626006); w.rows[1] = row
+	local restricted = {class = 'SHAMAN', spec = 626006, sourceGUID = f.secret}
+	local public = {class = 'SHAMAN', spec = 626006, sourceGUID = 'Player-party'}
+	local data, blizzardReads, ellesmereReads = restricted, 0, 0
+	row:Init(restricted)
+	f.renderEUI(ew, ew.rowPool[1], 'SHAMAN', 626006, false, false, restricted)
+	function w:Refresh(retain)
+		equal(retain, true); blizzardReads = blizzardReads + 1
+		self:InitEntry(row, data)
+	end
+	ew.Refresh = function()
+		ellesmereReads = ellesmereReads + 1
+		-- A native same-class refresh can replace only the data, not its texture.
+		ew.rowPool[1]._src = data
+	end
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters(); f.flush()
+	equal(#f.state.notifies, 1) -- public party tokens work despite restricted meter rows
+	f.ready('Player-party', {0, 11, 0}); f.flush()
+	expect(row.texture.path:find('fabledregalia', 1, true))
+	f.state.combat = true
+	f.fire('ADDON_RESTRICTION_STATE_CHANGED', 0, 1); f.tick(1)
+	equal(blizzardReads, 0); equal(ellesmereReads, 0)
+	f.state.combat = false
+	f.fire('PLAYER_REGEN_ENABLED'); f.tick(.5)
+	equal(blizzardReads, 1); equal(ellesmereReads, 1)
+	expect(row.texture.path:find('fabledregalia', 1, true)) -- identity still restricted
+	data = public -- newly fetched data is now public; old tables stay secret
+	f.fire('ADDON_RESTRICTION_STATE_CHANGED', 0, 0)
+	f.fire('ADDON_RESTRICTION_STATE_CHANGED', 1, 0)
+	f.tick(.5)
+	equal(blizzardReads, 2); equal(ellesmereReads, 2) -- events coalesce
+	for _, texture in ipairs({row.texture, ew.rowPool[1].classIcon}) do
+		expect(texture.path:find('fabledspecializations', 1, true))
+		equal(table.concat(texture.coords, ','), table.concat(f.JI.dataHelper.specialization[263].texCoords, ','))
+	end
+	equal(#f.state.notifies, 1)
+end)
+
+test('Forever meter preinspection respects combat, manual inspection and provider settings', function()
+	for _, provider in ipairs({'blizzard', 'ellesmere'}) do
+		local f = meterFixture('forever', inspectionFixture())
+		f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+		local w
+		if provider == 'blizzard' then w = f.window(); f.blizzard()
+		else f.eui(); w = f.euiWindow() end
+		f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters(); f.flush()
+		equal(#f.state.notifies, 0)
+		local db = f.JI.db.damageMeters[provider]; db.enable = true; db.style = 'fabledregalia'
+		f.JI:UpdateDamageMeters(); f.flush(); equal(#f.state.notifies, 0)
+		db.style = 'fabledspecializations'; w.sessionID, w.curSessionID = 42, 42
+		f.JI:UpdateDamageMeters(); f.flush(); equal(#f.state.notifies, 0)
+		w.sessionID, w.curSessionID = nil, nil; f.state.combat = true
+		f.JI:UpdateDamageMeters(); f.flush(); f.tick(2); equal(#f.state.notifies, 0)
+		f.state.combat = false; f.env.InspectFrame = f.env.CreateFrame('Frame')
+		f.fire('PLAYER_REGEN_ENABLED'); f.flush(); f.tick(2); equal(#f.state.notifies, 0)
+		f.env.InspectFrame:Hide(); f.tick(1)
+		equal(#f.state.notifies, 1); equal(f.state.notifies[1].unit, 'party1')
+	end
+end)
+
+test('Forever meter GUID cache survives leaving a group without leaking or extending expired results', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters()
+	f.JI:GetUnitSpecialization('party1'); f.flush(); f.ready('Player-party', {0, 11, 0}); f.flush()
+	f.world.party1.exists = false; f.state.guids.party1 = nil; f.fire('GROUP_ROSTER_UPDATE'); f.flush()
+	local function icon(guid, class, sessionID)
+		return f.JI:GetDamageMeterIcon('blizzard', class or 'SHAMAN', 626006, {sourceGUID = guid}, 1, sessionID)
+	end
+	equal(icon('Player-party'), f.JI.dataHelper.specialization[263])
+	equal(icon('Player-other'), f.JI.dataHelper.class.SHAMAN)
+	equal(icon('Player-party', 'PALADIN'), f.JI.dataHelper.class.PALADIN)
+	equal(icon(f.secret), f.JI.dataHelper.class.SHAMAN)
+	equal(icon('Player-party', 'SHAMAN', 42), f.JI.dataHelper.class.SHAMAN)
+	f.tick(299); equal(icon('Player-party'), f.JI.dataHelper.specialization[263])
+	f.tick(2); equal(icon('Player-party'), f.JI.dataHelper.class.SHAMAN)
+	equal(#f.state.notifies, 1)
+end)
+
+test('Forever Ellesmere keeps verified player icons when unrelated creature fields become restricted', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.eui(); local w = f.euiWindow()
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters(); f.flush()
+	f.ready('Player-party', {0, 11, 0}); f.flush()
+	local own, other = w.rowPool[1], w.rowPool[2]
+	for _, combat in ipairs({false, true, false}) do
+		f.state.combat = combat
+		for _, creature in ipairs({0, f.secret, 0, f.secret}) do
+			f.renderEUI(w, own, 'PALADIN', 626003, false, false,
+				{isLocalPlayer = true, sourceGUID = f.secret, sourceCreatureID = creature})
+			f.renderEUI(w, w.stickyPlayer, 'PALADIN', 626003, true, false,
+				{isLocalPlayer = true, sourceGUID = f.secret, sourceCreatureID = creature})
+			f.renderEUI(w, other, 'SHAMAN', 626006, false, false,
+				{isLocalPlayer = false, sourceGUID = 'Player-party', sourceCreatureID = creature})
+			f.flush()
+			for _, bar in ipairs({own, w.stickyPlayer}) do
+				expect(bar.classIcon.path:find('fabledspecializations', 1, true), 'known player flickered to Regalia')
+				equal(table.concat(bar.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[65].texCoords, ','))
+			end
+			equal(table.concat(other.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[263].texCoords, ','))
+		end
+	end
+end)
+
+test('Forever meters retain confirmed personal talents through temporary read failures but apply real changes', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.eui(); local w = f.euiWindow(); local row = w.rowPool[1]
+	f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters()
+	f.renderEUI(w, row, 'PALADIN', 626003, false, false, {isLocalPlayer = true}); f.flush()
+	local function shows(spec)
+		w.Refresh(); f.flush()
+		equal(table.concat(row.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[spec].texCoords, ','))
+	end
+	shows(65)
+	for _, combat in ipairs({true, false}) do
+		f.state.combat = combat
+		f.state.points[101] = {f.secret, 0, 0}; shows(65)
+		f.state.points[101] = {6, 0, 0}; shows(65)
+		f.state.staged = f.secret; shows(65); f.state.staged = false
+		local info = f.env.C_Traits.GetConfigInfo
+		f.env.C_Traits.GetConfigInfo = function() return nil end; shows(65)
+		f.env.C_Traits.GetConfigInfo = info
+		local group = f.env.C_SpecializationInfo.GetActiveSpecGroup
+		f.env.C_SpecializationInfo.GetActiveSpecGroup = function() return f.secret end; shows(65)
+		f.env.C_SpecializationInfo.GetActiveSpecGroup = group
+	end
+	f.state.points[101] = {0, 9, 0}; f.fire('TRAIT_CONFIG_UPDATED', 101); shows(66)
+	f.state.points[101] = {0, 0, 0}; f.fire('TRAIT_CONFIG_UPDATED', 101); f.flush()
+	expect(row.classIcon.path:find('fabledregalia', 1, true)) -- a known empty build is authoritative
+	f.state.points[101] = {6, 0, 0}; shows(65)
+	f.state.activeGroup = 2; f.state.points[202] = {f.secret, 0, 0}; w.Refresh(); f.flush()
+	expect(row.classIcon.path:find('fabledregalia', 1, true)) -- no old loadout for a new config
+	f.state.activeGroup = 1; shows(65)
+	f.env.C_SpecializationInfo.GetActiveSpecGroup = function() return f.secret end
+	f.fire('ACTIVE_TALENT_GROUP_CHANGED'); f.flush()
+	expect(row.classIcon.path:find('fabledregalia', 1, true)) -- an explicit loadout change invalidates it
+end)
+
+test('Forever meter public GUID cache survives temporary unit API gaps without crossing identities', function()
+	local f = meterFixture('forever', inspectionFixture())
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-party'
+	f.JI.db.damageMeters.ellesmere.enable = true; f.JI:SetupSpecializationIcons(); f.JI:SetupDamageMeters()
+	f.JI:GetUnitSpecialization('party1'); f.flush(); f.ready('Player-party', {0, 11, 0}); f.flush()
+	f.eui(); local w = f.euiWindow(); local row = w.rowPool[1]; f.JI:UpdateDamageMeters()
+	f.env.UnitIsUnit = function() return f.secret end
+	f.renderEUI(w, row, 'SHAMAN', 626006, false, false, {sourceGUID = 'Player-party'}); f.flush()
+	equal(table.concat(row.classIcon.coords, ','), table.concat(f.JI.dataHelper.specialization[263].texCoords, ','))
+	-- Recycling this same-class row never carries the confirmed player's icon.
+	row._src = {sourceGUID = 'Player-other'}; w.Refresh(); f.flush()
+	expect(row.classIcon.path:find('fabledregalia', 1, true))
+	row._src = {sourceGUID = f.secret}; w.Refresh(); f.flush()
+	expect(row.classIcon.path:find('fabledregalia', 1, true))
+end)
+
+local function partyMeterFixture()
+	local f = meterFixture('forever', inspectionFixture())
+	f.env.IsInRaid = function() return f.state.raid or false end
+	f.env.IsInInstance = function() error('party combat support must also work in the open world') end
+	f.env.Enum.DamageMeterType = {DamageDone = 0, HealingDone = 2, EnemyDamageTaken = 10}
+	f.env.Enum.DamageMeterSourceDisplayType = {Ally = 1, Enemy = 2}
+	f.frame('party1', 'SHAMAN'); f.state.guids.party1 = 'Player-shaman'
+	local bw = f.window(); f.blizzard(); f.eui(); local ew = f.euiWindow()
+	f.bw, f.ew = bw, ew
+	bw.meterType, ew.curDMType = 0, 0
+	f.session = {combatSources = {}}
+	function bw:GetDamageMeterType() return self.meterType end
+	function bw:GetCombatSession() return f.session end
+	function bw:Refresh()
+		for i, source in ipairs(f.session.combatSources) do
+			self.rows[i] = self.rows[i] or f.entry(source.class, source.spec)
+			self:InitEntry(self.rows[i], source)
+		end
+	end
+	ew.Refresh = function()
+		ew._lastSession = f.session
+		for i, source in ipairs(f.session.combatSources) do
+			ew.rowPool[i] = ew.rowPool[i] or {classIcon = f.frame('extraMeterRow'):CreateTexture()}
+			f.renderEUI(ew, ew.rowPool[i], source.classFilename, source.specIconID, false, false, source)
+		end
+	end
+	function f.source(unit, restricted)
+		local class = f.world[unit].class
+		local file = class == 'PALADIN' and 626003 or 626006
+		return {class = class, classFilename = class, spec = file, specIconID = file,
+			sourceGUID = restricted and f.secret or f.state.guids[unit], sourceCreatureID = restricted and f.secret or 0,
+			isLocalPlayer = unit == 'player', sourceDisplayType = 1}
+	end
+	function f.refresh(sources)
+		f.session = {combatSources = sources}
+		bw:Refresh(); ew.Refresh(); f.flush()
+	end
+	function f.shows(index, spec, class)
+		local info = spec and f.JI.dataHelper.specialization[spec] or f.JI.dataHelper.class[class]
+		for _, texture in ipairs({bw.rows[index].texture, ew.rowPool[index].classIcon}) do
+			expect(texture.path:find(spec and 'fabledspecializations' or 'fabledregalia', 1, true))
+			equal(table.concat(texture.coords, ','), table.concat(info.texCoords, ','))
+		end
+	end
+	f.JI.db.damageMeters.blizzard.enable = true; f.JI.db.damageMeters.ellesmere.enable = true
+	f.JI:SetupSpecializationIcons(); f.JI:RememberPublicSpecialization('party1', 263)
+	f.JI:SetupDamageMeters(); f.flush()
+	return f
+end
+
+test('Forever open-world party snapshots preserve unambiguous icons in both combat meters as rows reorder', function()
+	local f = partyMeterFixture()
+	f.refresh({f.source('player'), f.source('party1')}); f.shows(2, 263)
+	f.state.combat = true
+	for i = 1, 3 do
+		f.refresh({f.source('party1', true), f.source('player', true)})
+		f.shows(1, 263); f.shows(2, 65)
+		f.refresh({f.source('player', true), f.source('party1', true)})
+		f.shows(1, 65); f.shows(2, 263)
+	end
+	f.state.combat = false
+	-- Identity declassification may lag combat end; retain the same inference.
+	f.refresh({f.source('party1', true), f.source('player', true)}); f.shows(1, 263)
+	f.refresh({f.source('party1'), f.source('player')}); f.shows(1, 263)
+	-- An empty Current between pulls must not discard the unchanged party's keys.
+	f.refresh({}); f.state.combat = true
+	f.refresh({f.source('party1', true)}); f.shows(1, 263)
+end)
+
+test('party combat inference rejects different or unknown same-class builds but accepts a shared spec', function()
+	local f = partyMeterFixture()
+	f.frame('party2', 'SHAMAN'); f.state.guids.party2 = 'Player-second'
+	f.refresh({f.source('party1')}) -- second member has not appeared on this meter yet
+	f.state.combat = true
+	f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	f.JI:RememberPublicSpecialization('party2', 264)
+	f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	f.JI:RememberPublicSpecialization('party2', 263)
+	f.refresh({f.source('party1', true), f.source('party2', true)})
+	f.shows(1, 263); f.shows(2, 263)
+	-- Own-row metadata rules out the local player's different build.
+	f.state.combat = false; f.world.party1.class = 'PALADIN'; f.state.guids.party2 = nil; f.world.party2.exists = false
+	f.JI:RememberPublicSpecialization('party1', 70)
+	f.refresh({f.source('player'), f.source('party1')}); f.state.combat = true
+	f.refresh({f.source('party1', true), f.source('player', true)})
+	f.shows(1, 70); f.shows(2, 65)
+end)
+
+test('party combat snapshot invalidation prevents reuse after membership, spec, zone or meter reset changes', function()
+	for _, event in ipairs({'GROUP_ROSTER_UPDATE', 'PLAYER_SPECIALIZATION_CHANGED', 'PLAYER_ENTERING_WORLD', 'DAMAGE_METER_RESET'}) do
+		local f = partyMeterFixture()
+		f.refresh({f.source('party1')}); f.state.combat = true
+		f.refresh({f.source('party1', true)}); f.shows(1, 263)
+		f.fire(event, event == 'PLAYER_SPECIALIZATION_CHANGED' and 'party1' or nil); f.flush()
+		f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+		f.state.combat = false; f.JI:RememberPublicSpecialization('party1', 264)
+		f.refresh({f.source('party1')}); f.state.combat = true
+		f.refresh({f.source('party1', true)}); f.shows(1, 264)
+	end
+	local f = partyMeterFixture()
+	f.refresh({f.source('party1')}); f.state.combat = true
+	f.state.guids.party1 = 'Player-replacement' -- reject even before the roster event arrives
+	f.JI:RememberPublicSpecialization('party1', 263)
+	f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+end)
+
+test('party combat inference requires prior evidence and excludes raids, historical and enemy views', function()
+	local f = partyMeterFixture()
+	f.state.combat = true; f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	f.state.combat = false; f.refresh({f.source('party1')}); f.state.combat = true
+	f.refresh({f.source('party1', true)}); f.shows(1, 263)
+	f.state.raid = true; f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN'); f.state.raid = false
+	f.bw.sessionID, f.ew.curSessionID = 42, 42
+	f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	f.bw.sessionID, f.ew.curSessionID = nil, nil
+	f.bw.meterType, f.ew.curDMType = 10, 10
+	f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	f.bw.meterType, f.ew.curDMType = 0, 0
+	local enemy = f.source('party1', true); enemy.sourceDisplayType = 2
+	f.refresh({enemy}); f.shows(1, nil, 'SHAMAN')
+	local pet = f.source('party1', true); pet.threatPet = true
+	f.refresh({pet}); f.shows(1, nil, 'SHAMAN')
+	local missing = f.source('party1', true); missing.sourceGUID = nil
+	f.refresh({missing}); f.shows(1, nil, 'SHAMAN')
+	local unknownOwn = f.source('party1', true); unknownOwn.isLocalPlayer = f.secret
+	f.refresh({unknownOwn}); f.shows(1, nil, 'SHAMAN')
+	f.tick(301); f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+end)
+
+test('complete meter snapshots block outsider and pet keys even when the visible party member is unambiguous', function()
+	for _, guid in ipairs({'Player-departed', 'Pet-other'}) do
+		local f = partyMeterFixture()
+		f.bw.sessionType, f.ew.curSession = 0, 0
+		local outsider = f.source('party1'); outsider.sourceGUID = guid
+		f.session = {combatSources = {f.source('party1'), outsider}}
+		-- The conflicting participant may be off-screen; capture the full session.
+		f.ew._lastSession = f.session; f.JI:UpdateDamageMeters(); f.flush()
+		f.state.combat = true
+		f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+		f.state.combat = false; f.refresh({f.source('party1')})
+		f.state.combat = true; f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
+	end
 end)
 
 print(passed..' integration tests passed')
