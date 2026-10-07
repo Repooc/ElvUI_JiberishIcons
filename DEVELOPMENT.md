@@ -44,6 +44,14 @@ working files, previews, tests or tools are installed with the addon.
 
 ## GitHub and CurseForge
 
+Publish from **Repooc/ElvUI_JiberishIcons** (`upstream`), which owns the existing
+`CF_API_KEY` and `WAGO_API_KEY` GitHub Actions secrets. The
+`jiberishxd/ElvUI_JiberishIcons` repository (`origin`) is the contribution fork;
+it is not the publishing repository. Do not request new tokens or configure
+CurseForge's separate auto-packager when secrets are absent from the fork.
+Open a pull request to upstream, merge after validation, then push the matching
+release tag to upstream. Its existing workflow uploads the verified ZIP.
+
 The installed folder is `JiberishIcons`; the visible title is **Jiberish Fabled Icons**.
 The existing GitHub repository name and CurseForge/Wago project IDs are retained
 so existing project subscriptions continue to receive updates.
