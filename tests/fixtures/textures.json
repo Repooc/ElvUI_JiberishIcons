@@ -584,15 +584,15 @@
     },
     {
       "path": "Media/Class/fabledmyth.tga",
-      "sha256": "0d2080c3b73b0994f8e03b7eaf584a84be4f2baaa489b1459e9c2d97919196aa",
-      "rgbaSha256": "e5e8da90a06175e2a266530868661e736aa87b302f150134f163536b21b353f0",
+      "sha256": "57583d52f516854b7fe8b192e5d01e7b8bb39a090447867b94779872f3fb1d09",
+      "rgbaSha256": "13529f17dfb0741b802921cf3d331d804d60f4e66b4197a994624b37db7e6b94",
       "size": [
-        1024,
-        1024
+        2048,
+        2048
       ],
       "kind": "Class",
       "style": "fabledmyth",
-      "cellSize": 128,
+      "cellSize": 256,
       "icons": [
         {
           "id": "warrior",
@@ -602,7 +602,7 @@
             0,
             0
           ],
-          "rgbaSha256": "950d4d3d0dfff3e482cbd8534fd97a751bd7d08d345c350aabc960d80e554ed5"
+          "rgbaSha256": "187030da7fe6945ce95a0fb352a080b88afb6d7ddbb8f27714801d81c9175d6a"
         },
         {
           "id": "mage",
@@ -612,7 +612,7 @@
             1,
             0
           ],
-          "rgbaSha256": "d33ec0268288e36d6a2ef347cf2bfb175156275139dfde554633a0388437c1d8"
+          "rgbaSha256": "c48678cb99bb5bb8119eedd6d58ca2acee7145a4673482bfc4598dff337a251c"
         },
         {
           "id": "rogue",
@@ -622,7 +622,7 @@
             2,
             0
           ],
-          "rgbaSha256": "40d31b6d0c2f62a68ee2477dc3dcb2783883936f63a6456caad8995617597100"
+          "rgbaSha256": "b3cb95946fc13e310e3b3d6f7c61dd38c2da82a35c56d97d30a87cf0b8b1d401"
         },
         {
           "id": "druid",
@@ -632,7 +632,7 @@
             3,
             0
           ],
-          "rgbaSha256": "5d15f9bdefd9c097343ff791d9ba60b29aebf27b8405ac172c4c958d5edd6198"
+          "rgbaSha256": "d66202b9a661353a97238391eae285fb6a2053e7d950577322fdd453040b8a5b"
         },
         {
           "id": "evoker",
@@ -642,7 +642,7 @@
             4,
             0
           ],
-          "rgbaSha256": "96d58e8ff1efa469c05c875aef40985f75ae7a2f6a55073be8c2742d95d11753"
+          "rgbaSha256": "708d0f628e7227ff16ddc01309c1cf9e9533a54e9d61bb6df16b5a537059ce4a"
         },
         {
           "id": "hunter",
@@ -652,7 +652,7 @@
             0,
             1
           ],
-          "rgbaSha256": "6e3068733736ff6156082622ceb17657a2f4004fa7a882a382d45b7218dfa453"
+          "rgbaSha256": "a1791e313507b055e28d840492ada6a49a97a4b152371ff283f1d121ac42b5eb"
         },
         {
           "id": "shaman",
@@ -662,7 +662,7 @@
             1,
             1
           ],
-          "rgbaSha256": "7f2e3a6c37ceaa5ae66474d4a93371945723729f32e84f8d71362ca7af4e0719"
+          "rgbaSha256": "b77997193a08bd07d17cc17de7a4907523681dda1977c01d4cde92426fbcbeca"
         },
         {
           "id": "priest",
@@ -672,7 +672,7 @@
             2,
             1
           ],
-          "rgbaSha256": "22d6e653ffde11e67cc141f5de5aba00f7d08ec9190141529fa7e7a6b08a91f3"
+          "rgbaSha256": "ae32a2cfa0ab1a40dba9160fd023b9a9266aceee41a07cd4171ad42d1d62f152"
         },
         {
           "id": "warlock",
@@ -682,7 +682,7 @@
             3,
             1
           ],
-          "rgbaSha256": "49ae18a3321da99197482267b8e514096e6928907dbe2fdc5844046b681a9d93"
+          "rgbaSha256": "1092164db58b81f04ce13dfd03183660a273e21189a2271dabd47001839895b6"
         },
         {
           "id": "paladin",
@@ -692,7 +692,7 @@
             0,
             2
           ],
-          "rgbaSha256": "1428d8a0c2e8798d5ae73b61833ed5d9d8c1eb43fc38417b7d3a599105b1331c"
+          "rgbaSha256": "fafe605fc7f2d0a23de32ac996e5ea0969c556f60f01334c8bdbfeae3af619a0"
         },
         {
           "id": "deathknight",
@@ -702,7 +702,7 @@
             1,
             2
           ],
-          "rgbaSha256": "6bc2048e3dbdb4fe98769c4a6bf1056f8b19d44d2ebcee59bada55670ee7b037"
+          "rgbaSha256": "466a0dce4781b0e816dff8fbdf81b75f10a6738a1b5bc78f0a5b6a1957f8df8f"
         },
         {
           "id": "monk",
@@ -712,7 +712,7 @@
             2,
             2
           ],
-          "rgbaSha256": "3cbba51a86ed70232ccf5f43b4d4c7b89f137c1509b165d7a141ff3a098574b1"
+          "rgbaSha256": "7d485f942d391553fa7b2e50ae2518b182af51771d3d22031afd5ab339e937c0"
         },
         {
           "id": "demonhunter",
@@ -722,9 +722,11 @@
             3,
             2
           ],
-          "rgbaSha256": "88ed1cddf1e8b8ee8217df377a9503b1c1dd34e51da94d982713adc86e5504c0"
+          "rgbaSha256": "2aa89b5cc29a5647e64e36a9db0b0be74938ddbf4328e6bf159435b96453188d"
         }
-      ]
+      ],
+      "margin": 8,
+      "emptyUnusedCells": true
     },
     {
       "path": "Media/Class/fabledpixels.tga",

@@ -60,7 +60,13 @@ See the [Regalia](images/FabledRegaliaWebsiteDisplay.png) and
 [Azeroth](images/FabledAzerothWebsiteDisplay.png) previews.
 
 **Fabled Core** preserves its original designs, carefully resampled and lightly
-sharpened to 256px cells. Other existing packs retain their artwork and resolution.
+sharpened to 256px cells.
+
+**Fabled Myth** remasters all 13 original class motifs with thicker shapes,
+cleaner graffiti accents and stronger color separation. Its transparent
+2048 × 2048 sheet uses 256px cells with eight-pixel safety margins. Select
+**Fabled Myth** in the existing class-style selectors; saved selections continue
+to use the refreshed art. Other existing packs retain their artwork and resolution.
 
 ## ElvUI tags
 

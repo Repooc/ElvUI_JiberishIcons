@@ -637,7 +637,7 @@ end)
 
 test('HD packs keep normalized cells and scale markup/previews without changing older packs', function()
 	local f = fixture()
-	for _, style in ipairs({'fabledclass', 'fabledcore', 'fabledregalia', 'fabledazeroth'}) do
+	for _, style in ipairs({'fabledclass', 'fabledcore', 'fabledmyth', 'fabledregalia', 'fabledazeroth'}) do
 		local icon, path, size = f.JI:GetIdentityIcon('MAGE', 'Haranir', style)
 		equal(size, 2048)
 		local left, right, top, bottom = icon.texString:match('^(%d+):(%d+):(%d+):(%d+)$')
@@ -650,9 +650,10 @@ test('HD packs keep normalized cells and scale markup/previews without changing 
 	local groups = f.JI.Options.args.StylePacks.args
 	expect(groups.ClassTab.args.fabledclass.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.ClassTab.args.fabledcore.args.icons.name():find(':2048:2048:', 1, true))
+	expect(groups.ClassTab.args.fabledmyth.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.ClassTab.args.fabledregalia.args.icons.name():find(':2048:2048:', 1, true))
 	expect(groups.RaceTab.args.fabledazeroth.args.HARANIR.name:find(':2048:2048:256:512:768:1024|t', 1, true))
-	for _, style in ipairs({'fabled', 'fableddimension', 'fabledmyth', 'fabledpixels', 'fabledpixelsv2', 'fabledrealm', 'fabledrealmv2', 'intothevoid'}) do
+	for _, style in ipairs({'fabled', 'fableddimension', 'fabledpixels', 'fabledpixelsv2', 'fabledrealm', 'fabledrealmv2', 'intothevoid'}) do
 		local oldIcon, oldPath, oldSize = f.JI:GetIdentityIcon('MAGE', nil, style)
 		equal(oldSize, 1024)
 		expect(f.JI:GetIconMarkup(oldIcon, oldPath, 128, false, oldSize):find(':1024:1024:128:256:0:128|t', 1, true))

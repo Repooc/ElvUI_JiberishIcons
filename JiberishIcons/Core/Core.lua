@@ -33,8 +33,10 @@ JI.defaultStylePacks = {
 			},
 			fabledmyth = {
 				name = 'Fabled Myth',
+				textureSize = 2048,
 				artist = 'Penguin aka Jiberish',
 				site = 'https://theigloo.io/',
+				description = 'Original Fabled Myth motifs redrawn with bolder silhouettes, cleaner graffiti accents and higher-resolution artwork for small UI sizes.',
 			},
 			fabledpixels = {
 				name = 'Fabled Pixels',
