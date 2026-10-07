@@ -1,4 +1,4 @@
-# 1.4.10 — Fabled Myth remaster (October 7, 2026)
+# 1.5.0 — Fabled Myth remaster (October 7, 2026)
 
 - Redraw all 13 Fabled Myth class icons while preserving their original subjects and palettes, with broader shapes, stronger outlines and cleaner graffiti accents for small UI sizes.
 - Increase the Myth atlas to 2048 × 2048 with 256px cells and eight-pixel transparent margins. Preserve its style ID and class mappings, including mirrored icons and chat/tag crops.

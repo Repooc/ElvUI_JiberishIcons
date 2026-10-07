@@ -50,8 +50,8 @@ so existing project subscriptions continue to receive updates.
 
 Branch pushes and pull requests run validation only. Publishing runs on a version
 tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
-`## Version` in the TOC. The stable release is `1.4.10`; publish it with the
-matching `1.4.10` tag after the release checks pass.
+`## Version` in the TOC. The stable release is `1.5.0`; publish it with the
+matching `1.5.0` tag after the release checks pass.
 
 The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
 with `.pkgmeta` and Unix line endings. It builds without uploading first, verifies
@@ -119,7 +119,7 @@ completed fight and inspections before the next pull can use this workaround.
 
 ## In-game acceptance
 
-**1.4.10 — Fabled Myth remaster (October 7, 2026):** The user approved the final
+**1.5.0 — Fabled Myth remaster (October 7, 2026):** The user approved the final
 artwork and requested publishing to GitHub and CurseForge. All 13 original motifs
 were redrawn using the built-in image generator, preserving their subjects and
 palettes while increasing shape weight and reducing fine graffiti noise. The
