@@ -1,3 +1,10 @@
+# 1.4.10 — Fabled Myth remaster (October 7, 2026)
+
+- Redraw all 13 Fabled Myth class icons while preserving their original subjects and palettes, with broader shapes, stronger outlines and cleaner graffiti accents for small UI sizes.
+- Increase the Myth atlas to 2048 × 2048 with 256px cells and eight-pixel transparent margins. Preserve its style ID and class mappings, including mirrored icons and chat/tag crops.
+- Refine the original horn-hilt Demon Hunter sword, carved Shaman totem, geometric Priest staff, open-palm Warlock casting hand, Monk staff and fantasy Druid foliage.
+- Replace the old Fabled Myth artwork automatically for existing selections. Other icon collections and saved settings remain unchanged.
+
 # 1.4.9 — Fabled Class (October 2, 2026)
 
 - Add **Fabled Class**: all 13 class icons in the bold illustrated style of Fabled Specializations, with thicker continuous black borders and clean transparent edges for small UI sizes.
