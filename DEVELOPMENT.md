@@ -58,8 +58,9 @@ so existing project subscriptions continue to receive updates.
 
 Branch pushes and pull requests run validation only. Publishing runs on a version
 tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
-`## Version` in the TOC. The stable release is `1.5.0`; publish it with the
-matching `1.5.0` tag after the release checks pass.
+`## Version` in the TOC. The portrait release is `1.6.0`; publish it with the
+matching `1.6.0` tag after the release checks pass. `1.5.0` is already published;
+never replace or reuse an existing release tag.
 
 The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
 with `.pkgmeta` and Unix line endings. It builds without uploading first, verifies
@@ -95,6 +96,16 @@ invalidate old results. Unknown/restricted units must not inherit another icon.
 Forever's personal committed-build cache also survives unavailable talent reads
 for the same config/group, but explicit active-build changes invalidate it.
 
+When ElvUI provides `GetUnitSpecInfo`, remote Retail/Mists units first try its
+tooltip lookup, accepting only public specialization IDs matching the unit's
+class. Missing, restricted or unsupported tooltip data falls back to the existing
+lookup/inspection path. Classic/Forever talent trees and personal builds retain
+their original sources. ElvUI spec tags use events instead of half-second polling;
+the shared driver also repaints visible tagged frames on target/focus changes,
+inspection replies and OpenRaid callbacks, independently of portrait settings.
+Verify rapid retargeting, focus changes and delayed inspection replies in game;
+automated fixtures do not measure tooltip availability or live response times.
+
 Damage meters prefer each recorded combatant's class/spec metadata. Forever's
 Current/Overall views can supplement missing specs with committed player talents
 or a GUID-matched unit's verified build, using the existing inspection queue.
@@ -126,6 +137,63 @@ between pulls retain evidence for the unchanged party. New groups may require a
 completed fight and inspections before the next pull can use this workaround.
 
 ## In-game acceptance
+
+**1.6.0 candidate — independent portraits:** The portrait module is an independent
+implementation. Circle/droplet geometry builds in regular and thin variants,
+using standard uncompressed 32-bit TGA with 8-bit alpha, like the shipped icon
+atlases. Do not treat an offline decoder as proof of client texture support.
+`tools/build-portrait-shapes.py` (NumPy/Pillow) generates
+ten shape/mask families at 32, 64, 128, 256, 512 and 1024px, recorded in
+`tests/fixtures/portrait-textures.json`. The runtime selects a size appropriate
+to the physical display scale and uses linear filtering with texel snapping off.
+Both the existing TGA reader and Pillow validate the actual shipped files, and
+integration tests check every runtime border/mask path. No external portrait implementation or
+runtime dependency is included. All portraits default off. Visual holders belong
+to UIParent, use no secure button template, and are click-through when locked.
+Creation and layout changes wait until combat ends; existing textures can repaint.
+The shared specialization driver supplies late results. Target-of-target uses a
+bounded 0.2-second refresh; other portraits use unit events plus visibility checks.
+Three Additional slots support fixed class/spec/race icons or a selected live
+unit, with optional borders. Fixed icons do not depend on unit existence. ElvUI
+anchors prefer its canonical individual frames over party self-buttons. Numeric
+placement and anchor-point controls cancel unfinished drags; screen clamping is
+only active while dragging, and WoW's separate user-placed persistence is disabled.
+
+`PortraitCast.lua` adds opt-in Player/Target rings to Circle and Thin circle only.
+The native Cooldown swipe uses the same annular TGA and physical-size selection as
+the border, with no segmented geometry, edge spark or bling. Cast/channel colors
+include alpha and are independent per unit. Text uses shared-media fonts with
+separate name/time anchors. A separate masked spell texture overlays the normal
+portrait and clears at completion, interruption, target loss or disable. Spellcast
+events re-read current unit state rather than compare cast IDs, so late stop events
+cannot clear a newer cast. Modern clients pass duration objects directly to native
+cooldown widgets and secret name/icon/time values directly to display widgets.
+Older clients animate readable timestamps; restricted timestamps without a duration
+API fail closed. Channels drain; casts and empowered channels fill. The cast driver
+only creates widgets out of combat, and live events never move or resize them.
+The countdown updates at most every 0.05 seconds while shown; preview casts loop
+only while unlocked. No external cast-bar implementation is included.
+
+The native method contracts are in Blizzard's generated
+[Cooldown documentation](https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_APIDocumentationGenerated/FrameAPICooldownDocumentation.lua).
+Offline fixtures cover public/secret casts, channel and empower durations, legacy
+player APIs, delays, interruption, target swaps, preview, colors, font/position
+settings, scale-dependent textures and profile reset. Live acceptance must also
+check both rings during combat, rapid casts/channels, empower hold, spell icons,
+small sizes and different UI scales. Confirm the circle edge and swipe look smooth
+in the actual game and that no cooldown-number addon adds duplicate text.
+
+Before release, test `/ji` → Portraits on Retail and Forever: enable player/target,
+preview and drag absent party/boss units, reload and switch profiles, attach to
+Blizzard/ElvUI/named frames, hide/show and move the anchor, switch live units and
+specializations, and check pets/NPCs with 2D fallback. Test circle/both droplets at
+small/large sizes, masks and icon cropping, UI scale changes, entering combat while
+dragging, deferred layout after combat, party sorting and target-of-target changes.
+The initial portrait functionality was confirmed in game. The latest placement,
+texture and cast-ring changes still require live validation after a full restart.
+Automated fixtures cover state transitions, but not live taint restrictions or
+the game's portrait rendering. Release preparation is not a claim of in-game
+validation.
 
 **1.5.0 — Fabled Myth remaster (October 7, 2026):** The user approved the final
 artwork and requested publishing to GitHub and CurseForge. All 13 original motifs

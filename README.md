@@ -125,6 +125,28 @@ portrait mode; icon and portrait styles can be configured independently.
   settings to all six groups. Icons start disabled.
   They follow frame visibility and fading; changes to placement wait until combat
   ends. Party icons follow secure button reassignment and hide in layout previews.
+- **Movable portraits:** Open `/ji` → **Portraits**. Enable Player, Target,
+  Target of Target, Pet, Focus, individual Party members or Bosses. Choose a
+  class/spec icon pack or a 2D character portrait, then select Circle, Droplet
+  right or Droplet left, in regular or thin versions. Set size, artwork scale,
+  mirroring, zoom and colors. **None — icon only** removes the border and mask.
+  **Anything / Additional** provides three independent slots: choose any class,
+  specialization or race icon from a pack, or select a unit for a live portrait.
+  Fixed icons stay visible without a target or group.
+  **Unlock and preview** shows enabled portraits even when their units are
+  missing; drag to place them anywhere, then lock. Dragging saves a screen
+  position. **Attach to** can instead follow a Blizzard or ElvUI unit frame, or
+  a named frame from another UI. Attached portraits hide with unavailable/hidden
+  frames. Missing icons can fall back to 2D portraits or Fabled Class; pets and
+  NPCs use 2D portraits by default. These portraits are click-through when locked,
+  default off, save per profile and lock automatically in combat.
+- **Circle cast rings:** Under **Portraits → Player or Target → Cast ring**, enable
+  the ring with a Circle or Thin circle frame. Casts fill the border; channels drain
+  it. Set separate cast/channel colors and opacity, choose a font, size, outline
+  and text color, and position the spell name and remaining time independently.
+  **Show spell icon inside circle** temporarily replaces the portrait's appearance
+  with the current spell. **Unlock and preview** includes a repeating sample cast.
+  The ring uses the same smooth, size-specific artwork as the portrait border.
 - **Blizzard frames:** Open `/ji` → Blizzard Frames, choose the frame or Party,
   enable its icon or portrait, and select **Fabled Specializations (Spec)**.
 - **ElvUI:** Use the specialization custom-text tags above on player, target, or
@@ -133,6 +155,13 @@ portrait mode; icon and portrait styles can be configured independently.
 - **Reverse:** Mirror artwork in supported Blizzard, ElvUI, SUF, EllesmereUI, and
   Chat settings. This defaults to off and is saved per profile. Chat changes affect
   new messages. ElvUI custom text uses the mirrored tags above.
+
+## Credits
+
+Special thanks to **Blinkii** for the portrait idea and continued help, and to
+**Repooc**, **Eltreum** and **Trenchy** for their ongoing contributions and support.
+The addon’s Information tab includes the full contributor list; individual icon
+collections retain their artist credits in Style Packs.
 
 For contribution, validation and publishing, see [DEVELOPMENT.md](DEVELOPMENT.md).
 

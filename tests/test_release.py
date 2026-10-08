@@ -19,6 +19,23 @@ spec.loader.exec_module(migration)
 
 
 class ReleaseChecks(unittest.TestCase):
+    def test_portrait_sizes_preserve_alpha_mirrors_and_thinner_borders(self):
+        folder = ROOT / 'JiberishIcons/Media/Portraits'
+        from PIL import Image
+        for size in (32, 64, 128):
+            for suffix in ('', '-thin'):
+                right = load_tga(folder / ('droplet'+suffix+'-mask-'+str(size)+'.tga'))
+                left = load_tga(folder / ('droplet-left'+suffix+'-mask-'+str(size)+'.tga'))
+                self.assertEqual(right.transpose(Image.Transpose.FLIP_LEFT_RIGHT).tobytes(), left.tobytes())
+            for shape in ('circle', 'droplet'):
+                regular = load_tga(folder / (shape+'-'+str(size)+'.tga'))
+                thin = load_tga(folder / (shape+'-thin-'+str(size)+'.tga'))
+                self.assertLess(sum(thin.getchannel('A').tobytes()), sum(regular.getchannel('A').tobytes()))
+                for image in (regular, thin):
+                    self.assertEqual(image.getpixel((0, 0))[3], 0)
+                    self.assertEqual(image.getpixel((image.width//2, image.height//2))[3], 0)
+                    self.assertTrue(any(0 < value < 255 for value in image.getchannel('A').tobytes()))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

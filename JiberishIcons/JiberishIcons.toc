@@ -2,7 +2,7 @@
 ## Title: |cff1784d1Jiberish|r |cff00ccffFabled Icons|r
 ## Author: Repooc, Jiberish
 ## SavedVariables: JiberishIconsDB
-## Version: 1.5.0
+## Version: 1.6.0
 ## Notes: Fabled class, race, and specialization icons for your UI
 ## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI, EllesmereUIUnitFrames, EllesmereUIRaidFrames, EllesmereUIDamageMeters, Details
 ## DefaultState: Enabled

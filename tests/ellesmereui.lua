@@ -82,7 +82,38 @@ local function fixture(loaded, client, saved)
 	function methods:GetTexCoord() return unpack(self.coords or {0, 1, 0, 1}) end
 	function methods:SetAtlas(atlas) self.path = 'atlas:'..atlas; self.coords = {0, 1, 0, 1} end
 	function methods:SetColorTexture(...) self.color = {...} end
+	function methods:SetVertexColor(...) self.vertex = {...} end
+	function methods:SetText(text) self.text = text end
+	function methods:SetFormattedText(format, value) self.formatted = {format, value} end
+	function methods:SetFont(...) self.font = {...} end
+	function methods:SetTextColor(...) self.textColor = {...} end
+	function methods:SetJustifyH(value) self.justify = value end
+	function methods:SetWordWrap(value) self.wordWrap = value end
+	function methods:SetWidth(value) self.width = value end
+	function methods:Clear() self.cooldown, self.durationObject = nil, nil end
+	function methods:SetCooldown(start, duration) self.cooldown = {start, duration} end
+	function methods:SetCooldownFromDurationObject(duration, clear) self.durationObject, self.clearOnDone = duration, clear end
+	function methods:SetReverse(value) self.reverse = value end
+	function methods:SetSwipeTexture(value, ...) self.swipe, self.swipeColor = value, {...} end
+	function methods:SetSwipeColor(...) self.swipeColor = {...} end
+	function methods:SetDrawEdge(value) self.drawEdge = value end
+	function methods:SetDrawBling(value) self.drawBling = value end
+	function methods:SetDrawSwipe(value) self.drawSwipe = value end
+	function methods:SetHideCountdownNumbers(value) self.hideCountdown = value end
+	function methods:SetUseCircularEdge(value) self.circularEdge = value end
+	function methods:SetFrameStrata(value) self.strata = value end
+	function methods:SetMovable(value) self.movable = value end
+	function methods:SetClampedToScreen(value) self.clamped = value end
+	function methods:RegisterForDrag(...) self.dragButtons = {...} end
+	function methods:StartMoving() expect(not state.combat); self.moving = true end
+	function methods:StopMovingOrSizing() self.moving = nil end
+	function methods:GetCenter() return self.centerX or 500, self.centerY or 400 end
+	function methods:GetEffectiveScale() return self.scale or 1 end
 	function methods:AddMaskTexture(mask) self.mask = mask end
+	function methods:RemoveMaskTexture(mask) if self.mask == mask then self.mask = nil end end
+	function methods:SetSnapToPixelGrid(value) self.snap = value end
+	function methods:SetTexelSnappingBias(value) self.snapBias = value end
+	function methods:SetUserPlaced(value) self.userPlaced = value end
 	function methods:EnableMouse(on) self.mouse = on end
 	function methods:SetFrameLevel(level) self.level = level end
 	function methods:GetFrameLevel() return self.level or 1 end
@@ -104,6 +135,10 @@ local function fixture(loaded, client, saved)
 	env.CreateFrame = function(_, _, parent) return object('Frame', parent) end
 	function methods:CreateTexture() return object('Texture', self) end
 	function methods:CreateMaskTexture() return object('Mask', self) end
+	function methods:CreateFontString() return object('FontString', self) end
+	env.UIParent = object('Frame')
+	env.SetPortraitTexture = function(texture, unit) texture.portraitUnit = unit; texture.path = 'portrait:'..unit end
+	env.RAID_CLASS_COLORS = {MAGE = {r = 0.25, g = 0.78, b = 0.92}, WARRIOR = {r = 0.78, g = 0.61, b = 0.43}}
 	env.hooksecurefunc = function(owner, name, fn)
 		if type(owner) == 'string' then owner, name, fn = env, owner, name end
 		local original = owner[name]
@@ -138,6 +173,9 @@ local function fixture(loaded, client, saved)
 	JI.StripString = function(_, value) return value end
 	JI.UpdateMedia = function() end
 	load('Core/Options.lua', 'JiberishIcons')
+	load('Core/PortraitCast.lua')
+	load('Core/Portraits.lua')
+	load('Core/PortraitOptions.lua')
 	load('Core/EllesmereUI.lua')
 	load('Core/DamageMeterParty.lua')
 	load('Core/DamageMeters.lua')
@@ -771,7 +809,7 @@ test('ElvUI spec tags and portraits refresh with correct size, reversal and unkn
 	local spec = 264; f.env.GetInspectSpecialization = function() return spec end
 	local db = f.JI.db.elvui.target.portrait; db.enable = true; db.style = 'fabledspecializations'
 	E.UnitFrames.PortraitUpdate(portrait); equal(portrait.coords[1], .375)
-	f.JI:BuildElvUITags(); equal(events['jiberish:spec:fabledspecializations'], .5)
+	f.JI:BuildElvUITags(); expect(events['jiberish:spec:fabledspecializations']:find('PLAYER_TARGET_CHANGED', 1, true))
 	expect(tags['jiberish:spec:fabledspecializations']('target', nil, '32'):find(':2048:2048:768:1024:768:1024|t', 1, true))
 	expect(tags['jiberish:spec:fabledspecializations:reverse']('target', nil, '32'):find(':1024:768:768:1024|t', 1, true))
 	f.state.combat = true; spec = 262; f.JI:RefreshSpecializationIcons(); equal(portrait.coords[1], .125)
@@ -1168,6 +1206,105 @@ local function inspectionFixture()
 	return f
 end
 
+local function elvuiSpecFixture(f)
+	f.state.addons.ElvUI = true
+	local tags, events = {}, {}
+	local tagEnv = setmetatable({}, {__index = f.env})
+	local E = {UnitFrames = {PortraitUpdate = function() end}}
+	function E:AddTag(name, event, fn) tags[name] = setfenv(fn, tagEnv); events[name] = event end
+	function E:AddTagInfo() end
+	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua'); f.JI:BuildElvUITags()
+	function f.tagFrame(frame)
+		function frame:UpdateTags()
+			tagEnv._FRAME = self
+			self.tagUpdates = (self.tagUpdates or 0) + 1
+			self.iconText = tags['jiberish:spec:fabledspecializations'](self.unit, nil, '32')
+		end
+		frame:UpdateTags()
+	end
+	return E, tags, events
+end
+
+test('ElvUI tooltip specs render without inspection and never transfer to a replacement target', function()
+	local f = inspectionFixture()
+	f.env.GetBuildInfo = function() return '12.0.1', '', '', 120100 end
+	f.env.C_SpecializationInfo.GetInspectSpecialization = function() return 0 end
+	local E = elvuiSpecFixture(f)
+	local info = {id = 263}
+	function E:GetUnitSpecInfo(unit) equal(unit, 'target'); return info end
+	local target = f.frame('target', 'SHAMAN'); target.unit = 'target'
+	f.state.guids.target = 'Player-shaman'
+	f.JI:SetupSpecializationIcons(); f.tagFrame(target); f.flush()
+	expect(target.iconText); equal(#f.state.notifies, 0)
+	equal(f.JI:GetCachedInspectionByGUID('Player-shaman', 'SHAMAN'), 263)
+	-- A new target with the same class but no tooltip result must wait for its own data.
+	info = nil; f.state.guids.target = 'Player-new'; f.fire('PLAYER_TARGET_CHANGED')
+	equal(target.iconText, nil); f.flush(); equal(#f.state.notifies, 1)
+	equal(f.state.notifies[1].guid, 'Player-new')
+	-- The public tooltip result also cancels an already queued inspection.
+	info = {id = 264}; f.fire('PLAYER_TARGET_CHANGED'); expect(target.iconText)
+	f.tick(10); equal(#f.state.notifies, 1)
+end)
+
+test('ElvUI tooltip lookup rejects invalid identities and safely falls back on missing or restricted data', function()
+	local f = fixture(); local E = elvuiSpecFixture(f)
+	f.frame('target', 'SHAMAN')
+	local reads, info = 0, {id = 263}
+	function E:GetUnitSpecInfo() reads = reads + 1; return info end
+	f.env.GetInspectSpecialization = function() return 264 end
+	equal(f.JI:GetUnitSpecialization('target'), 263)
+	for _, value in ipairs({{}, {id = 0}, {id = 63}, {id = '263'}, {id = f.secret}, f.secret}) do
+		info = value; equal(f.JI:GetUnitSpecialization('target'), 264)
+	end
+	info = nil; equal(f.JI:GetUnitSpecialization('target'), 264)
+	E.GetUnitSpecInfo = function() error('tooltip unavailable') end
+	equal(f.JI:GetUnitSpecialization('target'), 264)
+	E.GetUnitSpecInfo = nil; equal(f.JI:GetUnitSpecialization('target'), 264)
+	function E:GetUnitSpecInfo() reads = reads + 1; return {id = 263} end
+	local before = reads
+	for _, key in ipairs({'exists', 'player', 'class'}) do
+		local old = f.world.target[key]; f.world.target[key] = f.secret
+		equal(f.JI:GetElvUIUnitSpecialization('target'), nil); equal(reads, before)
+		f.world.target[key] = old
+	end
+	equal(f.JI:GetElvUIUnitSpecialization(f.secret), nil); equal(reads, before)
+	f.env.GetSpecialization = function() return 1 end
+	f.env.GetSpecializationInfo = function() return 71 end
+	equal(f.JI:GetUnitSpecialization('player'), 71); equal(reads, before)
+	-- Classic and Forever must not replace talent-tree builds with a tooltip spec.
+	for _, build in ipairs({16001, 11509, 38002}) do
+		f.env.GetBuildInfo = function() return '', '', '', build end
+		equal(f.JI:GetUnitSpecialization('target'), 264); equal(reads, before)
+	end
+	f.env.GetBuildInfo = function() return '', '', '', 50504 end
+	equal(f.JI:GetUnitSpecialization('target'), 263)
+end)
+
+test('ElvUI tags without portraits repaint immediately on focus, specialization and OpenRaid updates', function()
+	local f = fixture(); local E, _, events = elvuiSpecFixture(f)
+	local target, focus = f.frame('target', 'SHAMAN'), f.frame('focus', 'SHAMAN')
+	target.unit, focus.unit = 'target', 'focus'
+	local specs, raidSpec, callbacks = {target = 263, focus = 264}, 0, {}
+	function E:GetUnitSpecInfo(unit) return {id = specs[unit]} end
+	f.env.GetSpecialization = function() return 1 end
+	f.env.GetInspectSpecialization = function() return 0 end
+	local raid = f.env.LibStub:NewLibrary('LibOpenRaid-1.0', 1)
+	raid.GetUnitInfo = function() return {specId = raidSpec} end
+	raid.RegisterCallback = function(owner, event, method) callbacks[event] = function() owner[method](owner) end end
+	f.tagFrame(target); f.tagFrame(focus); f.JI:SetupSpecializationIcons()
+	expect(type(events['jiberish:spec:fabledspecializations']) == 'string')
+	local old = focus.iconText; specs.focus = 262; f.fire('PLAYER_FOCUS_CHANGED')
+	expect(focus.iconText and focus.iconText ~= old)
+	old = target.iconText; specs.target = 264; f.fire('PLAYER_SPECIALIZATION_CHANGED', 'target')
+	expect(target.iconText and target.iconText ~= old)
+	-- Incoming group data replaces an unknown icon without waiting for a timer.
+	specs.target = nil; raidSpec = 0; f.fire('PLAYER_TARGET_CHANGED'); equal(target.iconText, nil)
+	raidSpec = 263; f.state.combat = true; callbacks.UnitInfoUpdate(); expect(target.iconText)
+	raidSpec = 0; callbacks.UnitInfoWipe(); equal(target.iconText, nil)
+	local count = focus.tagUpdates; focus:Hide(); f.fire('PLAYER_FOCUS_CHANGED'); equal(focus.tagUpdates, count)
+	focus:Show(); focus.isForced = true; f.fire('PLAYER_FOCUS_CHANGED'); equal(focus.tagUpdates, count)
+end)
+
 test('Forever inspects a target automatically and paints live Enhancement 11 on the correct frame', function()
 	local f = inspectionFixture()
 	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
@@ -1268,12 +1405,10 @@ test('Forever inspection refresh reaches Blizzard target/party frames and ElvUI 
 			local db = f.JI.db.blizzard[key][kind]; db.enable = true; db.style = 'fabledspecializations'
 		end
 	end
-	f.state.addons.ElvUI = true
-	local tags, E = {}, {UnitFrames = {PortraitUpdate = function() end}}
-	function E:AddTag(name, event, fn) tags[name] = fn end
-	function E:AddTagInfo() end
-	f.env.ElvUI = {E}; f.load('Core/ElvUI.lua'); f.JI:BuildElvUITags()
+	local E, tags = elvuiSpecFixture(f)
 	target.unitframeType = 'target'; party.unitframeType = 'party'
+	f.tagFrame(target); f.tagFrame(party)
+	equal(target.iconText, nil); equal(party.iconText, nil)
 	local portraits = {}
 	for _, frame in ipairs({target, party}) do
 		local portrait = frame:CreateTexture(); portrait.__owner = frame; portrait.useClassBase = true
@@ -1286,6 +1421,9 @@ test('Forever inspection refresh reaches Blizzard target/party frames and ElvUI 
 	f.state.combat = true; f.ready('Player-shaman', {0, 11, 0})
 	for _, frame in ipairs({target, party}) do
 		expect(frame.classIcon:IsShown()); expect(frame.classPortrait:IsShown()); expect(not frame.portrait:IsShown())
+		-- INSPECT_READY itself must repaint text, without manually evaluating a tag.
+		equal(frame.iconText, f.JI:GetIconMarkup(f.JI.dataHelper.specialization[263],
+			f.JI.defaultStylePacks.spec.path..'fabledspecializations', 32, false, 2048))
 		for i, value in ipairs(f.JI.dataHelper.specialization[263].texCoords) do
 			equal(frame.classIcon.icon.coords[i], value); equal(frame.classPortrait.portrait.coords[i], value)
 		end
@@ -1295,6 +1433,7 @@ test('Forever inspection refresh reaches Blizzard target/party frames and ElvUI 
 	for _, portrait in ipairs(portraits) do equal(portrait.coords[1], .25) end
 	f.state.guids.target = 'Player-new'; f.fire('PLAYER_TARGET_CHANGED')
 	expect(not target.classIcon:IsShown()); expect(party.classIcon:IsShown())
+	equal(target.iconText, nil); expect(party.iconText)
 	equal(tags['jiberish:spec:fabledspecializations']('target'), nil)
 	expect(tags['jiberish:spec:fabledspecializations']('party1'))
 	f.JI.db.blizzard.target.icon.size = 64; f.JI:RefreshSpecializationIcons(); equal(target.classIcon.width, 48)
@@ -2141,6 +2280,448 @@ test('complete meter snapshots block outsider and pet keys even when the visible
 		f.state.combat = false; f.refresh({f.source('party1')})
 		f.state.combat = true; f.refresh({f.source('party1', true)}); f.shows(1, nil, 'SHAMAN')
 	end
+end)
+
+test('standalone portraits default off and create each requested unit independently', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	equal(next(f.JI.portraitFrames), nil)
+	local count = #f.objects; f.JI:SetupPortraits(); equal(#f.objects, count)
+	for _, definition in ipairs(f.JI.dataHelper.portraitUnits) do
+		local key = definition.key
+		expect(not f.JI.db.portraits[key].enable)
+		f.frame(key); f.JI.db.portraits[key].enable = true
+	end
+	f.JI:UpdatePortraits()
+	local total = 0
+	for key, frame in pairs(f.JI.portraitFrames) do
+		total = total + 1; equal(frame.parent, f.env.UIParent)
+		expect(frame.icon:IsShown()); expect(not frame.portrait:IsShown()); expect(not frame.mouse)
+		equal(frame.icon.mask, frame.mask); equal(frame.portrait.mask, frame.mask)
+		equal(frame.background.mask, frame.mask); equal(frame.width, 80)
+		equal(frame.key, key); expect(frame.border.path:find('JiberishIcons\\Media\\Portraits\\circle-128.tga', 1, true))
+	end
+	equal(total, 17)
+end)
+
+test('standalone portrait shapes, colors, 2D crops and icon pack selection stay independent', function()
+	local f = fixture(); f.frame('target', 'MAGE'); f.JI:SetupPortraits()
+	local db = f.JI.db.portraits.target
+	db.enable = true; db.style = 'fabledmyth'; db.shape = 'dropletleft'; db.size = 120
+	db.reverse = true; db.iconScale = .65; db.contentX = 4; db.contentY = -3
+	db.backgroundColor = {.1, .2, .3, .4}; db.classColor = true
+	f.JI:UpdatePortraits(); local frame = f.JI.portraitFrames.target
+	equal(frame.width, 120); equal(frame.icon.width, 78); equal(frame.icon.point[4], 4)
+	equal(frame.icon.point[5], -3); expect(frame.mask.path:find('droplet-left-mask-128.tga', 1, true))
+	equal(frame.border.coords[1], 1); equal(frame.border.coords[2], 0)
+	equal(frame.background.color[4], .4); equal(frame.border.vertex[1], .25)
+	expect(frame.icon.path:find('fabledmyth', 1, true))
+	equal(frame.icon.coords[1], f.JI.dataHelper.class.MAGE.texCoords[5])
+	db.mode = 'portrait'; db.zoom = .2; f.JI:UpdatePortraits()
+	expect(not frame.icon:IsShown()); expect(frame.portrait:IsShown()); equal(frame.portrait.portraitUnit, 'target')
+	equal(frame.portrait.coords[1], .8); equal(frame.portrait.coords[2], .2)
+	db.shape = 'circle'; db.reverse = false; db.classColor = false; f.JI:UpdatePortraits()
+	equal(frame.border.coords[1], 0); equal(frame.border.vertex[1], 1)
+	equal(frame.portrait.coords[1], .2)
+end)
+
+test('pet and boss portraits use real 2D models and disappear when the unit goes away', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	for _, key in ipairs({'pet', 'boss1', 'party1'}) do
+		f.frame(key); f.world[key].player = false
+		f.JI.db.portraits[key].enable = true
+	end
+	f.JI:UpdatePortraits()
+	for _, key in ipairs({'pet', 'boss1', 'party1'}) do
+		local frame = f.JI.portraitFrames[key]
+		expect(frame.portrait:IsShown()); equal(frame.portrait.portraitUnit, key)
+		expect(not frame.icon:IsShown())
+	end
+	f.world.pet.exists = false; f.fire('UNIT_PET', 'player')
+	expect(not f.JI.portraitFrames.pet.border:IsShown())
+	f.world.boss1.exists = false; f.fire('INSTANCE_ENCOUNTER_ENGAGE_UNIT')
+	expect(not f.JI.portraitFrames.boss1.portrait:IsShown())
+	f.world.party1.exists = false; f.fire('GROUP_ROSTER_UPDATE')
+	expect(not f.JI.portraitFrames.party1.border:IsShown())
+	f.world.pet.exists = true; f.fire('UNIT_PET', 'player'); expect(f.JI.portraitFrames.pet.portrait:IsShown())
+end)
+
+test('portrait movers preview missing units, save scaled screen positions and lock in combat', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	f.JI.db.portraits.target.enable = true; f.JI:UpdatePortraits()
+	local frame = f.JI.portraitFrames.target
+	expect(not frame.border:IsShown()); f.JI:TogglePortraitMovers()
+	expect(f.JI:ArePortraitsUnlocked()); expect(frame.icon:IsShown()); expect(frame.mouse); expect(frame.label:IsShown())
+	frame.scripts.OnDragStart(frame); expect(frame.moving)
+	frame.centerX, frame.centerY, frame.scale = 350, 280, 2
+	frame.scripts.OnDragStop(frame)
+	local db = f.JI.db.portraits.target
+	equal(db.anchor, 'screen'); equal(db.point, 'CENTER'); equal(db.x, 200); equal(db.y, 160)
+	equal(frame.point[4], 200); equal(frame.point[5], 160)
+	frame.scripts.OnDragStart(frame)
+	f.state.combat = true; f.fire('PLAYER_REGEN_DISABLED')
+	expect(not f.JI:ArePortraitsUnlocked()); expect(not frame.mouse); expect(not frame.label:IsShown())
+	expect(not frame.border:IsShown()); frame.scripts.OnDragStart(frame); expect(not frame.moving)
+	f.JI:TogglePortraitMovers(); expect(not f.JI:ArePortraitsUnlocked())
+end)
+
+test('attached portraits follow frame anchors, hidden frames and late-loading frames', function()
+	local f = fixture(); f.frame('target'); f.JI:SetupPortraits()
+	local db = f.JI.db.portraits.target; db.enable = true; db.anchor = 'custom'; db.frameName = 'MyTargetFrame'
+	f.JI:UpdatePortraits(); local frame = f.JI.portraitFrames.target
+	expect(not frame.border:IsShown())
+	db.frameName = 'SetPortraitTexture'; f.JI:UpdatePortraits(); expect(not frame.border:IsShown())
+	db.frameName = 'MyTargetFrame'
+	local target = f.frame('target'); target.unit = 'target'; f.env.MyTargetFrame = target
+	f.fire('ADDON_LOADED', 'Example'); equal(frame.point[2], target); expect(frame.icon:IsShown())
+	target:Hide()
+	for _, object in ipairs(f.objects) do if object.scripts.OnUpdate then object.scripts.OnUpdate(object, .3) end end
+	expect(not frame.border:IsShown())
+	target:Show()
+	for _, object in ipairs(f.objects) do if object.scripts.OnUpdate then object.scripts.OnUpdate(object, .3) end end
+	expect(frame.border:IsShown())
+	db.frameName = 'JiberishIconsPortrait_target'; f.JI:UpdatePortraits(); expect(not frame.border:IsShown())
+	db.anchor = 'blizzard'; f.env.TargetFrame = target; f.JI:UpdatePortraits(); equal(frame.point[2], target)
+	db.anchor = 'elvui'; f.env.ElvUI = {{oUF = {objects = {target}}}}; f.JI:UpdatePortraits(); equal(frame.point[2], target)
+	f.state.combat = true; target.unit = 'party2'; f.fire('GROUP_ROSTER_UPDATE'); expect(not frame.border:IsShown())
+	target.unit = f.secret; f.fire('GROUP_ROSTER_UPDATE'); expect(not frame.border:IsShown())
+end)
+
+test('portrait changes defer creation and layout in combat, then apply on leaving combat', function()
+	local f = fixture(); f.frame('target'); f.JI:SetupPortraits()
+	local db = f.JI.db.portraits.target; db.enable = true
+	f.state.combat = true; f.JI:UpdatePortraits(); equal(f.JI.portraitFrames.target, nil)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); local frame = f.JI.portraitFrames.target
+	expect(frame.icon:IsShown()); equal(frame.width, 80)
+	f.state.combat = true; db.size = 160; db.x = 100; f.JI:UpdatePortraits()
+	equal(frame.width, 80)
+	db.enable = false; f.JI:UpdatePortraits(); expect(not frame.icon:IsShown()); expect(not frame.border:IsShown())
+	f.state.combat = false; db.enable = true; f.fire('PLAYER_REGEN_ENABLED')
+	equal(frame.width, 160); equal(frame.point[4], 100); expect(frame.icon:IsShown())
+end)
+
+test('portrait specialization results repaint immediately and never retain another targets icon', function()
+	local f = inspectionFixture(); f.JI:SetupPortraits()
+	f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-shaman'
+	local db = f.JI.db.portraits.target; db.enable = true; db.style = 'fabledspecializations'
+	f.JI:SetupSpecializationIcons(); f.JI:UpdatePortraits(); f.flush()
+	local frame = f.JI.portraitFrames.target
+	expect(frame.portrait:IsShown()); expect(not frame.icon:IsShown())
+	f.state.combat = true; f.ready('Player-shaman', {0, 11, 0})
+	expect(frame.icon:IsShown()); expect(not frame.portrait:IsShown())
+	for i, value in ipairs(f.JI.dataHelper.specialization[263].texCoords) do equal(frame.icon.coords[i], value) end
+	f.state.guids.target = 'Player-replacement'; f.fire('PLAYER_TARGET_CHANGED')
+	expect(not frame.icon:IsShown()); expect(frame.portrait:IsShown())
+	db.fallback = 'class'; f.JI:UpdatePortraits(); expect(frame.icon:IsShown()); expect(frame.icon.path:find('fabledclass', 1, true))
+	db.fallback = 'hide'; f.JI:UpdatePortraits(); expect(not frame.icon:IsShown()); expect(not frame.portrait:IsShown())
+end)
+
+test('target-of-target polling follows identity and restricted portraits clear safely', function()
+	local f = fixture(); f.frame('targettarget', 'MAGE'); f.JI:SetupPortraits()
+	f.JI.db.portraits.targettarget.enable = true; f.JI:UpdatePortraits()
+	local frame = f.JI.portraitFrames.targettarget; local previous = frame.icon.coords[1]
+	f.world.targettarget.class = 'WARRIOR'
+	for _, object in ipairs(f.objects) do if object.scripts.OnUpdate then object.scripts.OnUpdate(object, .3) end end
+	expect(frame.icon.coords[1] ~= previous)
+	f.world.targettarget.class = f.secret; f.fire('UNIT_TARGET', 'target')
+	expect(not frame.icon:IsShown()); expect(frame.portrait:IsShown())
+	f.world.targettarget.exists = f.secret; f.fire('UNIT_PORTRAIT_UPDATE', 'targettarget')
+	expect(not frame.portrait:IsShown()); expect(not frame.border:IsShown())
+	f.fire('UNIT_TARGET', f.secret)
+end)
+
+test('portrait options and profile switching preserve independent settings and disable old frames', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	local originalProfile = f.JI.data:GetCurrentProfile()
+	local options = f.JI.Options.args.portraits
+	options.args.player.set({'enable'}, true); options.args.player.set({'size'}, 100)
+	options.args.target.set({'enable'}, true)
+	equal(f.JI.db.portraits.player.size, 100); equal(f.JI.db.portraits.target.size, 80)
+	options.args.party.args.enableAll.func(); expect(f.JI.db.portraits.party4.enable)
+	options.args.party.args.disableAll.func(); expect(not f.JI.db.portraits.party4.enable)
+	options.args.target.args.anchor.set(nil, 'blizzard'); equal(f.JI.db.portraits.target.x, 0)
+	options.args.target.args.reset.func(); equal(f.JI.db.portraits.target.anchor, 'screen')
+	f.JI:TogglePortraitMovers(); expect(f.JI:ArePortraitsUnlocked())
+	f.JI.portraitFrames.player.scripts.OnDragStart(f.JI.portraitFrames.player)
+	f.JI.data:SetProfile('Portrait test')
+	expect(not f.JI:ArePortraitsUnlocked()); expect(not f.JI.portraitFrames.player.border:IsShown())
+	equal(f.JI.db.portraits.player.size, 80)
+	f.JI.data:SetProfile(originalProfile); equal(f.JI.db.portraits.player.size, 100)
+	f.JI.data:ResetProfile(); expect(not f.JI.db.portraits.player.enable)
+	expect(not f.JI.portraitFrames.player.border:IsShown())
+	local packs = options.args.player.args.style.values(); expect(packs.fabledmyth); expect(packs.fabledspecializations)
+	f.state.combat = true; expect(options.disabled())
+end)
+
+test('ElvUI anchoring prefers the dedicated player frame over a party self button', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	local duplicate, player = f.frame('party1'), f.frame('player')
+	duplicate.__unit = 'player'; player.unit = 'player'
+	f.env.ElvUI = {{UnitFrames = {player = player}, oUF = {objects = {duplicate, player}}}}
+	local db = f.JI.db.portraits.player; db.enable = true; db.anchor = 'elvui'
+	f.JI:UpdatePortraits(); local frame = f.JI.portraitFrames.player
+	equal(frame.anchor, player); equal(frame.point[2], player)
+	player:Hide(); f.JI:UpdatePortraits(); equal(frame.anchor, player); expect(not frame.icon:IsShown())
+	player:Show(); player.__unit = 'vehicle'; f.JI:UpdatePortraits(); expect(frame.icon:IsShown())
+end)
+
+test('all four portrait placement controls immediately update screen and attached anchors', function()
+	local f = fixture(); f.frame('target'); f.JI:SetupPortraits()
+	local options = f.JI.Options.args.portraits.args.target.args
+	local db = f.JI.db.portraits.target; db.enable = true; f.JI:UpdatePortraits()
+	local frame = f.JI.portraitFrames.target
+	f.JI:TogglePortraitMovers(); frame.scripts.OnDragStart(frame)
+	options.y.set(nil, -325); expect(not frame.dragging); expect(not frame.clamped)
+	options.point.set(nil, 'BOTTOMLEFT'); options.relativePoint.set(nil, 'TOPRIGHT'); options.x.set(nil, 145)
+	equal(frame.point[1], 'BOTTOMLEFT'); equal(frame.point[3], 'TOPRIGHT')
+	equal(frame.point[4], 145); equal(frame.point[5], -325); equal(options.y.get(), -325)
+	local target = f.frame('target'); target.unit = 'target'; f.env.ElvUI = {{UnitFrames = {target = target}}}
+	options.anchor.set(nil, 'elvui')
+	options.point.set(nil, 'TOP'); options.relativePoint.set(nil, 'BOTTOM')
+	options.x.set(nil, -70); options.y.set(nil, 225)
+	equal(frame.point[2], target); equal(frame.point[1], 'TOP'); equal(frame.point[3], 'BOTTOM')
+	equal(frame.point[4], -70); equal(frame.point[5], 225); expect(not frame.userPlaced)
+	f.JI:LockPortraits(); equal(db.y, 225)
+end)
+
+test('three additional slots select static class, specialization and race icons without live units', function()
+	local f = fixture(); f.JI:SetupPortraits(); f.world.player.exists = false
+	local group = f.JI.Options.args.portraits.args.additional
+	group.args.enableAll.func()
+	local one, two, three = f.JI.db.portraits.additional1, f.JI.db.portraits.additional2, f.JI.db.portraits.additional3
+	one.iconID = 'MAGE'; two.style = 'fabledspecializations'; two.specID = 264
+	three.style = 'fabledazeroth'; three.raceID = 'ORC'
+	f.JI:UpdatePortraits()
+	for i, icon in ipairs({f.JI.dataHelper.class.MAGE, f.JI.dataHelper.specialization[264], f.JI.dataHelper.race.ORC}) do
+		local frame = f.JI.portraitFrames['additional'..i]
+		expect(frame.icon:IsShown()); expect(not frame.portrait:IsShown())
+		for index, value in ipairs(icon.texCoords) do equal(frame.icon.coords[index], value) end
+	end
+	one.shape = 'none'; f.JI:UpdatePortraits(); local frame = f.JI.portraitFrames.additional1
+	expect(frame.icon:IsShown()); expect(not frame.border:IsShown()); expect(not frame.background:IsShown()); equal(frame.icon.mask, nil)
+	one.shape = 'circlethin'; f.JI:UpdatePortraits(); equal(frame.icon.mask, frame.mask)
+	expect(frame.border.path:find('circle-thin-128.tga', 1, true)); expect(frame.border:IsShown())
+	one.shape = 'dropletleftthin'; f.JI:UpdatePortraits()
+	expect(frame.mask.path:find('droplet-left-thin-mask-128.tga', 1, true)); equal(frame.border.coords[1], 1)
+	equal(frame.border.snap, false); equal(frame.mask.snapBias, 0)
+	local options = group.args.additional2.args
+	expect(options.specID.values()[264]); expect(not options.specID.hidden()); expect(options.iconID.hidden())
+	group.args.disableAll.func(); expect(not frame.icon:IsShown())
+end)
+
+test('additional live portraits follow their selected unit through swaps and disappearance', function()
+	local f = fixture(); f.JI:SetupPortraits(); f.frame('target', 'MAGE')
+	local db = f.JI.db.portraits.additional1; db.enable = true; db.mode = 'icon'; db.sourceUnit = 'target'
+	f.JI:UpdatePortraits(); local frame = f.JI.portraitFrames.additional1
+	local previous = frame.icon.coords[1]; f.world.target.class = 'WARRIOR'; f.fire('UNIT_NAME_UPDATE', 'target')
+	expect(frame.icon.coords[1] ~= previous)
+	db.mode = 'portrait'; f.JI:UpdatePortraits(); equal(frame.portrait.portraitUnit, 'target')
+	f.world.target.exists = false; f.fire('PLAYER_TARGET_CHANGED'); expect(not frame.portrait:IsShown())
+	db.mode = 'static'; f.JI:UpdatePortraits(); expect(frame.icon:IsShown())
+end)
+
+test('portrait texture paths use packaged TGA borders and masks at every supported size', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	local db = f.JI.db.portraits.player; db.enable = true; f.JI:UpdatePortraits()
+	local frame = f.JI.portraitFrames.player
+	local function Packaged(path)
+		expect(path:match('%.tga$'), 'portrait texture must use the proven TGA format')
+		local relative = path:match('JiberishIcons\\(.*)'):gsub('\\', '/')
+		local file = assert(io.open('JiberishIcons/'..relative, 'rb'), path); file:close()
+	end
+	for _, shape in ipairs({'circle', 'circlethin', 'droplet', 'dropletthin', 'dropletleft', 'dropletleftthin'}) do
+		db.shape = shape
+		for _, sample in ipairs({{24, 1, '-32'}, {48, 1, '-64'}, {80, 1, '-128'}, {200, 1, '-256'}, {300, 1, '-512'}, {300, 3, ''}}) do
+			db.size, frame.scale = sample[1], sample[2]; f.JI:UpdatePortraits()
+			Packaged(frame.border.path); Packaged(frame.mask.path)
+			expect(frame.border.path:find(sample[3]..'.tga', 1, true))
+		end
+	end
+	db.size, frame.scale = 80, 1
+	f.env.GetPhysicalScreenSize = function() return 3840, 2160 end
+	f.env.UIParent.GetHeight = function() return 1080 end
+	f.fire('DISPLAY_SIZE_CHANGED'); expect(frame.border.path:find('-256.tga', 1, true))
+	f.env.GetPhysicalScreenSize = function() return 1920, 1080 end
+	f.fire('UI_SCALE_CHANGED'); expect(frame.border.path:find('-128.tga', 1, true))
+end)
+
+local function castFixture(client)
+	local f = fixture(nil, client)
+	f.state.now, f.state.casting = 100, {}
+	f.env.GetTime = function() return f.state.now end
+	f.env.UnitCastingInfo = function(unit)
+		local c = f.state.casting[unit]
+		if c and not c.channel then return c.name, c.name, c.icon, c.startMS, c.endMS end
+	end
+	f.env.UnitChannelInfo = function(unit)
+		local c = f.state.casting[unit]
+		if c and c.channel then return c.name, c.name, c.icon, c.startMS, c.endMS, false, false, 123, c.empower end
+	end
+	f.frame('target'); f.JI:SetupPortraits()
+	for _, key in ipairs({'player', 'target'}) do
+		local db = f.JI.db.portraits[key]; db.enable = true; db.cast.enable = true
+	end
+	f.JI:UpdatePortraits()
+	f.player, f.target = f.JI.portraitFrames.player, f.JI.portraitFrames.target
+	return f
+end
+
+test('cast rings are opt-in, only on player/target circles, and track physical texture size', function()
+	local f = fixture(); f.JI:SetupPortraits()
+	for _, key in ipairs({'player', 'target', 'focus'}) do f.JI.db.portraits[key].enable = true end
+	f.JI:UpdatePortraits()
+	expect(not f.JI.portraitFrames.player.cast.ring:IsShown())
+	equal(f.JI.portraitFrames.focus.cast, nil)
+	equal(f.JI.Options.args.portraits.args.focus.args.cast, nil)
+	f = castFixture()
+	f.state.casting.player = {name = 'Fireball', icon = 123, startMS = 100000, endMS = 104000}
+	local db, cast = f.JI.db.portraits.player, f.player.cast
+	for _, shape in ipairs({'circle', 'circlethin'}) do
+		db.shape = shape
+		for _, sample in ipairs({{24, 1}, {80, 1}, {200, 1}, {300, 3}}) do
+			db.size, f.player.scale = sample[1], sample[2]; f.JI:UpdatePortraits()
+			equal(cast.ring.swipe, f.player.border.path); expect(cast.ring:IsShown())
+		end
+	end
+	f.env.GetPhysicalScreenSize = function() return 3840, 2160 end
+	f.env.UIParent.GetHeight = function() return 1080 end
+	db.size, f.player.scale = 80, 1; f.fire('DISPLAY_SIZE_CHANGED')
+	expect(cast.ring.swipe:find('-256.tga', 1, true)); equal(cast.ring.swipe, f.player.border.path)
+	equal(cast.ring.drawEdge, false); equal(cast.ring.drawBling, false)
+	equal(cast.ring.hideCountdown, true); equal(cast.ring.mouse, false)
+	for _, shape in ipairs({'droplet', 'dropletthin', 'none'}) do
+		db.shape = shape; f.JI:UpdatePortraits(); expect(not cast.ring:IsShown())
+	end
+end)
+
+test('public casts fill, update delays, overlay the masked spell, and restore the portrait', function()
+	local f = castFixture(); local cast, db = f.player.cast, f.JI.db.portraits.player.cast
+	db.spellIcon = true; db.color = {.1, .2, .3, .8}
+	f.state.casting.player = {name = 'Fireball', icon = 123, startMS = 100000, endMS = 104000}
+	f.state.combat = true; f.fire('UNIT_SPELLCAST_START', 'player')
+	expect(cast.ring:IsShown()); expect(cast.spell:IsShown()); equal(cast.spell.path, 123)
+	equal(cast.spell.mask, f.player.mask); equal(cast.spell.snap, false); equal(cast.spell.snapBias, 0)
+	expect(f.player.icon:IsShown()); equal(cast.ring.reverse, true)
+	equal(cast.ring.cooldown[1], 100); equal(cast.ring.cooldown[2], 4)
+	equal(cast.name.text, 'Fireball'); equal(cast.time.formatted[2], 4)
+	for i, value in ipairs(db.color) do equal(cast.ring.swipeColor[i], value) end
+	f.state.now = 101; cast.ring.scripts.OnUpdate(cast.ring, .1); equal(cast.time.formatted[2], 3)
+	f.state.casting.player.endMS = 106000; f.fire('UNIT_SPELLCAST_DELAYED', 'player')
+	equal(cast.ring.cooldown[2], 6); equal(cast.time.formatted[2], 5)
+	f.state.casting.player = nil; f.fire('UNIT_SPELLCAST_STOP', 'player')
+	expect(not cast.ring:IsShown()); expect(not cast.spell:IsShown()); expect(not cast.name:IsShown())
+	expect(not cast.time:IsShown()); expect(f.player.icon:IsShown())
+end)
+
+test('target channels drain with independent color and clear on interruption or target loss', function()
+	local f = castFixture(); local cast, db = f.target.cast, f.JI.db.portraits.target.cast
+	db.channelColor = {.8, .1, .7, .6}
+	f.state.casting.target = {name = 'Mind Flay', icon = 456, startMS = 99000, endMS = 105000, channel = true}
+	f.fire('UNIT_SPELLCAST_CHANNEL_START', 'target')
+	expect(cast.ring:IsShown()); equal(cast.ring.reverse, false); equal(cast.ring.cooldown[2], 6)
+	for i, value in ipairs(db.channelColor) do equal(cast.ring.swipeColor[i], value) end
+	f.JI:LayoutPortraitCast(f.target, f.target.border.path)
+	for i, value in ipairs(db.channelColor) do equal(cast.ring.swipeColor[i], value) end
+	f.state.casting.target.endMS = 104000; f.fire('UNIT_SPELLCAST_CHANNEL_UPDATE', 'target')
+	equal(cast.ring.cooldown[2], 5)
+	f.state.casting.target = nil; f.fire('UNIT_SPELLCAST_INTERRUPTED', 'target'); expect(not cast.ring:IsShown())
+	f.state.casting.target = {name = 'New target cast', icon = 789, startMS = 100000, endMS = 102000}
+	f.fire('PLAYER_TARGET_CHANGED'); equal(cast.name.text, 'New target cast'); equal(cast.ring.reverse, true)
+	f.fire('UNIT_SPELLCAST_STOP', 'target', 'old-cast-id'); expect(cast.ring:IsShown())
+	f.world.target.exists = false; f.fire('PLAYER_TARGET_CHANGED'); expect(not cast.ring:IsShown())
+end)
+
+test('restricted casts use native duration and text widgets without inspecting secret values', function()
+	local f = castFixture(); local cast = f.target.cast
+	local secret = setmetatable(f.secret, {
+		__sub = function() error('secret arithmetic') end, __div = function() error('secret arithmetic') end,
+		__lt = function() error('secret comparison') end, __tostring = function() error('secret conversion') end,
+	})
+	local duration = {GetRemainingDuration = function() return secret end}
+	f.env.UnitCastingDuration = function(unit) equal(unit, 'target'); return duration end
+	f.state.casting.target = {name = secret, icon = secret, startMS = secret, endMS = secret}
+	f.JI.db.portraits.target.cast.spellIcon = true
+	f.state.combat = true; f.fire('UNIT_SPELLCAST_START', 'target')
+	expect(cast.ring:IsShown()); equal(cast.ring.durationObject, duration); equal(cast.ring.clearOnDone, true)
+	expect(rawequal(cast.name.text, secret)); expect(rawequal(cast.spell.path, secret))
+	expect(rawequal(cast.time.formatted[2], secret)); equal(cast.time.formatted[1], '%.1f')
+	f.fire('UNIT_SPELLCAST_STOP', secret) -- Restricted unit tokens cannot index our frames.
+	cast.ring.scripts.OnCooldownDone(); expect(not cast.ring:IsShown()); expect(not cast.spell:IsShown())
+	f.env.UnitCastingDuration = nil; f.fire('UNIT_SPELLCAST_START', 'target')
+	expect(not cast.ring:IsShown()) -- No readable timestamps: never attempt arithmetic.
+end)
+
+test('native channel and empower durations choose the correct direction and API', function()
+	local f = castFixture(); local cast = f.player.cast
+	local channel = {GetRemainingDuration = function() return 4 end}
+	local empower = {GetRemainingDuration = function() return 5 end}
+	f.env.UnitCastingDuration = function() error('channel must not use cast duration API') end
+	f.env.UnitChannelDuration = function() return channel end
+	f.env.UnitEmpoweredChannelDuration = function() return empower end
+	f.state.casting.player = {name = 'Channel', icon = 123, startMS = f.secret, endMS = f.secret, channel = true}
+	f.fire('UNIT_SPELLCAST_CHANNEL_START', 'player')
+	equal(cast.ring.durationObject, channel); equal(cast.ring.reverse, false)
+	f.state.casting.player.empower = true; f.fire('UNIT_SPELLCAST_EMPOWER_START', 'player')
+	equal(cast.ring.durationObject, empower); equal(cast.ring.reverse, true)
+	f.state.casting.player = nil; f.fire('UNIT_SPELLCAST_EMPOWER_STOP', 'player'); expect(not cast.ring:IsShown())
+end)
+
+test('legacy player APIs, channel expiry and public empower hold remain supported', function()
+	local f = castFixture('legacy'); local cast = f.player.cast
+	local casting, channel = f.env.UnitCastingInfo, f.env.UnitChannelInfo
+	f.env.UnitCastingInfo, f.env.UnitChannelInfo = nil, nil
+	f.env.CastingInfo = function() return casting('player') end
+	f.env.ChannelInfo = function() return channel('player') end
+	f.state.casting.player = {name = 'Classic cast', icon = 123, startMS = 99000, endMS = 103000}
+	f.fire('UNIT_SPELLCAST_START', 'player'); equal(cast.ring.cooldown[2], 4)
+	f.state.casting.player.channel = true; f.fire('UNIT_SPELLCAST_CHANNEL_START', 'player')
+	equal(cast.ring.reverse, false); f.state.now = 104
+	cast.ring.scripts.OnUpdate(cast.ring, .1); expect(not cast.ring:IsShown())
+	f.env.UnitChannelInfo = channel
+	f.env.GetUnitEmpowerHoldAtMaxTime = function() return 2000 end
+	f.state.casting.player = {name = 'Empower', icon = 123, startMS = 104000, endMS = 107000, channel = true, empower = true}
+	f.fire('UNIT_SPELLCAST_EMPOWER_START', 'player'); equal(cast.ring.cooldown[2], 5)
+	equal(cast.endTime, 109); equal(cast.ring.reverse, true)
+end)
+
+test('cast options independently apply colors, media fonts, text placement and visibility', function()
+	local f = castFixture(); local cast, db = f.player.cast, f.JI.db.portraits.player.cast
+	local media = f.env.LibStub('LibSharedMedia-3.0')
+	function media:HashTable() return {Custom = 'Custom.ttf'} end
+	function media:Fetch(_, name) return name == 'Custom' and 'Custom.ttf' end
+	local options = f.JI.Options.args.portraits.args.player.args.cast
+	equal(options.args.font.values().Custom, 'Custom')
+	for field, value in pairs({font = 'Custom', fontSize = 18, outline = 'THICKOUTLINE', textWidth = 210,
+		namePoint = 'TOP', nameX = 17, nameY = 22, timePoint = 'RIGHT', timeX = 19, timeY = -20}) do
+		options.set({field}, value); equal(options.get({field}), value)
+	end
+	equal(cast.name.font[1], 'Custom.ttf'); equal(cast.time.font[2], 18); equal(cast.name.font[3], 'THICKOUTLINE')
+	equal(cast.name.point[3], 'TOP'); equal(cast.name.point[4], 17); equal(cast.name.point[5], 22)
+	equal(cast.time.point[3], 'RIGHT'); equal(cast.time.point[4], 19); equal(cast.time.point[5], -20)
+	equal(cast.name.width, 210)
+	options.args.color.set(nil, .9, .4, .2, .75); equal(db.color[4], .75)
+	options.args.channelColor.set(nil, .2, .3, .4, .8); equal(db.channelColor[1], .2)
+	options.args.textColor.set(nil, .5, .6, .7, .9); equal(cast.name.textColor[3], .7)
+	expect(f.JI.db.portraits.target.cast.color[1] ~= db.color[1])
+	f.state.casting.player = {name = 'Spell', icon = 123, startMS = 100000, endMS = 104000}
+	options.set({'showName'}, false); options.set({'showTime'}, false)
+	expect(cast.ring:IsShown()); expect(not cast.name:IsShown()); expect(not cast.time:IsShown())
+	options.set({'font'}, 'Removed font'); equal(cast.name.font[1], [[Fonts\FRIZQT__.TTF]])
+	f.JI.db.portraits.player.shape = 'droplet'; f.JI:UpdatePortraits()
+	expect(options.args.enable.disabled()); expect(not cast.ring:IsShown())
+end)
+
+test('cast preview loops only while unlocked and disabling or switching profiles clears the ring', function()
+	local f = castFixture(); local cast = f.player.cast
+	f.JI:TogglePortraitMovers(); expect(cast.preview); expect(cast.ring:IsShown())
+	equal(cast.name.text, 'Cast preview'); equal(cast.ring.cooldown[1], 100)
+	f.state.now = 104; cast.ring.scripts.OnCooldownDone(); equal(cast.ring.cooldown[1], 104)
+	f.JI:LockPortraits(); expect(not cast.ring:IsShown())
+	f.state.casting.player = {name = 'Spell', icon = 123, startMS = 104000, endMS = 110000}
+	f.fire('UNIT_SPELLCAST_START', 'player'); expect(cast.ring:IsShown())
+	f.JI.db.portraits.player.cast.enable = false; f.JI:UpdatePortraits(); expect(not cast.ring:IsShown())
+	f.JI.db.portraits.player.cast.enable = true; f.JI:UpdatePortraits(); expect(cast.ring:IsShown())
+	f.JI.data:SetProfile('No casts'); f.JI:BuildProfile(); f.JI:UpdatePortraits()
+	expect(not cast.ring:IsShown()); expect(not f.JI.db.portraits.player.cast.enable)
 end)
 
 print(passed..' integration tests passed')

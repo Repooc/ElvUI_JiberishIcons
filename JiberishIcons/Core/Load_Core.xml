@@ -5,6 +5,9 @@
 	<Include file ='Defaults\Load_Defaults.xml'/>
 	<Script file="Core.lua"/>
 	<Script file="Options.lua"/>
+	<Script file="PortraitCast.lua"/>
+	<Script file="Portraits.lua"/>
+	<Script file="PortraitOptions.lua"/>
 	<Script file="Chat.lua"/>
 	<Script file="Details.lua"/>
 	<Script file="DamageMeterParty.lua"/>

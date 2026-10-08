@@ -646,6 +646,7 @@ local Credits = ACH:Group(L["Fabled Incarnates"], nil, 10)
 Information.args.Credits = Credits
 Credits.inline = true
 Credits.args.credits = ACH:Description(CREDITS, 1, 'medium')
+Credits.args.thanks = ACH:Description('Special thanks to Blinkii for the portrait idea and continued help, and to Repooc, Eltreum and Trenchy for their ongoing contributions and support.', 2)
 
 local sharedDefaultValues = {
 	portrait = {
@@ -678,6 +679,7 @@ end
 function JI:BuildProfile()
 	local Defaults = {
 		profile = {
+			portraits = JI:CopyTable({}, JI.DF.profile.portraits),
 			ellesmereui = JI:CopyTable({}, JI.DF.profile.ellesmereui),
 			damageMeters = JI:CopyTable({}, JI.DF.profile.damageMeters),
 			blizzard = {
@@ -770,6 +772,8 @@ end
 
 function JI:SetupProfile()
 	JI.db = JI.data.profile
+	if JI.LockPortraits then JI:LockPortraits(true) end
+	if JI.UpdatePortraits then JI:UpdatePortraits() end
 	JI:UpdateMedia()
 	JI:UpdateEllesmereUI()
 	JI:UpdateDamageMeters()

@@ -245,6 +245,15 @@ function JI:GetUnitSpecialization(unit)
 		if IsSecret(index) or type(index) ~= 'number' or index <= 0 then return end
 		return ValidSpec(getInfo(index))
 	end
+	-- ElvUI can read an already available spec from the unit tooltip without an
+	-- inspect round trip. Classic/Forever builds still use their talent trees.
+	if not UsesTalentTrees() and JI.GetElvUIUnitSpecialization then
+		local spec = JI:GetElvUIUnitSpecialization(unit)
+		if spec then
+			if JI.RememberPublicSpecialization then JI:RememberPublicSpecialization(unit, spec) end
+			return spec
+		end
+	end
 	local inspect = (api and api.GetInspectSpecialization) or GetInspectSpecialization
 	if inspect then
 		local spec = inspect(unit)
@@ -279,6 +288,7 @@ function JI:GetUnitSpecialization(unit)
 end
 
 function JI:RefreshSpecializationIcons()
+	if JI.RefreshPortraitSpecializations then JI:RefreshPortraitSpecializations() end
 	if JI.RefreshDamageMeterSpecializations then JI:RefreshDamageMeterSpecializations() end
 	if JI.RefreshBlizzardSpecializations then JI:RefreshBlizzardSpecializations() end
 	if JI.RefreshSUFSpecializations then JI:RefreshSUFSpecializations() end
