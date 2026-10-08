@@ -9,6 +9,28 @@ local UnitIsPlayer = UnitIsPlayer
 local iconMinSize, iconMaxSize = JI.iconMinSize, JI.iconMaxSize
 local classStyleInfo = JI.defaultStylePacks.class
 
+local function IsSecret(value)
+	return issecretvalue and issecretvalue(value)
+end
+
+function JI:GetElvUIUnitSpecialization(unit)
+	if not E.GetUnitSpecInfo or IsSecret(unit) or type(unit) ~= 'string' then return end
+	local exists, player = UnitExists(unit), UnitIsPlayer(unit)
+	if IsSecret(exists) or not exists or IsSecret(player) or not player then return end
+	local _, class = UnitClass(unit)
+	if IsSecret(class) or type(class) ~= 'string' then return end
+	-- Older ElvUI/client combinations may not support this tooltip lookup.
+	local ok, info = pcall(E.GetUnitSpecInfo, E, unit)
+	if not ok or IsSecret(info) or type(info) ~= 'table' then return end
+	local spec = info.id
+	if IsSecret(spec) or type(spec) ~= 'number' then return end
+	local entry = JI.dataHelper.specialization[spec]
+	if entry and entry.class == class then return spec end
+end
+
+local specializationTagFrames = setmetatable({}, {__mode = 'k'})
+local specializationEvents = 'UNIT_NAME_UPDATE UNIT_PORTRAIT_UPDATE PLAYER_TARGET_CHANGED'
+
 local WarningMsgSent = {}
 
 --! Depreciated tag format
@@ -35,8 +57,10 @@ function JI:BuildElvUITags()
 		for iconStyle, data in pairs(JI.mergedStylePacks[kind].styles) do
 			for _, reverse in ipairs({ false, true }) do
 				local tag = format('jiberish:%s:%s%s', kind, iconStyle, reverse and ':reverse' or '')
-				-- Spec data may arrive without a portrait event (inspection or talent change).
-				E:AddTag(tag, kind == 'spec' and 0.5 or 'UNIT_NAME_UPDATE UNIT_PORTRAIT_UPDATE', function(unit, _, args)
+				E:AddTag(tag, kind == 'spec' and specializationEvents or 'UNIT_NAME_UPDATE UNIT_PORTRAIT_UPDATE', function(unit, _, args)
+					-- oUF supplies _FRAME in the tag environment. Track it even while
+					-- the spec is unknown, including frames with portraits disabled.
+					if kind == 'spec' and _FRAME then specializationTagFrames[_FRAME] = true end
 					local size = tonumber(strsplit(':', args or ''))
 					size = (size and size >= iconMinSize and size <= iconMaxSize) and size or 64
 					local icon, path, textureSize = JI:GetUnitIcon(unit, iconStyle)
@@ -78,6 +102,11 @@ function JI:PortraitUpdate()
 end
 
 function JI:RefreshElvUISpecializations()
+	-- The shared driver handles target/focus changes, INSPECT_READY and OpenRaid
+	-- callbacks. Repaint tags as soon as data arrives, without a polling delay.
+	for frame in pairs(specializationTagFrames) do
+		if frame.UpdateTags and frame:IsShown() and not frame.isForced then frame:UpdateTags() end
+	end
 	for element in pairs(specializationPortraits) do
 		local frame = element.__owner
 		local db = JI.db.elvui[frame.unitframeType]

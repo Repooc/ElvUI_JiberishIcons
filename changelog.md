@@ -1,3 +1,14 @@
+# 1.6.0 — Portraits and circle cast rings (October 8, 2026)
+
+- Add independent movable portraits for player, target, target of target, pet, focus, each party member and boss. Choose Jiberish class/spec packs or 2D character portraits, with configurable fallback for pets, NPCs and unavailable specializations.
+- Add optional Player/Target cast rings for Circle and Thin circle, sharing the portrait border's smooth size-specific textures. Configure separate cast/channel colors and opacity, font and independent name/time positions, or fill the circle with the current spell icon. Preview casts while portraits are unlocked.
+- Include smooth circle and left/right droplet frames in regular and thin variants, with textures selected for the portrait's displayed size. Configure artwork sizing, mirroring, portrait zoom, border/background colors and screen or unit-frame anchoring.
+- Add three Anything / Additional slots for freely chosen class, specialization or race icons, or a selected live unit. Choose no border for an unclipped icon anywhere on screen.
+- Attach portraits to Blizzard, ElvUI or a named unit frame, or position them freely on screen. Unlock to drag and preview; locked portraits are click-through and movers lock in combat. Settings follow the existing profiles. Portraits and cast rings start disabled; configure them under **/ji → Portraits**.
+- Show specialization icons sooner when ElvUI already has public tooltip information for a Retail/Mists player. Keep the existing inspection fallback and Classic/Forever talent-tree support.
+- Refresh ElvUI specialization tags immediately on target/focus changes and incoming specialization data, including frames with portraits disabled, instead of waiting for a half-second poll.
+- Special thanks to **Blinkii** for the portrait idea and continued help, and to **Repooc**, **Eltreum** and **Trenchy** for their ongoing contributions and support.
+
 # 1.5.0 — Fabled Myth remaster (October 7, 2026)
 
 - Redraw all 13 Fabled Myth class icons while preserving their original subjects and palettes, with broader shapes, stronger outlines and cleaner graffiti accents for small UI sizes.

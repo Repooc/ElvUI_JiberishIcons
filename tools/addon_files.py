@@ -61,6 +61,7 @@ def required_files(addon=ADDON):
 
     visit(addon / 'JiberishIcons.toc')
     textures = json.loads((ROOT / 'tests/fixtures/textures.json').read_text())['textures']
+    textures += json.loads((ROOT / 'tests/fixtures/portrait-textures.json').read_text())['textures']
     required = loaded | LICENSES | {t['path'] for t in textures}
     for name in required:
         assert (addon / name).is_file() and not (addon / name).is_symlink(), name

@@ -4,6 +4,7 @@ import json
 import re
 from addon_files import ROOT, ADDON, required_files
 from texture_utils import load_tga
+from PIL import Image
 from build_details_atlas import compose
 
 
@@ -62,6 +63,25 @@ def main():
                     if (x, y) not in used:
                         assert im.crop((x*cell, y*cell, (x+1)*cell, (y+1)*cell)).getchannel('A').getbbox() is None
     toc = (ADDON / 'JiberishIcons.toc').read_text()
+    portraits = json.loads((ROOT / 'tests/fixtures/portrait-textures.json').read_text())['textures']
+    for texture in portraits:
+        path = ADDON / texture['path']
+        assert sha(path.read_bytes()) == texture['sha256'], path
+        im = load_tga(path)
+        assert list(im.size) == texture['size'] and im.width == im.height, path
+        assert im.width in (32, 64, 128, 256, 512, 1024), path
+        assert sha(im.tobytes()) == texture['rgbaSha256'], path
+        assert Image.open(path).convert('RGBA').tobytes() == im.tobytes(), path
+        alpha_min, alpha_max = im.getchannel('A').getextrema()
+        assert alpha_min == 0 and alpha_max > 0, path
+        data = path.read_bytes()
+        assert data[1:3] == bytes((0, 2)) and data[16] == 32 and data[17] & 15 == 8, path
+        assert any(0 < value < 255 for value in im.getchannel('A').tobytes()), path
+    families = {texture['shape'] for texture in portraits}
+    assert len(families) == 10 and len(portraits) == 60
+    for family in families:
+        assert {t['size'][0] for t in portraits if t['shape'] == family} == {32, 64, 128, 256, 512, 1024}
+    print(f'PASS {len(portraits)} portrait TGAs, standard decoders, alpha and all six size variants')
     assert '## SavedVariables: JiberishIconsDB' in toc
     assert r'Interface\AddOns\JiberishIcons\Media\Logo\SmallLogo' in toc
     files = required_files()
