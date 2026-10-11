@@ -576,6 +576,9 @@ for index, key in ipairs({ 'blizzard', 'ellesmere' }) do
 	group.args.style = ACH:Select(L['Style'], nil, 2, MeterStyles, nil, nil, nil, nil, Disabled)
 	AddReverseToggle(group, GetSettings, function() JI:UpdateDamageMeters() end)
 	if key == 'blizzard' then
+		group.args.customIconSize = ACH:Toggle('Custom Icon Size', 'Resize player icons independently of the bar height. Turning this off restores the size supplied by Blizzard or your meter skin.', 5, nil, nil, nil, nil, nil, Disabled)
+		group.args.iconSize = ACH:Range('Icon Size', 'Size in UI pixels, limited to the bar height to prevent clipping. Increase Bar Height in Blizzard Edit Mode for larger icons. If the meter prevents resizing in combat, changes apply when combat ends.', 6,
+			{ min = 12, max = 64, step = 1 }, nil, nil, nil, function() return Disabled() or not GetSettings().customIconSize end)
 		group.args.editMode = ACH:Execute('Open Blizzard Edit Mode', nil, 10, function()
 			if not InCombatLockdown() and EditModeManagerFrame and ShowUIPanel then ShowUIPanel(EditModeManagerFrame) end
 		end, nil, nil, nil, nil, nil, function() return InCombatLockdown() or not EditModeManagerFrame end)

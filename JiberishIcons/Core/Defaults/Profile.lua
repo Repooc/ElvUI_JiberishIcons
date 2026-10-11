@@ -64,7 +64,7 @@ P.suf = {}
 P.ellesmereui = {}
 
 P.damageMeters = {
-    blizzard = { enable = false, style = 'fabledspecializations', reverse = false },
+    blizzard = { enable = false, style = 'fabledspecializations', reverse = false, customIconSize = false, iconSize = 32 },
     ellesmere = { enable = false, style = 'fabledspecializations', reverse = false },
 }
 

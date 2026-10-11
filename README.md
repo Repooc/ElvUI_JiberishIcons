@@ -1,168 +1,55 @@
 # Jiberish Fabled Icons
 
-Custom class, race, and specialization artwork for World of Warcraft unit frames
-and damage meters, with class and race icons for chat. Open **/ji** or **/jiberishicons** to configure.
-Visit [The Igloo](https://theigloo.io/) for JiberishUI.
+Custom class, race, and specialization icons for World of Warcraft.
 
-## Install or upgrade
+- Open **/ji** or **/jiberishicons** to choose your icons and settings.
+- Supports Blizzard, ElvUI, Shadowed Unit Frames, EllesmereUI, Details!, and chat. Available options vary by integration.
+- Includes movable portraits and optional Player/Target cast rings.
 
-The addon folder is now **JiberishIcons** and the visible name is **Jiberish Fabled Icons**.
-Extract the release into `Interface/AddOns`, then fully restart WoW.
-Existing users should follow [UPGRADING.md](UPGRADING.md) to retain saved profiles
-when replacing the old `ElvUI_JiberishIcons` folder. Install only one folder name.
+## Installation
 
-## Icon collections
+- Extract the **JiberishIcons** folder into `Interface/AddOns`, then restart WoW.
+- Replacing **ElvUI_JiberishIcons**? Follow the [upgrade guide](UPGRADING.md) to keep your profiles. Don't install both folders.
 
-**Fabled Class** includes all 13 classes in the same bold illustrated style as
-Fabled Specializations. Choose **Fabled Class** in a class-style selector for
-unit frames or chat, or **Fabled Class (Class)** in damage-meter selectors.
-The transparent 2048 × 2048 sheet uses 256px cells with eight-pixel safety margins.
+## Icon packs
+
+- **Fabled Class:** illustrated icons for all 13 classes.
+- **Fabled Specializations:** icons for all 40 specs, including Devourer.
+- **Fabled Regalia:** class crests. [Preview](images/FabledRegaliaWebsiteDisplay.png)
+- **Fabled Azeroth:** race crests. [Preview](images/FabledAzerothWebsiteDisplay.png)
+- **Fabled Core** and **Fabled Myth:** alternate class artwork.
 
 ![Fabled Class](images/FabledClassPreview.png)
 
-**Fabled Specializations** includes all 40 specializations, including Devourer.
-The revised designs use broader silhouettes, strong outlines, fewer internal
-details and clearer color areas for small unit-frame and damage-meter icons.
-The transparent 2048 × 2048 sheet uses 256px cells and at least four-pixel safety margins,
-matching Fabled Regalia. Choose **Fabled Specializations (Spec)** in supported
-Blizzard, ElvUI, Shadowed Unit Frames, EllesmereUI, or Details! selectors.
-
-Your active specialization refreshes automatically. Classic/Forever characters
-use the talent tree with the most spent points. Unspent builds and tied splits
-show the Fabled Regalia class crest until a tree leads. Classic Feral Combat uses
-the Feral icon; Combat Rogue uses Outlaw. Retail and Mists use their selected spec.
-Forever reads the active build's talent-group totals, matching its talent window;
-uncommitted previews retain the last known committed icon. Temporary talent-read
-failures also retain the confirmed build; changing active builds invalidates it.
-Other players display when public specialization information is available.
-When a specialization icon needs data, nearby inspectable players are inspected
-automatically outside combat. Forever uses their inspected talent-group totals;
-confirmed results display immediately from a character-specific cache. After one
-minute they refresh in the background while retaining the last confirmed icon,
-with a five-minute hard expiry. Reported specialization changes invalidate the
-old result immediately; zoning retains the cache and reloading clears it.
-Current targets take priority over other queued players. Requests are throttled,
-retry limits prevent spam, and manual inspection windows take priority. Unknown or
-restricted specs hide until data arrives. Older Classic clients without usable
-remote spec information can use class and race styles. These lookup and cache
-rules also apply to Forever's live damage-meter views when recorded specialization
-data is unavailable. Other clients and selected historical fights use recorded data.
-Chat and Eltruism retain their class/race capabilities.
-
 ![Fabled Specializations](images/FabledSpecializationsSocial.png)
 
-**Fabled Regalia** includes all 13 class crests; **Fabled Azeroth** includes 26 race
-crests, including Earthen and Haranir. Races available to both factions share an
-emblem. Both use transparent 256px cells on 2048px sheets. Their artwork draws
-inspiration from Blizzard Entertainment's official [class](https://worldofwarcraft.blizzard.com/en-us/game/classes)
-and [race](https://worldofwarcraft.blizzard.com/en-us/game/races) crests.
-See the [Regalia](images/FabledRegaliaWebsiteDisplay.png) and
-[Azeroth](images/FabledAzerothWebsiteDisplay.png) previews.
+## Setup
 
-**Fabled Core** preserves its original designs, carefully resampled and lightly
-sharpened to 256px cells.
-
-**Fabled Myth** remasters all 13 original class motifs with thicker shapes,
-cleaner graffiti accents and stronger color separation. Its transparent
-2048 × 2048 sheet uses 256px cells with eight-pixel safety margins. Select
-**Fabled Myth** in the existing class-style selectors; saved selections continue
-to use the refreshed art. Other existing packs retain their artwork and resolution.
+- **Unit frames:** Open `/ji`, select your frame addon, enable an icon or portrait, and choose a pack. ElvUI portraits also need ElvUI's class portrait mode enabled.
+- **Blizzard damage meter:** Enable it under `/ji` → **Damage Meters**. Keep **Show Spec Icon** checked in Blizzard Edit Mode. Turn on **Custom Icon Size** to choose 12–64 pixels; Bar Height must be at least as large as the icon size you want.
+- **Ellesmere damage meters:** Enable the integration under `/ji` → **Damage Meters**. Keep Ellesmere's Icon Style set to something other than **None**.
+- **Details!:** Choose a Fabled pack under **Options → Bars: General → Icons → Texture**.
+- **Portraits:** Open `/ji` → **Portraits**, enable the ones you want, then use **Unlock and preview** to place them. Choose a frame shape or **None — icon only**.
+- **Cast rings:** Enable under **Portraits → Player or Target → Cast ring** with a Circle or Thin circle frame.
+- **Chat:** Choose class or race icons under `/ji` → **Chat**.
 
 ## ElvUI tags
 
-Find these under **Available Tags → Jiberish Fabled Icons** and paste them into a
-unit frame's **Custom Text** field. The optional size defaults to 64 and accepts 1–128.
+- Find the full list under **Available Tags → Jiberish Fabled Icons**.
+- Paste a tag into a unit frame's **Custom Text** field.
+- Class: `[jiberish:class:fabledclass{32}]`
+- Spec: `[jiberish:spec:fabledspecializations{32}]`
+- Race: `[jiberish:race:fabledazeroth{32}]`
+- Change `32` to set the size. Add `:reverse` before `{32}` to mirror the icon.
 
-| Collection | Normal | Mirrored |
-| --- | --- | --- |
-| Fabled Class | `[jiberish:class:fabledclass{32}]` | `[jiberish:class:fabledclass:reverse{32}]` |
-| Specializations | `[jiberish:spec:fabledspecializations{32}]` | `[jiberish:spec:fabledspecializations:reverse{32}]` |
-| Regalia classes | `[jiberish:class:fabledregalia{32}]` | `[jiberish:class:fabledregalia:reverse{32}]` |
-| Azeroth races | `[jiberish:race:fabledazeroth{32}]` | `[jiberish:race:fabledazeroth:reverse{32}]` |
+## Spec icons
 
-Existing class/race style tags continue to work. Tags hide when their required
-identity information is unavailable. ElvUI and SUF race portraits use class
-portrait mode; icon and portrait styles can be configured independently.
+- Other players' spec icons depend on information WoW makes available. Unknown specs may use a class icon or stay hidden.
+- Classic and Forever use your main talent tree. On Forever, group icons may need a completed fight and time outside combat to update.
 
-## Other integrations
+## Links and credits
 
-- **Blizzard damage meter:** Open `/ji` → Damage Meters → Blizzard Damage Meter,
-  enable it, and select **Fabled Specializations (Spec)** or a class pack. Enable
-  Blizzard's stock meter in game settings and keep **Show Spec Icon** checked in
-  Edit Mode. Edit Mode still controls layout, row size, and visibility; its previews
-  use the chosen artwork. An **Open Blizzard Edit Mode** button is included.
-- **Ellesmere damage meters:** Open `/ji` → Damage Meters → Ellesmere Damage Meters,
-  enable it, and select a pack. Requires the **EllesmereUI Damage Meters** module;
-  its Icon Style must be something other than **None**. The integration covers
-  player rows and the pinned player across its windows. Ellesmere retains sizing,
-  visibility, and spell artwork. Both meter integrations start disabled, support
-  Reverse, and restore native icons when disabled. Unknown recorded specs use the
-  Regalia class crest. In **Forever**, Current and Overall views also use the
-  player's committed talent build or another player's verified talent data when
-  the meter supplies only a class icon. Nearby party/raid members, targets and
-  focus players are queued for inspection even before their meter row appears.
-  Public player IDs use the same throttled cache as unit frames, retaining
-  recent results after leaving a group. Both meters fetch fresh data after
-  combat restrictions lift. For **parties**, including the open world, a prior
-  readable meter snapshot can preserve combat icons when every possible remote
-  member of that class has the same confirmed spec. Different or unknown builds
-  of the same class still use Regalia. After reloading or changing the group,
-  complete one fight and wait for inspections before testing the next fight.
-  This conservative inference requires an unchanged roster and excludes raids,
-  enemy views and known conflicting participants. These live views reflect the
-  current build. Selected historical fights require recorded specialization
-  data and otherwise retain the class crest.
-- **Details!:** Options → Bars: General → Icons → Texture → **Fabled Specializations (Spec)**.
-  Details selects the artwork from each combatant's recorded specialization and
-  keeps its normal class-icon fallback when a spec is unknown. Its compatible
-  texture includes both Classic and Retail Rogue layouts. Existing class packs,
-  including Fabled Regalia, remain available in the same menu.
-- **EllesmereUI:** Open `/ji` → EllesmereUI and enable icons for Player, Target,
-  Focus, Target of Target, Focus Target, or **Party**. Set the style, size, anchor,
-  offsets, and reverse direction. Party uses the separate **EllesmereUI Raid Frames**
-  module and applies one set of settings to its party buttons, including its self
-  button. Other tabs require EllesmereUI Unit Frames. Apply To All copies complete
-  settings to all six groups. Icons start disabled.
-  They follow frame visibility and fading; changes to placement wait until combat
-  ends. Party icons follow secure button reassignment and hide in layout previews.
-- **Movable portraits:** Open `/ji` → **Portraits**. Enable Player, Target,
-  Target of Target, Pet, Focus, individual Party members or Bosses. Choose a
-  class/spec icon pack or a 2D character portrait, then select Circle, Droplet
-  right or Droplet left, in regular or thin versions. Set size, artwork scale,
-  mirroring, zoom and colors. **None — icon only** removes the border and mask.
-  **Anything / Additional** provides three independent slots: choose any class,
-  specialization or race icon from a pack, or select a unit for a live portrait.
-  Fixed icons stay visible without a target or group.
-  **Unlock and preview** shows enabled portraits even when their units are
-  missing; drag to place them anywhere, then lock. Dragging saves a screen
-  position. **Attach to** can instead follow a Blizzard or ElvUI unit frame, or
-  a named frame from another UI. Attached portraits hide with unavailable/hidden
-  frames. Missing icons can fall back to 2D portraits or Fabled Class; pets and
-  NPCs use 2D portraits by default. These portraits are click-through when locked,
-  default off, save per profile and lock automatically in combat.
-- **Circle cast rings:** Under **Portraits → Player or Target → Cast ring**, enable
-  the ring with a Circle or Thin circle frame. Casts fill the border; channels drain
-  it. Set separate cast/channel colors and opacity, choose a font, size, outline
-  and text color, and position the spell name and remaining time independently.
-  **Show spell icon inside circle** temporarily replaces the portrait's appearance
-  with the current spell. **Unlock and preview** includes a repeating sample cast.
-  The ring uses the same smooth, size-specific artwork as the portrait border.
-- **Blizzard frames:** Open `/ji` → Blizzard Frames, choose the frame or Party,
-  enable its icon or portrait, and select **Fabled Specializations (Spec)**.
-- **ElvUI:** Use the specialization custom-text tags above on player, target, or
-  party frames, or choose the pack in Jiberish's ElvUI portrait settings with
-  ElvUI's class portrait mode enabled.
-- **Reverse:** Mirror artwork in supported Blizzard, ElvUI, SUF, EllesmereUI, and
-  Chat settings. This defaults to off and is saved per profile. Chat changes affect
-  new messages. ElvUI custom text uses the mirrored tags above.
-
-## Credits
-
-Special thanks to **Blinkii** for the portrait idea and continued help, and to
-**Repooc**, **Eltreum** and **Trenchy** for their ongoing contributions and support.
-The addon’s Information tab includes the full contributor list; individual icon
-collections retain their artist credits in Style Packs.
-
-For contribution, validation and publishing, see [DEVELOPMENT.md](DEVELOPMENT.md).
-
-Questions or concerns: [join the Discord](https://discord.gg/mJKdmm9KGr).
+- [Discord support](https://discord.gg/mJKdmm9KGr) · [The Igloo / JiberishUI](https://theigloo.io/) · [Changelog](changelog.md)
+- Thanks to **Blinkii**, **Repooc**, **Eltreum**, and **Trenchy**. Full credits are in the addon's Information and Style Packs tabs.
+- Class and race crests are inspired by Blizzard Entertainment's artwork.
+- Contributing? See [DEVELOPMENT.md](DEVELOPMENT.md).
