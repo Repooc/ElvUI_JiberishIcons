@@ -58,8 +58,8 @@ so existing project subscriptions continue to receive updates.
 
 Branch pushes and pull requests run validation only. Publishing runs on a version
 tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
-`## Version` in the TOC. The portrait release is `1.6.0`; publish it with the
-matching `1.6.0` tag after the release checks pass. `1.5.0` is already published;
+`## Version` in the TOC. The icon-sizing release is `1.6.1`; publish it with the
+matching `1.6.1` tag after the release checks pass. `1.6.0` is already published;
 never replace or reuse an existing release tag.
 
 The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
@@ -122,7 +122,14 @@ Those live views track current builds, not historical talent snapshots. Explicit
 historical sessions never query live talents. Unknown/ambiguous/restricted
 identities retain Regalia except for the bounded party inference below. Preserve
 native layout, visibility, spell icons and restored textures when disabling the
-integration.
+integration. Blizzard's opt-in Custom Icon Size resizes the player icon holder,
+letting native bar/name anchors follow its width. Sizes are capped to row height
+because native rows clip children. Retain the latest underlying holder dimensions
+across skin refreshes and restore them on disable or a non-player row. Geometry
+changes on protected holders wait until combat ends; stock unprotected holders
+retain custom sizing during combat skin refreshes. Check 18px skinned and 24px native holders, Edit
+Mode bar-height changes, pinned/recycled rows, hidden icons and profile changes
+in game; offline fixtures cannot establish live taint or visual compatibility.
 
 `DamageMeterParty.lua` snapshots the full readable native session per window.
 For restricted GUIDs only, a previously seen class/icon key may choose a spec if
@@ -137,6 +144,13 @@ between pulls retain evidence for the unchanged party. New groups may require a
 completed fight and inspections before the next pull can use this workaround.
 
 ## In-game acceptance
+
+**1.6.1 — Blizzard damage meter icon sizing (October 10, 2026):** The user
+confirmed the custom icon size control works well in game. This confirms the
+reported sizing fix, not exhaustive testing of every client or skin. Automated
+fixtures cover row-height limits, skin refreshes during combat, pinned/recycled
+rows, hidden icons, restoration, profile reset and protected-holder deferral.
+Release preparation includes the version bump, concise README and verified ZIP.
 
 **1.6.0 candidate — independent portraits:** The portrait module is an independent
 implementation. Circle/droplet geometry builds in regular and thin variants,

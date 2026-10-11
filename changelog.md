@@ -1,3 +1,9 @@
+# 1.6.1 — Blizzard damage meter icon sizing (October 10, 2026)
+
+- Add **Custom Icon Size** under **/ji → Damage Meters → Blizzard Damage Meter**. Choose 12–64 pixels, up to the bar height set in Blizzard Edit Mode.
+- Keep the chosen size when the meter skin refreshes, including the pinned player row. Turning the option off restores the original size.
+- Shorten the README with quick setup instructions.
+
 # 1.6.0 — Portraits and circle cast rings (October 8, 2026)
 
 - Add independent movable portraits for player, target, target of target, pet, focus, each party member and boss. Choose Jiberish class/spec packs or 2D character portraits, with configurable fallback for pets, NPCs and unavailable specializations.

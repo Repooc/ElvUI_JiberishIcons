@@ -1614,7 +1614,23 @@ local function meterFixture(client, base)
 	f.windows = {}
 	function f.entry(class, spec)
 		local entry = f.frame('meter')
-		entry.texture = entry:CreateTexture()
+		entry.height = 24
+		entry.Icon = f.env.CreateFrame('Frame', nil, entry)
+		entry.Icon.width, entry.Icon.height = 24, 24
+		function entry.Icon:GetSize() return self.width, self.height end
+		function entry.Icon:IsProtected() return self.protected or false end
+		function entry.Icon:SetSize(width, height)
+			expect(not f.state.combat or not self:IsProtected(), 'protected holder resized in combat')
+			self.width, self.height = width, height
+		end
+		function entry.Icon:SetHeight(height) self.height = height end
+		function entry:GetHeight() return self.height end
+		function entry:SetBarHeight(height)
+			self.height = height
+			if self.scripts.OnSizeChanged then self.scripts.OnSizeChanged(self, 400, height) end
+		end
+		entry.texture = entry.Icon:CreateTexture()
+		entry.texture:SetAllPoints(entry.Icon)
 		entry.texture:SetTexCoord(.0625, .9, .0626, .9) -- DamageMeterEntry.xml's native crop
 		function entry:GetIcon() return self.texture end
 		function entry:GetElementData() return self.elementData end
@@ -1710,6 +1726,59 @@ test('meters safely no-op without either API on Retail, Forever and older Classi
 		f.fire('ADDON_LOADED', 'UnrelatedAddon'); f.fire('PLAYER_LOGIN'); f.flush()
 		equal(#f.windows, 0)
 	end
+end)
+
+test('Blizzard custom sizing fits each row and survives skin sizing, recycling and Edit Mode', function()
+	local f = meterFixture(); local w = f.window(); local meter = f.blizzard()
+	local row = f.entry('MAGE', 135810); w.rows[1] = row
+	row:SetBarHeight(48); w.pinned:SetBarHeight(40)
+	local opts = f.JI.Options.args.damageMeters.args.blizzard
+	local db = f.JI.db.damageMeters.blizzard; db.enable = true
+	f.JI:SetupDamageMeters()
+	equal(db.customIconSize, false); equal(db.iconSize, 32)
+	equal(row.Icon.width, 24); expect(opts.args.iconSize.disabled())
+	opts.set({'customIconSize'}, true)
+	expect(not opts.args.iconSize.disabled()); equal(row.Icon.width, 32); equal(w.pinned.Icon.width, 32)
+	opts.set({'iconSize'}, 48)
+	equal(row.Icon.width, 48); equal(row.Icon.height, 48); equal(w.pinned.Icon.width, 40)
+	row.Icon:SetSize(18, 18) -- A meter skin reapplies its own size on refresh.
+	equal(row.Icon.width, 48); equal(row.Icon.height, 48)
+	f.state.combat = true
+	row.Icon:SetSize(18, 18); equal(row.Icon.width, 48)
+	f.state.combat = false
+	row:SetBarHeight(20); equal(row.Icon.width, 20); equal(row.Icon.height, 20)
+	row:SetBarHeight(56); equal(row.Icon.width, 48)
+	meter:OnEditModeEnter(); meter:OnEditModeExit(); equal(row.Icon.width, 48)
+	row.texture:Hide(); row:UpdateIcon(); expect(not row.texture:IsShown())
+	equal(row.texture.allPoints, row.Icon)
+	w:InitEntry(row, {class = '', spec = 12345}) -- Recycled as a creature.
+	equal(row.Icon.width, 18); equal(row.texture.path, 12345)
+	w:InitEntry(row, {class = 'MAGE', spec = 135846}); equal(row.Icon.width, 48)
+	local spell = f.entry(nil, 12345); equal(spell.Icon.width, 24)
+	opts.set({'customIconSize'}, false)
+	equal(row.Icon.width, 18); equal(w.pinned.Icon.width, 24)
+	row.Icon:SetWidth(22); row.Icon:SetHeight(20)
+	opts.set({'customIconSize'}, true); equal(row.Icon.width, 48)
+	opts.set({'enable'}, false)
+	equal(row.Icon.width, 22); equal(row.Icon.height, 20); equal(row.texture.path, 135846)
+end)
+
+test('Blizzard icon sizing defers protected combat changes and restores sizes on profile reset', function()
+	local f = meterFixture(); local w = f.window(); f.blizzard()
+	local row = f.entry('MAGE', 135810); w.rows[1] = row; row:SetBarHeight(48)
+	row.Icon.protected = true
+	local db = f.JI.db.damageMeters.blizzard
+	db.enable, db.customIconSize = true, true
+	f.JI:SetupDamageMeters(); equal(row.Icon.width, 32)
+	f.state.combat = true
+	db.iconSize = 44; f.JI:UpdateDamageMeters(); equal(row.Icon.width, 32)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(row.Icon.width, 44)
+	f.state.combat = true
+	db.enable = false; f.JI:UpdateDamageMeters(); equal(row.Icon.width, 44)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(row.Icon.width, 24)
+	db.enable = true; f.JI:UpdateDamageMeters(); equal(row.Icon.width, 44)
+	f.JI.db = f.JI:CopyTable({}, f.JI.DF.profile); f.JI:UpdateDamageMeters()
+	equal(row.Icon.width, 24); equal(w.pinned.Icon.width, 24)
 end)
 
 test('meter spec lookup validates class, handles unknown/secret metadata and accepts current client icon IDs', function()

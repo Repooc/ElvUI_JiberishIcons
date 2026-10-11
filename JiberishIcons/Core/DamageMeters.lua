@@ -23,6 +23,7 @@ local hooked = setmetatable({}, { __mode = 'k' })
 local driver
 local refreshQueued
 local dataRefreshQueued
+local sizeRefreshPending
 
 local function IsSecret(value)
 	return issecretvalue and issecretvalue(value)
@@ -137,6 +138,60 @@ local function HookOnce(object, method, callback)
 	hooksecurefunc(object, method, callback)
 end
 
+local function PublicSize(value)
+	return not IsSecret(value) and type(value) == 'number' and value > 0 and value < math.huge
+end
+
+local function SizeBlizzardIcon(entry)
+	local record = entry.jiberishMeterSize
+	if not record or record.applying then return end
+	local settings = Settings('blizzard')
+	local width, height = record.width, record.height
+	if entry.jiberishMeterIcon and settings and settings.enable and settings.customIconSize then
+		local rowHeight = entry:GetHeight()
+		if not PublicSize(rowHeight) then return end
+		local requested = PublicSize(settings.iconSize) and settings.iconSize or 32
+		-- Rows clip their children. Resizing the holder also moves the native bar
+		-- and name anchors, so the enlarged icon gets its own horizontal space.
+		width = math.min(math.max(requested, 12), 64, rowHeight)
+		height = width
+	end
+	local currentWidth, currentHeight = record.holder:GetSize()
+	if not PublicSize(currentWidth) or not PublicSize(currentHeight) then return end
+	if currentWidth == width and currentHeight == height then return end
+	-- Stock meter holders are unprotected and skins resize them during combat.
+	-- Keep those icons consistent; defer if another addon protects the holder.
+	if InCombatLockdown() and (not record.holder.IsProtected or record.holder:IsProtected()) then
+		sizeRefreshPending = true
+		return
+	end
+	record.applying = true
+	record.holder:SetSize(width, height)
+	record.applying = nil
+end
+
+local function BindBlizzardSize(entry)
+	local holder = entry.Icon
+	if entry.jiberishMeterSize or not holder or not holder.GetSize or not entry.GetHeight then return end
+	local width, height = holder:GetSize()
+	if not PublicSize(width) or not PublicSize(height) then return end
+	local record = { holder = holder, width = width, height = height }
+	entry.jiberishMeterSize = record
+	-- Remember subsequent skin/native sizing as well as the initial size. Only
+	-- our own writes are ignored; disabling restores the latest underlying size.
+	local function RememberSize(w, h)
+		if record.applying then return end
+		if PublicSize(w) then record.width = w end
+		if PublicSize(h) then record.height = h end
+		SizeBlizzardIcon(entry)
+	end
+	HookOnce(holder, 'SetSize', function(_, w, h) RememberSize(w, h) end)
+	HookOnce(holder, 'SetWidth', function(_, w) RememberSize(w) end)
+	HookOnce(holder, 'SetHeight', function(_, h) RememberSize(nil, h) end)
+	HookOnce(entry, 'SetBarHeight', SizeBlizzardIcon)
+	if entry.HookScript then entry:HookScript('OnSizeChanged', SizeBlizzardIcon) end
+end
+
 local function PaintBlizzard(entry)
 	local texture = entry.GetIcon and entry:GetIcon()
 	if not texture then return end
@@ -166,11 +221,13 @@ local function PaintBlizzard(entry)
 		texture:SetTexCoord(unpack(entry.jiberishMeterNativeCoords))
 		entry:UpdateIcon()
 	end
+	SizeBlizzardIcon(entry)
 end
 
 local function BindBlizzardEntry(entry, window, source)
 	if not entry or type(entry.UpdateIcon) ~= 'function' then return end
 	entry.jiberishMeterWindow, entry.jiberishMeterSource = window, source
+	BindBlizzardSize(entry)
 	HookOnce(entry, 'UpdateIcon', PaintBlizzard)
 	PaintBlizzard(entry)
 end
@@ -400,6 +457,10 @@ function JI:SetupDamageMeters()
 			if event == 'PLAYER_LOGIN' or addon == 'Blizzard_DamageMeter' or addon == 'EllesmereUIDamageMeters' then
 				JI:UpdateDamageMeters()
 			elseif event == 'PLAYER_REGEN_ENABLED' then
+				if sizeRefreshPending then
+					sizeRefreshPending = nil
+					JI:UpdateDamageMeters()
+				end
 				QueueFreshMeterData()
 			elseif event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD'
 				or event == 'PLAYER_SPECIALIZATION_CHANGED' or event == 'DAMAGE_METER_RESET' then
