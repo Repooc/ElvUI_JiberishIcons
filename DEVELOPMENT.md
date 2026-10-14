@@ -58,8 +58,8 @@ so existing project subscriptions continue to receive updates.
 
 Branch pushes and pull requests run validation only. Publishing runs on a version
 tag, after validation succeeds. The tag (optionally prefixed with `v`) must match
-`## Version` in the TOC. The icon-sizing release is `1.6.1`; publish it with the
-matching `1.6.1` tag after the release checks pass. `1.6.0` is already published;
+`## Version` in the TOC. The tooltip/TOC release is `1.6.2`; publish it with the
+matching `1.6.2` tag after the release checks pass. `1.6.1` is already published;
 never replace or reuse an existing release tag.
 
 The release workflow uses [BigWigs packager v2](https://github.com/BigWigsMods/packager)
@@ -98,9 +98,15 @@ for the same config/group, but explicit active-build changes invalidate it.
 
 When ElvUI provides `GetUnitSpecInfo`, remote Retail/Mists units first try its
 tooltip lookup, accepting only public specialization IDs matching the unit's
-class. Missing, restricted or unsupported tooltip data falls back to the existing
-lookup/inspection path. Classic/Forever talent trees and personal builds retain
-their original sources. ElvUI spec tags use events instead of half-second polling;
+class. The shared resolver can also read `C_TooltipInfo.GetUnit` directly, so
+EllesmereUI and other frame integrations do not need ElvUI for this shortcut.
+Match localized spec/class names only on native UnitType lines or immediately
+after UnitLevel; ignore names, guilds and unrelated tooltip text. Missing,
+restricted or unsupported tooltip data falls back to the existing inspection
+path. GUID-scoped `TOOLTIP_DATA_UPDATE` requests repaint when sparse data arrives;
+they never apply an old target's answer to its replacement. Classic/Forever
+talent trees and personal builds retain their original sources. ElvUI spec tags
+use events instead of half-second polling;
 the shared driver also repaints visible tagged frames on target/focus changes,
 inspection replies and OpenRaid callbacks, independently of portrait settings.
 Verify rapid retargeting, focus changes and delayed inspection replies in game;

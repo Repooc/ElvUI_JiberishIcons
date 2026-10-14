@@ -228,6 +228,94 @@ local function PlayerTalentSpec()
 	return nil, true
 end
 
+local tooltipNames, tooltipRequests = {}, {}
+local tooltipRefreshQueued
+
+local function PublicString(value)
+	return not IsSecret(value) and type(value) == 'string' and value ~= ''
+end
+
+local function TooltipSpecNames(class, className, sex)
+	local key = class..':'..sex..':'..className
+	if tooltipNames[key] then return tooltipNames[key] end
+	local api = C_SpecializationInfo
+	local getter = (api and api.GetSpecializationInfoForSpecID) or GetSpecializationInfoForSpecID
+	local fallback = (api and api.GetSpecializationInfoByID) or GetSpecializationInfoByID
+	local names = {}
+	for id, spec in pairs(JI.dataHelper.specialization) do
+		if spec.class == class then
+			local ok, result, name
+			if getter then ok, result, name = pcall(getter, id, sex) end
+			if (not ok or not PublicString(name)) and fallback then ok, result, name = pcall(fallback, id, sex) end
+			if ok and not IsSecret(result) and result == id and PublicString(name) then
+				local label = name..' '..className
+				-- Do not resolve ambiguous localized names to an arbitrary spec.
+				if names[label] == nil then names[label] = id else names[label] = false end
+			end
+		end
+	end
+	if next(names) then tooltipNames[key] = names end
+	return names
+end
+
+function JI:GetTooltipUnitSpecialization(unit)
+	if UsesTalentTrees() or not PublicString(unit) or not C_TooltipInfo or not C_TooltipInfo.GetUnit then return end
+	local exists, player = UnitExists(unit), UnitIsPlayer(unit)
+	if IsSecret(exists) or not exists or IsSecret(player) or not player then return end
+	local className, class = UnitClass(unit)
+	local guid = UnitGUID and UnitGUID(unit)
+	local sex = 1
+	if UnitSex then sex = UnitSex(unit) end
+	if not PublicString(className) or not PublicString(class) or not PublicString(guid)
+		or not PublicNumber(sex) then return end
+	local types = Enum and Enum.TooltipDataLineType
+	if not types or (not types.UnitType and not types.UnitLevel) then return end
+	tooltipRequests[unit] = nil
+	local ok, data = pcall(C_TooltipInfo.GetUnit, unit)
+	if not ok or not PublicTable(data) or not PublicTable(data.lines) then return end
+	local currentGUID = UnitGUID(unit)
+	if not PublicString(currentGUID) or currentGUID ~= guid then return end
+	local names = TooltipSpecNames(class, className, sex)
+	local afterLevel = false
+	for _, line in ipairs(data.lines) do
+		if PublicTable(line) and not IsSecret(line.type) then
+			-- Only the native unit-type line (or the line immediately after its
+			-- level) can supply a spec. Never match names, guilds or other text.
+			if afterLevel or (types.UnitType and line.type == types.UnitType) then
+				local text = line.leftText
+				local spec = PublicString(text) and names[text]
+				if spec then return spec end
+			end
+			afterLevel = types.UnitLevel and line.type == types.UnitLevel
+		else
+			afterLevel = false
+		end
+	end
+	-- Sparse tooltip data can finish before an inspection does. Track each unit
+	-- with its public GUID so delayed results cannot repaint a replacement target.
+	if PublicNumber(data.dataInstanceID) then
+		tooltipRequests[unit] = {id = data.dataInstanceID, guid = guid}
+	end
+end
+
+local function TooltipDataUpdated(instanceID)
+	if not PublicNumber(instanceID) then return end
+	local refresh
+	for unit, request in pairs(tooltipRequests) do
+		if request.id == instanceID then
+			tooltipRequests[unit] = nil
+			local guid = UnitGUID and UnitGUID(unit)
+			if PublicString(guid) and guid == request.guid then refresh = true end
+		end
+	end
+	if not refresh or tooltipRefreshQueued then return end
+	tooltipRefreshQueued = true
+	C_Timer.After(0, function()
+		tooltipRefreshQueued = nil
+		JI:RefreshSpecializationIcons()
+	end)
+end
+
 -- Read the player's committed build, public spec APIs, or a GUID-scoped inspect
 -- result. Unknown other players enter the throttled inspection queue on demand.
 function JI:GetUnitSpecialization(unit)
@@ -253,6 +341,11 @@ function JI:GetUnitSpecialization(unit)
 			if JI.RememberPublicSpecialization then JI:RememberPublicSpecialization(unit, spec) end
 			return spec
 		end
+	end
+	local tooltipSpec = JI:GetTooltipUnitSpecialization(unit)
+	if tooltipSpec then
+		if JI.RememberPublicSpecialization then JI:RememberPublicSpecialization(unit, tooltipSpec) end
+		return tooltipSpec
 	end
 	local inspect = (api and api.GetInspectSpecialization) or GetInspectSpecialization
 	if inspect then
@@ -306,7 +399,7 @@ function JI:SetupSpecializationIcons()
 		'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'CHARACTER_POINTS_CHANGED',
 		'TRAIT_CONFIG_UPDATED', 'TRAIT_TREE_CURRENCY_INFO_UPDATED', 'TRAIT_CONFIG_CREATED',
 		'PLAYER_LEVEL_UP', 'INSPECT_READY', 'GROUP_ROSTER_UPDATE', 'PLAYER_REGEN_ENABLED',
-		'PLAYER_TARGET_CHANGED', 'PLAYER_FOCUS_CHANGED'}) do
+		'PLAYER_TARGET_CHANGED', 'PLAYER_FOCUS_CHANGED', 'TOOLTIP_DATA_UPDATE'}) do
 		-- Event availability differs across Classic and Retail clients.
 		if C_EventUtils and C_EventUtils.IsEventValid then
 			if C_EventUtils.IsEventValid(event) then driver:RegisterEvent(event) end
@@ -315,6 +408,7 @@ function JI:SetupSpecializationIcons()
 		end
 	end
 	driver:SetScript('OnEvent', function(_, event, unit)
+		if event == 'TOOLTIP_DATA_UPDATE' then TooltipDataUpdated(unit); return end
 		if event == 'ACTIVE_TALENT_GROUP_CHANGED' or (event == 'PLAYER_SPECIALIZATION_CHANGED'
 			and not IsSecret(unit) and unit == 'player') then
 			-- A new active build must be verified before a transient failure can
