@@ -1206,6 +1206,137 @@ local function inspectionFixture()
 	return f
 end
 
+local function tooltipSpecFixture()
+	local f = inspectionFixture()
+	f.env.GetBuildInfo = function() return '12.1.0', '', '', 120100 end
+	f.env.C_SpecializationInfo.GetInspectSpecialization = function() return 0 end
+	f.env.Enum = {TooltipDataLineType = {UnitName = 2, UnitLevel = 47, UnitType = 48}}
+	f.env.UnitClass = function(unit) return f.state.className or 'Shaman', f.world[unit] and f.world[unit].class end
+	f.env.UnitSex = function() return f.state.sex or 2 end
+	f.state.tooltipData, f.state.tooltipReads = {}, 0
+	f.env.C_TooltipInfo = {GetUnit = function(unit)
+		f.state.tooltipReads = f.state.tooltipReads + 1
+		return f.state.tooltipData[unit]
+	end}
+	f.env.GetSpecializationInfoForSpecID = function(id, sex)
+		local names = {[262] = 'Elemental', [263] = 'Enhancement', [264] = 'Restoration'}
+		return id, names[id]
+	end
+	function f.tooltip(unit, text, id)
+		f.state.tooltipData[unit] = {dataInstanceID = id or 10, lines = {
+			{type = 2, leftText = 'Player'}, {type = 47, leftText = 'Level 90'}, {type = 48, leftText = text},
+		}}
+	end
+	return f
+end
+
+test('Ellesmere uses native tooltip specs without ElvUI or an inspection round trip', function()
+	local f = tooltipSpecFixture()
+	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
+	local focus = f.frame('focus', 'SHAMAN'); f.ns.frames.focus = focus
+	f.state.guids.target, f.state.guids.focus = 'Player-target', 'Player-focus'
+	for _, unit in ipairs({'target', 'focus'}) do
+		local db = f.JI.db.ellesmereui[unit].icon; db.enable, db.style = true, 'fabledspecializations'
+	end
+	f.tooltip('target', 'Enhancement Shaman'); f.tooltip('focus', 'Restoration Shaman', 11)
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons(); f.flush()
+	equal(f.env.ElvUI, nil); equal(#f.state.notifies, 0)
+	for i, coord in ipairs(f.JI.dataHelper.specialization[263].texCoords) do equal(f.icon(target).coords[i], coord) end
+	equal(f.JI:GetCachedInspectionByGUID('Player-target', 'SHAMAN'), 263)
+	f.state.combat = true
+	f.tooltip('focus', 'Elemental Shaman', 11); f.fire('PLAYER_FOCUS_CHANGED')
+	for i, coord in ipairs(f.JI.dataHelper.specialization[262].texCoords) do equal(f.icon(focus).coords[i], coord) end
+	-- Same-class replacements never inherit the previous player's cache.
+	f.state.guids.target = 'Player-new'; f.tooltip('target', nil, 12); f.fire('PLAYER_TARGET_CHANGED')
+	expect(not f.icon(target):IsShown()); equal(#f.state.notifies, 0)
+end)
+
+test('late native tooltip data repaints Ellesmere and cancels queued inspection', function()
+	local f = tooltipSpecFixture()
+	local target = f.frame('target', 'SHAMAN'); f.ns.frames.target = target
+	f.state.guids.target = 'Player-target'
+	local db = f.JI.db.ellesmereui.target.icon; db.enable, db.style = true, 'fabledspecializations'
+	f.tooltip('target', nil, 10)
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons()
+	f.state.combat = true; f.flush(); expect(not f.icon(target):IsShown())
+	local reads = f.state.tooltipReads
+	f.fire('TOOLTIP_DATA_UPDATE', 999); f.fire('TOOLTIP_DATA_UPDATE', f.secret); f.flush()
+	equal(f.state.tooltipReads, reads)
+	f.tooltip('target', 'Enhancement Shaman', 10)
+	f.fire('TOOLTIP_DATA_UPDATE', 10); f.flush(); expect(f.icon(target):IsShown())
+	f.state.combat = false; f.tick(10); equal(#f.state.notifies, 0)
+	-- Discard a response for a target that has since changed identity.
+	f.state.guids.target = 'Player-next'; f.tooltip('target', nil, 12); f.fire('PLAYER_TARGET_CHANGED')
+	f.state.guids.target = 'Player-replacement'; reads = f.state.tooltipReads
+	f.state.combat = true; f.fire('TOOLTIP_DATA_UPDATE', 12); f.flush(); equal(f.state.tooltipReads, reads)
+end)
+
+test('Ellesmere party tooltip specs follow secure unit reassignment during combat', function()
+	local f = tooltipSpecFixture()
+	f.state.addons.EllesmereUIRaidFrames = true
+	local row = f.frame('party1', 'SHAMAN'); row:SetAttribute('unit', 'party1')
+	f.frame('party2', 'SHAMAN')
+	f.env.EllesmereUI._ModuleNS.EllesmereUIRaidFrames = {_partyAllButtons = {row}, _partyFramesVisible = true}
+	f.state.guids.party1, f.state.guids.party2 = 'Player-one', 'Player-two'
+	f.tooltip('party1', 'Enhancement Shaman'); f.tooltip('party2', 'Restoration Shaman', 11)
+	local db = f.JI.db.ellesmereui.party.icon; db.enable, db.style = true, 'fabledspecializations'
+	f.JI:SetupEllesmereUI(); f.JI:SetupSpecializationIcons(); f.flush()
+	for i, coord in ipairs(f.JI.dataHelper.specialization[263].texCoords) do equal(f.icon(row).coords[i], coord) end
+	f.state.combat = true; row:SetAttribute('unit', 'party2')
+	for i, coord in ipairs(f.JI.dataHelper.specialization[264].texCoords) do equal(f.icon(row).coords[i], coord) end
+	equal(#f.state.notifies, 0)
+end)
+
+test('native tooltip lookup validates structure, identity, line type and localized spec names', function()
+	local f = tooltipSpecFixture(); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.tooltip('target', 'Enhancement Shaman')
+	equal(f.JI:GetUnitSpecialization('target'), 263)
+	for _, data in ipairs({f.secret, {}, {lines = f.secret}, {lines = {f.secret}},
+		{lines = {{type = f.secret, leftText = 'Enhancement Shaman'}}},
+		{lines = {{type = 48, leftText = f.secret}}},
+		{lines = {{type = 2, leftText = 'Enhancement Shaman'}}},
+		{lines = {{type = 0, leftText = 'Enhancement Shaman'}}},
+		{lines = {{type = 48, leftText = 'Protection Paladin'}}},
+	}) do
+		f.state.tooltipData.target = data; equal(f.JI:GetUnitSpecialization('target'), nil)
+	end
+	f.tooltip('target', 'Enhancement Shaman')
+	for _, key in ipairs({'exists', 'player', 'class'}) do
+		local old = f.world.target[key]; f.world.target[key] = f.secret
+		local reads = f.state.tooltipReads
+		equal(f.JI:GetTooltipUnitSpecialization('target'), nil); equal(f.state.tooltipReads, reads)
+		f.world.target[key] = old
+	end
+	f.state.guids.target = f.secret; equal(f.JI:GetTooltipUnitSpecialization('target'), nil)
+	f.state.guids.target = 'Player-target'; f.state.sex = f.secret
+	equal(f.JI:GetTooltipUnitSpecialization('target'), nil)
+	f.state.sex, f.state.className = 3, 'Schamanin'
+	f.env.GetSpecializationInfoForSpecID = function(id, sex) equal(sex, 3); return id, id == 263 and 'Verstärkung' or nil end
+	f.tooltip('target', 'Verstärkung Schamanin'); equal(f.JI:GetUnitSpecialization('target'), 263)
+	-- The spec text immediately after a typed level can be untyped on some clients.
+	f.state.tooltipData.target.lines[3].type = 0; equal(f.JI:GetUnitSpecialization('target'), 263)
+	-- A unit change during a tooltip query is not a result for the original unit.
+	f.env.C_TooltipInfo.GetUnit = function() f.state.guids.target = 'Player-other'; return f.state.tooltipData.target end
+	equal(f.JI:GetTooltipUnitSpecialization('target'), nil)
+end)
+
+test('missing native tooltip APIs retain inspection fallback and skip personal and Classic builds', function()
+	local f = tooltipSpecFixture(); f.frame('target', 'SHAMAN'); f.state.guids.target = 'Player-target'
+	f.tooltip('target', 'Enhancement Shaman')
+	local reads = f.state.tooltipReads
+	f.JI:GetUnitSpecialization('player'); equal(f.state.tooltipReads, reads)
+	for _, build in ipairs({16001, 11509, 38002}) do
+		f.env.GetBuildInfo = function() return '', '', '', build end
+		equal(f.JI:GetUnitSpecialization('target'), nil); equal(f.state.tooltipReads, reads)
+	end
+	f.env.GetBuildInfo = function() return '', '', '', 50504 end
+	equal(f.JI:GetUnitSpecialization('target'), 263)
+	f.env.C_TooltipInfo.GetUnit = function() error('tooltip unavailable') end
+	f.JI:SetupSpecializationIcons(); equal(f.JI:GetUnitSpecialization('target'), nil)
+	f.flush(); equal(#f.state.notifies, 1)
+	f.env.C_TooltipInfo = nil; equal(f.JI:GetTooltipUnitSpecialization('target'), nil)
+end)
+
 local function elvuiSpecFixture(f)
 	f.state.addons.ElvUI = true
 	local tags, events = {}, {}

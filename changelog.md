@@ -1,3 +1,8 @@
+# 1.6.2 - Ellesmere Update + TOC
+
+- Let EllesmereUI and other unit frames read available spec information from Blizzard tooltips on supported Retail/Mists clients without requiring ElvUI. Keep inspection as a fallback; Forever still uses talent inspection.
+- Update TOC for 120105
+
 # 1.6.1 — Blizzard damage meter icon sizing (October 10, 2026)
 
 - Add **Custom Icon Size** under **/ji → Damage Meters → Blizzard Damage Meter**. Choose 12–64 pixels, up to the bar height set in Blizzard Edit Mode.
