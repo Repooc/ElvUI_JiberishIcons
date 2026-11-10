@@ -11,6 +11,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+from texture_utils import save_tga_rle
+
 ROOT = Path(__file__).resolve().parents[1]
 SIZE = 1024
 SIZES = (32, 64, 128, 256, 512, 1024)
@@ -67,7 +69,7 @@ def build():
                     image = render(size, shape, thin, mask, mirror)
                     suffix = '' if size == SIZE else '-' + str(size)
                     path = out / (filename + suffix + '.tga')
-                    image.save(path, format='TGA', compression=None)
+                    save_tga_rle(image, path)
                     records.append({'path': path.relative_to(ROOT / 'JiberishIcons').as_posix(),
                                     'size': [size, size], 'shape': filename,
                                     'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -75,7 +77,7 @@ def build():
                 # Remove only this generator's rejected encoding, never user art.
                 (out / (filename + '.blp')).unlink(missing_ok=True)
     (ROOT / 'tests/fixtures/portrait-textures.json').write_text(json.dumps({
-        'description': 'Analytic circle/droplet borders and masks. Uncompressed 32-bit TGA with 8-bit alpha in six independently area-sampled sizes.',
+        'description': 'Analytic circle/droplet borders and masks. Lossless RLE 32-bit TGA with 8-bit alpha in six independently area-sampled sizes.',
         'textures': records}, indent=2) + '\n')
     print(f'Built {len(records)} 32-bit TGA portrait textures at 32–1024px')
 

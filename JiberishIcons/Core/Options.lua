@@ -82,10 +82,8 @@ local function AddCustomStylePack()
 
 	if JI:IsAddOnEnabled('ElvUI') then
 		JI:BuildElvUITags() --! Double check entries after this runs
-		JI.Libs.ACD:SelectGroup('ElvUI', 'jiberishicons', 'StylePacks', 'ManageCustomClass', fileName)
-	else
-		JI.Libs.ACD:SelectGroup(JI.AddOnName, 'StylePacks', 'ManageCustomClass', fileName)
 	end
+	JI:SelectSettingsGroup('StylePacks', 'ManageCustomClass', fileName)
 	JI.global.newStyleInfo.class = JI:CopyTable({}, G.newStyleInfo.class)
 end
 
@@ -99,11 +97,7 @@ local function DeleteCustomStyle(key)
 		JI:UpdateSUF()
 	end
 
-	if JI:IsAddOnEnabled('ElvUI') then
-		JI.Libs.ACD:SelectGroup('ElvUI', 'jiberishicons', 'StylePacks', 'ManageCustomClass', 'NewStylePack')
-	else
-		JI.Libs.ACD:SelectGroup(JI.AddOnName, 'StylePacks', 'ManageCustomClass', 'NewStylePack')
-	end
+	JI:SelectSettingsGroup('StylePacks', 'ManageCustomClass', 'NewStylePack')
 end
 
 function JI:SetupCustomStyleOptions(name, data)
@@ -682,6 +676,8 @@ end
 function JI:BuildProfile()
 	local Defaults = {
 		profile = {
+			unitFrameThemes = JI:CopyTable({}, JI.DF.profile.unitFrameThemes),
+			crosshair = JI:CopyTable({}, JI.DF.profile.crosshair),
 			portraits = JI:CopyTable({}, JI.DF.profile.portraits),
 			ellesmereui = JI:CopyTable({}, JI.DF.profile.ellesmereui),
 			damageMeters = JI:CopyTable({}, JI.DF.profile.damageMeters),
@@ -762,6 +758,7 @@ function JI:BuildProfile()
 	JI.data.RegisterCallback(JI, 'OnProfileReset', 'SetupProfile')
 
 	JI.db = JI.data.profile
+	if JI.MigrateHUDPortraits then JI:MigrateHUDPortraits() end
 	JI.global = JI.data.global
 
 	JI:MigrateLegacyMediaPaths()
@@ -775,16 +772,24 @@ end
 
 function JI:SetupProfile()
 	JI.db = JI.data.profile
+	if JI.MigrateHUDPortraits then JI:MigrateHUDPortraits() end
+	if JI.UpdateUnitFrameThemes then JI:UpdateUnitFrameThemes() end
+	if JI.LockCrosshair then JI:LockCrosshair(true) end
+	if JI.UpdateCrosshair then JI:UpdateCrosshair() end
 	if JI.LockPortraits then JI:LockPortraits(true) end
 	if JI.UpdatePortraits then JI:UpdatePortraits() end
 	JI:UpdateMedia()
 	JI:UpdateEllesmereUI()
 	JI:UpdateDamageMeters()
+	if JI.ToggleChat then JI:ToggleChat() end
+	if JI.RefreshProfileHosts then JI:RefreshProfileHosts() end
+	if JI.QueueSettingsRefresh then JI:QueueSettingsRefresh() end
 end
 
 function JI:GetOptions()
 	if JI:IsAddOnEnabled('ElvUI') then
-		_G.ElvUI[1].Options.args.jiberishicons = JI.Options
+		_G.ElvUI[1].Options.args.jiberishicons = JI.SettingsOptions
+		JI:HookElvUISettingsBrand()
 		--* Maybe implement this for stuff that may need a reload.
 		-- hooksecurefunc(JI.Libs.ACD, 'CloseAll', function()
 		-- 	if JI.NeedReload then
@@ -795,13 +800,10 @@ function JI:GetOptions()
 end
 
 function JI:BuildOptions()
+	JI.Options.args.profiles = JI.Libs.ADBO:GetOptionsTable(JI.data, true)
+	JI:BuildProfileSharingOptions(JI.Options.args.profiles)
+	JI:SetupSettingsWindow()
 	if JI.Libs.EP and JI:IsAddOnEnabled('ElvUI') then
 		JI.Libs.EP:RegisterPlugin(AddOnName, JI.GetOptions)
-	else
-		JI.Libs.AC:RegisterOptionsTable(AddOnName, JI.Options)
-		JI.Libs.ACD:AddToBlizOptions(AddOnName, JI.Title)
-		JI.Libs.ACD:SetDefaultSize(AddOnName, 900, 650)
 	end
-	JI.Options.args.profiles = JI.Libs.ADBO:GetOptionsTable(JI.data, true)
-	JI.Options.args.profiles.order = -2
 end

@@ -75,7 +75,7 @@ def main():
         alpha_min, alpha_max = im.getchannel('A').getextrema()
         assert alpha_min == 0 and alpha_max > 0, path
         data = path.read_bytes()
-        assert data[1:3] == bytes((0, 2)) and data[16] == 32 and data[17] & 15 == 8, path
+        assert data[1:3] == bytes((0, 10)) and data[16] == 32 and data[17] & 15 == 8, path
         assert any(0 < value < 255 for value in im.getchannel('A').tobytes()), path
     families = {texture['shape'] for texture in portraits}
     assert len(families) == 10 and len(portraits) == 60

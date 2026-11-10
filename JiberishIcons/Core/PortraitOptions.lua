@@ -15,7 +15,7 @@ end
 
 local root = ACH:Group('Portraits', nil, 65, 'tree', nil, nil, function() return InCombatLockdown() end)
 JI.Options.args.portraits = root
-root.args.description = ACH:Description('Add movable portraits for your units. Choose an icon pack or a 2D character portrait, then place it on the screen or attach it to a unit frame. Locked portraits let mouse clicks pass through. Layout controls are available out of combat.', 0)
+root.args.description = ACH:Description('Add movable portraits for your units. Choose an icon pack, a 2D character portrait or a 3D model, then place it on the screen or attach it to a unit frame. Locked portraits let mouse clicks pass through. Layout controls are available out of combat.', 0)
 root.args.move = ACH:Execute(function() return JI:ArePortraitsUnlocked() and 'Lock portraits' or 'Unlock and preview' end,
 	'Enable the portraits you want first. Drag each portrait to place it anywhere on screen. Missing units use your character for preview. Dragging switches an attached portrait to screen placement. Portraits lock automatically in combat.',
 	1, function() JI:TogglePortraitMovers() end)
@@ -49,9 +49,14 @@ for index, definition in ipairs(JI.dataHelper.portraitUnits) do
 	local parent = definition.group and groups[definition.group] or root
 	parent.args[key] = group
 	group.args.enable = ACH:Toggle('Enable', nil, 1)
-	local modes = {icon = 'Live unit icon', portrait = '2D character portrait'}
+	local modes = {icon = 'Live unit icon', portrait = '2D character portrait', model = '3D character portrait'}
 	if additional then modes.static = 'Choose any icon' end
-	group.args.mode = ACH:Select('Portrait content', nil, 2, modes, nil, nil, nil, nil, Disabled)
+	group.args.mode = ACH:Select('Portrait content', nil, 2, modes, nil, nil, nil,
+		function(_, value)
+			local db = DB(); db.mode = value
+			if value == 'model' and db.shape ~= 'shield' and db.shape ~= 'square' and db.shape ~= 'diamond' and db.shape ~= 'none' then db.shape = 'circle' end
+			JI:UpdatePortraits()
+		end, Disabled)
 	if additional then
 		local sources = {}
 		for _, unit in ipairs(JI.dataHelper.portraitUnits) do
@@ -80,20 +85,26 @@ for index, definition in ipairs(JI.dataHelper.portraitUnits) do
 		end
 	end
 	group.args.style = ACH:Select('Icon pack', nil, 3, Packs, nil, nil, nil, nil,
-		function() return Disabled() or DB().mode == 'portrait' end)
+		function() return Disabled() or (DB().mode == 'portrait' or DB().mode == 'model') end)
 	group.args.fallback = ACH:Select('When an icon is unavailable', 'Pets and NPCs have no player class or specialization icon. This also applies while a specialization is loading.', 4,
 		{portrait = 'Show 2D portrait', class = 'Show Fabled Class icon', hide = 'Leave the frame empty'}, nil, nil, nil, nil,
 		function() return Disabled() or DB().mode ~= 'icon' end)
-	group.args.shape = ACH:Select('Frame shape', nil, 5, {circle = 'Circle', droplet = 'Droplet right', dropletleft = 'Droplet left',
-		circlethin = 'Thin circle', dropletthin = 'Thin droplet right', dropletleftthin = 'Thin droplet left', none = 'None — icon only'}, nil, nil, nil, nil, Disabled)
+	group.args.shape = ACH:Select('Frame shape', nil, 5, function()
+		local values = {circle = 'Circle', shield = 'Overwatch shield', square = 'Square', diamond = 'Diamond', none = 'None'}
+		if DB().mode ~= 'model' then
+			values.circlethin, values.droplet, values.dropletleft = 'Thin circle', 'Droplet right', 'Droplet left'
+			values.dropletthin, values.dropletleftthin = 'Thin droplet right', 'Thin droplet left'
+		end
+		return values
+	end, nil, nil, nil, nil, Disabled)
 	group.args.size = ACH:Range('Size', nil, 6, {min = 24, max = 320, step = 1}, nil, nil, nil, Disabled)
-	group.args.reverse = ACH:Toggle('Mirror artwork', 'Mirror the icon or character portrait inside the frame.', 7, nil, nil, nil, nil, nil, Disabled)
+	group.args.reverse = ACH:Toggle('Mirror artwork', 'Mirror the 2D artwork. For 3D portraits, adjust Facing instead.', 7, nil, nil, nil, nil, nil, function() return Disabled() or DB().mode == 'model' end)
 	group.args.iconScale = ACH:Range('Icon scale', 'Fit the artwork inside the portrait frame.', 8, {min = 0.4, max = 1.3, step = 0.01, isPercent = true}, nil, nil, nil,
-		function() return Disabled() or DB().mode == 'portrait' end)
+		function() return Disabled() or (DB().mode == 'portrait' or DB().mode == 'model') end)
 	group.args.contentX = ACH:Range('Icon horizontal offset', nil, 9, {min = -100, max = 100, step = 1}, nil, nil, nil,
-		function() return Disabled() or DB().mode == 'portrait' end)
+		function() return Disabled() or (DB().mode == 'portrait' or DB().mode == 'model') end)
 	group.args.contentY = ACH:Range('Icon vertical offset', nil, 10, {min = -100, max = 100, step = 1}, nil, nil, nil,
-		function() return Disabled() or DB().mode == 'portrait' end)
+		function() return Disabled() or (DB().mode == 'portrait' or DB().mode == 'model') end)
 	group.args.zoom = ACH:Range('2D portrait zoom', 'Also applies to fallback character portraits.', 11, {min = 0, max = 0.4, step = 0.01, isPercent = true}, nil, nil, nil, Disabled)
 	group.args.classColor = ACH:Toggle('Class-colored border', 'Use the selected border color for pets, NPCs and unavailable classes.', 12, nil, nil, nil, nil, nil, Disabled)
 	for offset, field in ipairs({'borderColor', 'backgroundColor'}) do
@@ -101,9 +112,33 @@ for index, definition in ipairs(JI.dataHelper.portraitUnits) do
 			function() return unpack(DB()[field]) end,
 			function(_, r, g, b, a) DB()[field] = {r, g, b, a}; JI:UpdatePortraits() end, Disabled)
 	end
+	local model = ACH:Group('3D model and frame', nil, 16, nil,
+		function(info) return DB().model[info[#info]] end,
+		function(info, value) DB().model[info[#info]] = value; JI:UpdatePortraits() end,
+		function() return Disabled() or DB().mode ~= 'model' end)
+	model.inline = true; group.args.model = model
+	model.args.description = ACH:Description('The head can extend above the rear border; the shoulders sit behind the lower rim. Choose Overwatch shield for the inset V. Model proportions vary by race, hair and helmet: use vertical position, height, zoom and camera pan to fit your character.', 0)
+	for order, entry in ipairs({
+		{'width', 'Model width', 40, 160, 1}, {'height', 'Model height / headroom', 80, 220, 1},
+		{'x', 'Model horizontal position', -100, 100, 1}, {'y', 'Model vertical position', -50, 100, 1},
+		{'zoom', 'Portrait zoom', 0, 1, .01}, {'distance', 'Camera distance', .1, 3, .01},
+		{'facing', 'Facing', -3.14, 3.14, .01}, {'viewX', 'Camera horizontal pan', -100, 100, .5},
+		{'viewY', 'Camera vertical pan', -100, 100, .5}, {'rim', 'Border thickness', 1, 5, 1},
+	}) do
+		model.args[entry[1]] = ACH:Range(entry[2], nil, order, {min = entry[3], max = entry[4], step = entry[5]})
+	end
+	model.args.reset = ACH:Execute('Reset character fit', 'Restore the lower shoulder fit and headroom without moving the frame or changing its colors.', 12,
+		function() JI:ResetPortraitModelFit(key) end)
+	group.args.side = ACH:Select('Portrait side', 'Attach to the left or right of the selected unit frame.', 22.5,
+		{LEFT = 'Left', RIGHT = 'Right'}, nil, nil,
+		function() return DB().relativePoint == 'RIGHT' and 'RIGHT' or 'LEFT' end,
+		function(_, value)
+			local db = DB(); db.point, db.relativePoint = value == 'RIGHT' and 'LEFT' or 'RIGHT', value
+			db.x = value == 'RIGHT' and math.abs(db.x) or -math.abs(db.x); JI:UpdatePortraits()
+		end, function() return Disabled() or DB().anchor == 'screen' end)
 	group.args.placement = ACH:Header('Placement', 20)
 	group.args.anchor = ACH:Select('Attach to', 'Screen positions work with any UI. Attached portraits follow the selected frame and hide when it is hidden or unavailable.', 21,
-		{screen = 'Screen', blizzard = 'Blizzard unit frame', elvui = 'ElvUI unit frame', custom = 'Named frame'}, nil, nil, nil,
+		{screen = 'Screen', blizzard = 'Blizzard unit frame', elvui = 'ElvUI unit frame', ellesmereui = 'EllesmereUI unit frame', custom = 'Named frame'}, nil, nil, nil,
 		function(_, value)
 			local db = DB(); db.anchor = value
 			db.point, db.relativePoint = value == 'screen' and 'CENTER' or 'RIGHT', value == 'screen' and 'CENTER' or 'LEFT'

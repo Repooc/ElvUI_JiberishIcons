@@ -1,0 +1,112 @@
+{
+  "textures": [
+    {
+      "path": "Media/Settings/styles.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "1fc03e61414cee9743f83f4bf77dfe3fab8a85014cc60cb5c1714e74118caf1c",
+      "rgbaSha256": "daf869f6b33c43d15ff56388cff39125469943fc534a159672447651adf9227c"
+    },
+    {
+      "path": "Media/Settings/frames.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "e34437943e67e5b41b7f1a4a3b95c8ae1d0dcbf96c00c42af29b79de52d2c742",
+      "rgbaSha256": "3514fa9783b335271e44f66c523d4531cad473749b95fe89e973f01a3e7030dc"
+    },
+    {
+      "path": "Media/Settings/portrait.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "b7ff85ec6736a11d032c684277d3d76a883fe1c605bd2db420c95e790bf12127",
+      "rgbaSha256": "fa93688f3b312c0720b421fb6b2a097ec65c21599183dc8a47ac7bc0d2f9964f"
+    },
+    {
+      "path": "Media/Settings/crosshair.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "9222c64c54c6c1e9e4e2fbde8a4c1f7b089602c094c0dcc33fe0c28a28fc80d5",
+      "rgbaSha256": "62a71f633359fa6611e682ad554e4e18d316aeeb2e45ab4b156efc25703cfea6"
+    },
+    {
+      "path": "Media/Settings/elvui.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "5c66084b373df880b3ecc76deb1740e04eeb69295b8d9a5b3f035657ba027fa7",
+      "rgbaSha256": "1549789462fbdcef3ab288aaf2a0f78f73825197908ae93b065a13ab1a748f1f"
+    },
+    {
+      "path": "Media/Settings/ellesmere.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "ad374d2e46d21b8586d3ff026624ed56a73a4f88b03ed164a5938ac3dc75d22f",
+      "rgbaSha256": "f621247b07e0becb63ed9b5f273a4216cbecec337fe98d6955a2bef5fa18283f"
+    },
+    {
+      "path": "Media/Settings/blizzard.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "7cc417d18b43125e4ea16510c5d34fcd4d704f6d94fe1e6628da5b667d3fe52d",
+      "rgbaSha256": "5ab506375f9643e58afe91770516304a7377866cf137103916c4c7d686b9887f"
+    },
+    {
+      "path": "Media/Settings/suf.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "21617e97add3e17ff310460b1894fe45549d9e5d4917fbeb06686f4b8d9b3934",
+      "rgbaSha256": "b79ef6b1fb74daf1560fe78bfd5d20902abab295d865b72e5a7aafad4973989b"
+    },
+    {
+      "path": "Media/Settings/meters.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "7875b7bfdb15afbb9bcc7485e762d0868b2e12cda000284a557f3d843323780c",
+      "rgbaSha256": "bb04cc1e7ddae503bafda77288125bcf85341d078b40556c828ba74293258cf5"
+    },
+    {
+      "path": "Media/Settings/chat.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "a7a70c1965ba0b0f8b6390b72473be6bc79fee1d25327af604905d379baba633",
+      "rgbaSha256": "39632753890a2b772516848011e650d28da32fa4f77d910b82052548a79028f4"
+    },
+    {
+      "path": "Media/Settings/profiles.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "b509a9a1079551a8227100305850008282a380901e6da6d8900e8e95bc4fe3e1",
+      "rgbaSha256": "644cb0650dc315c7836d901240d37d707d79dfd163f33c107b571c14796958b7"
+    },
+    {
+      "path": "Media/Settings/help.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "44260cd2a0a5983fd65e76b784c5a50219f4b7c2bfdd8fde2f0568d87f987769",
+      "rgbaSha256": "d87eba745c1f1d7e57bb5a2fb5bece74353f6c1ff46266c258a21f0dbbf16003"
+    }
+  ]
+}

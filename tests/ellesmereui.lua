@@ -54,6 +54,13 @@ local function fixture(loaded, client, saved)
 	end
 	env.C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end }
 	local methods = {}
+	function methods:SetClipsChildren(v) self.clipsChildren = v end
+	function methods:SetUnit(unit) self.modelUnit = unit; self.unitUpdates = (self.unitUpdates or 0) + 1 end
+	function methods:ClearModel() self.modelUnit = nil end
+	function methods:SetPortraitZoom(v) self.zoom = v end
+	function methods:SetFacing(v) self.facing = v end
+	function methods:SetCamDistanceScale(v) self.cameraDistance = v end
+	function methods:SetViewTranslation(x,y) self.viewTranslation = {x,y} end
 	function methods:SetScript(event, fn) self.scripts[event] = fn end
 	function methods:HookScript(event, fn)
 		local old = self.scripts[event]
@@ -91,7 +98,7 @@ local function fixture(loaded, client, saved)
 	function methods:SetWordWrap(value) self.wordWrap = value end
 	function methods:SetWidth(value) self.width = value end
 	function methods:Clear() self.cooldown, self.durationObject = nil, nil end
-	function methods:SetCooldown(start, duration) self.cooldown = {start, duration} end
+	function methods:SetCooldown(start, duration, rate) self.cooldown = {start, duration, rate} end
 	function methods:SetCooldownFromDurationObject(duration, clear) self.durationObject, self.clearOnDone = duration, clear end
 	function methods:SetReverse(value) self.reverse = value end
 	function methods:SetSwipeTexture(value, ...) self.swipe, self.swipeColor = value, {...} end
@@ -151,6 +158,7 @@ local function fixture(loaded, client, saved)
 	load('Libs/Ace3/LibStub/LibStub.lua')
 	load('Libs/Ace3/CallbackHandler-1.0/CallbackHandler-1.0.lua')
 	load('Libs/Ace3/AceDB-3.0/AceDB-3.0.lua')
+	load('Libs/Ace3/AceSerializer-3.0/AceSerializer-3.0.lua')
 	load('Libs/Ace3/AceLocale-3.0/AceLocale-3.0.lua')
 	env.LibStub:NewLibrary('LibSharedMedia-3.0', 1)
 	load('Libs/LibAceConfigHelper/LibAceConfigHelper.lua')
@@ -174,8 +182,13 @@ local function fixture(loaded, client, saved)
 	JI.UpdateMedia = function() end
 	load('Core/Options.lua', 'JiberishIcons')
 	load('Core/PortraitCast.lua')
+	load('Core/PortraitModel.lua')
+	load('Core/FrameLayout.lua')
+	load('Core/ProfileSharing.lua')
 	load('Core/Portraits.lua')
 	load('Core/PortraitOptions.lua')
+	load('Core/Crosshair.lua')
+	load('Core/CrosshairOptions.lua')
 	load('Core/EllesmereUI.lua')
 	load('Core/DamageMeterParty.lua')
 	load('Core/DamageMeters.lua')
@@ -531,7 +544,7 @@ for _, client in ipairs({'modern', 'legacy'}) do
 		f.JI:SetupEllesmereUI(); f.flush()
 		expect(f.JI.Options.args.ellesmereui.hidden())
 		local opened
-		f.JI.Libs.ACD.Open = function(_, name) opened = name end
+		f.JI.ToggleSettingsWindow = function() opened = 'JiberishIcons' end
 		f.JI:ToggleOptions(); equal(opened, 'JiberishIcons')
 		checkChat(f)
 	end)
@@ -2500,7 +2513,7 @@ test('standalone portraits default off and create each requested unit independen
 		equal(frame.background.mask, frame.mask); equal(frame.width, 80)
 		equal(frame.key, key); expect(frame.border.path:find('JiberishIcons\\Media\\Portraits\\circle-128.tga', 1, true))
 	end
-	equal(total, 17)
+	equal(total, 18)
 end)
 
 test('standalone portrait shapes, colors, 2D crops and icon pack selection stay independent', function()
@@ -2922,6 +2935,1118 @@ test('cast preview loops only while unlocked and disabling or switching profiles
 	f.JI.db.portraits.player.cast.enable = true; f.JI:UpdatePortraits(); expect(cast.ring:IsShown())
 	f.JI.data:SetProfile('No casts'); f.JI:BuildProfile(); f.JI:UpdatePortraits()
 	expect(not cast.ring:IsShown()); expect(not f.JI.db.portraits.player.cast.enable)
+end)
+
+local function crosshairFixture(client)
+	local f = fixture(false, client)
+	f.state.now = 100
+	f.env.GetTime = function() return f.state.now end
+	f.env.C_Spell = {GetSpellCooldown = function(id)
+		equal(id, client == 'forever' and 29515 or 61304)
+		return f.state.gcd
+	end}
+	f.JI:SetupCrosshair()
+	return f
+end
+
+test('crosshair defaults off, combat visibility locks preview and always mode remains click-through', function()
+	local f = crosshairFixture()
+	equal(f.JI.crosshairFrame, nil); expect(not f.JI.db.crosshair.enable)
+	local db = f.JI.db.crosshair; db.enable = true; f.JI:UpdateCrosshair()
+	local frame = f.JI.crosshairFrame
+	expect(not frame:IsShown()); expect(not frame.mouse)
+	f.JI:ToggleCrosshairMover(); expect(frame:IsShown()); expect(frame.mouse); expect(frame.mover:IsShown())
+	frame.scripts.OnDragStart(frame); frame.centerX, frame.centerY = 620, 330
+	f.state.combat = true; f.fire('PLAYER_REGEN_DISABLED')
+	expect(frame:IsShown()); expect(not frame.mouse); expect(not frame.moving); expect(not f.JI:IsCrosshairUnlocked())
+	equal(db.x, 120); equal(db.y, -70); expect(not frame.mover:IsShown())
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); expect(not frame:IsShown())
+	db.visibility = 'always'; f.JI:UpdateCrosshair(); expect(frame:IsShown()); expect(not frame.mouse)
+	db.enable = false; f.JI:UpdateCrosshair(); expect(not frame:IsShown())
+	for _, obj in ipairs(f.objects) do expect(not obj.scripts.OnUpdate, 'crosshair must not poll each frame') end
+end)
+
+test('crosshair GCD follows native duration objects including opaque timings, zero duration and nil', function()
+	local f = crosshairFixture()
+	local db = f.JI.db.crosshair; db.enable, db.visibility, db.gcd.enable = true, 'always', true
+	local opaque = setmetatable({}, {__index = function() error('duration must not be inspected in Lua') end})
+	f.env.C_Spell.GetSpellCooldownDuration = function(id) equal(id, 61304); return f.state.duration end
+	f.state.duration = opaque
+	f.JI:UpdateCrosshair(); local ring = f.JI.crosshairFrame.ring
+	equal(ring.durationObject, opaque); expect(ring.clearOnDone); expect(ring.reverse)
+	expect(ring:IsShown()); expect(not ring.drawEdge); expect(not ring.drawBling); expect(ring.hideCountdown)
+	-- Model the native zero-duration clear callback, including synchronous use.
+	local original = ring.SetCooldownFromDurationObject
+	ring.SetCooldownFromDurationObject = function(self, duration, clear)
+		original(self, duration, clear)
+		if duration == 'zero' then self.scripts.OnCooldownDone(self) end
+	end
+	f.state.duration = 'zero'; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+	f.state.duration = opaque; f.fire('SPELL_UPDATE_COOLDOWN'); expect(ring:IsShown())
+	f.state.duration = nil; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown()); equal(ring.durationObject, nil)
+end)
+
+test('crosshair supports modern timestamp and legacy GCD APIs, rate changes, completion and unavailable data', function()
+	for _, client in ipairs({'retail', 'legacy'}) do
+		local f = crosshairFixture(client == 'legacy' and 'legacy' or nil)
+		if client == 'legacy' then
+			f.env.C_Spell = nil
+			f.env.GetSpellCooldown = function(id)
+				equal(id, 61304)
+				local info = f.state.gcd
+				if info then return info.startTime, info.duration, info.isEnabled, info.modRate end
+			end
+		end
+		local db = f.JI.db.crosshair; db.enable, db.visibility, db.gcd.enable = true, 'always', true
+		f.state.gcd = {startTime = 100, duration = 1.5, isEnabled = 1, modRate = 2}
+		f.JI:UpdateCrosshair(); local frame = f.JI.crosshairFrame; local ring = frame.ring
+		equal(ring.cooldown[1], 100); equal(ring.cooldown[2], 1.5); equal(ring.cooldown[3], 2)
+		f.state.now = 100.8; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+		f.state.gcd.startTime = 100.8; f.fire('SPELL_UPDATE_COOLDOWN'); expect(ring:IsShown())
+		ring.scripts.OnCooldownDone(ring); expect(not ring:IsShown()); expect(frame.marker:IsShown())
+		f.state.gcd.isEnabled = 0; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+		f.state.gcd.isEnabled, f.state.gcd.duration = 1, 0; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+		f.state.gcd = nil; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+	end
+	local f = crosshairFixture()
+	local db = f.JI.db.crosshair; db.enable, db.visibility, db.gcd.enable = true, 'always', true
+	f.state.gcd = {startTime = f.secret, duration = f.secret, isEnabled = f.secret, modRate = f.secret}
+	f.JI:UpdateCrosshair(); expect(not f.JI.crosshairFrame.ring:IsShown())
+	f.state.gcd = {startTime = 100, duration = 1.5, isEnabled = true, modRate = f.secret}
+	f.fire('SPELL_UPDATE_COOLDOWN'); expect(not f.JI.crosshairFrame.ring:IsShown())
+end)
+
+test('crosshair preview loops, combat replaces preview with live GCD and toggles clear immediately', function()
+	local f = crosshairFixture()
+	local db = f.JI.db.crosshair; db.enable, db.gcd.enable = true, true
+	f.JI:UpdateCrosshair(); f.JI:ToggleCrosshairMover()
+	local frame, ring = f.JI.crosshairFrame, f.JI.crosshairFrame.ring
+	expect(frame.preview); expect(ring:IsShown())
+	f.state.now = 101.5; ring.scripts.OnCooldownDone(ring); equal(ring.cooldown[1], 101.5)
+	f.fire('SPELL_UPDATE_COOLDOWN'); equal(ring.cooldown[1], 101.5)
+	f.state.gcd = {startTime = 101, duration = 1.5, isEnabled = true}
+	f.state.combat = true; f.fire('PLAYER_REGEN_DISABLED')
+	expect(not frame.preview); equal(ring.cooldown[1], 101); expect(frame:IsShown())
+	db.gcd.enable = false; f.JI:UpdateCrosshair(); expect(not ring:IsShown()); expect(not frame.track:IsShown())
+	db.gcd.enable = true; f.JI:UpdateCrosshair(); expect(ring:IsShown())
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); expect(not frame:IsShown()); equal(ring.cooldown, nil)
+end)
+
+test('crosshair layout defers in combat and placement edits cancel drags', function()
+	local f = crosshairFixture(); local db = f.JI.db.crosshair
+	f.state.combat = true; db.enable = true; f.JI:UpdateCrosshair(); equal(f.JI.crosshairFrame, nil)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); local frame = f.JI.crosshairFrame
+	f.JI:ToggleCrosshairMover(); frame.scripts.OnDragStart(frame)
+	f.JI:SetCrosshairPosition(95, -45); expect(not frame.moving); equal(frame.point[4], 95); equal(frame.point[5], -45)
+	expect(not frame.clamped); expect(not frame.userPlaced)
+	f.state.combat = true; f.fire('PLAYER_REGEN_DISABLED')
+	db.size = 80; db.x = 400; f.JI:UpdateCrosshair(); equal(frame.marker.width, 32); equal(frame.point[4], 95)
+	f.JI:SetCrosshairPosition(0, 0); equal(db.x, 400)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(frame.marker.width, 80); equal(frame.point[4], 400)
+end)
+
+test('crosshair options update colors, all style/shape paths ship, profiles cancel old drags', function()
+	local f = crosshairFixture()
+	local options = f.JI.Options.args.crosshair
+	options.set({'enable'}, true); options.set({'visibility'}, 'always')
+	local db, frame = f.JI.db.crosshair, f.JI.crosshairFrame
+	local gcd = options.args.gcd
+	gcd.set({'enable'}, true)
+	options.args.color.set(nil, .2, .3, .4, .5); equal(frame.marker.vertex[4], .5)
+	gcd.args.color.set(nil, .6, .7, .8, .9); equal(frame.ring.swipeColor[1], .6)
+	gcd.args.trackColor.set(nil, .1, .2, .3, .4); equal(frame.track.vertex[4], .4)
+	local function exists(path)
+		local relative = path:gsub('^Interface\\AddOns\\JiberishIcons\\', ''):gsub('\\', '/')
+		local file = assert(io.open(root..relative, 'rb'), 'missing texture: '..relative); file:close()
+	end
+	for _, weight in ipairs({'thin', 'bold'}) do
+		db.weight, db.gcd.weight = weight, weight
+		for _, size in ipairs({32, 64, 128, 256}) do
+			db.size, db.gcd.size = math.min(size, 128), size
+			for _, style in ipairs({'plus', 'x', 'splitplus', 'splitx'}) do
+				db.style = style; f.JI:UpdateCrosshair(); exists(frame.marker.path)
+			end
+			for _, shape in ipairs({'circle', 'diamond', 'square', 'triangle'}) do
+				db.gcd.shape = shape; f.JI:UpdateCrosshair()
+				exists(frame.track.path); equal(frame.ring.swipe, frame.track.path)
+			end
+		end
+	end
+	local original = f.JI.data:GetCurrentProfile()
+	f.JI:SetCrosshairPosition(150, 90)
+	f.JI:ToggleCrosshairMover(); frame.scripts.OnDragStart(frame); frame.centerX = 900
+	f.JI.data:SetProfile('Crosshair test')
+	expect(not frame.moving); expect(not frame:IsShown()); expect(not f.JI:IsCrosshairUnlocked())
+	equal(f.JI.db.crosshair.x, 0); equal(f.JI.db.crosshair.y, -80)
+	f.JI.data:CopyProfile(original); equal(f.JI.db.crosshair.x, 150); expect(frame:IsShown())
+	f.JI.data:ResetProfile(); expect(not frame:IsShown()); equal(frame.ring.cooldown, nil)
+end)
+
+local function bushidoFixture()
+	local f = fixture()
+	local methods = getmetatable(f.env.UIParent).__index
+	function methods:IsObjectType(kind)
+		return kind == self.kind or kind == self.objectType
+	end
+	function methods:GetName() return self.name end
+	function methods:GetParent() return self.parent end
+	function methods:IsForbidden() return self.forbidden end
+	function methods:GetWidth() return self.width or 240 end
+	function methods:GetHeight() return self.height or 40 end
+	function methods:GetAlpha() return self.alpha or 1 end
+	function methods:GetFrameStrata() return self.strata or 'MEDIUM' end
+	function methods:SetClipsChildren(value) self.clipsChildren = value end
+	function methods:GetOrientation() return self.orientation or 'HORIZONTAL' end
+	function methods:SetOrientation(value) self.orientation = value end
+	function methods:SetRotation(value) self.rotation = value end
+	function methods:GetStatusBarTexture() return self.fill end
+	function methods:SetStatusBarTexture(path)
+		self.fill = self:CreateTexture()
+		self.fill:SetTexture(path)
+	end
+	function methods:AddMaskTexture(mask)
+		self.masks = self.masks or {}; self.masks[mask] = true
+	end
+	function methods:RemoveMaskTexture(mask)
+		if self.masks then self.masks[mask] = nil end
+	end
+	function methods:GetNumMaskTextures()
+		local count = 0; for _ in pairs(self.masks or {}) do count = count + 1 end; return count
+	end
+	function methods:GetValue() error('theme must not read health values') end
+	function methods:SetValue() error('theme must not write health values') end
+	local ns = f.ns
+	ns.frames, ns.ReloadFrames = {}, function() end
+	local raid = {GetFFD = function(frame) return frame.data end, _partyAllButtons = {}, _allButtons = {},
+		_LayoutGroupsImpl = function() end, _LayoutPartyFrames = function() end}
+	f.env.EllesmereUI._ModuleNS.EllesmereUIRaidFrames = raid
+	f.raid = raid
+	f.state.addons.ElvUI, f.state.addons.EllesmereUIRaidFrames = true, true
+	local E = {oUF = {objects = {}}, UnitFrames = {units = {}, ConfigureFrame = function() end}}
+	f.env.ElvUI = {E}
+	f.env.ElvUI_EltreumUI = {Borders = function() end, Shadows = function() end, CustomTexture = function() end}
+	f.load('Core/UnitFrameThemes.lua')
+	f.load('Core/UnitFrameThemeOptions.lua')
+	function f.bar(parent, width, height)
+		local bar = f.env.CreateFrame('StatusBar', nil, parent)
+		bar.objectType = 'StatusBar'; bar:SetSize(width or 240, height or 40)
+		bar:SetStatusBarTexture('NativeTexture')
+		bar.fill.gradient = {'host', 'gradient'}
+		bar.bg = bar:CreateTexture()
+		bar.bg:SetColorTexture(.1, .2, .3, .4)
+		bar.backdrop = f.env.CreateFrame('Frame', nil, bar)
+		bar.backdrop:SetAlpha(.7)
+		return bar
+	end
+	function f.themeFrame(host, key, unit)
+		local frame = f.frame(unit or key)
+		frame.unit, frame.unitframeType = unit or key, key
+		frame.Health, frame.Power = f.bar(frame), f.bar(frame, 240, 7)
+		frame.HealthPrediction = {healingPlayer = f.bar(frame), healingOther = f.bar(frame),
+			damageAbsorb = f.bar(frame), healAbsorb = f.bar(frame)}
+		frame.Cutaway = {Health = frame.Health:CreateTexture(), Power = frame.Power:CreateTexture()}
+		frame.Health.value = frame.Health:CreateFontString()
+		frame.Health.value:SetText('native health')
+		if host == 'elvui' then table.insert(E.oUF.objects, frame)
+		else ns.frames[unit or key] = frame; frame.unifiedBorder = f.env.CreateFrame('Frame', nil, frame) end
+		return frame
+	end
+	function f.cap(frame)
+		for _, holder in ipairs(frame.children) do
+			for _, texture in ipairs(holder.children) do
+				if texture.path and texture.path:find('BushidoEndPoint', 1, true) then return texture, holder end
+			end
+		end
+	end
+	function f.border(bar)
+		for _, texture in ipairs(bar.children) do
+			if texture.path and texture.path:find('-border.tga', 1, true) then return texture end
+		end
+	end
+	f.JI:SetupUnitFrameThemes(); f.flush()
+	return f
+end
+
+test('Bushido is opt-in and styles both native hosts without replacing values, colors, gradients, text or geometry', function()
+	local f = bushidoFixture()
+	for _, host in ipairs({'elvui', 'ellesmereui'}) do
+		local frame = f.themeFrame(host, 'player')
+		f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 0); equal(f.cap(frame), nil)
+		local db = f.JI.db.unitFrameThemes[host].player
+		db.theme = 'bushido'; f.JI:UpdateUnitFrameThemes()
+		equal(frame.Health.fill:GetNumMaskTextures(), 1); equal(frame.Health.bg:GetNumMaskTextures(), 1)
+		equal(frame.Health.fill.path, 'NativeTexture'); equal(frame.Health.fill.gradient[1], 'host')
+		equal(frame.Health.value.text, 'native health'); equal(frame.Health.width, 240); equal(frame.Health.height, 40)
+		equal(frame.Health.bg.color[4], .4); equal(frame.Power.fill:GetNumMaskTextures(), 0)
+		for _, bar in pairs(frame.HealthPrediction) do equal(bar.fill:GetNumMaskTextures(), 1) end
+		equal(frame.Cutaway.Health:GetNumMaskTextures(), 1)
+		local cap, overlay = f.cap(frame)
+		expect(cap:IsShown()); equal(cap.height, 88); expect(not overlay.mouse)
+		equal(cap.point[2], frame.Health); equal(overlay.parent, frame)
+		equal(cap.vertex[1], .25) -- displayed MAGE, not our WARRIOR
+		equal(frame.Health.backdrop:GetAlpha(), 0)
+	end
+end)
+
+test('Bushido masks follow replaced health and prediction textures during combat without layout changes', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('elvui', 'target')
+	local db = f.JI.db.unitFrameThemes.elvui.target; db.theme = 'bushido'; db.shapePower = true
+	f.JI:UpdateUnitFrameThemes()
+	local old = frame.Health.fill
+	f.state.combat = true
+	frame.Health:SetStatusBarTexture('Eltruism replacement')
+	frame.HealthPrediction.damageAbsorb:SetStatusBarTexture('New absorb')
+	equal(frame.Health.fill:GetNumMaskTextures(), 1)
+	equal(frame.HealthPrediction.damageAbsorb.fill:GetNumMaskTextures(), 1)
+	db.cap.scale = 3; f.JI:UpdateUnitFrameThemes(); equal(f.cap(frame).height, 88)
+	db.theme = 'native'; f.JI:UpdateUnitFrameThemes(); expect(not f.cap(frame):IsShown())
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); f.flush()
+	equal(frame.Health.fill:GetNumMaskTextures(), 0); equal(old:GetNumMaskTextures(), 0)
+	equal(frame.Power.fill:GetNumMaskTextures(), 0); equal(frame.Health.backdrop:GetAlpha(), .7)
+	equal(frame.Health.fill.path, 'Eltruism replacement')
+end)
+
+test('Bushido clips Eltruism background gradients and replaces rectangular chrome without changing host colors', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('elvui', 'player')
+	local health, power = frame.Health, frame.Power
+	local edges = {'TopEdge', 'BottomEdge', 'LeftEdge', 'RightEdge',
+		'TopLeftCorner', 'TopRightCorner', 'BottomLeftCorner', 'BottomRightCorner'}
+	for _, bar in ipairs({health, power}) do
+		bar.backdrop.Center = bar.backdrop:CreateTexture()
+		bar.backdrop.Center.gradient = {'Eltruism', 'backdrop'}
+		bar.backdrop.Center:SetAlpha(.6)
+		bar.backdropTex = bar:CreateTexture(); bar.backdropTex.gradient = {'Eltruism', 'empty health'}
+		for _, field in ipairs(edges) do bar.backdrop[field] = bar.backdrop:CreateTexture() end
+		bar.shadow = f.env.CreateFrame('Frame', nil, bar); bar.shadow:SetAlpha(.8)
+		bar.backdrop.eltruismuniversalborders = f.env.CreateFrame('Frame', nil, bar.backdrop)
+		bar.backdrop.iborder = f.env.CreateFrame('Frame', nil, bar.backdrop)
+		bar.backdrop.oborder = f.env.CreateFrame('Frame', nil, bar.backdrop)
+	end
+	frame.shadow = f.env.CreateFrame('Frame', nil, frame)
+	frame.backdrop = f.env.CreateFrame('Frame', nil, frame)
+	local border = f.env.CreateFrame('Frame', nil, health)
+	local powerBorder = f.env.CreateFrame('Frame', nil, power)
+	local castBorder = f.env.CreateFrame('Frame', nil, frame)
+	f.env.EltruismPlayerBorder, f.env.EltruismPlayerPowerBorder, f.env.EltruismPlayerCastBarBorder = border, powerBorder, castBorder
+	local db = f.JI.db.unitFrameThemes.elvui.player; db.theme = 'bushido'
+	f.JI:UpdateUnitFrameThemes()
+	equal(health.backdrop:GetAlpha(), .7); equal(health.backdrop.Center:GetAlpha(), .6)
+	equal(health.backdrop.Center:GetNumMaskTextures(), 1); equal(health.backdropTex:GetNumMaskTextures(), 1)
+	equal(health.backdrop.Center.gradient[1], 'Eltruism'); equal(health.backdropTex.gradient[2], 'empty health')
+	equal(health.fill.gradient[1], 'host')
+	for _, field in ipairs(edges) do equal(health.backdrop[field]:GetAlpha(), 0) end
+	equal(border:GetAlpha(), 0); equal(health.shadow:GetAlpha(), 0); equal(frame.shadow:GetAlpha(), 0)
+	equal(frame.backdrop:GetAlpha(), 0); equal(health.backdrop.eltruismuniversalborders:GetAlpha(), 0)
+	equal(health.backdrop.iborder:GetAlpha(), 0); equal(health.backdrop.oborder:GetAlpha(), 0)
+	equal(power.shadow:GetAlpha(), .8); equal(powerBorder:GetAlpha(), 1); equal(castBorder:GetAlpha(), 1)
+	f.state.combat = true
+	health.backdrop.TopEdge:SetAlpha(.42); health.shadow:SetAlpha(.5); border:SetAlpha(.3); border:Show()
+	health.backdrop:SetAlpha(.9); health.backdrop.Center:SetAlpha(.2)
+	equal(health.backdrop.TopEdge:GetAlpha(), 0); equal(health.shadow:GetAlpha(), 0); equal(border:GetAlpha(), 0)
+	equal(health.backdrop:GetAlpha(), .9); equal(health.backdrop.Center:GetAlpha(), .2)
+	f.state.combat = false; db.shapePower = true; f.JI:UpdateUnitFrameThemes()
+	equal(power.backdropTex:GetNumMaskTextures(), 1); equal(powerBorder:GetAlpha(), 0)
+	db.replaceBorder = false; f.JI:UpdateUnitFrameThemes()
+	equal(border:GetAlpha(), .3); equal(health.shadow:GetAlpha(), .5); equal(health.backdrop.TopEdge:GetAlpha(), .42)
+	equal(health.backdrop.Center:GetNumMaskTextures(), 1)
+	db.theme = 'native'; f.JI:UpdateUnitFrameThemes()
+	equal(health.backdrop.Center:GetNumMaskTextures(), 0); equal(health.backdropTex:GetNumMaskTextures(), 0)
+	equal(health.backdrop.iborder:GetAlpha(), 1); equal(health.backdrop.oborder:GetAlpha(), 1)
+	equal(power.backdropTex:GetNumMaskTextures(), 0); equal(power.shadow:GetAlpha(), .8)
+end)
+
+test('Bushido catches late Eltruism borders and shadows and defers newly created objects in combat', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('elvui', 'raid2', 'raid1')
+	frame.name = 'ElvUF_Raid2Group3UnitButton4'
+	f.JI.db.unitFrameThemes.elvui.raid.theme = 'bushido'; f.JI:UpdateUnitFrameThemes()
+	local border = f.env.CreateFrame('Frame', nil, frame); f.env.EltruismRaid2Group3Border4 = border
+	frame.shadow = f.env.CreateFrame('Frame', nil, frame)
+	f.state.combat = true; f.env.ElvUI_EltreumUI:Borders(); f.flush()
+	equal(border:GetAlpha(), 1)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); f.flush()
+	equal(border:GetAlpha(), 0); equal(frame.shadow:GetAlpha(), 0)
+	frame.Health.shadow = f.env.CreateFrame('Frame', nil, frame.Health)
+	f.env.ElvUI_EltreumUI:Shadows(); f.flush(); equal(frame.Health.shadow:GetAlpha(), 0)
+	frame.Health.backdropTex = frame.Health:CreateTexture()
+	f.env.ElvUI_EltreumUI:CustomTexture(); f.flush(); equal(frame.Health.backdropTex:GetNumMaskTextures(), 1)
+	f.JI.db.unitFrameThemes.elvui.raid.theme = 'native'; f.JI:UpdateUnitFrameThemes()
+	equal(border:GetAlpha(), 1); equal(frame.shadow:GetAlpha(), 1); equal(frame.Health.shadow:GetAlpha(), 1)
+end)
+
+test('Bushido native restoration preserves later host alpha writes and unrelated masks', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('ellesmereui', 'target')
+	local foreign = {}; frame.Health.fill:AddMaskTexture(foreign)
+	local db = f.JI.db.unitFrameThemes.ellesmereui.target; db.theme = 'bushido'; f.JI:UpdateUnitFrameThemes()
+	equal(frame.Health.fill:GetNumMaskTextures(), 2)
+	frame.Health.backdrop:SetAlpha(.42); frame.unifiedBorder:SetAlpha(.33)
+	equal(frame.Health.backdrop:GetAlpha(), 0); equal(frame.unifiedBorder:GetAlpha(), 0)
+	db.theme = 'native'; f.JI:UpdateUnitFrameThemes()
+	equal(frame.Health.fill:GetNumMaskTextures(), 1); expect(frame.Health.fill.masks[foreign])
+	equal(frame.Health.backdrop:GetAlpha(), .42); equal(frame.unifiedBorder:GetAlpha(), .33)
+	expect(not f.cap(frame):IsShown()); expect(not f.border(frame.Health):IsShown())
+end)
+
+test('Bushido follows host resize/orientation and profiles; all runtime masks and outlines are packaged', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('elvui', 'player')
+	local original = f.JI.data:GetCurrentProfile()
+	local db = f.JI.db.unitFrameThemes.elvui.player; db.theme = 'bushido'; db.divisions = 10
+	f.JI:UpdateUnitFrameThemes()
+	for _, shape in ipairs({'diagonal', 'diagonalback', 'chamfer'}) do
+		db.shape = shape
+		for _, orientation in ipairs({'HORIZONTAL', 'VERTICAL'}) do
+			frame.Health:SetOrientation(orientation)
+			for _, ratio in ipairs({1, 6, 32, 64}) do
+				frame.Health:SetSize(orientation == 'HORIZONTAL' and 40 * ratio or 40, orientation == 'HORIZONTAL' and 40 or 40 * ratio)
+				frame.Health.scripts.OnSizeChanged(); f.flush()
+				local path = f.border(frame.Health).path
+				local relative = path:gsub('^Interface\\AddOns\\JiberishIcons\\', ''):gsub('\\', '/')
+				local file = assert(io.open(root..relative, 'rb'), path); file:close()
+				for mask in pairs(frame.Health.fill.masks) do
+					relative = mask.path:gsub('^Interface\\AddOns\\JiberishIcons\\', ''):gsub('\\', '/')
+					file = assert(io.open(root..relative, 'rb'), mask.path); file:close()
+				end
+			end
+		end
+	end
+	f.JI.data:SetProfile('Theme test'); equal(frame.Health.fill:GetNumMaskTextures(), 0); expect(not f.cap(frame):IsShown())
+	f.JI.data:CopyProfile(original); equal(frame.Health.fill:GetNumMaskTextures(), 1)
+	f.JI.data:ResetProfile(); equal(frame.Health.fill:GetNumMaskTextures(), 0)
+end)
+
+test('Bushido party/raid discovery keeps categories separate and retires replaced host frames', function()
+	local f = bushidoFixture()
+	local old = f.themeFrame('ellesmereui', 'target')
+	f.JI.db.unitFrameThemes.ellesmereui.target.theme = 'bushido'
+	f.ns.Engine.Attach(old, 'target'); f.flush()
+	equal(old.Health.fill:GetNumMaskTextures(), 1)
+	local replacement = f.themeFrame('ellesmereui', 'target')
+	f.ns.ReloadFrames(); f.flush()
+	equal(old.Health.fill:GetNumMaskTextures(), 0); equal(replacement.Health.fill:GetNumMaskTextures(), 1)
+	local party, raid = f.frame('party1'), f.frame('raid1')
+	for _, frame in ipairs({party, raid}) do
+		frame.data = {health = f.bar(frame), power = f.bar(frame, 100, 5), bg = frame:CreateTexture(),
+			borderFrame = f.env.CreateFrame('Frame', nil, frame), absorbBar = f.bar(frame)}
+		frame:SetAttribute('unit', frame._euiUnit)
+	end
+	f.raid._partyAllButtons, f.raid._allButtons = {party}, {raid}
+	f.JI.db.unitFrameThemes.ellesmereui.party.theme = 'bushido'
+	f.raid._LayoutPartyFrames(); f.flush()
+	equal(party.data.health.fill:GetNumMaskTextures(), 1); equal(raid.data.health.fill:GetNumMaskTextures(), 0)
+	equal(party.data.absorbBar.fill:GetNumMaskTextures(), 1)
+	f.raid._partyAllButtons = {}; f.fire('GROUP_ROSTER_UPDATE'); f.flush()
+	equal(party.data.health.fill:GetNumMaskTextures(), 0); equal(party.data.borderFrame:GetAlpha(), 1)
+	local elvRaid = f.themeFrame('elvui', 'raid2', 'raid2')
+	f.JI.db.unitFrameThemes.elvui.raid.theme = 'bushido'; f.env.ElvUI[1].UnitFrames:ConfigureFrame(); f.flush()
+	equal(elvRaid.Health.fill:GetNumMaskTextures(), 1)
+end)
+
+test('Bushido restricted identities use fallback tint and invalid geometry fails safely', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('ellesmereui', 'target')
+	local db = f.JI.db.unitFrameThemes.ellesmereui.target; db.theme = 'bushido'
+	f.JI:UpdateUnitFrameThemes(); local cap = f.cap(frame)
+	frame._euiUnit = f.secret; f.fire('PLAYER_TARGET_CHANGED'); equal(cap.vertex[1], db.cap.color[1])
+	frame._euiUnit = 'target'; f.world.target.class = f.secret; f.fire('UNIT_NAME_UPDATE', 'target')
+	equal(cap.vertex[1], db.cap.color[1])
+	frame.Health.width = f.secret; f.JI:UpdateUnitFrameThemes()
+	equal(frame.Health.fill:GetNumMaskTextures(), 0); expect(not cap:IsShown())
+	frame.Health.width = 240; frame.forbidden = true; f.JI:UpdateUnitFrameThemes(); expect(not cap:IsShown())
+end)
+
+test('Bushido configuration changes are independent per host/category and copying does not alias tables', function()
+	local f = bushidoFixture()
+	local options = f.JI.Options.args.unitFrameThemes.args
+	local player = options.elvui.args.player
+	player.set({'theme'}, 'bushido')
+	player.args.cap.args.color.set(nil, .8, .7, .6, .5)
+	expect(f.JI:CopyIndividualLayout('elvui','player','target',false,false))
+	equal(f.JI.db.unitFrameThemes.elvui.target.theme, 'bushido'); equal(f.JI.db.unitFrameThemes.elvui.target.cap.color[4], .5)
+	for _, key in ipairs({'party','raid','boss'}) do equal(f.JI.db.unitFrameThemes.elvui[key].theme, 'native') end
+	f.JI.db.unitFrameThemes.elvui.target.cap.color[1] = .1
+	equal(f.JI.db.unitFrameThemes.elvui.player.cap.color[1], .8)
+	equal(f.JI.db.unitFrameThemes.ellesmereui.player.theme, 'native')
+	options.elvui.args.restore.func()
+	for _, db in pairs(f.JI.db.unitFrameThemes.elvui) do equal(db.theme, 'native') end
+	f.state.combat = true; expect(f.JI.Options.args.unitFrameThemes.disabled()); expect(player.disabled())
+end)
+
+test('Bushido respects mask capacity, native-only artwork mode, missing hosts and stock EUI styles', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('ellesmereui', 'player')
+	local db = f.JI.db.unitFrameThemes.ellesmereui.player; db.theme = 'bushido'
+	for _ = 1, 3 do frame.Health.fill:AddMaskTexture({}) end
+	f.JI:UpdateUnitFrameThemes()
+	equal(frame.Health.fill:GetNumMaskTextures(), 3); equal(frame.Health.backdrop:GetAlpha(), .7)
+	expect(f.cap(frame):IsShown())
+	frame.Health.fill.masks = {}; db.shape = 'native'; f.JI:UpdateUnitFrameThemes()
+	equal(frame.Health.fill:GetNumMaskTextures(), 0); expect(f.cap(frame):IsShown())
+	db.shape = 'diagonal'; f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 1)
+	f.ns.UF_Style = function() return 'blizzard' end
+	f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 0); expect(not f.cap(frame):IsShown())
+	f.ns.UF_Style = function() return 'eui' end
+	f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 1)
+	f.state.loaded = false; f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 0)
+	expect(f.JI.Options.args.unitFrameThemes.args.ellesmereui.args.player.disabled())
+end)
+
+test('Bushido late frame creation waits for combat and party tints follow secure unit reassignment', function()
+	local f = bushidoFixture(); local frame = f.themeFrame('elvui', 'player')
+	f.JI.db.unitFrameThemes.elvui.player.theme = 'bushido'
+	f.state.combat = true; f.JI:UpdateUnitFrameThemes(); equal(f.cap(frame), nil)
+	f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); f.flush(); expect(f.cap(frame):IsShown())
+	local party = f.frame('party1')
+	party.unit = 'player' -- A stale compatibility field must not override the secure token.
+	party.data = {health = f.bar(party)}
+	party:SetAttribute('unit', 'party1'); f.raid._partyAllButtons = {party}
+	f.JI.db.unitFrameThemes.ellesmereui.party.theme = 'bushido'; f.JI:UpdateUnitFrameThemes()
+	local cap = f.cap(party); equal(cap.vertex[1], .25)
+	f.world.player.class = 'WARRIOR'
+	f.state.combat = true; party:SetAttribute('unit', 'player'); equal(cap.vertex[1], .78)
+	party:SetAttribute('unit', f.secret); equal(cap.vertex[1], .65)
+end)
+
+test('Overwatch per-category cell count, gap, reverse slant and host resize retain native fills and labels', function()
+    local f = bushidoFixture()
+    local categories = {'player', 'target', 'targettarget', 'focus', 'party', 'raid1', 'raid2', 'raid3', 'boss'}
+    for _, category in ipairs(categories) do
+        local frame = f.themeFrame('elvui', category)
+        local key = category:match('^raid') and 'raid' or category
+        local db = f.JI.db.unitFrameThemes.elvui[key]
+        db.theme = 'overwatch'; db.reverseSegments = true; db.segmentGap = 'wide'; db.segments = 5
+        f.JI:UpdateUnitFrameThemes()
+        equal(frame.Health.fill:GetNumMaskTextures(), 1)
+        local mask; for t in pairs(frame.Health.fill.masks) do mask = t end
+        expect(mask.path:find('segments%-5%-wide%-mask%-reverse.tga')); equal(mask.coords, nil)
+        equal(f.border(frame.Health).coords[1],1); equal(f.border(frame.Health).coords[2],0)
+        equal(frame.Health.value.text, 'native health'); equal(frame.Health.fill.gradient[1], 'host')
+        frame.Health:SetSize(300, 50); f.JI:UpdateUnitFrameThemes()
+        equal(frame.Health.width, 300); equal(mask.allPoints, frame.Health)
+        db.reverseSegments = false; db.segments = 10; db.segmentGap = 'narrow'; f.JI:UpdateUnitFrameThemes()
+        expect(mask.path:find('segments%-10%-narrow%-mask.tga')); equal(mask.coords, nil)
+        frame.Health:SetOrientation('VERTICAL'); f.flush(); equal(mask.coords, nil)
+        expect(mask.path:find('segments%-10%-narrow%-mask%-vertical.tga')); equal(#f.border(frame.Health).coords,8)
+        db.theme = 'native'; f.JI:UpdateUnitFrameThemes(); equal(frame.Health.fill:GetNumMaskTextures(), 0)
+    end
+end)
+
+
+test('GCD selects Classic beta spell and falls back from unavailable duration objects', function()
+    local f = crosshairFixture('forever')
+    local db = f.JI.db.crosshair; db.enable, db.visibility, db.gcd.enable = true, 'always', true
+    f.env.C_Spell.GetSpellCooldownDuration = function(id, ignoreGCD)
+        equal(id, 29515); equal(ignoreGCD, false); return f.state.duration
+    end
+    f.state.gcd = {startTime = 100, duration = 1.5, isEnabled = true, modRate = 1}
+    f.JI:UpdateCrosshair(); local ring = f.JI.crosshairFrame.ring
+    equal(ring.cooldown[2], 1.5); expect(ring:IsShown())
+    f.state.duration = {}; f.fire('SPELL_UPDATE_COOLDOWN'); equal(ring.durationObject, f.state.duration)
+    f.state.duration, f.state.gcd = nil, nil; f.fire('SPELL_UPDATE_COOLDOWN'); expect(not ring:IsShown())
+end)
+
+test('GCD position is independent, deferred in combat, and profile-local', function()
+    local f = crosshairFixture(); local db = f.JI.db.crosshair
+    db.enable, db.visibility, db.gcd.enable = true, 'always', true
+    f.JI:UpdateCrosshair(); local frame = f.JI.crosshairFrame
+    local options = f.JI.Options.args.crosshair.args.gcd
+    options.set({'x'}, 45); options.set({'y'}, -30)
+    equal(frame.ring.point[4], 45); equal(frame.track.point[5], -30)
+    equal(frame.marker.point[1], 'CENTER'); equal(db.x, 0); equal(db.y, -80)
+    f.state.combat = true; db.gcd.x = 99; f.JI:UpdateCrosshair(); equal(frame.ring.point[4], 45)
+    f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(frame.ring.point[4], 99)
+    options.args.reset.func(); equal(db.gcd.x, 0); equal(frame.track.point[5], 0)
+    f.JI.data:SetProfile('Other'); equal(f.JI.db.crosshair.gcd.x, 0)
+end)
+
+test('GCD retries spellcast timing after the cooldown cache updates', function()
+    local f = crosshairFixture(); local db = f.JI.db.crosshair
+    db.enable, db.visibility, db.gcd.enable = true, 'always', true; f.JI:UpdateCrosshair()
+    local ring = f.JI.crosshairFrame.ring
+    f.fire('UNIT_SPELLCAST_SUCCEEDED', 'player'); expect(not ring:IsShown())
+    f.state.gcd = {startTime = 100, duration = 1.5, isEnabled = true}
+    f.flush(); expect(ring:IsShown()); equal(ring.cooldown[2], 1.5)
+end)
+
+test('3D Portraits use independent unit anchors, inset foregrounds and unrestricted headroom', function()
+    local f = fixture(); f.frame('target'); f.frame('focus'); f.JI:SetupPortraits()
+    for _, key in ipairs({'player','target','focus'}) do
+        local db = f.JI.db.portraits[key]
+        db.enable, db.mode, db.shape, db.size, db.anchor = true, 'model', 'shield', 100, 'elvui'
+        local native = f.env.CreateFrame('Frame'); native.unit = key
+        f.env[({player='ElvUF_Player',target='ElvUF_Target',focus='ElvUF_Focus'})[key]] = native
+    end
+    f.JI:UpdatePortraits()
+    local player = f.JI.portraitFrames.player; local view = player.modelView
+    equal(view.model.modelUnit,'player'); equal(view.model.height,160); equal(view.model.point[5],8)
+    expect(view.model.height + view.model.point[5] > player.height + 40)
+    expect(not player.clipsChildren); expect(view.front.level > view.model.level)
+    expect(view.rim.path:find('portrait%-rim.tga')); expect(view.front.base.path:find('portrait%-front%-base'))
+    local opts = f.JI.Options.args.portraits.args.target
+    opts.args.side.set({}, 'RIGHT'); equal(f.JI.portraitFrames.target.point[1], 'LEFT')
+    equal(f.JI.portraitFrames.target.point[3], 'RIGHT')
+    opts.set({'size'},150); equal(f.JI.portraitFrames.target.width,150); equal(player.width,100)
+    opts.args.model.set({'viewY'},-12); equal(f.JI.portraitFrames.target.modelView.model.viewTranslation[2],-12)
+    f.JI.portraitFrames.target.modelView.model.scripts.OnModelLoaded()
+    equal(f.JI.portraitFrames.target.modelView.model.viewTranslation[2],-12)
+    f.JI:ResetPortraitModelFit('target'); equal(f.JI.db.portraits.target.model.viewY,0); equal(f.JI.db.portraits.target.size,150)
+end)
+
+test('3D shapes ship complete rear and front layers and hide on mode or visibility changes', function()
+    local f = fixture(); f.JI:SetupPortraits(); local db = f.JI.db.portraits.player
+    db.enable, db.mode = true,'model'; f.JI:UpdatePortraits()
+    local p = f.JI.portraitFrames.player; local view = p.modelView
+    for _, shape in ipairs({'circle','diamond','square','shield','none'}) do
+        db.shape = shape
+        for weight = 1,5 do
+            db.model.rim = weight; f.JI:UpdatePortraits()
+            for _, t in ipairs({view.base,view.rim,view.front.base,view.front.rim}) do
+                local path = t.path:gsub('^Interface\\AddOns\\JiberishIcons\\',''):gsub('\\','/')
+                local file = assert(io.open(root..path,'rb'),path); file:close()
+            end
+        end
+    end
+    expect(not view.front:IsShown()); expect(view.model:IsShown())
+    db.mode = 'portrait'; f.JI:UpdatePortraits(); expect(not view:IsShown()); expect(p.portrait:IsShown())
+    db.mode = 'model'; f.JI:UpdatePortraits(); expect(view:IsShown()); expect(not p.portrait:IsShown())
+    f.world.player.exists = false; f.JI:UpdatePortraits(); expect(not view:IsShown())
+    f.world.player.exists = true; f.JI:UpdatePortraits(); expect(view:IsShown())
+    f.JI.data:SetProfile('No 3D portraits'); expect(not view:IsShown())
+end)
+
+test('3D target content updates in combat while creation and layout defer', function()
+    local f = fixture(); f.frame('target'); f.JI:SetupPortraits()
+    local db = f.JI.db.portraits.target; db.enable,db.mode = true,'model'; f.JI:UpdatePortraits()
+    local p = f.JI.portraitFrames.target; local model = p.modelView.model
+    f.state.combat = true; db.size = 150; f.JI:UpdatePortraits(); equal(p.width,80)
+    local count = model.unitUpdates; f.fire('PLAYER_TARGET_CHANGED'); expect(model.unitUpdates > count)
+    f.world.target.exists = false; f.fire('PLAYER_TARGET_CHANGED'); expect(not p.modelView:IsShown())
+    f.world.target.exists = true; f.fire('PLAYER_TARGET_CHANGED'); expect(p.modelView:IsShown())
+    f.JI.db.portraits.focus.enable, f.JI.db.portraits.focus.mode = true,'model'
+    f.frame('focus'); f.JI:UpdatePortraits(); equal(f.JI.portraitFrames.focus,nil)
+    f.state.combat = false; f.fire('PLAYER_REGEN_ENABLED'); equal(p.width,150)
+    expect(f.JI.portraitFrames.focus.modelView:IsShown())
+end)
+
+test('HUD migration preserves active portrait placement and existing Portraits choices', function()
+    local old = {enable=true,left={enable=true,side='LEFT',scale=1.2,offsetX=-15,offsetY=7,classColor=true},
+        target={enable=true,side='RIGHT',scale=.8,offsetX=24},focus={enable=true},center={enable=true},actions={enable=true}}
+    local f = fixture(false,nil,{profileKeys={['Tester - Realm']='Default'},profiles={Default={overwatch=old,portraits={focus={enable=true,mode='icon'}}}}})
+    equal(f.JI.db.overwatch,nil); equal(f.JI.Options.args.overwatch,nil)
+    local p = f.JI.db.portraits.player; equal(p.mode,'model'); equal(p.shape,'shield'); equal(p.size,120)
+    equal(p.x,-15); equal(p.y,7); equal(p.model.y,8)
+    equal(f.JI.db.portraits.target.relativePoint,'RIGHT'); equal(f.JI.db.portraits.focus.mode,'icon')
+    f.JI:MigrateHUDPortraits(); equal(p.x,-15)
+    f.JI.data:SetProfile('Defaults'); expect(not f.JI.db.portraits.player.enable)
+end)
+
+test('3D cast spell icons restore the model and profile switches hide all model layers', function()
+    local f = castFixture(); local db = f.JI.db.portraits.player
+    db.mode, db.shape, db.cast.spellIcon = 'model', 'circle', true
+    f.JI:UpdatePortraits(); local p = f.JI.portraitFrames.player; local view = p.modelView
+    expect(view:IsShown()); expect(p.cast.ring.level > view.front.level)
+    f.state.casting.player = {name='Test',icon=123,startMS=100000,endMS=104000}
+    f.fire('UNIT_SPELLCAST_START','player'); expect(p.cast.spell:IsShown()); expect(not view:IsShown())
+    f.state.casting.player = nil; f.fire('UNIT_SPELLCAST_STOP','player')
+    expect(view:IsShown()); expect(not p.cast.spell:IsShown())
+    f.JI.data:SetProfile('No model'); expect(not view:IsShown())
+end)
+
+test('HUD migration accepts sparse AceDB saves and does not enable disabled HUD portraits', function()
+    local saved = {profileKeys={['Tester - Realm']='Sparse'},profiles={Sparse={overwatch={enable=true}}}}
+    local f = fixture(false,nil,saved)
+    expect(f.JI.db.portraits.player.enable); equal(f.JI.db.portraits.player.mode,'model')
+    expect(not f.JI.db.portraits.target.enable)
+    f.JI.db.overwatch = {enable=false,left={enable=true}}; f.JI.db.portraits.player.enable=false
+    f.JI:MigrateHUDPortraits(); expect(not f.JI.db.portraits.player.enable); equal(f.JI.db.overwatch,nil)
+end)
+
+
+local function same(a,b)
+    equal(type(a),type(b))
+    if type(a) ~= 'table' then equal(a,b); return end
+    for k,v in pairs(a) do same(v,b[k]) end
+    for k in pairs(b) do expect(a[k] ~= nil,'extra field '..tostring(k)) end
+end
+
+test('individual layout copy reverses theme and portrait without touching group categories', function()
+    local f = bushidoFixture(); f.JI:SetupPortraits()
+    local theme = f.JI.db.unitFrameThemes.elvui.player
+    theme.theme,theme.shape,theme.cap.x,theme.cap.y,theme.cap.scale = 'bushido','diagonal',13,7,2.8
+    local p = f.JI.db.portraits.player
+    p.enable,p.anchor,p.mode,p.size,p.x,p.y,p.point,p.relativePoint = true,'elvui','model',124,-18,9,'RIGHT','LEFT'
+    p.shape,p.model.x,p.model.viewX,p.model.facing = 'droplet',7,3,.5
+    p.cast.namePoint,p.cast.nameX = 'BOTTOMLEFT',-9
+    f.JI.db.elvui.player.portrait.enable = true
+    f.JI.db.elvui.player.portrait.style = 'fabledregalia'
+    local sourceTheme,sourcePortrait = f.JI:CopyTable({},theme),f.JI:CopyTable({},p)
+    local target = f.themeFrame('elvui','target'); target:SetPoint('CENTER',f.env.UIParent,'CENTER',250,100)
+    for _, key in ipairs({'target','focus','pet','targettarget','focustarget'}) do
+        expect(f.JI:CopyIndividualLayout('elvui','player',key,true,false))
+        local t,portrait = f.JI.db.unitFrameThemes.elvui[key],f.JI.db.portraits[key]
+        equal(t.cap.side,'LEFT'); equal(t.cap.x,-13); equal(t.cap.y,7); equal(t.cap.scale,2.8); expect(t.cap.mirror)
+        equal(f.JI.db.elvui[key].portrait.style,'fabledregalia'); expect(f.JI.db.elvui[key].portrait.reverse)
+        equal(t.shape,'diagonalback'); equal(portrait.point,'LEFT'); equal(portrait.relativePoint,'RIGHT'); equal(portrait.x,18)
+        equal(portrait.y,9); equal(portrait.size,124); equal(portrait.shape,'dropletleft')
+        equal(portrait.model.facing,-.5); equal(portrait.model.x,-7); equal(portrait.cast.nameX,9)
+        expect(f.JI:ReverseIndividualLayout('elvui',key)); same(f.JI.db.unitFrameThemes.elvui[key],sourceTheme); same(f.JI.db.portraits[key],sourcePortrait); expect(not f.JI.db.elvui[key].portrait.reverse)
+    end
+    equal(target.point[4],250); equal(target.point[5],100)
+    same(theme,sourceTheme); same(p,sourcePortrait)
+    f.JI.db.portraits.target.model.x = 99; equal(p.model.x,7)
+    for _, key in ipairs({'party','raid','boss','arena'}) do
+        equal(f.JI.db.unitFrameThemes.elvui[key].theme,'native')
+        expect(not f.JI.Options.args.unitFrameThemes.args.elvui.args[key].args.copyLayout)
+        expect(not f.JI:CopyIndividualLayout('elvui','player',key,true,false))
+    end
+    f.state.combat = true; expect(not f.JI:CopyIndividualLayout('elvui','player','target',false,false))
+end)
+
+test('copy then reverse keeps native fills and gradients with independent untransformed masks', function()
+    local f=bushidoFixture()
+    local player=f.themeFrame('elvui','player'); local target=f.themeFrame('elvui','target')
+    local theme=f.JI.db.unitFrameThemes.elvui.player
+    theme.theme,theme.shape,theme.divisions,theme.shapePower='bushido','diagonal',10,true
+    player.Health:SetSize(600,45); target.Health:SetSize(600,45)
+    f.JI:UpdateUnitFrameThemes()
+    expect(f.JI:CopyIndividualLayout('elvui','player','target',false,false))
+    local nativePlayer,nativeTarget=player.Health.fill,target.Health.fill
+    local function mask(bar)
+        equal(bar.fill:GetNumMaskTextures(),1)
+        local m=next(bar.fill.masks)
+        equal(m.coords,nil,'native masks must not use UV flips or rotations')
+        local relative=m.path:gsub('^Interface\\AddOns\\JiberishIcons\\',''):gsub('\\','/')
+        local file=assert(io.open(root..relative,'rb'),relative); file:close()
+        equal(bar.fill.gradient[1],'host'); equal(bar.fill.gradient[2],'gradient')
+        equal(bar.fill:GetAlpha(),1); equal(bar:GetAlpha(),1)
+        return m
+    end
+    local pm,tm=mask(player.Health),mask(target.Health)
+    expect(pm~=tm); equal(pm.path,tm.path)
+    local sourcePath=pm.path
+    expect(f.JI:ReverseIndividualLayout('elvui','target')); f.flush()
+    equal(player.Health.fill,nativePlayer); equal(target.Health.fill,nativeTarget)
+    equal(mask(player.Health).path,sourcePath)
+    equal(mask(target.Health).path,sourcePath:gsub('%-mask.tga$','-mask-reverse.tga'))
+    mask(player.Power); mask(target.Power)
+    local saved=f.JI:CopyTable({},f.JI.db.unitFrameThemes.elvui)
+    -- A fresh renderer must select the safe mask from the saved reversed shape.
+    local reload=bushidoFixture()
+    reload.JI.db.unitFrameThemes.elvui=saved
+    local reloaded=reload.themeFrame('elvui','target')
+    reload.JI:UpdateUnitFrameThemes()
+    local reloadedMask=next(reloaded.Health.fill.masks)
+    expect(reloadedMask.path:find('-mask-reverse.tga',1,true)); equal(reloadedMask.coords,nil)
+    expect(f.JI:ReverseIndividualLayout('elvui','target')); f.flush()
+    equal(mask(target.Health).path,sourcePath)
+end)
+
+test('all Overwatch directions use packaged native masks without touching colors or gradient settings', function()
+    local f=bushidoFixture(); local frame=f.themeFrame('elvui','target')
+    local db=f.JI.db.unitFrameThemes.elvui.target; db.theme='overwatch'
+    for _,count in ipairs({5,10,20}) do
+        db.segments=count
+        for _,style in ipairs({'angled','rounded'}) do
+            db.segmentStyle=style
+            for gap=1,6 do
+                db.segmentSpacing=gap
+                for _,vertical in ipairs({false,true}) do
+                    frame.Health:SetOrientation(vertical and 'VERTICAL' or 'HORIZONTAL')
+                    for _,reverse in ipairs({false,true}) do
+                        db.reverseSegments=reverse; f.JI:UpdateUnitFrameThemes()
+                        local m=next(frame.Health.fill.masks)
+                        equal(m.coords,nil)
+                        local suffix=(reverse and '-reverse' or '')..(vertical and '-vertical' or '')
+                        expect(m.path:find('-mask'..suffix..'.tga',1,true))
+                        local relative=m.path:gsub('^Interface\\AddOns\\JiberishIcons\\',''):gsub('\\','/')
+                        local file=assert(io.open(root..relative,'rb'),relative); file:close()
+                        equal(frame.Health.fill.gradient[1],'host')
+                        equal(frame.Health.fill:GetAlpha(),1)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+test('copy layout controls apply selected source, reverse and optional ElvUI dimensions', function()
+    local f = bushidoFixture(); local E = f.env.ElvUI[1]
+    E.db = {unitframe={units={player={width=300,height=52},target={width=220,height=30,color='host'}}}}
+    E.UnitFrames.CreateAndUpdateUF = function(_,key) f.updatedSize = key end
+    f.JI.db.unitFrameThemes.elvui.player.theme = 'overwatch'
+    local controls = f.JI.Options.args.unitFrameThemes.args.elvui.args.target.args.copyLayout.args
+    equal(controls.source.get(),'player'); controls.reverse.set({},true); expect(controls.reverse.get())
+    controls.size.set({},true); expect(controls.size.get()); controls.apply.func()
+    equal(E.db.unitframe.units.target.width,300); equal(E.db.unitframe.units.target.height,52)
+    equal(E.db.unitframe.units.target.color,'host'); equal(f.updatedSize,'target')
+    equal(f.JI.db.unitFrameThemes.elvui.target.theme,'overwatch'); expect(f.JI.db.unitFrameThemes.elvui.target.reverseSegments)
+    expect(controls.status.name():find('reversed'))
+end)
+
+test('screen portrait copy converts scaled coordinates to the destination host attachment', function()
+    local f = bushidoFixture(); f.JI:SetupPortraits()
+    local native = f.themeFrame('elvui','player'); native.centerX,native.centerY,native.width = 500,400,240
+    f.env.ElvUF_Player = native
+    local db = f.JI.db.portraits.player; db.enable,db.size,db.anchor = true,80,'screen'
+    f.JI:UpdatePortraits(); local p = f.JI.portraitFrames.player; p.centerX,p.centerY = 320,410
+    expect(f.JI:CopyIndividualLayout('elvui','player','target',true,false))
+    local t = f.JI.db.portraits.target
+    equal(t.anchor,'elvui'); equal(t.x,20); equal(t.y,10); equal(t.point,'LEFT'); equal(t.relativePoint,'RIGHT')
+    native:Hide(); local before = f.JI:CopyTable({},t)
+    expect(not f.JI:CopyIndividualLayout('elvui','player','target',false,false)); same(before,t)
+end)
+
+test('Ellesmere attached copies and focus-target portraits follow the destination unit', function()
+    local f = bushidoFixture(); f.JI:SetupPortraits()
+    local native = f.themeFrame('ellesmereui','focustarget')
+    f.JI.db.portraits.player.enable,f.JI.db.portraits.player.anchor = true,'ellesmereui'
+    expect(f.JI:CopyIndividualLayout('ellesmereui','player','focustarget',true,false))
+    local frame = f.JI.portraitFrames.focustarget
+    equal(frame.anchor,native); equal(frame.key,'focustarget')
+    f.world.focustarget.exists = false; f.fire('UNIT_TARGET','focus'); expect(not frame.visible)
+    f.world.focustarget.exists = true; f.fire('UNIT_TARGET','focus'); expect(frame.visible)
+end)
+
+test('profile sharing round-trips every current profile setting plus custom pack definitions', function()
+    local f = bushidoFixture()
+    f.JI.db.crosshair.gcd.x,f.JI.db.crosshair.gcd.y = 34,-28
+    f.JI.db.portraits.player.model.viewY = -8
+    f.JI.db.portraits.focustarget.size = 132
+    f.JI.db.unitFrameThemes.elvui.player.cap.scale = 3.2
+    f.JI.db.unitFrameThemes.ellesmereui.focus.segments = 5
+    f.JI.db.hideLoginMessage = true
+    f.JI.db.chat.style = 'fabledregalia'
+    f.JI.db.damageMeters.blizzard.iconSize = 41
+    f.JI.global.customPacks.class.styles.shared = {name='Shared',path='Interface\\AddOns\\Other\\',fileName='shared',artist='Artist',site=''}
+    local profile, global = f.JI:CopyTable({},f.JI.db), f.JI:CopyTable({},f.JI.global)
+    local text = assert(f.JI:ExportProfileString()); expect(#text > 100)
+    local data = assert(f.JI:ReadProfileString(text)); same(data.profile,profile); same(data.global,global)
+    local imported = fixture(false)
+    local ok,message,name = imported.JI:ImportProfileString(text,'Shared UI')
+    expect(ok,message); equal(name,'Shared UI'); same(imported.JI.db,profile); same(imported.JI.global,global)
+    ok,message,name = imported.JI:ImportProfileString(text,'Shared UI'); expect(ok,message); equal(name,'Shared UI (2)')
+    imported.JI.db.crosshair.gcd.x = 99; equal(imported.JI.data.profiles['Shared UI'].crosshair.gcd.x,34)
+    imported.JI.data:SetProfile('Shared UI'); equal(imported.JI.db.crosshair.gcd.y,-28)
+    imported.JI.data:ResetProfile(); equal(imported.JI.db.portraits.focustarget.size,80)
+end)
+
+test('profile imports reject corrupt, wrong-type and conflicting data before changing settings', function()
+    local f = fixture(false); local before = f.JI:CopyTable({},f.JI.db)
+    local text = assert(f.JI:ExportProfileString())
+    expect(not f.JI:ImportProfileString(text:sub(1,-4),'Broken'))
+    expect(not f.JI:ImportProfileString('return os.execute("bad")','Broken'))
+    expect(not f.JI:ImportProfileString(text,' '))
+    f.JI.db.crosshair.enable = 'invalid'; local invalid = assert(f.JI:ExportProfileString()); f.JI.db.crosshair.enable = false
+    expect(not f.JI:ImportProfileString(invalid,'Invalid')); same(f.JI.db,before)
+    f.JI.global.customPacks.class.styles.pack = {name='One',path='Interface\\AddOns\\Other\\',fileName='one',artist='',site=''}
+    local conflict = assert(f.JI:ExportProfileString()); f.JI.global.customPacks.class.styles.pack.name='Two'
+    expect(not f.JI:ImportProfileString(conflict,'Conflict')); equal(f.JI.global.customPacks.class.styles.pack.name,'Two')
+    f.state.combat = true; expect(not f.JI:ImportProfileString(text,'Combat')); expect(not f.JI:ExportProfileString())
+end)
+
+test('Profiles export/import controls generate, paste and activate a distinct profile', function()
+    local f = fixture(false); local profiles = {args={}}
+    f.JI:BuildProfileSharingOptions(profiles)
+    local c = profiles.args.sharing.args
+    f.JI.db.crosshair.gcd.y = 71; c.export.func(); local text = c.output.get(); expect(text:find('^!JI1!'))
+    c.input.set({},text); c.name.set({},'From options'); c.import.func()
+    equal(f.JI.data:GetCurrentProfile(),'From options'); equal(f.JI.db.crosshair.gcd.y,71); equal(c.input.get(),'')
+end)
+
+test('profile sharing supports wrapped strings and refreshes host adapters after combat', function()
+    local f = fixture(false); f.JI.db.portraits.player.model.viewY = -2.73
+    f.JI.db.portraits.player.cast.font = 'Font ^ ~ ! \n Unicode é'
+    local text = assert(f.JI:ExportProfileString())
+    local wrapped = text:gsub('('..string.rep('.',72)..')','%1\n')
+    local payload = assert(f.JI:ReadProfileString(wrapped))
+    equal(payload.profile.portraits.player.cast.font,f.JI.db.portraits.player.cast.font)
+    equal(payload.profile.portraits.player.model.viewY,-2.73)
+    local refreshes = 0
+    f.env.ElvUI = {{UnitFrames={Update_AllFrames=function() refreshes=refreshes+1 end}}}
+    f.state.combat=true; f.JI.data:SetProfile('In combat'); equal(refreshes,0)
+    f.state.combat=false; f.fire('PLAYER_REGEN_ENABLED'); equal(refreshes,1)
+end)
+
+local function nativeSettingsFixture(elvui, title)
+    local f = bushidoFixture()
+    f.state.addons.ElvUI = elvui
+    local JI = f.JI
+    JI.Title = title or JI.Title
+    f.load('Libs/Ace3/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua')
+    f.load('Libs/Ace3/AceDBOptions-3.0/AceDBOptions-3.0.lua')
+    f.registered = {}
+    function JI.Libs.AC:RegisterOptionsTable(name, options)
+        f.registered[name] = true
+        JI.Libs.ACR:RegisterOptionsTable(name,options)
+    end
+    local dialog = JI.Libs.ACD
+    dialog.OpenFrames = {}
+    function dialog:SetDefaultSize(name,w,h) f.defaultSize = {name,w,h} end
+    function dialog:AddToBlizOptions(name, label, parent, ...)
+        equal(parent, nil) -- Standalone settings must register as a root category.
+        equal(select('#', ...), 0)
+        f.blizzardPanel, f.blizzardTitle = name, label
+        f.blizzardRegistrations = (f.blizzardRegistrations or 0) + 1
+    end
+    function dialog:Open(name)
+        f.opened = name
+        -- Exercise strict stock validation each time, including after the
+        -- simulated host has decorated the live source options.
+        local options = JI.Libs.ACR:GetOptionsTable(name)('dialog','AceConfigDialog-3.0')
+        JI.Libs.ACR:ValidateOptionsTable(options,name)
+        self.OpenFrames[name] = {frame={}}
+    end
+    function dialog:Close(name) f.closed = name; self.OpenFrames[name] = nil end
+    function dialog:SelectGroup(...) f.selection = {...} end
+    function dialog:FeedGroup() end
+    JI.Libs.EP = {RegisterPlugin=function(_,name,callback) f.plugin = name; callback(JI) end}
+    f.env.ElvUI[1].Options = {args={}}
+    f.env.ElvUI[1].Config_SetButtonText = function(_,button,noColor)
+        local text=button.info.name
+        if noColor then text=text:gsub('|c%x%x%x%x%x%x%x%x',''):gsub('|r','') end
+        button:SetText(text)
+    end
+    f.env.ElvUI[1].ToggleOptions = function(_,path) f.elvuiOpened = path end
+    f.load('Core/SettingsWindow.lua')
+    JI:BuildOptions()
+    return f
+end
+
+test('standalone settings register a root category for colored and plain titles', function()
+    for _, title in ipairs({'|cff1784d1Jiberish|r |cff00ccffFabled Icons|r', 'Jiberish Fabled Icons'}) do
+        local f = nativeSettingsFixture(false, title)
+        equal(f.blizzardPanel, 'JiberishIcons')
+        equal(f.blizzardTitle, 'Jiberish Fabled Icons')
+        f.JI:BuildOptions()
+        equal(f.blizzardRegistrations, 1)
+    end
+end)
+
+test('native settings use ElvUI controls and never open the retired Studio', function()
+    local f = nativeSettingsFixture(true)
+    equal(f.blizzardPanel, nil)
+    equal(f.plugin,'JiberishIcons')
+    equal(f.env.ElvUI[1].Options.args.jiberishicons,f.JI.SettingsOptions)
+    f.JI.Options.key = 'jiberishicons'
+    f.JI:ToggleOptions(); equal(f.elvuiOpened,'jiberishicons'); equal(f.opened,nil)
+    equal(f.registered.JiberishIconsStudio,nil); equal(f.JI.Options.args.openStudio,nil)
+    f.JI:SelectSettingsGroup('unitFrameThemes','elvui','target')
+    same(f.selection,{'ElvUI','jiberishicons','plus','unitFrameThemes','elvui','target'})
+    f.state.combat=true; f.elvuiOpened=nil; f.JI:ToggleOptions(); equal(f.elvuiOpened,nil)
+end)
+
+test('stock Ace3 error is reproduced and ElvUI metadata is excluded from standalone options', function()
+    local f = nativeSettingsFixture(false)
+    local root = f.JI.SettingsOptions
+    root.key='jiberishicons'; root.func=function() error('host menu action must not be inherited') end
+    root.args.plus.args.portraits.key='host metadata'
+    local ok,message = pcall(f.JI.Libs.ACR.ValidateOptionsTable,f.JI.Libs.ACR,root,'JiberishIconsStudio')
+    expect(not ok and message:find('key: unknown parameter',1,true),tostring(message))
+    local clean = f.JI:BuildStandaloneOptions()
+    equal(clean.key,nil); equal(clean.func,nil); equal(clean.args.plus.args.portraits.key,nil)
+    f.JI.Libs.ACR:ValidateOptionsTable(clean,'JiberishIcons')
+    equal(root.key,'jiberishicons'); equal(root.args.plus.args.portraits.key,'host metadata')
+    f.JI:ToggleOptions(); equal(f.opened,'JiberishIcons')
+    f.JI:ToggleOptions(); equal(f.closed,'JiberishIcons')
+    f.JI:ToggleOptions(); equal(f.opened,'JiberishIcons')
+    equal(f.blizzardPanel,'JiberishIcons')
+end)
+
+test('native settings preserve every section, getter and setter after host decoration', function()
+    local f = nativeSettingsFixture(false); local JI = f.JI
+    local original = JI.SettingsOptions
+    original.key='jiberishicons'
+    local clean = JI:BuildStandaloneOptions()
+    local function walk(a,b)
+        equal(a.get,b.get); equal(a.set,b.set)
+        for key,value in pairs(a.args or {}) do expect(b.args[key],key); walk(value,b.args[key]) end
+    end
+    walk(original,clean)
+    local page=clean.args.plus.args.unitFrameThemes.args.elvui.args.target
+    page.set({'plus','unitFrameThemes','elvui','target','segments'},10)
+    equal(JI.db.unitFrameThemes.elvui.target.segments,10)
+    equal(JI.db.unitFrameThemes.elvui.player.segments,20)
+    expect(clean.args.plus.args.unitFrameThemes.args.elvui.args.restore)
+    expect(clean.args.plus.args.unitFrameThemes.args.elvui.args.target.args.copyLayout)
+    expect(clean.args.profiles.args.sharing)
+    for key,group in pairs(clean.args) do
+        if group.type=='group' then
+            JI.Libs.ACR:ValidateOptionsTable(group,'section-'..key)
+        end
+    end
+end)
+
+test('native branding uses custom navigation glyphs and preserves host sizing/fonts', function()
+    local f=nativeSettingsFixture(true); local root=f.JI.Options
+    equal(root.childGroups,'tab')
+    local icons={}
+    for key,group in pairs(root.args) do
+        if group.type=='group' then
+            expect(group.icon:find('Media'..string.char(92)..'Settings'..string.char(92),1,true),key)
+            expect(not icons[group.icon], 'navigation should have distinct symbols')
+            icons[group.icon]=true; equal(group.childGroups,'tab')
+        end
+    end
+    local page=root.args.unitFrameThemes.args.elvui.args.player
+    equal(page.args.segments.width,nil)
+    equal(root.args.logo.fontSize,'large')
+    local once=root.args.portraits.name
+    f.JI:StyleNativeOptions(); equal(root.args.portraits.name,once)
+    equal(f.JI.settingsWindow,nil)
+end)
+
+test('native Profiles remain shareable and the active profile label updates', function()
+    local f=nativeSettingsFixture(false); local JI=f.JI
+    JI.db.crosshair.gcd.x=43
+    local text=assert(JI:ExportProfileString())
+    local ok,message=JI:ImportProfileString(text,'Native settings look'); expect(ok,message)
+    f.flush()
+    expect(JI.Options.args.version.name():find('Native settings look',1,true))
+    equal(JI.db.crosshair.gcd.x,43)
+    JI:SelectSettingsGroup('profiles')
+    same(f.selection,{'JiberishIcons','profiles'})
+end)
+
+test('settings title has two independent gradients and no literal escape fragments', function()
+    local f=nativeSettingsFixture(false); local JI=f.JI
+    local title=JI.Options.args.logo.name
+    local plain=title:gsub('|c%x%x%x%x%x%x%x%x',''):gsub('|r','')
+    equal(plain,'JIBERISH   FABLED ICONS')
+    expect(not plain:find('|',1,true))
+    expect(title:find(JI:SettingsGradient('JIBERISH'),1,true))
+    expect(title:find(JI:SettingsGradient('FABLED ICONS',{1,.48,.76,1,.72,.39}),1,true))
+    equal(JI:SettingsGradient('éX',{0,0,1,1,0,0}),'|cff0000ffé|r|cffff0000X|r')
+end)
+
+test('only selected settings section gets its own gradient and pooled trees remain isolated', function()
+    for _,host in ipairs({false,true}) do
+        local f=nativeSettingsFixture(host); local JI=f.JI
+        local user={appName=host and 'ElvUI' or JI.AddOnName,path=host and {'jiberishicons','icons'} or {'icons'}}
+        local tree={type='TreeGroup',status={},buttons={}}
+        function tree:GetUserDataTable() return user end
+        function tree:RefreshTree()
+            for _,button in ipairs(self.buttons) do button.text:SetText(JI.Options.args[button.uniquevalue].name) end
+        end
+        for key,option in pairs(JI.Options.args) do
+            if option.type=='group' then
+                local label=option.name:gsub('|c%x%x%x%x%x%x%x%x',''):gsub('|r','')
+                expect(#label<=9,'sidebar label too long: '..label)
+                equal(option.name,'|cffffffff'..label..'|r')
+                local text={}; function text:SetText(value) self.value=value end
+                tree.buttons[#tree.buttons+1]={uniquevalue=key,text=text}
+            end
+        end
+        tree:RefreshTree()
+        JI.Libs.ACD:FeedGroup(user.appName,JI.Options,tree)
+        local colors={}
+        for _,selected in ipairs(tree.buttons) do
+            tree.status.selected=selected.uniquevalue
+            -- Native clicks feed the selected page before refreshing rows.
+            JI.Libs.ACD:FeedGroup(user.appName,JI.Options,tree)
+            local active=selected.text.value
+            expect(active~=JI.Options.args[selected.uniquevalue].name)
+            local first=active:match('^|c(%x%x%x%x%x%x%x%x)')
+            local last=active:match('|c(%x%x%x%x%x%x%x%x)[^|]+|r$')
+            expect(first~=last,'selected label must blend two colors')
+            local palette=first..last; expect(not colors[palette],'sections must have different gradients'); colors[palette]=true
+            tree:RefreshTree(); equal(selected.text.value,active)
+            for _,button in ipairs(tree.buttons) do
+                if button~=selected then equal(button.text.value,JI.Options.args[button.uniquevalue].name) end
+            end
+        end
+        -- Reusing this AceGUI widget for ElvUI or another addon is a no-op.
+        user={appName='OtherAddon',path={}}
+        tree:RefreshTree()
+        for _,button in ipairs(tree.buttons) do equal(button.text.value,JI.Options.args[button.uniquevalue].name) end
+        user={appName='ElvUI',path={'jiberishicons','unitFrameThemes'}}
+        tree:RefreshTree()
+        for _,button in ipairs(tree.buttons) do equal(button.text.value,JI.Options.args[button.uniquevalue].name) end
+    end
+end)
+
+test('settings split Icons and Plus without losing controls or dynamic style references', function()
+    local f=nativeSettingsFixture(false); local JI=f.JI
+    local root=JI.SettingsOptions
+    equal(root.childGroups,'tab')
+    equal(root.args.icons.childGroups,'tree'); equal(root.args.plus.childGroups,'tree')
+    local expected={StylePacks='icons',elvui='icons',ellesmereui='icons',suf='icons',
+        damageMeters='icons',chat='icons',blizzard='icons',unitFrameThemes='plus',portraits='plus',crosshair='plus'}
+    for key,parent in pairs(expected) do
+        equal(root.args[parent].args[key],JI.Options.args[key])
+        equal(root.args[key],nil)
+    end
+    equal(root.args.profiles,JI.Options.args.profiles); equal(root.args.Information,JI.Options.args.Information)
+    for key,option in pairs(JI.Options.args) do
+        if option.type=='group' then
+            expect(expected[key] or key=='profiles' or key=='Information','unassigned settings section: '..key)
+        end
+    end
+    local styles=JI.Options.args.StylePacks.args.ManageCustomClass
+    styles.args.liveTest={type='group',name='Live style',args={}}
+    equal(root.args.icons.args.StylePacks.args.ManageCustomClass.args.liveTest,styles.args.liveTest)
+    JI:SelectSettingsGroup('StylePacks','ManageCustomClass','liveTest')
+    same(f.selection,{'JiberishIcons','icons','StylePacks','ManageCustomClass','liveTest'})
+    JI:SelectSettingsGroup('crosshair')
+    same(f.selection,{'JiberishIcons','plus','crosshair'})
+    JI:SelectSettingsGroup('plus','portraits','player')
+    same(f.selection,{'JiberishIcons','plus','portraits','player'})
+    local clean=JI:BuildStandaloneOptions()
+    clean.args.plus.args.crosshair.set({'plus','crosshair','x'},74)
+    equal(JI.db.crosshair.x,74)
+    local portrait=clean.args.plus.args.portraits.args.player
+    portrait.set({'plus','portraits','player','size'},111)
+    equal(JI.db.portraits.player.size,111)
+    JI.Libs.ACR:ValidateOptionsTable(clean,'grouped-settings')
+end)
+
+test('native tabs use active gradients and white idle text including after rebuild and reuse', function()
+    for _,host in ipairs({false,true}) do
+        local f=nativeSettingsFixture(host); local JI=f.JI
+        local user={appName=host and 'ElvUI' or JI.AddOnName,path=host and {'jiberishicons'} or {}}
+        local tab={type='TabGroup',status={},tabs={},tablist={
+            {value='icons',text='JiberishIcons'}, {value='plus',text='Jiberish Plus'},
+            {value='profiles',text='Profiles',disabled=true}}}
+        function tab:GetUserDataTable() return user end
+        for i in ipairs(tab.tablist) do
+            local label={}; function label:SetText(value) self.value=value end
+            tab.tabs[i]={GetFontString=function() return label end}
+        end
+        function tab:BuildTabs()
+            for i,entry in ipairs(self.tablist) do self.tabs[i]:GetFontString():SetText(entry.text) end
+        end
+        function tab:SelectTab(value) self.status.selected=value end
+        tab:BuildTabs(); tab:SelectTab('icons')
+        JI.Libs.ACD:FeedGroup(user.appName,JI.SettingsOptions,tab)
+        local icons=tab.tabs[1]:GetFontString().value
+        expect(icons:find('|c',1,true)); expect(icons~='|cffffffffJiberishIcons|r')
+        equal(tab.tabs[2]:GetFontString().value,'|cffffffffJiberish Plus|r')
+        equal(tab.tabs[3]:GetFontString().value,'|cff90949cProfiles|r')
+        tab:SelectTab('plus')
+        local plus=tab.tabs[2]:GetFontString().value
+        expect(plus:find('|c',1,true)); expect(plus~='|cffffffffJiberish Plus|r')
+        equal(tab.tabs[1]:GetFontString().value,'|cffffffffJiberishIcons|r')
+        tab:BuildTabs(); equal(tab.tabs[2]:GetFontString().value,plus)
+        -- Deeper unit tabs use their section palette too.
+        user.path=host and {'jiberishicons','plus','unitFrameThemes','elvui'} or {'plus','unitFrameThemes','elvui'}
+        tab.tablist[1]={value='player',text='|cffffff00Player|r'}
+        tab.tablist[2]={value='target',text='Target'}
+        tab:SelectTab('player'); tab:BuildTabs()
+        local player=tab.tabs[1]:GetFontString().value
+        expect(player~='|cffffff00Player|r' and player~='|cffffffffPlayer|r')
+        equal(tab.tabs[2]:GetFontString().value,'|cffffffffTarget|r')
+        user.appName='OtherAddon'; tab:BuildTabs(); tab:SelectTab('target')
+        equal(tab.tabs[1]:GetFontString().value,'|cffffff00Player|r')
+        equal(tab.tabs[2]:GetFontString().value,'Target')
+    end
+end)
+
+test('ElvUI sidebar brand survives selected color stripping without changing other buttons', function()
+    local f=nativeSettingsFixture(true); local JI=f.JI
+    local button={info={key='jiberishicons',name=JI.SettingsOptions.name}}
+    function button:SetText(text) self.text=text end
+    local E=f.env.ElvUI[1]
+    E:Config_SetButtonText(button,false); equal(button.text,JI:SettingsBrand())
+    E:Config_SetButtonText(button,true); equal(button.text,JI:SettingsBrand())
+    equal(button.text:gsub('|c%x%x%x%x%x%x%x%x',''):gsub('|r',''),'Jiberish Fabled Icons')
+    button.info={key='eltruism',name='|cff55aaffEltruism|r'}
+    E:Config_SetButtonText(button,false); equal(button.text,'|cff55aaffEltruism|r')
+    E:Config_SetButtonText(button,true); equal(button.text,'Eltruism')
 end)
 
 print(passed..' integration tests passed')
