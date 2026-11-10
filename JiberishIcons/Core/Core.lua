@@ -103,23 +103,7 @@ JI.defaultStylePacks = {
 }
 
 function JI:ToggleOptions()
-	if JI:IsAddOnEnabled('ElvUI') then
-		if InCombatLockdown() then return end
-		_G.ElvUI[1]:ToggleOptions()
-		JI.Libs.ACD:SelectGroup('ElvUI', 'jiberishicons')
-	else
-		if SettingsPanel and SettingsPanel:IsShown() then
-			SettingsPanel:ExitWithCommit(true)
-			return
-		end
-
-		local ConfigOpen = JI.Libs.ACD.OpenFrames and JI.Libs.ACD.OpenFrames[JI.AddOnName]
-		if ConfigOpen and ConfigOpen.frame then
-			JI.Libs.ACD:Close(JI.AddOnName)
-		else
-			JI.Libs.ACD:Open(JI.AddOnName)
-		end
-	end
+	JI:ToggleSettingsWindow()
 end
 
 local function SendLoginMessage()
@@ -145,6 +129,8 @@ function JI:Init(event, addon)
 			JI:SetupSUF()
 			JI:SetupEllesmereUI()
 			JI:SetupPortraits()
+			JI:SetupCrosshair()
+			JI:SetupUnitFrameThemes()
 			JI:SetupSpecializationIcons()
 
 			JI:RegisterChatCommand('ji', 'ToggleOptions')

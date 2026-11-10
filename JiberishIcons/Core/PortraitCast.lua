@@ -17,6 +17,7 @@ function JI:StopPortraitCast(frame)
 	cast.active, cast.duration, cast.endTime, cast.preview = nil, nil, nil, nil
 	cast.ring:Clear(); cast.ring:Hide()
 	cast.spell:Hide(); cast.name:Hide(); cast.time:Hide()
+	if frame.modelView and frame.visible and JI.db.portraits[frame.key].mode == 'model' then frame.modelView:Show() end
 end
 
 local function ReadCast(unit)
@@ -99,6 +100,7 @@ function JI:UpdatePortraitCast(frame)
 	if db.spellIcon and (IsSecret(info.texture) or info.texture) then
 		cast.spell:SetTexture(info.texture)
 		cast.spell:Show()
+		if frame.modelView then frame.modelView:Hide() end
 	end
 	UpdateTime(frame)
 end
@@ -164,8 +166,8 @@ function JI:LayoutPortraitCast(frame, texture)
 	local cast = frame.cast
 	if not cast then return end
 	local db = Settings(frame)
-	cast.ring:SetFrameLevel(frame:GetFrameLevel() + 1)
-	cast.textFrame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	cast.ring:SetFrameLevel(frame:GetFrameLevel() + 5)
+	cast.textFrame:SetFrameLevel(frame:GetFrameLevel() + 6)
 	if texture then cast.ring:SetSwipeTexture(texture, unpack(cast.channel and db.channelColor or db.color)) end
 	local media = LibStub('LibSharedMedia-3.0', true)
 	local font = db.font ~= '__default' and media and media.Fetch and media:Fetch('font', db.font, true)

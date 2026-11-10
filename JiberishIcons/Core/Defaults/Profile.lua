@@ -2,12 +2,46 @@ local JI, L, P, G = unpack(JiberishIcons)
 local elvuiUnitList = JI.dataHelper.elvuiUnitList
 local sufUnitList = JI.dataHelper.sufUnitList
 
+JI.dataHelper.themeUnits = {
+    {key = 'player', name = 'Player'}, {key = 'target', name = 'Target'},
+    {key = 'focus', name = 'Focus'}, {key = 'pet', name = 'Pet'},
+    {key = 'targettarget', name = 'Target of target'}, {key = 'focustarget', name = 'Focus target'},
+    {key = 'party', name = 'Party'}, {key = 'raid', name = 'Raid'},
+    {key = 'boss', name = 'Boss'}, {key = 'arena', name = 'Arena', elvuiOnly = true},
+}
+P.unitFrameThemes = {elvui = {}, ellesmereui = {}}
+for _, host in ipairs({'elvui', 'ellesmereui'}) do
+    for _, unit in ipairs(JI.dataHelper.themeUnits) do
+        P.unitFrameThemes[host][unit.key] = {
+            theme = 'native', shape = 'diagonal', shapePower = false, replaceBorder = true,
+            borderColor = {0.32, 0.35, 0.4, 1},
+            segments = 20, reverseSegments = false, segmentGap = 'normal', segmentStyle = 'angled', segmentSpacing = 0, segmentBorderWidth = 1, segmentBorderOpacity = .6, segmentOutline = false, divisions = 0, divisionWidth = 1, divisionColor = {0.02, 0.025, 0.03, 0.85},
+            cap = {
+                enable = true, side = unit.key == 'target' and 'LEFT' or 'RIGHT',
+                mirror = false, scale = 2.2, width = 1, x = 0, y = 0,
+                colorMode = 'class', color = {0.65, 0.7, 0.8, 1},
+            },
+        }
+    end
+end
+
+P.crosshair = {
+    enable = false, visibility = 'combat',
+    style = 'plus', weight = 'thin', size = 32, color = {0, 0.85, 1, 1},
+    x = 0, y = -80, strata = 'HIGH',
+    gcd = {
+        enable = false, shape = 'diamond', weight = 'bold', size = 64, x = 0, y = 0,
+        color = {1, 0.1, 0.65, 1}, trackColor = {0.08, 0.08, 0.08, 0.65},
+    },
+}
+
 JI.dataHelper.portraitUnits = {
     {key = 'player', name = 'Player', x = -260, y = -160},
     {key = 'target', name = 'Target', x = 260, y = -160},
     {key = 'targettarget', name = 'Target of Target', x = 350, y = -160},
     {key = 'pet', name = 'Pet', x = -350, y = -160},
     {key = 'focus', name = 'Focus', x = 260, y = -60},
+    {key = 'focustarget', name = 'Focus target', x = 350, y = -60},
 }
 for i = 1, 4 do
     table.insert(JI.dataHelper.portraitUnits, {key = 'party'..i, name = 'Party '..i, group = 'party', x = -480, y = 200 - i * 90})
@@ -25,6 +59,8 @@ for _, unit in ipairs(JI.dataHelper.portraitUnits) do
         sourceUnit = 'player', iconID = 'PALADIN', specID = 65, raceID = 'HUMAN',
         shape = 'circle', size = 80, iconScale = 0.78, reverse = false,
         zoom = 0.12, contentX = 0, contentY = 0,
+        model = {width = 94, height = 160, x = 0, y = 8, zoom = .9, facing = .25,
+            distance = .85, viewX = 0, viewY = 0, rim = 3},
         anchor = 'screen', frameName = '', point = 'CENTER', relativePoint = 'CENTER',
         x = unit.x, y = unit.y, strata = 'MEDIUM', level = 10,
         borderColor = {1, 1, 1, 1}, classColor = false,

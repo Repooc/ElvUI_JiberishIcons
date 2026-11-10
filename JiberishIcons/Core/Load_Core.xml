@@ -5,9 +5,17 @@
 	<Include file ='Defaults\Load_Defaults.xml'/>
 	<Script file="Core.lua"/>
 	<Script file="Options.lua"/>
+	<Script file="ProfileSharing.lua"/>
 	<Script file="PortraitCast.lua"/>
+	<Script file="PortraitModel.lua"/>
+	<Script file="FrameLayout.lua"/>
 	<Script file="Portraits.lua"/>
 	<Script file="PortraitOptions.lua"/>
+	<Script file="Crosshair.lua"/>
+	<Script file="CrosshairOptions.lua"/>
+	<Script file="UnitFrameThemes.lua"/>
+	<Script file="UnitFrameThemeOptions.lua"/>
+	<Script file="SettingsWindow.lua"/>
 	<Script file="Chat.lua"/>
 	<Script file="Details.lua"/>
 	<Script file="DamageMeterParty.lua"/>

@@ -1,4 +1,52 @@
-# 1.6.2 - Ellesmere Update + TOC
+# 1.7.0 — Unit frame themes, 3D portraits, crosshair and profile sharing (November 10, 2026)
+
+- Supports Retail 12.1.5 (120105), Forever 1.60.1 (16001), Mists, Titan, Anniversary and Classic Era clients.
+
+## Lossless texture optimization and reverse-mask fix
+
+- Compress generated Bushido, Overwatch, portrait, crosshair and settings textures with lossless 32-bit TGA RLE. Preserve resolution, every RGB/alpha pixel, all options and the supplied artwork. Keep the texture generators on the same verified encoding.
+- Replace unit-frame mask UV flipping/rotation with pre-oriented masks to address disappearing health fills after reversing a copied layout. Preserve native health/power textures, Eltruism gradients, opacity and saved settings. Existing reversed layouts select the corrected masks after restarting the client.
+- Reduce the active addon from approximately 236 MB to 99 MB despite adding the safe directional masks. This reduces installed file size; decoded texture dimensions and GPU-memory requirements are unchanged.
+
+## Native Jiberish settings and Ace3 compatibility fix
+
+- Organize settings into JiberishIcons (Styles and icon integrations) and Jiberish Plus (Frames, Portraits and Crosshair), with shared Profiles and Help tabs. Preserve existing settings and dynamic custom-style editors.
+- Brighten active-section gradients and apply them to nested tabs. Keep inactive labels white and disabled tabs gray. Preserve the two-part brand gradient on the ElvUI sidebar button, including while selected.
+
+- Remove the separate rounded dashboard. `/ji` opens the Jiberish page in ElvUI's native options, or the standard Ace3 window without ElvUI. Retain compact section navigation, native tabs, borders, controls and the user's existing options font.
+- Use short white sidebar labels, with a unique two-color gradient only on the selected section. Split the title into blue–purple JIBERISH and pink–orange FABLED ICONS; remove the stray color-reset text between them.
+- Add 12 original settings glyphs with thicker rounded strokes. Do not use class/spec artwork as navigation icons.
+- Fix repeated `JiberishIconsStudio.key: unknown parameter` errors by retiring the second renderer. ElvUI's runtime menu metadata stays in ElvUI; standalone options exclude that metadata without modifying the source or callbacks.
+- Preserve all configuration sections, live portrait/crosshair movers, copy/reverse controls and profile import/export. Remove synthetic dashboard previews and pooled-widget recoloring.
+
+## Individual layout copying and profile sharing
+
+- Add Copy from, Reverse when copying and Reverse this layout to individual unit-frame theme pages. Copy theme, artwork, host icon settings and portraits with independent tables. Mirror sides, shapes, offsets, model facing and cast-label placement. Preserve the destination unit frame’s screen position; optionally copy ElvUI width/height.
+- Support player, target, focus, pet, target of target and focus target. Add focus-target portraits and EllesmereUI portrait attachment. Keep party, raid, boss and arena outside individual layout copying.
+- Add Profiles export/import using versioned, checksummed AceSerializer data. Capture the complete current JiberishIcons profile and custom-pack definitions; create a new named profile on import, validate input before mutation and preserve existing profiles/packs. Custom image files and native host-addon profiles are shared separately.
+- Refresh host icon adapters and chat settings when activating a profile; defer protected host refreshes until combat ends.
+
+## 3D portraits and Overwatch unit-frame theme
+
+- Consolidate 3D character portraits into **Portraits**, with independent settings for player, target, focus and other supported units. Add Overwatch shield, circle, diamond and square frames, adjustable model fit, camera controls and border thickness. Retain left/right attachment and existing portrait placement controls.
+- Lower shoulders into the inset V, extend the model viewport above the rear rim, and reduce the dark shelf beneath the bust. Preserve class/custom tinting and keep the lower accent inside the shield.
+- Remove the separate Overwatch HUD, resource/cast dial and action-bar skins/docking. Migrate enabled HUD portraits into Portraits without replacing existing enabled portrait entries.
+- Keep Overwatch in **Unit Frame Themes** for all supported ElvUI/EllesmereUI unit categories. Add 5/10/20 cells, rounded/angled shapes, six spacing levels, reversible slant and optional half-step outline widths/opacity. Retain native health values, text, sizing and Eltruism colors/gradients.
+- Fit entire slanted cell rows and outlines inside native bars so end cells stay whole; smooth edges and tighten inter-cell gaps.
+- Fix Classic beta GCD detection, fall back when duration objects are unavailable, and refresh after spellcasts. Add separate GCD X/Y offsets and a center-on-crosshair button.
+
+## Bushido unit frames, crosshair and GCD indicator
+
+- Add **Unit Frame Themes → ElvUI Unit Frames / EllesmereUI Unit Frames** with per-category Bushido styling: supplied metallic end-cap artwork, forward/backward slanted or clipped-corner silhouettes, optional power shaping and health divisions.
+- Preserve the host's existing frames, health values, textures, colors, gradients, fonts, auras and positioning. ElvUI retains oUF; EllesmereUI retains its native engine. Theme options follow JiberishIcons profiles and Native restores the latest host border appearance.
+- Keep absorbs, heal prediction and ElvUI cutaway textures within the health silhouette. Defer creation, layout and restoration until out of combat.
+- Fix Eltruism compatibility: clip its extra background textures and backdrop gradients to the Bushido silhouette, replace its rectangular borders/shadows when requested, and catch later cosmetic setup. Preserve gradient colors and restore the latest host appearance when disabled.
+
+- Add an optional movable crosshair under **/ji → Crosshair**, visible during combat or always. Choose solid/split cross or X styles, thin/bold lines, size, color and opacity.
+- Add an optional circle, diamond, square or triangle outline that fills during the global cooldown. Configure outline size, weight, fill color and resting color independently.
+- Preview placement and a looping GCD out of combat. Drag or enter screen offsets; entering combat locks the marker and restores live GCD timing. Locked markers are click-through and settings follow the selected profile.
+
+# 1.6.2 — Ellesmere tooltip specs and Interface 120105 (October 13, 2026)
 
 - Let EllesmereUI and other unit frames read available spec information from Blizzard tooltips on supported Retail/Mists clients without requiring ElvUI. Keep inspection as a fallback; Forever still uses talent inspection.
 - Update TOC for 120105

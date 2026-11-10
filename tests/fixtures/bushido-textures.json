@@ -1,0 +1,2585 @@
+{
+  "description": "Procedural bar masks/outlines and divider; BushidoEndPoint.tga supplied via JiberishUI_Ellesmere, preserved byte for byte.",
+  "textures": [
+    {
+      "path": "Media/Bushido/diagonal-1-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "0e5e03b5961e4900231be77e2a64e88238a7a9556733701dc112037f6cb37dc8",
+      "rgbaSha256": "13763313213558bedb772d9785e882da66cdd85c31eb6cca364c59aa02dbda80"
+    },
+    {
+      "path": "Media/Bushido/diagonal-1-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6977c5143b6412e99122923804671eb61a65294c611cfa508d434b2450889b14",
+      "rgbaSha256": "24b120577f9f48521fab0e8748ff5868a19f99dfe33abb1ae342ab3456a1d59e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-1-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "0f6909d0d153051a49de16ba3328e5552439a15837d814b4ffb246dfe7994a21",
+      "rgbaSha256": "0a1887601b19853c6d3edd61d3e89ed7fbe79c894d0c71a2d493c99a580c3162"
+    },
+    {
+      "path": "Media/Bushido/diagonal-1-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6df2c2012d1985380eb9598804f31a788bee0b3e6d1facd6fc5d441d4ca49c0d",
+      "rgbaSha256": "84d7d567b037020332efdd3ab48235e0a63ada9bc4cf3e18579b505a174a81a8"
+    },
+    {
+      "path": "Media/Bushido/diagonal-1-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "89db0efbf0b39f77cd8244c2f322d867dc3f1bbfe292263f5638f492a00aa1b9",
+      "rgbaSha256": "185ab5729ee9af9564f8ea2ce2016181470214c2f57c0ff9771aef543e51c37e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-2-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4299d14dba0cf40e9721e9348a7e5fbfa6be97a1d02f69d1ac8c52273d740e00",
+      "rgbaSha256": "560678f1a309d0c816481d8c4d7aadf321fe83d38b6b9a12a5af1444eb8cd61f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-2-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "fcfa8ed065ee79f45de06c6aaa948e309dca326b09deeff5f801011002a85088",
+      "rgbaSha256": "c4f6ee4d495fa2a9b81ae140fb8f8b12567c3f4f552a0040c3e947ffc99407a7"
+    },
+    {
+      "path": "Media/Bushido/diagonal-2-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "88028b0ceb66ba3f563b0a544121f1b1a337ecba8ced9a4080a62bd2f81b1a89",
+      "rgbaSha256": "70d066b0dd22cc7f924f8926f783352e49641d78534f7605710a9759ef7ee570"
+    },
+    {
+      "path": "Media/Bushido/diagonal-2-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "00b6a11ae14b10fb0460939f7d05cca165bf560aa5e5d90f69c127d701be9c73",
+      "rgbaSha256": "bca88f2f4f224b4ecc2bb443211eaac178608436fd58649cb9b20b7ac1a42185"
+    },
+    {
+      "path": "Media/Bushido/diagonal-2-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "dc78be24b948d8837bda1f35895a1fb2a5b151d22b74fdd9b47cce9eba80f996",
+      "rgbaSha256": "98a3a8479e74f8c8997adbaed9a49992ecf21e6bf852cda8719beecd0ffff716"
+    },
+    {
+      "path": "Media/Bushido/diagonal-3-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c8b5986aaed478a6ca6720244a088c4f8215a28babae40b76806446b934b95ed",
+      "rgbaSha256": "9d20dcb3be8678313a068c4d3267d57b38e3cec0b13a2f42f06f261bd46883d9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-3-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "ff0a6cc94e7b9634ef65a0ae4f9aef3dd07e287f0bc3a64eb259f7560c12ca35",
+      "rgbaSha256": "0aea432bb42a85f1a1c0b3f565fce18a307bb37db5b73f1bf99ffe8a961cd78d"
+    },
+    {
+      "path": "Media/Bushido/diagonal-3-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c4c55cb52626942abfe8c1e6674466d2f979a9b2c4beadfbc1cd73ee36a2d79a",
+      "rgbaSha256": "797575ef21b24016893fd6b9c82a3252d9676a3dadd222fb75dcd988e14bb5a5"
+    },
+    {
+      "path": "Media/Bushido/diagonal-3-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "8deab36d557555658d2f95af65b4b0caca7c06b9b45cc172b6eebfcd15f83fb8",
+      "rgbaSha256": "8f00fd5e48cf8ccf7cb2a5ebde4f017b6b60ee9c42ef1ef95500391d304a602f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-3-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "78a3098161ae673ed595ac7b761c1ada1f5a3e1daf5fbf38b9ecf5aae39c59ac",
+      "rgbaSha256": "1b2911c5450b03abaf03becebaa1819e29096681af382e39446a9d754e768827"
+    },
+    {
+      "path": "Media/Bushido/diagonal-4-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "ed008f72a060b615da02842222226a6bbbe0782f37013d9de4f17505211437d0",
+      "rgbaSha256": "d04cfa095c3db13a99634a1364048f9dddf59f5133b6e2bebaec6c6768d28faa"
+    },
+    {
+      "path": "Media/Bushido/diagonal-4-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d4fa57f0ed25b9a7df67d4a29c3224d975fc2aff7a1e9995a6b304dd32088a72",
+      "rgbaSha256": "4946e105310c6bff5abf1c3cb1d809f78d5dc79180df0b79cd014ac3df9d360c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-4-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "edd5850f792f9eb7854d3ec2775ba110e34612743e6171f4a087da016fea33a7",
+      "rgbaSha256": "4e238684d51a1f0446b1fc54ae2871404d18f488397d5cfc677dd294c362c91f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-4-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "bb10efd1179981df4a09d4b6345834c9867cb69dffc5759574d5689182a13393",
+      "rgbaSha256": "6302e2cccdfa68a03d2552dd0bddb8cae9918e539a2ee408d0a1ad3ce18d723c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-4-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bdb2d84677fd2bc3c7e1d82e3cfd9b0e25f1ae998b6b5564b2d30a86cf155be3",
+      "rgbaSha256": "c99cda6dad30901e1454ebc83c4a0b84fb11e1b69d658c334e58c84535f62886"
+    },
+    {
+      "path": "Media/Bushido/diagonal-5-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c47b73a6755009630824203c9be5a8ce93af66970999c7f723ed7051711e684c",
+      "rgbaSha256": "24a15f20ea37deb1146ff1b54feae0f9163e49d3aa23886f9f055a2ce8c1b47c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-5-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "249ec7a88ae28843abfd0df784e65cf4821e6f532dc3835d43d11f78ed10a2b2",
+      "rgbaSha256": "07619ae7a8efb9236d6451f6598174adbc3f7910464b1db756eb848d0faf87f3"
+    },
+    {
+      "path": "Media/Bushido/diagonal-5-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "04612d9bc538e18fb80b8e8aeeb514bc1299d373b431c9068079bff2bedf944a",
+      "rgbaSha256": "3fd731e9f8e5374a5d736a41322e747a00aa8c09f6b841e3746dd77c60dcfa11"
+    },
+    {
+      "path": "Media/Bushido/diagonal-5-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "c30da81df3d427909c97475d372c0f6e267159d890849d8dcae30d52d63d745b",
+      "rgbaSha256": "f856d40f862e420ce60f77e3dc8426ec803321c97520a86c9b0de8b339b02b1a"
+    },
+    {
+      "path": "Media/Bushido/diagonal-5-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9f8d1286b940573e6d2668d700cb291692c2cf64f6f155c38317c6bbbda8462a",
+      "rgbaSha256": "bdaa3bb214d52c7d617742a18a4beb915c380c73df08a8f98e3a989c8f695df2"
+    },
+    {
+      "path": "Media/Bushido/diagonal-6-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9ff41a6612aa6ba1ff882d83d65aa9d782ca90851eb9eb8f390e7c1a9ce55754",
+      "rgbaSha256": "787e349d84fab066271f7771ef5b4dc25ea4e97948923e6f83642fdb1536fff9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-6-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "33d8f36650481afa52502546f9a51876347e9bbbd9aa4c114c52cfd422f27f54",
+      "rgbaSha256": "dcf5f470a6eb51cef372a246a20b62a5f14909d14a0c0187aaeb33dee1b501c9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-6-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "287b2e21bdc2cac2b4682c23f6d633005663d384d010fc800a7643415d4b7d14",
+      "rgbaSha256": "363c8d2b80138605b377194f84836b6ce2fc3b2bb3c04b3db2543e8fed76220e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-6-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "5b307a7262b4b14d3d505c8f50b7b63f375c5db8387fccf2cf32a84ba5bc9868",
+      "rgbaSha256": "1b790b3defeae012ef08e53009aff8bafae2307902fff0b56970e6ee7490e803"
+    },
+    {
+      "path": "Media/Bushido/diagonal-6-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "d6f829fa4b0f815f8a9ca80ea4c91ab13d769ab1a68e93351cf972a105391f5d",
+      "rgbaSha256": "79ffcc2e3f595dcc53b77859334e722bfba782dc3b2a4fd3a94d9892679fe6fa"
+    },
+    {
+      "path": "Media/Bushido/diagonal-7-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "6c4c6ce9d1f8c6393d2936c3988ecaed24d0e7085059ba4d947e0c77064b6f8b",
+      "rgbaSha256": "e5c0153c88de14e466c9cf615966767337b4b67ee5ca31326f4a913473cbaaf3"
+    },
+    {
+      "path": "Media/Bushido/diagonal-7-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "8f3b97108dd9a10dce4297ac0a443b2f3a71518f10fe8ce20e01059d27784bb9",
+      "rgbaSha256": "f69a391e2b13b890316a664c6a9cee15929cf8b5a00fcd301ede2e6da8f37c11"
+    },
+    {
+      "path": "Media/Bushido/diagonal-7-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "f8b22436a49dcca54142f84dab664bf40006ae716027e45e6d014c5b8b137190",
+      "rgbaSha256": "e2acf9ea32ad3acfe4d2337e2fb2adb144ea64ecfdacf15b5d7fe247fa6c15e4"
+    },
+    {
+      "path": "Media/Bushido/diagonal-7-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "8057ce15a0158f0330743ed095fe4133a3bc22a0f3effadbf0ea0d7600517e05",
+      "rgbaSha256": "2eecb828369418642298535f1a7f57251ee1d05715aaf16b5531875085325f85"
+    },
+    {
+      "path": "Media/Bushido/diagonal-7-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a16a5d2dde148d2226eec912f84d32f0720ec2bfdec0a66e9f589cd99615d96e",
+      "rgbaSha256": "c3fa88700cd6705b6e4fa2b8069da7df64f4fb2784099c0964d21d8a410e36a4"
+    },
+    {
+      "path": "Media/Bushido/diagonal-8-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e267eed5de3a38e13a53d1e73dfcc7ab3d60efc171b2601facb60c3e01848f62",
+      "rgbaSha256": "61df7781ded053230a2ae374564d07575c797c12ee5b1cddf3d3088b9936cc48"
+    },
+    {
+      "path": "Media/Bushido/diagonal-8-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "57a324de4fde8bcf61454910991df52ecb83c76872329d60bf75ba322600d5c7",
+      "rgbaSha256": "6e1d14d8f0045ad9970e9435c9ea1e63c8cda59d838ea668d3a5ad76f7a59331"
+    },
+    {
+      "path": "Media/Bushido/diagonal-8-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9f957ba7d439d159bbb2cae0fe1a4b6dac2176f1d45001a711725a9cf7b5bc6d",
+      "rgbaSha256": "2aa5a52104baf376b37672833981f2496b83cf20d790ed522a2cc1026b0eb584"
+    },
+    {
+      "path": "Media/Bushido/diagonal-8-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "56dbc140991f8772ea7f7873d93e0180dd40594e0a090094f191507b1128811b",
+      "rgbaSha256": "9a88f5dcab730d27078a33107753451f1a72721ac8d5692cd0c4f5ccfc122937"
+    },
+    {
+      "path": "Media/Bushido/diagonal-8-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "90661aed7036929d007c995a94e1115e04ec6f7c11b7f86b62c001164f58eb57",
+      "rgbaSha256": "9e8fad5abf8776ad35c7743da1afaadaa5bcf4f5944447de4f0199a3bccef446"
+    },
+    {
+      "path": "Media/Bushido/diagonal-9-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c71a01b700732bedfc769c0c26c00c9a43e2a0024f0c5befb8386aa879e38a01",
+      "rgbaSha256": "ec8cbbb1631eced22c02c6d7e56df9e0bc7d077181369061f3614ffcc4e62e38"
+    },
+    {
+      "path": "Media/Bushido/diagonal-9-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "ee7a62b1c6adafc86cfc7bc541bbb28f144afd0c2c3b5b2be9e30a17f7d3f0a9",
+      "rgbaSha256": "de53619b99ae2eb2da17c44d9c7a239d9add98a80a266d183b53c8f04e910fda"
+    },
+    {
+      "path": "Media/Bushido/diagonal-9-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "388d64186e4dc80f7a74143aefa51ecfb368d7e6c34882df6d1793d500466af1",
+      "rgbaSha256": "a7b507395be6b66776261ee522918f7a4f160034bc124e613e023d86f1a1028b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-9-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "3278449e5a73735b7b2463b0a0d485f3980a0f72474712fc7583f338c7b4019b",
+      "rgbaSha256": "9d21507fd7d3b6d3137191e002802fe8750d7f54c2c921fd08cfcca517fd4a16"
+    },
+    {
+      "path": "Media/Bushido/diagonal-9-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "8324cf2e71964399d0fbbed359513758649c793dd4a0972255bea16077b19adf",
+      "rgbaSha256": "036f985c14550dc312811499939806bb6e4780e3f3d8124cc64683526d733474"
+    },
+    {
+      "path": "Media/Bushido/diagonal-10-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a1a163cbc6ed3fa02cae4607c704aeeaa22aaa5f40624793c2ef5182c2ffb25a",
+      "rgbaSha256": "e08627751e0429407a0025d468fe44dc61560f48c908eb3bef44134e969ec956"
+    },
+    {
+      "path": "Media/Bushido/diagonal-10-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "851f001304710aa1ec251db286d91dd2cc8d92dae0aff8900000dddfe9f43175",
+      "rgbaSha256": "d9e69750975768af1a028dee19680a5927a41fc944daa1a72a9d7d6cb5535140"
+    },
+    {
+      "path": "Media/Bushido/diagonal-10-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "3aae74a53c2dba39d23e84b332420b20fd97e422bb79749d7680df955cb6604b",
+      "rgbaSha256": "413fcc75c70f4c6155ff8eb21665c5fc2f404c5ab343f4d183838eff398195ba"
+    },
+    {
+      "path": "Media/Bushido/diagonal-10-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "92f349945d21eac16ee4b30e93914e5ba22779c8a7252acd3033d7cfb02e5b04",
+      "rgbaSha256": "7ed912b78fb12a0345c09a416f11211d817faf1e5714f5873dd4e5821a205981"
+    },
+    {
+      "path": "Media/Bushido/diagonal-10-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "698abc47b9c10d30fd06bc72b8daa0e823cf478f9ae42eab815f4ed98f77dbba",
+      "rgbaSha256": "9a0040268a21cefd4a9f0ed122e3e0d7f11791bb5f3c36916a1093bee04192d5"
+    },
+    {
+      "path": "Media/Bushido/diagonal-11-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a77a50cd8cc5de021cc37499d38e0d8d779abfcffed2af2d587e52031110bdb0",
+      "rgbaSha256": "b6d468d2044cde6cb1c990c90b610de1b78d8af87b604e06cae6a695254ccbdc"
+    },
+    {
+      "path": "Media/Bushido/diagonal-11-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f8657680143e7fa9f96c1230772174ae020a2383190c94cb0bc356e8f098c5c4",
+      "rgbaSha256": "0a970876b85c551542994f1cdffb692cf0ece9411f3d9a7c8684df68eb9fd56f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-11-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bfee840ec1a5586e0fa53ef29da17bed6c29bea4f3dd1d8a8bdf82a00525734a",
+      "rgbaSha256": "50f514e772b1dd1e90570ffe32231dc7cc6d8d4657678561215adf45362bf6a0"
+    },
+    {
+      "path": "Media/Bushido/diagonal-11-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f9c1cb4c9c3932e6e278236292782fddd4a85a94b28822de9c176c9d12f96323",
+      "rgbaSha256": "c67c9266a999222627308dc5e0298e289537e50972b2ce2ba65047bd28b3a20c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-11-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "025a79626cc2dbe4c55cac77c894bf989ed1e31a717187788fef71ca9e283ea7",
+      "rgbaSha256": "5cb117ec043054a4341b950773ed46b612d7abb5156164b411fbf0e42996e41b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-12-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1bc8d8f9a9efa355f9707bb0d5349f15cef7deca235424c8a302b8a31b527d35",
+      "rgbaSha256": "56b467c90f23bf037e08561c0502dab1bf343c920fd63de8bc5b848fc1324453"
+    },
+    {
+      "path": "Media/Bushido/diagonal-12-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6503bfaf64f7a6647018c4fbcc3bca5e2a1ba4c11fcde5c30ad5024cb3b5d11d",
+      "rgbaSha256": "e3dcd8fddd773aa739666fab0c2969b8da90001695eeb77cd1f5a079be9f2286"
+    },
+    {
+      "path": "Media/Bushido/diagonal-12-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e9324bd4e1253391393acb4e441ffbc931c7d432f01def699c53e84b1ae46b2e",
+      "rgbaSha256": "966e636708da83d218b9a4e28cfbd78aea387755de03c9f50f18ef747b7786af"
+    },
+    {
+      "path": "Media/Bushido/diagonal-12-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "eac71c35f27f716999722386d7806559075638b1a40f8475e676c158538adde8",
+      "rgbaSha256": "351d65cb22e597a281bd7ac8bfc4206cf8e6d5e2b4c59e59d2ec55730d9f9542"
+    },
+    {
+      "path": "Media/Bushido/diagonal-12-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "10951aaa4f12e0387c08d91d8f82a3ccdd2a94593e0f5e648240dfbf95b74a82",
+      "rgbaSha256": "3221fe445870ba4816ccf04aa8a55a93acd26a11137a61d5348e9fbe7c421bc6"
+    },
+    {
+      "path": "Media/Bushido/diagonal-13-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a5c15b797d0e10b35cbdb88fcd35ad0d9955b90ab770c324612236e37146420b",
+      "rgbaSha256": "335b82f11cae99a0e51b4fdca34646ff2ebdae222e7a555cfd26774be5e5b286"
+    },
+    {
+      "path": "Media/Bushido/diagonal-13-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "58f40245520e6bc970f4dd1c88571d9ccf16c2c07e558cb6c7fc547ad1710a18",
+      "rgbaSha256": "8cb8f23f663a9a0c99ef353a885b51d549fbc0f8b5adf30f34cb4add22ba8f9d"
+    },
+    {
+      "path": "Media/Bushido/diagonal-13-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1c109911d01f5c09a4fccf9d3b73214c61934be68eb09a1963def2a89225ccf9",
+      "rgbaSha256": "785312d671fe31c691ba27ba044d7cb29b0fe93f048d92e3ea247a93bacfa620"
+    },
+    {
+      "path": "Media/Bushido/diagonal-13-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "00c137041435cd346e5bda673d871a779418827b3b9bc95b32e7b4ed46aaa7fc",
+      "rgbaSha256": "49541771096121f26debede06f3db7513b0b20bca1ad238c40d15ec5581cf334"
+    },
+    {
+      "path": "Media/Bushido/diagonal-13-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4339d79ba031aa9d0c455b785bcdff563f4c2db138306c9a26346fb310adb46e",
+      "rgbaSha256": "b5a5074b693b82bfa39423b5e55b19c02171191884bffa0bb19a624e28c3cdf0"
+    },
+    {
+      "path": "Media/Bushido/diagonal-14-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "ca5be7bf02492229fd270b82f577cd8149072923ff33f1af4616ef63b9883d86",
+      "rgbaSha256": "3047792df9cc9576cfc992943dbcd6947ef8fbe31cc875fff9da863663be2844"
+    },
+    {
+      "path": "Media/Bushido/diagonal-14-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "82bf21e7e4012c3de6708242807efa57b51445c3d7ef58e2b14bbb94df1dc4b5",
+      "rgbaSha256": "d16b12f3557fa584367bd4a0ea61abcd7ab06831168d0bd91df73d6c44dd3e07"
+    },
+    {
+      "path": "Media/Bushido/diagonal-14-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "64e604c77cc3fdf5b4f7e190d319c697929b37d02aa89d1c5548bd4bf20c1d59",
+      "rgbaSha256": "231355abcf6ed8316bba1c051c488c1f9f5d26a6b4f02889224d07f06beb92c2"
+    },
+    {
+      "path": "Media/Bushido/diagonal-14-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "1f4245d55d13a9c5c521fd50303c97ee0b2a4de90a4a16a8edb3e55a99586d7c",
+      "rgbaSha256": "aadbba149b944bff52eeb0c007e3c9b1a2438cd752c2b9e70f86e191131e316c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-14-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "811e1459ddc092d3808a4afdf2748eb6a40ef4be22639a9efa35418fab3ce580",
+      "rgbaSha256": "7b57f16fa1b10e5f0854b9caf77052cafa708e6a89fafd462d6db96703571dea"
+    },
+    {
+      "path": "Media/Bushido/diagonal-15-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c20656f5ac0b52cc9d38e9d8f82d7eeb98f21fb92b9d6fd99c03c66c165bdd1b",
+      "rgbaSha256": "57888ee599f4bdc6d1e0550f18d191015c316b157bdecef1dee193b61b51a977"
+    },
+    {
+      "path": "Media/Bushido/diagonal-15-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6abfcaf785f5ab5343258eaee0d0a6f21d3ba0323dae7894262692868f534e91",
+      "rgbaSha256": "d606934f1151fa97de80eceac4d307e08a1add4c84d284fdc9d81a10c2186eb1"
+    },
+    {
+      "path": "Media/Bushido/diagonal-15-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "b7dba3f8601ead1f18330cf5496600f262da7edf64d6ae89e67191ca51be9c9b",
+      "rgbaSha256": "4f523e4f4a97d8162661aa00df2c1bb49b18d57d44315d29ca2242cfc1c75d03"
+    },
+    {
+      "path": "Media/Bushido/diagonal-15-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f18b568bcc505f7b1e877b1fa94adc354042a9419730adc27f3e69db8887375b",
+      "rgbaSha256": "06e211c45f44b3f54cbd7419702724fa10149f31c55d1e0eebfbb8abadeeea1b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-15-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e99ef2bad8bec6e37c888edc9720fb810f292fcc71d8461f6c88ddbf8db85a4d",
+      "rgbaSha256": "6cdbc2b393e0903c0b0bd74c158bc0da488cfe9f45231f3d8da0df7c8d35e64e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-16-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "98cdbe9a11370aa0abbba8dda8b4b17a6cc063aa1d8ebf397b312028e25e3cc5",
+      "rgbaSha256": "d2062bb9e88b0f287231c2c2fbc7abdb02a1c99c1052b04cb68c5dbd57110ae7"
+    },
+    {
+      "path": "Media/Bushido/diagonal-16-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "5620c82099f851705a6adb778f8305fa8e815f3c753b4c2736fead12b8bfce46",
+      "rgbaSha256": "11d0ca4645d8eb9389a7c5fa0abf2b8447f33a8423e418270e46419cf409dd3a"
+    },
+    {
+      "path": "Media/Bushido/diagonal-16-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c15ca5efacb64d5eca70f01ce7e0b9b0a1e21375d838b0b8d0eb19af2d97043a",
+      "rgbaSha256": "7b264fa442ad9343c57c0459592262fcdac4773ce81492f33772b6495f2c1f26"
+    },
+    {
+      "path": "Media/Bushido/diagonal-16-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "ce50389ca7ac3b6a5776bf07a77ddc0389bc0327dc518b9752953270e92e271c",
+      "rgbaSha256": "e500b04e7ae3fcead45e36144586cc504a8a70a0cc43dbe949ed929a37f7069e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-16-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "795422ff0bf0bcce6ee2fa67d37e7dc12322ff5085a3039f6bc53f5f26f672fa",
+      "rgbaSha256": "ddb742b76bef3dca3cdb57cd1c8ad443d29840d6f0e16b067cf849d6a9090324"
+    },
+    {
+      "path": "Media/Bushido/diagonal-17-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "fa38c950b76a85f1c8b1379adde352197aa72ac8e5db48e0a2e02a09bf73b911",
+      "rgbaSha256": "9ac14404093b106902423e160117916f002bab4a04c0ad3c4e26e76767d3738c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-17-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "66c2c8e7626170ceed9dc2c7f69c067077e05633e271b438da7b89f20838aa75",
+      "rgbaSha256": "e67f9f27b309eeb026d63435dc22071f58113883e9cef857df17cef5411b36ea"
+    },
+    {
+      "path": "Media/Bushido/diagonal-17-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "88c464c9d195a94415e45ae0674cbc30113bf489649e91e9927ca175e4b0c461",
+      "rgbaSha256": "d0df70fc4bec43c11bcdb90420da675f3efa206340970403c45532a3249d4345"
+    },
+    {
+      "path": "Media/Bushido/diagonal-17-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "06d1cdc6265aa0b3856b96d2ac59497425bf20a2c63eef70bb96096cc663d823",
+      "rgbaSha256": "b5c4c60f3df9c52fbe4a99657c4edfda135f7174d91ca22a089e6def7a5c72ed"
+    },
+    {
+      "path": "Media/Bushido/diagonal-17-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "ab418ed83060a17a3a12e05e574386040ab8dea0b61c109be0d9fe19c11b96cf",
+      "rgbaSha256": "b49fd54ad974993594f6ca2f95635a06e305ae22fe3b3c2c475552c5d94afa4b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-18-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9645fa3c39cc23735e40d3a8056a27d942c84988c5eddf44c30072904469554f",
+      "rgbaSha256": "1b78347a3d826ce53598fcf31ae917b6fe21d26415541de6e8cb3987809fa074"
+    },
+    {
+      "path": "Media/Bushido/diagonal-18-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6938a0e509089b7271f4cbd6204beecfe10d42be3026731dca98695b17a6d37c",
+      "rgbaSha256": "ba10ffc63755d2a44996ad1bb504d3f8468d32dee17ae5ca3388f8f831d17d0c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-18-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5e1836871ee10a70d6c56d75bc6a506bd843b092a20408d6b5420a56b53943a7",
+      "rgbaSha256": "bc3550c61364ffa429ffa21b128ab3bb87db7b9af46a9832385e088ce02caaff"
+    },
+    {
+      "path": "Media/Bushido/diagonal-18-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "8e56f7c4d0aecd3ed5c0beec3ecc69d698fdade255392ce0725dc5612199895e",
+      "rgbaSha256": "ce430452b2060280fd6d147fff8336c522062d6c201a0e5de148b0fe3583792a"
+    },
+    {
+      "path": "Media/Bushido/diagonal-18-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "621519ba1de2af7949e9b2adf2663b64b71c2304a783bc31a0e56f7fea717d9f",
+      "rgbaSha256": "596c8da637f6c357730654b6f48c09b79a865872dcbf04a45b1c38cd1d033a71"
+    },
+    {
+      "path": "Media/Bushido/diagonal-19-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a5162f0518eebeaa6f242f522081b1aa774cfd7b2dc1ef28ed95d763c3ed4c82",
+      "rgbaSha256": "90b76c63b874b7ac374848712de5e449bedeb1b1fbfe062c84501156f34a941b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-19-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "4e3ea421ac890a9c29e86453510a50b09f99baa6ff1b92f51d8fe3c26e3703e3",
+      "rgbaSha256": "667b48009b354e42e96fc4833393a58193d001a87f54e0416cb7ab5aa36627a9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-19-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "42932dfbb939e06259bb74481b5e610d6ee97e08935fbbd0aa79668eb3c3b263",
+      "rgbaSha256": "38f06498670efef2123dadd3230ce10a7891136228bd99cc9be6276c57d347f5"
+    },
+    {
+      "path": "Media/Bushido/diagonal-19-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f53ac3972812166c121c6356a50f01aefd56498153279f42077ca2f65e9b65fc",
+      "rgbaSha256": "b7ac2ff28dc66da5aacd57b718137b604f7bac064f70d050213debd53a297d50"
+    },
+    {
+      "path": "Media/Bushido/diagonal-19-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "213db4b655fd8845274eaa6dead6c2a0519513cf4622f4a3bce99e56ad431145",
+      "rgbaSha256": "182bf44bb726bcd0c66fa0529ba4f3f3a14cc951fdaad610bfa8eeedc901ee20"
+    },
+    {
+      "path": "Media/Bushido/diagonal-20-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "86fbdebe1410584a7d892bf54c51501802a61163bbc826ce90ef6758086c739f",
+      "rgbaSha256": "a4d6122cd2d73b6ac6c0f1e5b717c902de80c13d844e3751f2596b17f9c568c0"
+    },
+    {
+      "path": "Media/Bushido/diagonal-20-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f732d924008b45cb432dde08ca8b466d4b135677caf520826542fe47ac88c11c",
+      "rgbaSha256": "318df1902aef59e3647846b17d53f407f981e4b9d7f703be322ef8799d7bb3a1"
+    },
+    {
+      "path": "Media/Bushido/diagonal-20-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "f79d8231dae371e3153090803a68e6489cf37cf4d691351bcb922c853ce03b73",
+      "rgbaSha256": "988c34696247a5316c3c3ff74867269d0c7776e61d4998afe680774edace27f1"
+    },
+    {
+      "path": "Media/Bushido/diagonal-20-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "b26df287c3f9668294101e41479caf22d6b780624bb6d246743a98ac3509b659",
+      "rgbaSha256": "45050c756b68fe3762d788bb7c0d9e984f932dc5b5a86a58ac084239c8cc11be"
+    },
+    {
+      "path": "Media/Bushido/diagonal-20-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "52da45549b6744c207d39ac03b58a0169e43668734a7f0e6882a6cd54fafb601",
+      "rgbaSha256": "e604cb977440ca5fbd0049cef2de68d8abf03726875cb9c42babda6528479603"
+    },
+    {
+      "path": "Media/Bushido/diagonal-21-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "8b896ac3ecb1a853996756d62988f3c24723670bf97b7172a95fecbb2bd51d9b",
+      "rgbaSha256": "838085913c07037b6c3951cb0f56067a9aa7f29f4ea77bea73627587d9912c96"
+    },
+    {
+      "path": "Media/Bushido/diagonal-21-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "19ce32e38c3746669b745a0e510bd6a877c0505b01ee335207b9b5b3c2c6164e",
+      "rgbaSha256": "6c215f58bde3d86beea0dc236a416ed13f8afa11e0c644ed87c4c659a79a837a"
+    },
+    {
+      "path": "Media/Bushido/diagonal-21-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "278e61cbfddd07f341cdc09fa39520663cc3f7d0f2e842a36a8d28505e81b3b3",
+      "rgbaSha256": "e448aab69790a10a8f0a0a2b4c760cf74bfe2f01f0aa39fe8221e76cc87bbd95"
+    },
+    {
+      "path": "Media/Bushido/diagonal-21-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "de4f2b4e3ff076c99b1aa4ee1e51ef53d195bb93408d2e4aa294d0ed7d3c9eca",
+      "rgbaSha256": "f034bea89f5eff33265bee5044bb5e7643b28054013b043e8d7dddcb58127de4"
+    },
+    {
+      "path": "Media/Bushido/diagonal-21-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "2cafbef31227de89009c46f50a8c05446e9c65d60b2e86e3e7d240164749a2ef",
+      "rgbaSha256": "63acc520cf2425ca9a912f9746c7042e3ab2fd69e8b319a9ed98a30c112f0250"
+    },
+    {
+      "path": "Media/Bushido/diagonal-22-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "68d4dc5fb8549d8bf6aaed7de95878e93c1489def08d105a8affa6d422656176",
+      "rgbaSha256": "6d0efa6c5919683ac5c1882b30864b0462db0b4dc075397809643952f2d2fa7f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-22-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "64a3377b3e7abdffe94fe7d1fb73fbec3f98cb7c760bb32f3ab985d7d6327dc1",
+      "rgbaSha256": "462ccecca4e9caad6a7f93acf3ef6756be94328ccc326423f0be76409227f4d0"
+    },
+    {
+      "path": "Media/Bushido/diagonal-22-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a01367fef73ebf3b1bc9c59883e82585a7999b129121e2a8cfa5093611d66347",
+      "rgbaSha256": "74f65094f10245b87e331d608fa711a64072a18d0c2c494297cd83da41399b7f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-22-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "17ba0581a2a927316c88a10fdf301d8a678b369b78bd20c2c8a431ed2d859aa3",
+      "rgbaSha256": "985bbd002164abaca677aef25ad83cf5480df426e34c621d989ef012b2922796"
+    },
+    {
+      "path": "Media/Bushido/diagonal-22-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "502a2e456dc5d0b78fc6eabdb70a9682b100ef480c828df340dcdf721763ba87",
+      "rgbaSha256": "82d13fe35053364c76751db5c1f87e7de6ad7958b3efe3dda95a9a3439081a0e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-23-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "934b88cdc20cd44f660167940d67ff14895ace4b65839d3c5aa2ff6c9602bb1e",
+      "rgbaSha256": "f776eac1976079e70adbbd72911633d203b2dec0b1abdee37150214ad672f7f7"
+    },
+    {
+      "path": "Media/Bushido/diagonal-23-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "3092a879d14245151170db0bba3369da68677d72a207bc9f6fd5f03dbf858040",
+      "rgbaSha256": "c415d6fd4173d2449fda0dedd198f151d85bff4184392313efde3fd03b934961"
+    },
+    {
+      "path": "Media/Bushido/diagonal-23-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "6dc077a0df7c81f69082f94e4dcbce8bb9259c501eadfd30eba5467ec68f2b13",
+      "rgbaSha256": "c60a4cd39632db9474638be0a3cbd864748d8897beb8bc7f0f0a6d19eb7b59d4"
+    },
+    {
+      "path": "Media/Bushido/diagonal-23-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "027108dedd133b86759f254e89e6e7ecfdd898aebd732a565a917aebbfc7fcba",
+      "rgbaSha256": "f1d7184fae43d422f855e6083838cb502e36901507bf998ce48ace9b119d2d07"
+    },
+    {
+      "path": "Media/Bushido/diagonal-23-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "8f05e7c72bbda5c8f3c0223524014fccbe9507bce47de98dd99986624fe5f1d3",
+      "rgbaSha256": "a8dde057a76388692135239901247776cfb29b149986531e914a2bbbbcd4dc00"
+    },
+    {
+      "path": "Media/Bushido/diagonal-24-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bc24581021582e31f2ef2d7fc1fd5c9942f3c28dd33162e18d89c820d50f12b4",
+      "rgbaSha256": "2ddf1b6e0a06c54c7626652d859d2b8047cdd6bd3cee7a25b0df108380362420"
+    },
+    {
+      "path": "Media/Bushido/diagonal-24-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "a0ae7c4906d35330dbb3bea3c9e8c615872f773723fd2fb67669b8fc2db2ba5f",
+      "rgbaSha256": "ac578b1bfd1510a6455b6f75e7fb2d492ae9dbdf4f0cf27ee857f1a9450eaf49"
+    },
+    {
+      "path": "Media/Bushido/diagonal-24-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "dc024e5766b179910d039e4972c69f4c20028beba1a6e33ab1046e381fd44a2e",
+      "rgbaSha256": "454a445ebb6c32c0049dba3ecd3df53e810bca0e2c95d89e8c530b83bfa3bb98"
+    },
+    {
+      "path": "Media/Bushido/diagonal-24-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "27c803100bf6049e7e88737b2f9de1e908d812af7b7a10c3f861a793b4e74ca8",
+      "rgbaSha256": "b6b352332f5f39d5565e6f5771d1e5101df12abaa14756581bb5f8a15c2b93cd"
+    },
+    {
+      "path": "Media/Bushido/diagonal-24-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "916c036910c4e71d4b759d414bb9f570d08e280de8249b4924bea6a668b69681",
+      "rgbaSha256": "dfaaea55a02a3b086755a2d79746cb421c0341216cb25c71bb46d68c9822cbe6"
+    },
+    {
+      "path": "Media/Bushido/diagonal-25-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1ca426bb01852ef848f70abe32370df7ca7d9912bb766d12dc62a63b9d619621",
+      "rgbaSha256": "e33fe3be947fc258110da7a0d397e05c64c2cdf9ca3f9433205140e22c008166"
+    },
+    {
+      "path": "Media/Bushido/diagonal-25-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "b966a0c1603dcfa93537782ac0f25b3d79cb85afa4239367697de39c0c255510",
+      "rgbaSha256": "2cda52f79be38c61fead73b6930e5585ce0cb731e5bcbb359e1d18ad9528324c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-25-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "f07ef0b9ba04e7329a8a3f0ff67de033d9ba40cfb23e5adfed19aca33abf0335",
+      "rgbaSha256": "471d0aaf940ab8eaee03a18724fb922ffc7fc1f492d9dc2675ffaaa3c4580b18"
+    },
+    {
+      "path": "Media/Bushido/diagonal-25-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "fa0b9059dd0f95514329ff2e2a7b82c6cee8b7fb4862e7593f3c7100fc500481",
+      "rgbaSha256": "3302784f72b6bd61b6203cf571c830da9bbde5c3fd6b53d265ad7b5c4d26a8e1"
+    },
+    {
+      "path": "Media/Bushido/diagonal-25-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "ebaa22c172076019d5e00f13757eac32d64e976bba3565d71c082f5b7e0fe3d4",
+      "rgbaSha256": "d9969a6a63112c6a9ff90267eb1f3b1aec89b23cf84511b03fe81166d06ce1ac"
+    },
+    {
+      "path": "Media/Bushido/diagonal-26-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "95c1d4f0e062647395bd88e4d84a9f0fe16143b7f770d383340f1b70bbf1b2dc",
+      "rgbaSha256": "8cec35d60e877bce8b2abf4f3602dc0e0f2613c107b91d4f4cc186be8803c97b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-26-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d53f211a7bbaab595afdfef65fcf2b0b429d856db743681874ada90b84498625",
+      "rgbaSha256": "4857f34124e25a0e64f715bde4cd3a00c64ec4accdc340c79cb6a669d29e83ec"
+    },
+    {
+      "path": "Media/Bushido/diagonal-26-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "fc0bc4185c81e54bed6644bb983f6f0c345cd77335e9db048f840c99834c8b1d",
+      "rgbaSha256": "b6b90252fd0c48f71a3f4af571efa0ce05726ea8b2b1a2550f07eb7dd3bf34d9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-26-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "b6c22b2bd460e6752febc5f2ae2feaa708ba3054f247461321ea3eabcea2e844",
+      "rgbaSha256": "5448bb7354adb23d678cb8528f0fe2a19bd13a448c97086181e16c4ce0e7439a"
+    },
+    {
+      "path": "Media/Bushido/diagonal-26-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e04aa4640b0e7b5117f5f9654780b604083a5866f5a8eacd2fcc53a6ff1984ee",
+      "rgbaSha256": "834d2ada0502a5fb27e5780ff07f811a79985a98a68e58772642abc9612f6809"
+    },
+    {
+      "path": "Media/Bushido/diagonal-27-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "7cfbcadae3c86e56b544842c1ac3649216188ac5311c3a71cc38d88b1fb9a2f4",
+      "rgbaSha256": "84fdc14d853aae4d96d8a199333b7a8c94961839aa2667f0c8d09b48a5f35425"
+    },
+    {
+      "path": "Media/Bushido/diagonal-27-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "5a61d67eed3b98564f6ad94ff6801b89d36a367da691063227d9cfd83f887f27",
+      "rgbaSha256": "e356c05745bfc284c4bf9aca775fc9d5bddbd67ff77cbd8b5d8c2bc750b73dcf"
+    },
+    {
+      "path": "Media/Bushido/diagonal-27-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5f4abd170aab514c9e6cead7ef68f36dba710dde6ce2453ad5a0c45f38cc33db",
+      "rgbaSha256": "7ab41f16a2d33e147fdf44606a3b69025d82ba492eaef9592ce7dbba6d691c52"
+    },
+    {
+      "path": "Media/Bushido/diagonal-27-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "af05d297a642742aa2de7b0225128893222abd3ec2671e8db1dd516e9b67dfeb",
+      "rgbaSha256": "3e767baac143f92598aca4b98e7da7e2ce00e94d01bd77a2a263cc6e31200162"
+    },
+    {
+      "path": "Media/Bushido/diagonal-27-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "f6c662d7ce3df6fd8ca981466cc9192af51cb162d3d7865dcdecfb382bbd6750",
+      "rgbaSha256": "7db0748657aaca15271c53b487323ad93004a63d8a2d4079591bc19abfd0cf0c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-28-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "fa1e26e61485d1fb318ffeaa99f1ffeb2e503d6590b2b6c096ef337d18b4c1ec",
+      "rgbaSha256": "0f8e3b5accc08a99b973e80ef000bff658e1717231a62e281ccf5aa647496ce2"
+    },
+    {
+      "path": "Media/Bushido/diagonal-28-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "add5715b6bb6228ebfdd073c40da81349ffef3b654ba9c080e59a96222347241",
+      "rgbaSha256": "e787cfdcec1cbc262bfe83df5b3e23465941129732389e0166712af803e4d2ad"
+    },
+    {
+      "path": "Media/Bushido/diagonal-28-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "64d0a91de286c075552e3a2d865db6cbfe81759c49ea0771c5cc741655ccb9a0",
+      "rgbaSha256": "285f7ad6912ea5ca53856bed86e2d99975b87b56abbf551a14b9d20439768011"
+    },
+    {
+      "path": "Media/Bushido/diagonal-28-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "10ab79a88b73b5d9031fdde71c6a719e32cec01a2d2be49000fea22b4b486ad7",
+      "rgbaSha256": "da11b9e22808d03b25817ecdfe5541ca6bc18f3d11d6dddecdd2c4a47dea19b8"
+    },
+    {
+      "path": "Media/Bushido/diagonal-28-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "471e07371311648a4ea3aacebf981a9bc7b5939cb4e7202509c250328baf48fe",
+      "rgbaSha256": "10fa4b49a239baafdfaef1a4464c6c02966d584aba99a8e0b075309a35e941ef"
+    },
+    {
+      "path": "Media/Bushido/diagonal-29-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "52eeb2b6189d3bb93686f580c85839260f579e5a569dd559e856d446a9b39f55",
+      "rgbaSha256": "e3cf64adacf575772c7af3f4edfdfe46298fa88eb55b182fe0a2067e4c043d9d"
+    },
+    {
+      "path": "Media/Bushido/diagonal-29-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "98188b1fd1168dea51c9738e53f058c810d9e086194d9e3961f8beb7be2876cc",
+      "rgbaSha256": "3b074ee1711fc4e1dcfc06fa551a406909e3a00863f8028c28c3415df2ffff6e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-29-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9416fb3f9e71846f9c988a1a3b1fc43f08fdc743de002c405ae1cfc521d7f24a",
+      "rgbaSha256": "96a04d286f91d9de5828cf7c72bd841181a73e0ee7f136f595c9e98390e3cf69"
+    },
+    {
+      "path": "Media/Bushido/diagonal-29-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "335de04a9dffb3b25dbbd5477efa590325b2f8643dc5337225b2f3a4363ebfd6",
+      "rgbaSha256": "bb2e85d8694a2d0e8007585cb51b9f92c252347412fda1ac23afb160fa39a11f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-29-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "2e02023d25fcc555cb1496f988aa058d909360f75ac9627bfaf477d7f44c3253",
+      "rgbaSha256": "c9d4a81f7244472bf79e6db46bec776b7e0c802d5ed03a47e3069b3f0c207e30"
+    },
+    {
+      "path": "Media/Bushido/diagonal-30-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "971a7bacc9087d78a7e2428d1018ae9f191d1354b5546a57592f1c0c4dd0273a",
+      "rgbaSha256": "7944555cea0e19e934d4266a3d38740f104d873d6137726c8153f54a2c02426f"
+    },
+    {
+      "path": "Media/Bushido/diagonal-30-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "39dadbe68edea389d070d318e77ade9a588bd78ece4055bd702e62f5645fe559",
+      "rgbaSha256": "7a6b6fb2887d71869e1d6525f2adfffbb34a6fbeb0bbf0129aafd8fbd0417431"
+    },
+    {
+      "path": "Media/Bushido/diagonal-30-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4f1dd08fede3265dfbaddb95ae50d35b747085359e3cdc985b2e7ea6031460f1",
+      "rgbaSha256": "eefeeec8ca9e547e65dd7b8f93eb2f409490a6d879a448890aa86ad267395b1b"
+    },
+    {
+      "path": "Media/Bushido/diagonal-30-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "78856f317d9cfd1464daaf0b021576968256ab26b28c5fdf2f85a3a636c76139",
+      "rgbaSha256": "983f983dece9ab578587cdfc97b7041f2afa4d47fc5183cadd544f698ae1f6b0"
+    },
+    {
+      "path": "Media/Bushido/diagonal-30-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e0303e03057481c2c50caa9897229c309311507697328ddfd5aa0bee2ffb01f7",
+      "rgbaSha256": "56f00d74a2c69c814f4278040c4cdf80c2634af60117ba9831f82264c5d43317"
+    },
+    {
+      "path": "Media/Bushido/diagonal-31-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "0ffedc6d56fd5a36966e5048497e2147519af4fa6f9d550d44997415a74739f7",
+      "rgbaSha256": "f0f9604ebe583852a9f4202baecd65b85c5cd4ff9338e6a6f9aeafe1613a117e"
+    },
+    {
+      "path": "Media/Bushido/diagonal-31-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "a91a416f2ca62b666a5db15893c26837dd038906553da998b98465cbed7d7546",
+      "rgbaSha256": "e4e05b0de3f5fbdb03eb35e6a5325294f9509b978f4adc3deb4c67a5d88d316c"
+    },
+    {
+      "path": "Media/Bushido/diagonal-31-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "72ceeac5077de47237cb458584e84a4eae7506ba79aa7d59427f242c4c7d4194",
+      "rgbaSha256": "460cca7d1005515bfb7bc9b76988fa48ae47004580e493941ec642117ae5a4c9"
+    },
+    {
+      "path": "Media/Bushido/diagonal-31-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "c3eae739e05fb3b3ffea55b82b8af268ee56f2caf57d89d02ed8cf0a681fee5c",
+      "rgbaSha256": "540741fe4d45b8df30519684625a320e8e07b0859fe5ac169d1185b1916d9cbf"
+    },
+    {
+      "path": "Media/Bushido/diagonal-31-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "b1ecd3d9205c7d750f81b6667fba50ccbb8e04c74803fa23a06e17071f122152",
+      "rgbaSha256": "1a9f576ce6b90a86bdfbfeb444b8d76bf91bfd54bc2d37ad4484dfa439991dcc"
+    },
+    {
+      "path": "Media/Bushido/diagonal-32-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "7c1d51acac784447b2aa7d141a2f618fdcfadef2c912f191c57f1c96b4b75c44",
+      "rgbaSha256": "eaa5abcbdb6a60d2126201041ffca1961c2b5904a9b773a767fd9fdf4cfbbdaf"
+    },
+    {
+      "path": "Media/Bushido/diagonal-32-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6fb4a4d1a0ce709933b17f5696be19dc3decc5c0f331a079a6f3a147612bd355",
+      "rgbaSha256": "36b0f669f3355386cb59b192a9c512c48644396e3db342a78922ea23731b3010"
+    },
+    {
+      "path": "Media/Bushido/diagonal-32-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "d313cd58c6a77d0a2c50270bdf192f695e47f447d46fbeacca79f8a59dc1e833",
+      "rgbaSha256": "c71824d114540cf769aaea30a2e3a8e535a4f1490d1ceb5b8d90f0edc097b529"
+    },
+    {
+      "path": "Media/Bushido/diagonal-32-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "b0e3644ae8c38471bf3e27f999f12850dba8c9ef55cc70dc12681ba17723293a",
+      "rgbaSha256": "3061747f34d510b720292b4b0f6cebfcf0979c3081432a39f2ec16307926a657"
+    },
+    {
+      "path": "Media/Bushido/diagonal-32-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "cb2cda4804e36f852f3805ebc875baf3b38a36f6b6092cb0bca461e130a94a73",
+      "rgbaSha256": "15760870fa31246966032acf22c8791a2acaef53fb00c603af085323f73cac81"
+    },
+    {
+      "path": "Media/Bushido/chamfer-1-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "d1aab6440f9e7d5aac80b28db721fe9982b3c4d8fc0f7253502b4d9f9776b471",
+      "rgbaSha256": "c299d5d6f42252962963c01cb3b34d98ee4ce8151af7c1dc9f82524b11d5fb99"
+    },
+    {
+      "path": "Media/Bushido/chamfer-1-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "324278ca5c440a5ebd17113def9b4d926c15a00120d0d4fed5a383ed2596c038",
+      "rgbaSha256": "ff095f1cbb694b1e575c373aab66c9f766fdc5a52d86315d0270f65121076869"
+    },
+    {
+      "path": "Media/Bushido/chamfer-1-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "f4b1a4e533e74a5f73062ac388300509d956781ea5a89d271d5c88cd54ba9245",
+      "rgbaSha256": "5d7b24e46048f742745f6e0865294cb34a1e194e2de88a24ca4dedf48ebf0107"
+    },
+    {
+      "path": "Media/Bushido/chamfer-2-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "24e157cb9420b52683cb74a2752d56f714493a768607edd834113b5205fe342f",
+      "rgbaSha256": "4d090e33c42cc8c31ef135b56f9239f0ae3de0e9ede5c804a212cdea6fb79140"
+    },
+    {
+      "path": "Media/Bushido/chamfer-2-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "7ef2b09dc7fdbfcf07c7265fd17d20b4b0cabd49d8fca0482a955d79783d628e",
+      "rgbaSha256": "efe7ac0e31902fe752bb12b0d6e49908bbdb80db02a4bfcd04ab879b63189047"
+    },
+    {
+      "path": "Media/Bushido/chamfer-2-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5d260fb8bfa28b750ad5191cd6b3a201643cb46ee49a15a2b1875892cf77d0b7",
+      "rgbaSha256": "451b86196be861706225d4c8379caeeb58c888b6679b94d4d7bfa4389919cf9a"
+    },
+    {
+      "path": "Media/Bushido/chamfer-3-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "2d55e30d4f9d02bf26d2c1130e5812b14e9a1833b5568cee62ac2b39accc639a",
+      "rgbaSha256": "727f1782a488ba82240d483d72d9ed6e45389a0a7da67bfc6efa9502927af855"
+    },
+    {
+      "path": "Media/Bushido/chamfer-3-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "89b8d6eee1ec3b5013ed03641553ebadbbaa1f257f71211b1b69e431db6ed767",
+      "rgbaSha256": "1ee7f36fc7bee5e523604519bacca5602a44a98443fd5e769da8d13c5b4c2032"
+    },
+    {
+      "path": "Media/Bushido/chamfer-3-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "2b163253e572a6fc31fa01a15ac27876e764b3127682bd8ac6a62fce7b821aa5",
+      "rgbaSha256": "9e33487b57c08dafdcb0965b31d41b777ce1d2489fb8993dc5b9fdb482839ee8"
+    },
+    {
+      "path": "Media/Bushido/chamfer-4-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "173bf95e61b1a5617e98c348c06aa0e613afe1d058ee0c5461585d11bc443ada",
+      "rgbaSha256": "f4700de7f88177749e2760fbb50c3090b03f1c46fb9e66bf6846f3bd1af86f68"
+    },
+    {
+      "path": "Media/Bushido/chamfer-4-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d561b6c3243efb942ef39abdbe4ce17e6ea068e1d7776cf3749f8e0098a7e357",
+      "rgbaSha256": "2a5fc3dcc8b1acb55062ab6896ea19d9b69d6eabd1848b4f33463cffbae5cfde"
+    },
+    {
+      "path": "Media/Bushido/chamfer-4-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "edbcaffec4e4b08cfc74ea38ee1ee93855f6194efe95af654d5c722a3820d29a",
+      "rgbaSha256": "bb256b5ac41f5445e85fc6bb4aaf40eb823cc716f4bc3ddcdf91bf69ddf46d61"
+    },
+    {
+      "path": "Media/Bushido/chamfer-5-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e8b946fdc230ca17d2319975b4fb4639a909b120ecb7c068a39fb615f741a0b0",
+      "rgbaSha256": "ac8a840cf73277a22871a30b976e78ad56f4e6228f3b9560147bd9e005bff461"
+    },
+    {
+      "path": "Media/Bushido/chamfer-5-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d0d9e55121cf41e4007d3d6f59301536ea2a669e7f5f4ad6213359d4063083fb",
+      "rgbaSha256": "3a53275101fba7c0f2166178f577bfccedecb5458adee1c8fe52b4c08128141d"
+    },
+    {
+      "path": "Media/Bushido/chamfer-5-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "a763fba475a99f6faaf352de5c61902f4a133c9e7c31b32ab62662a13f9c4a44",
+      "rgbaSha256": "d2234f31bb35972de4f7c50c562ce5acfff0bfdc29ca3f58c8a99ef8b94557c6"
+    },
+    {
+      "path": "Media/Bushido/chamfer-6-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5da2aba2d9daab2fdd8ca4fa01a5f15880af6384eebab19b81aaa92f56126274",
+      "rgbaSha256": "d35a8b8d316058bdf29fffd7d4fb74fbdeed2f9940dffe529e0a7bb8ab828fc1"
+    },
+    {
+      "path": "Media/Bushido/chamfer-6-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "efd368becbdd5ef81d8f93fa90fb9b62f447b877510d0a9ec8e36d44441299d4",
+      "rgbaSha256": "7ca23c83a4f5f483ae2af755663a4062b428e6b58f87e5342ccf36a15cf4e630"
+    },
+    {
+      "path": "Media/Bushido/chamfer-6-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bd6f3f9a03ff66f6d515e80dbd335c0e01d7df988607869b81ee77a01a9996be",
+      "rgbaSha256": "196d3569e73f3af96f321274c54c0cd62fd81e38bef7327b51865829534a957a"
+    },
+    {
+      "path": "Media/Bushido/chamfer-7-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4628c240e270d4ee18260645c1bcf871aef712a3b9e188229b4ab44214ded548",
+      "rgbaSha256": "a666ec72062a41532868f18768a1810a3f870c237f23657915e38d058d34af40"
+    },
+    {
+      "path": "Media/Bushido/chamfer-7-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "efc16ae2b62b9998442e4bbc4772d7dbd65f802fb41a4e5c4c457f4feb66a79a",
+      "rgbaSha256": "379cc47495beab0ce80ca6c4d7d7eb68cf26e5e855e47bf1fd7e7cedb382cea4"
+    },
+    {
+      "path": "Media/Bushido/chamfer-7-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1f3ae11bd49ca024ea7fb9f0df960ade74b8a3f90d4ceabf94c03bef5045af91",
+      "rgbaSha256": "838f4f6a1b98044e0a75c029910c21aa2ef01f2be073253cc7efafa1825b0ef9"
+    },
+    {
+      "path": "Media/Bushido/chamfer-8-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e937e0efdc9b89a498ae64d018fa93f31106933fe6c8e648b9812a4078ccae41",
+      "rgbaSha256": "cfe6a7d2a8786eb0647cbad8bc323239e8d391c5c10f0bac65503eeea8db118f"
+    },
+    {
+      "path": "Media/Bushido/chamfer-8-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "89c9eb73b48ea682e33d2239ddffac4fb4180b6801c3edabf232dd7c9d9c391e",
+      "rgbaSha256": "e427f1d473d61f7c422bac4667755e888f1eecea900af7c9ddc696cd10a2cb1c"
+    },
+    {
+      "path": "Media/Bushido/chamfer-8-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "3e7402c6b5f24739cf57961294eab4709317bf99f7f9b2da167f106634430b4b",
+      "rgbaSha256": "077390c3a77202c28510c891c62f63c729eca1e5650e471489440bfae3a37f8a"
+    },
+    {
+      "path": "Media/Bushido/chamfer-9-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "42e3975b3b850bec37d9318578f59af4a77e5d85ff020a1b634f495ff1cddf9a",
+      "rgbaSha256": "57b2f987e0bb497cfda1cd1483209573309960d1f2d4e04d0282a17b2ed7ac15"
+    },
+    {
+      "path": "Media/Bushido/chamfer-9-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "ce0c4901367269e889ed07e7e9b8e4acf589c87fc18fbcd7d94404a5a1147d5b",
+      "rgbaSha256": "d85b37b133a2bf1efb6636f1180b8bf7c1066c18c5d66927ebd83492e77a1544"
+    },
+    {
+      "path": "Media/Bushido/chamfer-9-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "84679404679084b9c9dc57cb0b49f6bd50154066472732c67d9f6af51fe58449",
+      "rgbaSha256": "0940c2f95d919258e3310d6c4ae12367f659a630b94698aa913c163f441f0dee"
+    },
+    {
+      "path": "Media/Bushido/chamfer-10-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "6369397cb4c2cdcd81718e851a26bf1dd9fd504e1d6fc6259e0b0970422b9a5a",
+      "rgbaSha256": "8c0f0ac3e701438d247bcf0c632264908848d3a024d321d3933209c09cbc77e9"
+    },
+    {
+      "path": "Media/Bushido/chamfer-10-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "0023584ba5fa35c0be8a7f2952dff776dc7bdac3a24aeae18cea1ff116b6c1ca",
+      "rgbaSha256": "ffb2dc816f165ca3ad031ea6f486aea5b9a935c340922c27573493b3d4424ec1"
+    },
+    {
+      "path": "Media/Bushido/chamfer-10-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "92f4954be0b79dff08d3347f79c22e929a4302978ad7c4b52f77305e1287ab8a",
+      "rgbaSha256": "65f5d591b7dc2d61bf07d2028062bbbcbb9ece220851d5e62e7d01488be923aa"
+    },
+    {
+      "path": "Media/Bushido/chamfer-11-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "48e5a580e203ffe18f6a73b84e8d1bce2899915b2f4fac27f6103f48bbd0562d",
+      "rgbaSha256": "4eda7f3af5f071279592d2071fde0107e4a30eb5466b9bb25f1086baf720e681"
+    },
+    {
+      "path": "Media/Bushido/chamfer-11-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "fdf8a3c3006a204b99d793bd28fb5dc692ce196d6212d54fa843a2c9a30473c1",
+      "rgbaSha256": "c9b6f7fa8a462e257825fe025484a8b218f52cbe45423cff216a7ed2dd51988f"
+    },
+    {
+      "path": "Media/Bushido/chamfer-11-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5a3dffaee407f674c02a7f30a4986751a23936b638c4afd848be230183b5fa01",
+      "rgbaSha256": "9da4676a9328a911deed384262192c7c793041238a21af0287a3b4c068fe7a41"
+    },
+    {
+      "path": "Media/Bushido/chamfer-12-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "49abd263c00916fa05ff8941017c39bc7017d9be746ceaa969487f04dda2c768",
+      "rgbaSha256": "3543e58778b21033d3fe673355f503494c2732e8b5cbc2a0f7575de71e9ba3aa"
+    },
+    {
+      "path": "Media/Bushido/chamfer-12-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "01e268d244f8ae2bf525e59a7a26e5fcca9281a14eb19708d148c65f2d88591c",
+      "rgbaSha256": "bc8f7ef894fe65e1325bbccf78da29fb7810e3f20aca0f968a5e602f1fac04cd"
+    },
+    {
+      "path": "Media/Bushido/chamfer-12-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "60ad7adb9f4e658b7f6331205d6fea7c2075fa878fdb01729e26be3a85d910ac",
+      "rgbaSha256": "d28b6d4bf5b26ece168e7c675ccab2d4395112fa5b5bc7debdc708cf5bf99b59"
+    },
+    {
+      "path": "Media/Bushido/chamfer-13-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "2a482f7b90ec50b09c6e2aa07797b3f477786f04d6387d253173b9f609db20a8",
+      "rgbaSha256": "192261c32b54867a476b3b6e62c2d57c6ed84b9f38ba30ef44823f2627fe785b"
+    },
+    {
+      "path": "Media/Bushido/chamfer-13-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "0f3404c7f13defe0fbbc57cde823684dfb6b2630193175180f39e5afb0bfacc3",
+      "rgbaSha256": "5c32eac437665a55e52390fd01d825a3a1627adbbc77eabfdb5c8893083f59ae"
+    },
+    {
+      "path": "Media/Bushido/chamfer-13-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c111795300961090352441d051437844ce6725b49410ef9627307355b227ae06",
+      "rgbaSha256": "dbc71ac508c6f8fcc4ac65635912b51a3e3ebd4a13d6677f27d55319cdec266d"
+    },
+    {
+      "path": "Media/Bushido/chamfer-14-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "3ae5ef3d9ccc8e85b12dad815cb9d1d3f6873e6e2b99d5e6f56563329e59e8ed",
+      "rgbaSha256": "63d415d1bdc284b746091423cce944cd6c1a2bf24ff13a20b885f17010074313"
+    },
+    {
+      "path": "Media/Bushido/chamfer-14-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "c48477f10d91d7c7e67319f0cfa15808a56e82d836aadfb1aeded194f3696e5a",
+      "rgbaSha256": "328f1477ef4dd7bbbe1b88d7e7142a10907ce8ebcef7e5269a982276c9e49b84"
+    },
+    {
+      "path": "Media/Bushido/chamfer-14-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "cbeb3aa60a78f5111c27287976f80d59f5b7c8f5c79fa6042728b2ce438eff71",
+      "rgbaSha256": "451fad506acfbe34e1bcb3b1c5d5e8b17870766b3c8944e2b1cc3e5eefd2c2b0"
+    },
+    {
+      "path": "Media/Bushido/chamfer-15-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "d6312efe269e165342cb661678cb1a752c7ab2a782d11db6261e37f8537d14c7",
+      "rgbaSha256": "1ffdd9d49b071fc260c393292f642fe0cae124af2e35933b77a95622ce831ab4"
+    },
+    {
+      "path": "Media/Bushido/chamfer-15-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "208cea6d121915f3fac39399d46198860c37e284e0b1fffb38343b432aa68976",
+      "rgbaSha256": "1c6b161fdc939ae1b82e39bb2737e3876e8516c9cbc1c0c006897a6b223ff6a8"
+    },
+    {
+      "path": "Media/Bushido/chamfer-15-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "b0ba6902e3f29fd764f2082fcae9e784724b714f31e14018ce4f8617ee4b3630",
+      "rgbaSha256": "e9fd0e3d0706696e76e172065ea9761a201a3febbd86629695b8eac9aa38849a"
+    },
+    {
+      "path": "Media/Bushido/chamfer-16-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4764a6ae2d3b330d8c0896ece341e102a5b17981ef599a6d7512fb3c8fe5abc2",
+      "rgbaSha256": "dc5985588b650cffc3365b72dab7a4d8b1d42ff4094e7378db27121be82e1544"
+    },
+    {
+      "path": "Media/Bushido/chamfer-16-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "03a9b4692e436093400dfecd93cc65bc68d5d6493b0835021405a9516c59237b",
+      "rgbaSha256": "92b8b2aa1c5f16065a3e52977f874f42b286e86fd54249bb2153f2a4e557848f"
+    },
+    {
+      "path": "Media/Bushido/chamfer-16-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c77064965e82847f2565e2f61df6cda74cc0de0adbb14f0984be4abdfea470ec",
+      "rgbaSha256": "c76cdd3e4a860eac2f8a95fb20b2913d4b393195de06f49ee589e8afbaeafb76"
+    },
+    {
+      "path": "Media/Bushido/chamfer-17-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bdf9dc3594fc28f6a132dbd6e3bb649e3f657ffbe415323368beb2880d37d88a",
+      "rgbaSha256": "6a543e4c1ac500470c3299c56bb106f2b5622cb4e3d7420760d6169a9724f798"
+    },
+    {
+      "path": "Media/Bushido/chamfer-17-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "1e8e094e01d2d20cbe7ae516270c03f3f39471ef09d9a2be09efdfd0c1317432",
+      "rgbaSha256": "09c3eccf63e42edb73806a962413e74a53c140704b9fb489df15801eb22303df"
+    },
+    {
+      "path": "Media/Bushido/chamfer-17-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "abb3a8597d0720efebf3e47eb80cdfb7fc223b8c50922ecf77960ec3008f852f",
+      "rgbaSha256": "40f8d84db2a2638ad26f0c36df7bfe2fb48322ad92ed2c08ebbfca9641eb65f5"
+    },
+    {
+      "path": "Media/Bushido/chamfer-18-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "7327ae382afaba5f8198c2a1ac2c58a3e08d145b307a09b18cb54344bb46d235",
+      "rgbaSha256": "7b47bef488d1f613f00845306fa7a15f836ed04b9127ed3954521a5285a8f312"
+    },
+    {
+      "path": "Media/Bushido/chamfer-18-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "6297d0277e7fea141fdf3061db99423d25b4429986391522c83e0943b2c53feb",
+      "rgbaSha256": "ccdf1c4a37f9efce26972ba42ff4a73bd3cdb99f13820e0e2873d9885e69bb41"
+    },
+    {
+      "path": "Media/Bushido/chamfer-18-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bdd8913dd6c96cda69093150b4c74192e919cff5db92096627ecdf454a4dce5b",
+      "rgbaSha256": "bc51738e606b50d342c81830b9dd04e8d6fccb536cd5c2b78d5ef88e78ece8a6"
+    },
+    {
+      "path": "Media/Bushido/chamfer-19-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5f94601846551f7108b4dc576f721b45b303a79c3473ef47305eb8f22b9b14d9",
+      "rgbaSha256": "c213cb9ed142089bf60b808e6490a93be3b2678da414ccc80a9b6d09acaa88ef"
+    },
+    {
+      "path": "Media/Bushido/chamfer-19-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "b111fe820460eb1f3324380fcbc512e5f87f0acc8231de18e0e57d41fc05405a",
+      "rgbaSha256": "e4f773fc81df83b4a8c0dec8ec2dcba8d4da86459901d71e44480c7876dd29e0"
+    },
+    {
+      "path": "Media/Bushido/chamfer-19-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "9e521128d6875cfbd509dc72e8f8c08f910fe1404b969bb3a7bd9fbc896224a9",
+      "rgbaSha256": "6875741e4b99b7fc38ba7a9973354e970f9a4a344c95563a880c2529743838a3"
+    },
+    {
+      "path": "Media/Bushido/chamfer-20-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "af85d701380af109508d160441f447d8db13f679259e66325836cf9e794561bd",
+      "rgbaSha256": "dfa4d7b461918c0ff4d8224c47b8d95b6f5a9ae26d0a842e4bc93fdc7479fbcc"
+    },
+    {
+      "path": "Media/Bushido/chamfer-20-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d1216ba417a8fcf0e3d91dedfc9901a50c26980da4b907b4bec5e001ac195292",
+      "rgbaSha256": "cfb488fab1268057f7751140b6dd12fce5a7342d8192514a75b47e8db57868b1"
+    },
+    {
+      "path": "Media/Bushido/chamfer-20-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "018c1513e202c2d694835f6eb9cc51ea17c7a620b8cf4e08687fe16e9af5e740",
+      "rgbaSha256": "3d44be6237ab4b216e6ab79824805803ac35c52a85703fdea03c328e69c809cd"
+    },
+    {
+      "path": "Media/Bushido/chamfer-21-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bf8a80ad9fe45362e9981ff4b6234ad94515605c69ce9d4724faf3da0794a0ce",
+      "rgbaSha256": "7efd30a435ddb8a0f9a927f2436727e48c8d2a48bd9d7d91743a5419ff221767"
+    },
+    {
+      "path": "Media/Bushido/chamfer-21-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "d4de94423909960279e1aa2e5a2f88d8b026bc06b58e69724e7cbf32e054d514",
+      "rgbaSha256": "4ca60416ac039a7b9bbe97b1430ac7b1cb8894c272ffa5ca02064001763df576"
+    },
+    {
+      "path": "Media/Bushido/chamfer-21-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "11679082880e64274f4de1615c07ddd31244f43fce810eaa2e6a6b9a681f7c90",
+      "rgbaSha256": "f1cb6b8b7c2048ca9b73debb8335fd5b73032ef81568c998d85f156ed2dccf15"
+    },
+    {
+      "path": "Media/Bushido/chamfer-22-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e75cc338c751687c457b633dd5b78677344d92b89f2cdda54ee46a772d0b4dfb",
+      "rgbaSha256": "8a8024573ed67d1217ea2dc62d07d690e2e140f88b5f986d7d45f01e6da2bfb3"
+    },
+    {
+      "path": "Media/Bushido/chamfer-22-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "484c60236b7a8c2969c5bc4241678c3d86b0f2536c0a461bc440e04f9a032b60",
+      "rgbaSha256": "b24214a64736ba7975b0cb394347ba4c702f735205a03e8e94eb438267289657"
+    },
+    {
+      "path": "Media/Bushido/chamfer-22-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "c3e6bbeaf384baeab0d0489061e0eef67f6cd5f3c7ade47009d2c22b4c5dbe06",
+      "rgbaSha256": "a5957e0df7be030cd8dee2d0ded5105c01692ce684faf6141f607ae54e8f1677"
+    },
+    {
+      "path": "Media/Bushido/chamfer-23-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "cae172ccbbfafe62c01270b0c9aaa49b7cd831ed9a057d5188797be62e0c0a2e",
+      "rgbaSha256": "5f96526b3b63849c917a843971293c8936dfd6f26a833e172b6c933b1dc59817"
+    },
+    {
+      "path": "Media/Bushido/chamfer-23-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "264d7829523018cf2d5132ae32553e733f4c7a34d13065713f1322d217f1593d",
+      "rgbaSha256": "eb651075b64b669f0b2b4bee1eecc20a62e995c3d5e39aa67df6cac2719ad67b"
+    },
+    {
+      "path": "Media/Bushido/chamfer-23-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "8f9a7b7b6daae9724ae266466facd31976f3d020f71324a8df8e6852fd421ce8",
+      "rgbaSha256": "31e98c435641e2182ff7e1df955092aa9722b83b522491e48060c437413029dd"
+    },
+    {
+      "path": "Media/Bushido/chamfer-24-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "8cc06848bd995f63ad5a1fd30e224ce0146164e339a725fb8127d3cf85b58740",
+      "rgbaSha256": "2b56869f604434d81bd6cbff7fc761439d8d7d25e0e63c6a5996177a38a64744"
+    },
+    {
+      "path": "Media/Bushido/chamfer-24-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "f8dc71ab5abefc25e0d477f9e8cd6f4630aaedb4372a424fca6053dd42e433da",
+      "rgbaSha256": "f7440f80fb25df113de5f25a1247378d086e9e14ffe00bf1a1b199d17747c1e9"
+    },
+    {
+      "path": "Media/Bushido/chamfer-24-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "6e6bc8708302adc72bf6e1c61a53c273d73a46621591596b311b323b47733f5f",
+      "rgbaSha256": "22afe9494c9469d9645bc5dd9a705c8d257b5e7638453217ee1f1057137cee47"
+    },
+    {
+      "path": "Media/Bushido/chamfer-25-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "cdf287159bf9d3c03514dd62d9795cff6dc1993cca65421647d5cf803ae6d0c9",
+      "rgbaSha256": "58c946d932c879ea3ac7d25191e652322f3a8783f7316df9eb86168565cb7efc"
+    },
+    {
+      "path": "Media/Bushido/chamfer-25-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "0ee900eff8572ebe50a739f2a2f314548c0b72d0001b472339060bc0fbccd31a",
+      "rgbaSha256": "3e368da63d98dfb9d1c1a92a3bdbe8b718cf6b985b22a323972dcec8febd81a9"
+    },
+    {
+      "path": "Media/Bushido/chamfer-25-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "bfbd9ebb00e5d46491dd459fe42d06a00dab30a9800bf81edbb15d91924a3827",
+      "rgbaSha256": "03a5d7ecf4f39c45d9b80d30d2fb9d7b381f676dfef96f0c72be4bbfef6ef76a"
+    },
+    {
+      "path": "Media/Bushido/chamfer-26-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1a195b791dadea9ae3623b89eadf3aa106bec22dd9627dda19e8b1321690e815",
+      "rgbaSha256": "7c5e2abbb1746cd6b522a80178b580e9e8e17d57ddc38a127d4fe880edb2e92c"
+    },
+    {
+      "path": "Media/Bushido/chamfer-26-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "9b0b9bd021cddb7b5458ba79a772c29e9af7e6ffb1eee405d13fd97dd5d405c2",
+      "rgbaSha256": "896dac84989924a9409e759cfe65d48e374f467cacf5f13fac02e4d40de05db4"
+    },
+    {
+      "path": "Media/Bushido/chamfer-26-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "d12924fa7fc41feae65b71b42306264c2e68b9336ea614f663b5e7bd8c319abd",
+      "rgbaSha256": "db190a974bff9f16e6d99146fb54dd877283f40350a4084234974939792c7653"
+    },
+    {
+      "path": "Media/Bushido/chamfer-27-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "ea2e44649ec4ec27788610a144c92958009c6ecbf8482c380fbc9b3ed8999e0b",
+      "rgbaSha256": "ffda87e5c5b3b6e6ac228aa0e3b47928f7f0dfba97c9e897f4217507d37dde77"
+    },
+    {
+      "path": "Media/Bushido/chamfer-27-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "bfd011ded6a0cba9b70b64783e1ad3a6fda71f48f7a2380dc097316f6547e0ca",
+      "rgbaSha256": "7ecb327418436c03d40fb05749ed88d6d1bf3b023891fda2f63a182d0c5b5198"
+    },
+    {
+      "path": "Media/Bushido/chamfer-27-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "5c1c9d6e54eaf7d8882b0bb859e8e8f742f87d8ae692b17b0c1dc9fdfa66dc6e",
+      "rgbaSha256": "c391ddd14629c845f420e11876eda752a987706bab5bfbacb236cf0823252262"
+    },
+    {
+      "path": "Media/Bushido/chamfer-28-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1db1a051d9c802befebbb813ef89b308755d3f77ed75ba14d7c5827da64e1e36",
+      "rgbaSha256": "21bccbe6875a74b63f975f38420898b7cdb3c4f48a07fa26a6c735a47bd34fd5"
+    },
+    {
+      "path": "Media/Bushido/chamfer-28-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "fa1b35929b55658fca7733664e654d7651adfe664011766ef650e7ea2dd2190e",
+      "rgbaSha256": "f9268bd630871bbbadcf8a2091c9445dcb36bf4def2bf5602284fc0fdb536a14"
+    },
+    {
+      "path": "Media/Bushido/chamfer-28-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "94af45f9e0a6d7e7792d4d47e8cf95d9cfb5e4caa29dc0b71ed8c58d3ccf9b58",
+      "rgbaSha256": "25f2ba005fd707d56e48ff8b6b84703ac13d2b65ee1c6f2d34ff89cccdd27f43"
+    },
+    {
+      "path": "Media/Bushido/chamfer-29-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "1dacafffcb7fa63b61e4c9f8d441f0031099aab9ba10d9c0f55213b955b22ad7",
+      "rgbaSha256": "a2580bb895e11cfe4aa6b52b93658557340c566c70c87a02da5e3692b4c76451"
+    },
+    {
+      "path": "Media/Bushido/chamfer-29-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "2b4c0b84ff7df82d8c5ab961caf9727549096241076e17cbe91cb8406cad7eb4",
+      "rgbaSha256": "f58f9ae42af5aa29f752540c1223fefae7d01285a879510627958cd447f04ded"
+    },
+    {
+      "path": "Media/Bushido/chamfer-29-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "32b8b435883f82e0106afccc2454bd1aa29a31746269e93ae8d7742b90674ae0",
+      "rgbaSha256": "8c33e4d69fb3d9aeaf87de2fb664012694fd5bc9ca2380f70bf388fe598c8fba"
+    },
+    {
+      "path": "Media/Bushido/chamfer-30-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e3cdda7b9cedf5a740c84d577f9ba24a8dd270b0122897894edf014bdcd34568",
+      "rgbaSha256": "c4d8a1ee592abf0777dccbf594c9521f489da7b95ec86701a3b4bcc3b151c30c"
+    },
+    {
+      "path": "Media/Bushido/chamfer-30-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "bebbe01ea7979bbb2d0412335a581ae01c424270e126ab62af7095342c65e11b",
+      "rgbaSha256": "1ddc3e828e9208163c21c7e481bee99034e2edaf33974757f01ba6be3d89a3bd"
+    },
+    {
+      "path": "Media/Bushido/chamfer-30-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "e868a3bf5b23ca9526d06a0a020267ddc86ce1f8f147db20549a75094a4743de",
+      "rgbaSha256": "359a38e55e43ba56828fccdb5b5aa1c3d5d4d0cb249d1147c3eea1a7b23ecbb3"
+    },
+    {
+      "path": "Media/Bushido/chamfer-31-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "721536eaaa9229eee42265574c312c20d10cd18bbd43bea4d126c84176a1014f",
+      "rgbaSha256": "16159647225d8690b0a7428a2cbda979e79552e7be32b4963247765093a1a9cb"
+    },
+    {
+      "path": "Media/Bushido/chamfer-31-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "2435da8d669a6600cab30429f686e113b75c2e1618c4efb9ac8fa91266d3e513",
+      "rgbaSha256": "d32b5da7d8d9911337caba9870882497de19fbd8fa7a89d0046d4f7af348fa5e"
+    },
+    {
+      "path": "Media/Bushido/chamfer-31-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "6389d535a4ba174de3ab9d1a3393a88a482f92e967c84413231ba33a111c1efc",
+      "rgbaSha256": "55d04f880252358722725cc067513dae5279417de6aa7c385624346cc4cdd900"
+    },
+    {
+      "path": "Media/Bushido/chamfer-32-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "4b013168e21a0cd20de913ff65844d4a635a660ae879dcb182a042770bf4acac",
+      "rgbaSha256": "f1522aca379fe0d4a459900ecabb80cf8b64d1d4d539e17ebe278bb09975dc7c"
+    },
+    {
+      "path": "Media/Bushido/chamfer-32-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        64,
+        512
+      ],
+      "sha256": "10af13432c13d117575498d8547696cc3df92107d54311768958015c3d8e1a81",
+      "rgbaSha256": "9cf6f150616f85302f37dbbe70e53384cbbbf5f1bff5213e03f2b48b033e05d1"
+    },
+    {
+      "path": "Media/Bushido/chamfer-32-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        64
+      ],
+      "sha256": "63e45c6ad1d8b59aff8ef889d483086440686c900f64d65e2a5d173879490284",
+      "rgbaSha256": "88fda88b0e8b1c1e8acc520417f409d6cce009978c702348033eca504f0cb924"
+    },
+    {
+      "path": "Media/Bushido/divider.tga",
+      "kind": "divider",
+      "size": [
+        64,
+        16
+      ],
+      "sha256": "982fef49c915ee407576a6fa8f4107b8537a18fa3171f8430fbe97a5136c3337",
+      "rgbaSha256": "c0f8394f40c94bc3b3d7321517b0afb3039de46ce0d6d4bd81844c61a966db31"
+    },
+    {
+      "path": "Media/Bushido/BushidoEndPoint.tga",
+      "kind": "artwork",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "430c8853a9cb540048fb9aeafe40bb3f88931d264a08b0501e10224ed49dc9cf",
+      "rgbaSha256": "55f314e5f380783dff8d2c7dec9216df0762e8651a7c4a634ffd2214ce0de479"
+    }
+  ]
+}

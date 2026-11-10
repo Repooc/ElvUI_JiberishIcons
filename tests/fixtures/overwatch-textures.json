@@ -1,0 +1,4084 @@
+{
+  "textures": [
+    {
+      "path": "Media/Overwatch/segments-5-narrow-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "18ddb3095bd5f41d669766ce1c448cbdbc60fd0b5991086431ea8e3ff96f1390",
+      "rgbaSha256": "2540c99d739905fc05e37a28e9624433a904b77df13c1ce2c574ec24d6ff00eb"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "9c9243792d7ca2c79ff542d14ab51a8c32cec4eb279b88b5d86f60d69eb741c5",
+      "rgbaSha256": "83b752ceab6f54beea194f456bddfdfa1e7eb3fcd3b8d98bd18bb8487241bd77"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5ccb5f33f211f8a06fcfb8c50e2d6156f0fac2d2c8f800f11d911996d29e5fe4",
+      "rgbaSha256": "e8ee2a743261eaa7e412bac53cc6bf6733a0cf6deca94352433e943300b7e5e3"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b4ebb13139ddd103e686ccb7f35bbcce9588a9739f4533736e92a6b683aa4289",
+      "rgbaSha256": "8d80b6895bb6f53aaeef36f255e4ce1f666ec88c73dce92114056c576b091a66"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e31050369e1bf571c4913edfb3bb932bf08b066454d8c472a83411d3d5065dd8",
+      "rgbaSha256": "7ac0cffeadfda3cd2febf916d58879a231dabdc4acead59861c92c15cc3cede5"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d18d11c8ab31a3afe469438d9e4a1cd0a70c2681944d30bad84077e167e6e843",
+      "rgbaSha256": "423af8a8c74cc65925906d8ef32754b57ef14e1d600d3e245c890dd77308c56f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d17dea375880f8dc6e19a6133c217987cc24c38724947e86e3455eb3286509e6",
+      "rgbaSha256": "e958c7d9065296547e1dee8103ce99e2f0573f69c2d418253f4f0ef9489232f4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "93f014cdc620c9cf2b9ab2238081023284b6b9689c6794c2e6785ef6a28a5aca",
+      "rgbaSha256": "0c6f22d4c596298b20d1fabeaaf9a481a0e18ad45ee91050a6377420964bc4a8"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b3db943b8a0e0560ad8ac35e95b2b0e1b5d6e068ba37e28bfbd3d6d0f7ceb8e0",
+      "rgbaSha256": "99f71f310850d1868c7bdf5f9cad7810ab1c163db5df1b50fbe4dde7f157db98"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c4a8c030a22edf853068eec1168ba9032879f3b1a8dc2798c71266cddfc88292",
+      "rgbaSha256": "6efafe6848314b2da2e17dfc48e72cc43337a98fd10a3e986708854e88dbd6e9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4fb6989d5f76464825c8e938eb4f3ff7b6876d93ca6f9c51d1706767f71e6daa",
+      "rgbaSha256": "1e4b3cfbc6aea0efe2560c2f89e9365584a39a3bc0ab91c4883a4cfc7ef400d4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "53ac2d66dc41b6e15802032aa5584f09dad9632c47291bab3b6a43a6341d1bc1",
+      "rgbaSha256": "82555eb956d375516959d92d60fb15a2d63c35d20e9c685c476ba1f9c39248b7"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "74dfee7b2f7aff27e22e58a5c538eedffa7f6ce80410ebbf62a307a71ef954b9",
+      "rgbaSha256": "f3e0a6a6e745acd58fbf66021198154ad7a8f61a1a665c4cd54de221eecff95a"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "5c87230449c289d08e053a3bc8d813d666811fcf6a1bb6869e1340facbc86750",
+      "rgbaSha256": "f3430a6b924df4a52c3423bb4555c3cd0bea26531228b47127cb66ef866613de"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b8e3fc6ec6bd9ab1e6d4ac10608e19fd830e5328931501c168ca5af561e69904",
+      "rgbaSha256": "9d6b7f64390ba0a899a0adf648fcfbc5fced2d4e6ea0e8e732e1347730352202"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "47a3f12161aed4ea74624a3877f1959720125011b9a1836af69975c692a43025",
+      "rgbaSha256": "7990c5026e6e483240af3cd59539afcef09bf90e9f492081ef0d0b9350131bd2"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "df01754f76e100ff85a1c325792b6d16075f244885266c2a4c6f97c7fb3d6369",
+      "rgbaSha256": "56047ce8df7541eb94987c5133723f7628d1427dac8a8023dfdab8d8f432d15c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3471c2dce4cf96ef714bf276861406974bef3f1bfbc047ba142f618dedd0eb29",
+      "rgbaSha256": "7ef66d0912cafc9435260e1abc1be7b6804a86b5b49a38f4c9ce510484bf44e6"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9963642927301e15645248aa7fdc48372d314439c6f1e6f3034252675ce06cfa",
+      "rgbaSha256": "fa3cd21926101c92166deb4347d1bb007bc7034a1584d7a7745cffbfa65dbc5a"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a280786c11b7216d98d757989333d6e4144dda26cce42858e4637c5cb494e1a8",
+      "rgbaSha256": "23bf094e509b15f2eda358a8749f415c6c4cad0ee0e97a7b6dcfbbe3b36b8576"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0bf432a2262d6b8bbac3504024c9cf2becdb5be831fa155580c302ff011df74a",
+      "rgbaSha256": "8ce70449cbe99fc99cc5b480da2ceee27ad066c371a654b5ab2664a60a154c2f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "69d79a0d4ee987bd1309bb0afef1069f6ad445c5cc75976759f71b7112aa933e",
+      "rgbaSha256": "cedd1f3c4c3c3416b67c22a79bc32c68acecb1917b0930c7440b2f9dd3c66698"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "527f8dffb8ca226f4d37294006385d8f80378c030232e80596485c2178ead835",
+      "rgbaSha256": "f54b2f4b9ba6e30a2754aad009b14a1878c1cb05cdbc766aca5e05311479467a"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "4b1b7794bb5a4480d7ba1816a7a9ea2e1a547e97b327b4898638cbdcad4ecbb9",
+      "rgbaSha256": "17ed66a0a0bd1c2a4fdecad9df35b1d3fe7c3dd92306c6c405c4c7b26cec8648"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1b42e5c57baad5d5e366c65cfe49e04d8ef29c3636f04e465d92659ac1e8cf63",
+      "rgbaSha256": "28a2dc7bca65c8a0cc221ef97d21d13077f052ee3bf6db349d9252b8f99d54ff"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4305fe166455c4629c190d1af98ade0cc10fccf97287fdb5024fb1ea31139b2d",
+      "rgbaSha256": "73c8efdfcd6119b2223d5b6df04f7f0283885b637de1dca802fd48b5156ea6e9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3d0f64104855473f5e8653409783a91f4a8dfe543d652e2b7d8b62c18ab7485c",
+      "rgbaSha256": "892d1fae77cf79a2c33fa3a2f6521c5d54531318edd82a16a52fc6f9575f0a96"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fede8bc910a7adb34dfcf6d42fc4dbcb1f37c53e2842c24fdee2d6ca49807608",
+      "rgbaSha256": "d5c7d7a26f98d0b23fe2064c83cf98ba66c912c168781f6cc5d9604cd14ebd60"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "deab9d1580b10e00b3b35d7b78db0b3ea6960da362427c0b908731aa5f9f5e51",
+      "rgbaSha256": "48d56051c10868322727c44c8645a1ecccc31928b5fdabc860ce7537871dbf06"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ca53a76a48bf99edf64fc7c5721a35b10454157ffef33e52b80fc578e8a6d9f2",
+      "rgbaSha256": "d883ea16f0aed0b22209165e31595ad2a5bc5f0fb81d38f205845e58c74d64d6"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "18053842f735cc95c73f55f6e3084af51c823b0997a4be4646bc18bd0824ac16",
+      "rgbaSha256": "a0d6301804e9c6a36c3e064b848849819b01bdf509453e32075d5dc91d752906"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "dfadaa9ed1f173f481de0a6e714eab5bb9d886b264b34d04c1c03e2e0d11ecb5",
+      "rgbaSha256": "485b22d749f2c60f9af22f66f1cf702a618058dc532ea0358768765008f22ac7"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "dd40b55f61719108ea4661ebd6744107fa840774c3c5f24ad98907e4914dfd54",
+      "rgbaSha256": "7b4d39206efa9712ea6bb702b2a252bd61549af0fc0918e940cd48700d57c525"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "4b83ed76d1d0b88368130a1d5de5a15932b8568a24d9564a6f03fa7e6f62b6eb",
+      "rgbaSha256": "d2124fb84a6a0307621e967b9911cfcdf2dafdbe08ece22cb8736538b0d7df0d"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "61432deb656e920c9a3ed562dc3176335efd524612e5db4c8ac0a40cb572df08",
+      "rgbaSha256": "c6459e60318dc45cd13962296cf96b8215ec9b91d909d4ba61cdf9b6a640a535"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e9ec9ae233b85e3f8e2f661ebc2995621e64f6055365b5407798a7a01b4e9f6f",
+      "rgbaSha256": "6060be61182f493677c82d6486d9e1d07ad2befcf616d9cb13b20953d018c692"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bd3328eee59f07a6a50d1e973336692a1621756c21ae8391870802e61660fc4d",
+      "rgbaSha256": "70640d5338873974b543a57208056fca9240b3bcf08702c5f4e9facd5b2872f9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "64804bddab5755550696533c6f65353da5eda2e0d7ed8b3f21ba5a98a6f59278",
+      "rgbaSha256": "02685c68fd5ad93c7c2a27105adfd8b1d653d3b5dab82a596295e5df524fdfbc"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "23a4e1266b8269ca96ede98015a420e07741bf067f60a6bacf611aa53134dfc0",
+      "rgbaSha256": "3cd36d733c3280ebdc793ee1535bb08f4fd7530d476b6eaef62cce657025ec1d"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9f4955385857057c9881726f169a2822d2e7b640ac6ff9493d62b6c06717b9e5",
+      "rgbaSha256": "89e48dffdcaf8903cab295641acb4cc54fd6b40195158bb7390a43c8915c9e3c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9c6188e97a171c9162cd7557cc3c4511678fb24455abff3d10574eac3b72c47a",
+      "rgbaSha256": "90db0e5e86dc7dce20d7e1bfe77efc7ecffa7c19c8afb0f3630bc39f4aebbca0"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "cf58db5a3bb3a0cd06ffae85f34c57a6d3533c74083fe5fc7176a6285da24e73",
+      "rgbaSha256": "672866fc793fad32b6c9257c3fe75a8032a4fb081ee8850f50e5f5c8c358bc6b"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "cac4b3ba63036bebe7deb1474056566d72f9ce9840fbcea13e0d141a71941914",
+      "rgbaSha256": "0b9c52faa2f02554d34ab3c74df1c20facc9ae35f3816f91156fd9a2d5d38897"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "3d0776c862846581fe26ba9fbb3b5359f47bbca125f23ef823364c49207202f4",
+      "rgbaSha256": "5334d61f2eeeafc51ee08a0166494edc60a68bdaab86943e6d450a9cc76b3ce1"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1344f411ff1c346401a2f612a206c278c82bba7e03c83a25c327eb0b163b42b0",
+      "rgbaSha256": "0ada332b1ad792fef6185bb46e26a2de00e1d3b5cad8f4f2dc53eb63a422270c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "264a8b5c7288a14dbfff12812467b7902d8d42d7e34b570ba2fbca799c6cb08d",
+      "rgbaSha256": "ac25b693f93788d36d7c78de627e734d14831f88ed10980840a78405c52d51b0"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e33f499609ae7511581937c3d5ea0875e4432de211727e8da8fcfee0273f2e9f",
+      "rgbaSha256": "7c9f2158c6c717ec2927e0f87fe5db5c610ba35b3a3c12db6b14e28d30a9daf7"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "153d4889716ce678fca5026e3fa4952e125c20ae8bcd736d200eaf2fc4b45775",
+      "rgbaSha256": "30e7ba22dcf5625f0b173a1948dfe6592cd16aea627215a741c14eef410930c0"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "185905c2a367c5007a885ddf3f607655b7504fe63d8f0991775f3616ff40b8c4",
+      "rgbaSha256": "8249205846750d418ed4b28997992bd75e51e23b63ffa951a22584ef170f5858"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "babe2d3dde6d2a3df1688cb1300382876f0ead5de7c603b6efc8dd04cc04a82e",
+      "rgbaSha256": "e2b84ed0e1a3e802914d5bf23b2aecc21a2e40ff4a5c485ff02fbd5b4dbfc9b9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6d039155c98088c8bf4d41b0c4205e086ceae212648f41cefddb1379845a9cbf",
+      "rgbaSha256": "50811e67590a233443ef7f0f0cd285b6174c6e99bfd2d2d1340200f8f452ff81"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "2570c9976dc239fa70622822e3113198794bd692b723ffe69445b829a035afa2",
+      "rgbaSha256": "033aecb23b282d547cf798aacc96bacc74f27d9094a430fb3be0fb3de23be292"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "34c60edc77c6187f2cc48e8479a4b13f25547024501cefd1436b157ce5d409ff",
+      "rgbaSha256": "9e4f92c77a48eaaa4db11f2c8b6699abc5ca583588b44f5c67c961b46c12c2b3"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "79994fc3ab54ba71770b4a146c93c7a014095675f2c04a6879179654f5c6a39a",
+      "rgbaSha256": "23d7a663e796ec6578ded9ad74134390869136a66575e313ec1a54b9559f971a"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8c719555b6ffe0912463bd4cf29f66f0d7851d7cda3eb32c8190b0cfc4c091d3",
+      "rgbaSha256": "76f8ed5cb6561b003855d5aca11ebd5e0e53652b04eff2fa7f90593c0ed163b4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7ede91452c9b590deb4675b26f3e1b7761d1fa1808ac77485552bb296e77a467",
+      "rgbaSha256": "2462732c52af18f5b174cde86a117c17847ccbff177561a444489c75cc48c5d3"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "660fa88fb3a66f9962696698188a9ae10020af40b7b9e1e4cac1afaf2dcb4b37",
+      "rgbaSha256": "93f97ff938974d13157f8a71313ba52638e2eabc82ec8da04d5a6f2ca00a16e6"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "42753e834162510e6cd502868c2f099b910ba8cfe6d1728657520657eda4d82d",
+      "rgbaSha256": "1abcc0e2af7e1a11e48b65d57c3de8b8de9f52583b8fdd370656eb88ec53d676"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d83a74f7ef90c6ae03fe7cd90e7feb683e3f6a756320288c543a3127ada8b366",
+      "rgbaSha256": "c0ed55f1250bddb1bc2f71affb65972b8590c13c0e0f19053dd0335d966ceb9f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a544c74b2bba9098f9619c5b702bc5a33d6864967259aede147a891b014d16ca",
+      "rgbaSha256": "26c382b681a998bca44ad9a62afbe06592f6c4d69a9e5576d607d3120fb4f0b6"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3bb7102220b42ff21fea8a4bbca943fe6f3d8704dd1a926b6fed25a469540130",
+      "rgbaSha256": "938343e464388721d1db8e2069cc05d069c4baaa35a4a415152d1436495e3374"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "0a850ad34545ebc7486f7ebe52941d35892960290382620f67274156e464abd8",
+      "rgbaSha256": "faf9eab29e99022fa309a8c1153d2ceb877b32e5696a598b1ab9a1558dab095c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3bb7102220b42ff21fea8a4bbca943fe6f3d8704dd1a926b6fed25a469540130",
+      "rgbaSha256": "938343e464388721d1db8e2069cc05d069c4baaa35a4a415152d1436495e3374"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "0a850ad34545ebc7486f7ebe52941d35892960290382620f67274156e464abd8",
+      "rgbaSha256": "faf9eab29e99022fa309a8c1153d2ceb877b32e5696a598b1ab9a1558dab095c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e21ff53b3da1a2b24e25bc9d46954062d4c55fb529cf9acc33b3cf4cee1c8ec3",
+      "rgbaSha256": "30b1d6ca3edc4162f03d54a7deade39c878828f429dc4da5bc94f0c9ef4f1ebb"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9308d1dd4dcf7084d65eda2a5da016b93731542ba7329fb117b57e54650d7a98",
+      "rgbaSha256": "c807732856f93d4e61602f31db31f8fef82e83f332a36eb8dee8bb9fb74488cb"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0e8513881baf06a6954bdfffe6190c726e38134887700c714f6d5ea66050d067",
+      "rgbaSha256": "ae4920a096fd2030260f42ec3f38f10babd3631162c4570bc35c8aa6fd347980"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b06c24a24ae0178069d1deb6561611d34e73f95a864eb98126e509e0e4cb8e50",
+      "rgbaSha256": "0f9e8789915d4665b47c0666a057f25e6769f20343f5a72e6d42965da71e3c18"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3ec6204010ff3db8bf2e0821d51a6554c4a90c5907dfd9f859887838486ad115",
+      "rgbaSha256": "3ee4e2cd6fe602e4d557a2130e6edb4430c752c4c65a6db161aee4844fecace9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-narrow-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7b22ea880cc6877b7f005e233d641c2bc3d9cbd866d09f98acb17d968d22caf0",
+      "rgbaSha256": "edf1708f912ba7378e31091f5002ce89135d0b69fc529e9d92368dddcd6fc10c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3e314a7c46cb595380a0d5be17af2552c5cdd6d296420f31078d67590b7e0fa1",
+      "rgbaSha256": "ece3004371d99bb1eeb9ead9c443c22dab2f8af6254ddb3fb876d2d50edfdabe"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "707fcb0d0b1bc89b912e81ccc590b3e119ef6a951f5d1c6f2a3ca73578f62270",
+      "rgbaSha256": "9c6931d0b6ed0ab9f35c2600e11eb35351e9db26cf4430f30975297718df93d4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3e314a7c46cb595380a0d5be17af2552c5cdd6d296420f31078d67590b7e0fa1",
+      "rgbaSha256": "ece3004371d99bb1eeb9ead9c443c22dab2f8af6254ddb3fb876d2d50edfdabe"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "707fcb0d0b1bc89b912e81ccc590b3e119ef6a951f5d1c6f2a3ca73578f62270",
+      "rgbaSha256": "9c6931d0b6ed0ab9f35c2600e11eb35351e9db26cf4430f30975297718df93d4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d6a9a6fe028c580fb8ab2a26dbde4624206c62aedac2fe2e574a524ae630dbc9",
+      "rgbaSha256": "e5db5cfb00e81230922fbc58eb4682d390ecb66d52f300bccd0831b54325071c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "91f629f516a991bd3afc86ec8c1fc80ab543c03e9c507d96bac0bf67c73d7470",
+      "rgbaSha256": "9e86ed46ec07990b57f4c39ef5c58e70ec8f14052728b1628813f09afd0c2514"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "81e58e1c389d224e4ce5b6e1e655c33b2a208d014fec38e77aeadb34b9406224",
+      "rgbaSha256": "cee013e2bb9e488d7d0f663bf4be1729f8a944f22f1b1d5984421f9cf1c05139"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8539a3890086f438e8cf756982558d191aa8ab8990964cb876961436e91e018a",
+      "rgbaSha256": "b69e1f7d419c091601f27915d6cb60cad847ab08d387136c04c72c067af2412c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "df0dd33de9fff8f664a48991ad27bb03980bbb5deca14f2b530cc25c312328c9",
+      "rgbaSha256": "4c60e9020dbf8bac93bbb5cf586217059bc606196cd233e37edd70ffc85e6f85"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f19c599fced76a7d39f7913780682aff159537d60e549bff76d185a94980e9eb",
+      "rgbaSha256": "35de2f827162f5e56c0bef85378801da6cfce45ed98a130f351c27f62a93e9c5"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "601d000df670ace391ad5a775698663cdb46229ea85be658bf29a7a4a87e8157",
+      "rgbaSha256": "e89c4beccf29d4998827ddcd45aa4877c49f3007cfb1eea1fcabf802c5885b98"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "87fe6182ac6786b9301c9230176bb6d3bdc3465f4c3057ec21814b3e3c21ddb7",
+      "rgbaSha256": "5de85976062f21902fe6d92c66ebcfc34660ae99db02a8e80d392b0317d561b2"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "601d000df670ace391ad5a775698663cdb46229ea85be658bf29a7a4a87e8157",
+      "rgbaSha256": "e89c4beccf29d4998827ddcd45aa4877c49f3007cfb1eea1fcabf802c5885b98"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "87fe6182ac6786b9301c9230176bb6d3bdc3465f4c3057ec21814b3e3c21ddb7",
+      "rgbaSha256": "5de85976062f21902fe6d92c66ebcfc34660ae99db02a8e80d392b0317d561b2"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "cff4d3ea3bcc22ae90c4991ab5287649572de5c33b3c0f28fa5575af82cec8de",
+      "rgbaSha256": "f6785658cfc03b1a18d76f2995e817cb9b5d910575255dd54b760740ecab703b"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d7848416464dd3ca81aeb42fdf667f8c8b7861eeaffe22b32d9c43ca70f3fb13",
+      "rgbaSha256": "7f775198996a5b6d6658edbfdd47d5fb90fcf3b279182634ef1935607b6361c3"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5db9df40964453217743d2c11f5c32bf30cd64cacbf101cfa1e4ce51eeb1ce66",
+      "rgbaSha256": "989bfab1a1e7920e4aee0bb8ef1e7e59ef65f8863f7957c273d391c61e60e68d"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6dfe83bfd095754e1486e269027f09f02b325edf26b9895cc910d864d3d974c5",
+      "rgbaSha256": "0b2fb96a75bbfa5981c8bbf8e9ed7c72a847239c1228334c63fb89de41c7479b"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1052146b9f7974d76c3a1d25e587a8daf68a127536920f4784229bd29617aab5",
+      "rgbaSha256": "2b7d3c9077987ba360f79e3e6b91629a2e8d3d42758ed56656bbed5704a0cf81"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap3-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "be05258ba53cf1b585cf1fddb292d0064cdbdafa24f789c2f0707ec15592a0e8",
+      "rgbaSha256": "818864f9f2d9c25095362fcd479ba57410af160bf3b496b179b93dd8b49597c0"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "74cc08aba2a98296aa693715ca1e5f052faab19a62fa89530e6b7f59d5a7eb5b",
+      "rgbaSha256": "f084b052ed622bb721e02f0ce2b162a7b05b96c743ea20bbb595f08df6b05c23"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "eff0851629f9a601717b46d9606d337534a12316760849fdabf2879e4560314f",
+      "rgbaSha256": "a5f2ac5ef87adb3839aea60ea35066bee216ed432433d7dbfb23d61193edda8f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "74cc08aba2a98296aa693715ca1e5f052faab19a62fa89530e6b7f59d5a7eb5b",
+      "rgbaSha256": "f084b052ed622bb721e02f0ce2b162a7b05b96c743ea20bbb595f08df6b05c23"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "eff0851629f9a601717b46d9606d337534a12316760849fdabf2879e4560314f",
+      "rgbaSha256": "a5f2ac5ef87adb3839aea60ea35066bee216ed432433d7dbfb23d61193edda8f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "607f109c8ad239d7f6bf2d44f104954c4efdb46bd6b37dbe8fb6b454c842ce3b",
+      "rgbaSha256": "cd1e6560a725eb7e22f2cf8a45eb29b75e44c41afce246c7129ba932ba0ecb76"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3b9c7086d40e61b18992e774097a168fdc1419ccb3be8bcef9f6cbcbce3d0cd1",
+      "rgbaSha256": "46507f9219b3d49706729841458dddd525d1b83afcef6db026b4e71b94a1f8dc"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0b0cc44ecc77b2d4231172a77a81ccbe1cbdc05d662d17f40279ac5deeec78eb",
+      "rgbaSha256": "cfb0f20cb23bf39fe65f27f713d7ee93881b8e48d0cff5b31629dac1fa051ec1"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ed233e4acee9f33f7ae1c06bb529fe6c0800e9785eb8b48e56d0ba339625f525",
+      "rgbaSha256": "2c61be38ffb80438bd55247f32ed12384b03afe5740ee47613f07dbe85329807"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "88c70e91b4be2030049b222c66d06257572be350912d35aa7b41c0aa5aef3171",
+      "rgbaSha256": "4a662c31b1392f4a770ea595909e44ad29745f1fcaa24a6f45f4455491e19c5c"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap4-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "85d6c33622b88dd8243529f3e4e2cda7ff666776fbbc0c2655c1f6c362699a3d",
+      "rgbaSha256": "239f8d0de14e45a33eaa28904d3ffd2536ab2c1a49be0461f373ec4f0bf56c73"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0e000cb64ded5a5c4a4f8a3ad7b30c6c87d3f9ceb23186717685be56a7968b09",
+      "rgbaSha256": "5c06d6e27ec1d808b913eb6c01e3d3c4d8d98fe64954470d61f9692abd99e43e"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "f0a4f0f58ea307f053c2dcd4d28a2afa2e692c35e37f18cb73e1ec175b8d954b",
+      "rgbaSha256": "fc1305906464340fe38f7c71ce01648b4acab5edea929d6fb53d1ef5f8601a42"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0e000cb64ded5a5c4a4f8a3ad7b30c6c87d3f9ceb23186717685be56a7968b09",
+      "rgbaSha256": "5c06d6e27ec1d808b913eb6c01e3d3c4d8d98fe64954470d61f9692abd99e43e"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "f0a4f0f58ea307f053c2dcd4d28a2afa2e692c35e37f18cb73e1ec175b8d954b",
+      "rgbaSha256": "fc1305906464340fe38f7c71ce01648b4acab5edea929d6fb53d1ef5f8601a42"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1c8e8977b4e0f4c8d55239110d123c28f674e54a74b41e59ed13ec8d58f23b02",
+      "rgbaSha256": "af09fc94ae95f17cd2a679bea2dcfb8d0a2c82de26d66ceebca452e65f0781e8"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9a56d3d0658df1c9f56f2aafdfd2cdc59828d2d6986bd647dc42b88b05100b13",
+      "rgbaSha256": "2c0664a7b7d4f4d7307f4ac071f7d296824bfc71cab3fce00b56f4a0f4ce6ddd"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bb7f1d04b5350f9e10f006e7d36b0fbcfa00e64621f716a77a80f7a58841e931",
+      "rgbaSha256": "445e3c1528f1babdbb5569f067415b39cf32dbe4d89387f50674f0b775a93ad5"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "dec15ffa948970ab03fe950949dcef5605d1c694203c49ad10915156770452e4",
+      "rgbaSha256": "7bf5f0d7bdbb022c127e33115ee0f8b06b4db21b85649acf4dab12514f2b8f89"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a3bb3dbece7651547bb96690f7a129751b5e0353b085f8cc91a139a62b673b43",
+      "rgbaSha256": "804b383883a5ce76bb86083f04b241ff1b621bec83ce17149baaccf6729735f2"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-wide-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "eb1a3362d2033e6137d899f406177525f30aada0c65b73c9d13b1614db31922f",
+      "rgbaSha256": "d29dd064ac85d91f199a7ec0df02945be60655bf06ec0b77b806c8ad614d31f4"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f8ddbf7c2b445c39b881f419411039dceef9b68f1fcf9dcfa04f94729dba9521",
+      "rgbaSha256": "248ff59fc33c24051750f014babc56e49743cb5899436d993023ec56135a3565"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "076537a647514c35a13051597ee96994d2c5a9575d3f841676794b484a2d7cd0",
+      "rgbaSha256": "076d58e91069a21bff6d1fb3c5218c85ee3850cbaed5323e7a9f26d3f760637d"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f8ddbf7c2b445c39b881f419411039dceef9b68f1fcf9dcfa04f94729dba9521",
+      "rgbaSha256": "248ff59fc33c24051750f014babc56e49743cb5899436d993023ec56135a3565"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "076537a647514c35a13051597ee96994d2c5a9575d3f841676794b484a2d7cd0",
+      "rgbaSha256": "076d58e91069a21bff6d1fb3c5218c85ee3850cbaed5323e7a9f26d3f760637d"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c3e3b8c2acf3840fd91fcbade754ac7c900618ddb644b04e2d23a6563075b866",
+      "rgbaSha256": "dc8a11e33dee18aa4ea719d9acd9a59ad1259eb974219faa40a54cc3300b3f78"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f06d4cb1a9c73b7408da59f5a7f7930eeace361ce0688700d705d97811d34b21",
+      "rgbaSha256": "29e10801567ed1fd95e98a9c891174ce290ff6d3373161ff0ef2607c7113d098"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0ca00c53372fd0285fd5facab15eca4b62be006e47ac48021d52ef484ddcf2b9",
+      "rgbaSha256": "47a7902da6e4124917f91796af6f5772825234ac94ca0577a263264ffd20052f"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "09166df5cadc8d940ce2b5c4c51579ad74be19006d26f0f5a5e8f80fa18320b5",
+      "rgbaSha256": "42db3132afa31fc17ec976d5dfe122f34f036930aaf0e4bfa8c83563ef51b8f9"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1caf35fb31626e594a9ad5baf67788be8e4dccd5b2be35cbf9f43a202ec6105f",
+      "rgbaSha256": "601260cf20e811ad805ed0d204d41b6eafdff1f9af68b67555599dddc1572206"
+    },
+    {
+      "path": "Media/Overwatch/segments-5-gap6-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b593edb26b724761253fd81513a9dcc6213095d295c39705c454813e718b1347",
+      "rgbaSha256": "5f83af8715c22feb947e18f31eca68e99c564220fd5e6cfc09e17b9fa8ab025f"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6b1c85f198603b781f44e9167d0b8c6f19b2eba2ead59b5e0e3811e2c88945b9",
+      "rgbaSha256": "69197d39d9012cb78f66b647038dd07529658181cf0f164c98711c04d3dcce5f"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "072c98b152638e57d2e4d876777b71b351e6ad98791e133a81b36cd089c52e53",
+      "rgbaSha256": "c91130e94d8a1568f18aa7547b53b29a8133fa1b59d1da69824915e7c7367917"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fd7e1f5da803d91d7c18b08793057c5e609c11799e3655f537113686ca198a24",
+      "rgbaSha256": "b6fe7dae68fa648404181d538375607bf1dd6e7c6f8675db542383318775849a"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "183f88e2f9ec8ff358a576fa484bdc49d3ea3d52d35bc0748330d358ca65f09a",
+      "rgbaSha256": "d008cc27709293d3660cc12110cdbea5a14cdf48010e89173011f635a7f86011"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "73949800c25009516e47be6d7795af9a0fce4d12d30baf2a30f696ea67fdc0c1",
+      "rgbaSha256": "ef856efdd293aa310fdb5d49e150372d18796fbff45e806b6aabe8f3a2e9a8d9"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a13b44f90b40ac8f7cd04015216b29560af76253b5861185231c2e797d1e5df3",
+      "rgbaSha256": "609a3ccd69cd94139af94d56ef42d006c3b41bf9471ea3e42b7403b727a00dbf"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "2ed09797d0c1c27475e428b361a2a6cdb88cf3ddd815c58fb2d0fed43e2665e9",
+      "rgbaSha256": "6a33b1658b0c5254f61adfc602d157ed97601666504b39172942940898aca87c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6358f1655f124bcf90a958e9764c2d705f1eba6de5c3e57d86ec3c4c44d05ac9",
+      "rgbaSha256": "8e385bab7ded1b6d8d0bcbcfa5982ef510b83adf0c380248f740cc521d92bff2"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4c0b51d9bc2f2d0cd71df360ecb1f3e0f09324a9a0391db5f41c16ac8afc5255",
+      "rgbaSha256": "00883f414233815f28f7bb8790a9187a54fb6d6ccf138793e304cb2fca9fb4c0"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e6667afd2bf9c2754fe2ec2fc31043171042737441112bcea8155d2555a528d9",
+      "rgbaSha256": "74cf4ae7e98df758997895785753abf871b007f5cae3afe4fdd6c0494395171f"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "be4558542088d11b4c5980d4264980e22881a15be10e0df1d06afeed746a9448",
+      "rgbaSha256": "d132fa856f7026acdb1950e137a5e747adeccf4cd3b727d91db8fb2b971a4f8d"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "07df35412f86cf0a11c2e6f88f4f6fa5eca5592a9e9710e25b6a2dd86278ec19",
+      "rgbaSha256": "3da24970d18f9a827f6ca037a1d6f872b396a47244504c430d8156dcd12856fa"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "79769bed1dcfdc48050e1b4fd74b45f0caded660e89fa1d0348ca4286bba3779",
+      "rgbaSha256": "abf374b31842bdf0cd035320acd2576220881854a8c1885e32b7823234a22424"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "35dab2b5130b589dc66db56e1a08373f03607c847663f5ba85a4814907314d9c",
+      "rgbaSha256": "6c87ffad0cf8dcd54c46cf0bcd3e08ea3ca29bea7813d33734dd034ba891922e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d3257f3c5e9ee4243e3d8ac029585069bfffd2286b9d9197305cadaaeb3fc8e1",
+      "rgbaSha256": "bfb2b55414c7ca7f9a01bb8528e31a84d50e7accecb8bf7294322029f299bcb1"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bef3a7b844b4d7208ed3363e83fd8b61d55dfd2d241e79e50897ff40850f7369",
+      "rgbaSha256": "7544c329f2ca560c969603707cb5819accbd71463a4cd1916bcc37163edf4727"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a1f4ff38a443c7eab97887fdd451b549929f1c77873d225dbe90341236b2f485",
+      "rgbaSha256": "322d373882e5580358ef8ea0e5f8a7436fcee449d2b759707e80a84266ec228a"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a33383b0e133e8f0db45da38d6033fc15c763d11476bfaa1d8a01081d968aad1",
+      "rgbaSha256": "f7bf309d619f9c1099b5a7e89cac0946f9642f5612e2500f5de40731aeb2def7"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1d49256b450d1fb2962a36840b7eafba93d50e07f692deaede695ce4f7d7fc7c",
+      "rgbaSha256": "0cb5792b9c0fcc8812d31e280e1fcaa3a9a4578ebe69b059ea225b83776cfe61"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "68fa859a1da641c9f81b665bbaea3ca3b54f8f3d057f6573095be2b95a6cca02",
+      "rgbaSha256": "8308733dae5eec6f5c3fca785b3a1493e898c83fc7de1fa29de823b51c68623c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "055512e7a01fe158e20b3b0eb2f84cb03c0b24f2ca2718369cd926692e45988c",
+      "rgbaSha256": "e0d65a9036b509cd7eddfb9eb7b8174fc23cb457ae6a4e33ab487d23d77e8f32"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "4d29266bea29da57980d65093ef61601c48d074e3ede7dbeabe73f85bdda22b8",
+      "rgbaSha256": "e5a7061e6378312d6be5333c80da4742be9f06b86cb15f0f036e60cdd08953ad"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1b0dfad148280e003c9a5b8a45be33d74ee0e8e7afd5de2cc4ce4174fd016e26",
+      "rgbaSha256": "86d7d26c1193b336e187df8a18703eeef1bc094034fea9f5624346ace2215462"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b3b89a35eb7bad3ec2a1a558600dc33cff7421fc1d59175a33fcc6e26fc97f83",
+      "rgbaSha256": "82d7b366bf9b2bc0c3ddbd3582315d74b57cfa447d9b9a4f3e8351615c22dece"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e8582cfb6668d8dfee84475cc1e2cf379d8f3c80a8200faedbfad7575048822c",
+      "rgbaSha256": "9cea583ffb4e17cf0e37bd148d4d73765127137b2d399c507dd1169a2ee96590"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c61c9b0b3c80950fa44d3bfb772e169bc848bc116722719733ffc354950962b5",
+      "rgbaSha256": "f4e8e0598b52ec4d16f8e6faeecc26534cade4d2842c69752ee65963ed641cf6"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c18401aa7fa224b62dbf1128a1f141eec47f98957319568ec6627de447284b0a",
+      "rgbaSha256": "7e1a32f231e06dffb2abd1556e7a3b5a2d95e855832de4c42dcd64f6d36b160e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "cef603644fd113a3f8c86fd4363a8677de9dc7f15ab73758f00827c7a6c9e08b",
+      "rgbaSha256": "74d8926953ca8d6f55a2cba5bf7c7c1ca88b9b4a5d3c4828333aa898c4a3a467"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "512145f45ad04d490a287a135e4eeba13605ecfba0e98560c6dccbe3e32f0067",
+      "rgbaSha256": "5de7586887c394b1e4a7b456dcaec87f88ee661ce110dde2a0aa88b9d0db11ba"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "88fba216260da2a10661eaf60517965d07cf34e521fce725cf0bad1869f302b5",
+      "rgbaSha256": "f8cd3613e962825c66c00e3e6be8af862e577fe8ea1903df587a87603ce6b8a0"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b3a74b5420bb85717d747ea8bc927df21ebb3a93a55d1c6b25bf102c3b7c58e2",
+      "rgbaSha256": "e70377fb285d6c3d4dab3b415235228bad453b60fd4c8ad33b4fc55bbedcf76b"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "87ef3cec9be19b2f3d2e2fa3a8e1bff45362dafa255cd5597c049dd7812b478f",
+      "rgbaSha256": "6e6f2679f6804557f70a9dc21b747cb3acbe38f9be7fff4d12a5c41e695474d8"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "2b1609796deb771004b00c663d611b668c7029fa23d216bbc4a770681e4ebf4f",
+      "rgbaSha256": "96cb42c849e8ca855132e5ff82afc2db2a33bbfb539819f454f6fcf38b99f812"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "f24c6be712e9cbb832f61863d3609aaebbf4db64d07e09ea470d3cc7af677a1d",
+      "rgbaSha256": "43211e4816d0b3f9704ebad56746594d1c01f649e0a4f0e9b59d823a57159a43"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7dfb33ce2dd0456a36bf4081285d6fd15e73fa13054483a242bc6e34412e9e9a",
+      "rgbaSha256": "aa2a9864c71d3c3171d67e794f83b558186905867a05cd390823d61e96e755e8"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b20bf3e039cc1c157d1e39acf977c98aa239bd119c471f860ce592dc0d705df9",
+      "rgbaSha256": "19387941f03077c57ab0b3e1f919dea56704a1c8eed7f9985d9d154aa3270df6"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "12f437891342b6141a719307d399cec2e5eac8db4f839f28d9337cac22a82def",
+      "rgbaSha256": "b4bc74db42c5d4a16bcd654860a18cc3d6ad5d922c0cc13fd6084e2e1493af6c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "72c6a42c0972bba2e3f3fa6f70ebb271ee0988b6aabea6eaadd42a6920fd82d6",
+      "rgbaSha256": "795c80dfdef7f230a2e6d6c950a4df436b5acaa2238992d08f792930447449ef"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "2b9100207e53b6831d1ed0375925931b3f6e81e7403d08a5867f7884c7e48167",
+      "rgbaSha256": "18af6ede482b009551e456468ab69f87e4585a36b018b55b01a79b50db6ceb78"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b7104b8f29eea31af58b96a64186db17d6eb02a0f885078b1675a5c7d3f4e17d",
+      "rgbaSha256": "8475dc34a6c863eb6611f927d8011c4b68e80422238353f2ad0b5c5ae26eb529"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3f6d300e2795f7348f21103d2965a25e137134ee972a063066b03cc1c3b4640c",
+      "rgbaSha256": "7865544812251212ec1fe1af37c88473cbb8a442c2930db9fe4ce19ed53b39a8"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "ae0a2260de0407790e745caf1ceb45be3ff0e9f8eaee9dc930499cc58521ec7b",
+      "rgbaSha256": "d26e9a15bbefc5f4969b15e07e001e82db499370ac2112cea2df65f4332cdce4"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "34cd9665562c48f6f16f795b6880a840c2ecc5f14479ddb4f8e672a08c0ae0cc",
+      "rgbaSha256": "6c0602c41fa2e958f7317e1d8b878fcacab5ecc5e9d4c10d707a178c631d10c5"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "1e4a9519aaeff18d5cffa97bdd82045b549030e15e7f48ca19b29cdcfda86b85",
+      "rgbaSha256": "aec6ebe39ca66b7170c34bf949a501f1c72e8e02d9bc074db5bbddb1652cf4c5"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e50ecbe60edb33c43b99aeb9838dbd367cd1917e144a1ae5aaee1bc3c39caa4e",
+      "rgbaSha256": "d6fc94c9910e433335eb26f4f2107643db2f9251628edafc473dcc12c9b18c01"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7a95417fc299f88fbb69156daa376d7f05b13e7c1bc6d0e78ef95c0db9afb163",
+      "rgbaSha256": "ff5ac1df995b84c2567d40cf5f4e1c3f1f6b9d7586f0e70f3378898c074cc77f"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "91693727112a2ffeaf7d350e5397b2520c492bc85a72467a75271bf1fa8638aa",
+      "rgbaSha256": "e8f060bbc734a44c3e91385136e2dfb3c69a70c0989549bfbb42399b82763d95"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fda4b12371595bb906b8178d8ea4a87d339c502222966a114988eb3760e8b6f6",
+      "rgbaSha256": "3afb178e4229787ce0149ab8a3338620126a7e903214a636c0bad2410ff4d7bf"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e4fa49b8baea51c31a15429f6c7aba62a7f8f03793b44b6a12fbd73b7231ba6a",
+      "rgbaSha256": "c1ab6e6f58cfcfe7720fbb23032d2fa02ade82c5bb637b6ae4c9531e7e01d064"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "feb44aef221601c85c55adb08e602bcb051b8c3ccce3f574d1421b1489203f7f",
+      "rgbaSha256": "f3f986d430fbeafd80fac76d5c04de2445f5a6121a9d2d1299171de59ee31a1c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "86d2dd9dcd29c08851f07b4621d46cc8d0a9136f74b9e839893f70f26cfc57f4",
+      "rgbaSha256": "072a903c67da8e1546b372aec1d0559d56594cd0fe6f75c0a8d67a9faec065a1"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "9fce8b2fa5a1a7aa3572af619910903ebb3b90a7cac40dfbc42f0ea9007b6934",
+      "rgbaSha256": "21ec064ae50f0b27649084307303923e8bea4040ff1a637826be561e63c37b28"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "947588ebe3840f673220d49dbf65952b29776178435b445e3c4c045454676d0d",
+      "rgbaSha256": "595246cbc149d3ff41e112757aa9ee2d1a1cca9e47877f316d31c73b9f0b7a28"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "96fa31d939382c34c733474433d0c79b4ead07ca416f42a273186ae8829dde3f",
+      "rgbaSha256": "323a26dbcf1adba4ce00242af0aae6a977b57ba4854b3e1e7a42b144c185777c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "28574001cec6dc37eac89d2c7596136244fc9a4e687b1be8668ea15959b407d5",
+      "rgbaSha256": "4f015732b0d15b64bb45ab4921db5068cb49afb888fe4ec0bfe24c00cab72ea6"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7da092f7ccd8c6dd4752ef0a1870700197144515d76bdbf8b053fd3ab380f796",
+      "rgbaSha256": "fa20af7382d436df700438e52872924ee536102addb94ba3cd24d778dfbdea67"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8b8e4f6d8ca7f181dfa181b163b467b8adbd611fdb752270c47fe9c347ee4d6a",
+      "rgbaSha256": "3362ad339e6a84f8b32c82d5c3e6d3503b6e8eb30b099fb2501d5eec97efcac1"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bca6c0439984ac8e66d9c9fc4582b2c2434f91db766a68c297d7384d9dcaa7e5",
+      "rgbaSha256": "526a1d3354d1a8860ad8994c7308b213188e9509eb93d8590190755f3ed9c724"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e0eb49b36859ddfe955a50592a749d6e99215c48e20c17039411ebba577ed2e7",
+      "rgbaSha256": "1a7a23136ab924c51c609e43bedb12cb6c2bb370fb9d9279a8edd7dbaea7cf68"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3dc25d4ffd5c2ebe4aad6c3bdefdcc1fc05b4be4efc00cd91a356bd104797ef2",
+      "rgbaSha256": "8f41771fb12971d6d2fefdd02a77d02386f936af83d8853480e5cde3f10ae077"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fa210379aac8a1106ae18000ccfa463b9938cc764fb25f545c5f66d2ae07ee35",
+      "rgbaSha256": "482c6933875eb1a359c62b4f7d96294e3b1d58283200f60efeeb4d064198adea"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "05b1f740da5a72f2c633a71fa2914e9983b7c6377588c22b70e4336e98154bb6",
+      "rgbaSha256": "53080188bb971f2cc6c7024506baa7e2a7c75d5ba155b6cd28a65333f6c8b6a3"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fa210379aac8a1106ae18000ccfa463b9938cc764fb25f545c5f66d2ae07ee35",
+      "rgbaSha256": "482c6933875eb1a359c62b4f7d96294e3b1d58283200f60efeeb4d064198adea"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "05b1f740da5a72f2c633a71fa2914e9983b7c6377588c22b70e4336e98154bb6",
+      "rgbaSha256": "53080188bb971f2cc6c7024506baa7e2a7c75d5ba155b6cd28a65333f6c8b6a3"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1ad53bf3cacdc7fe3f89e8eee706549734fd6ecd7b26a47317b1cbe919ee8fa6",
+      "rgbaSha256": "9f65237dcdf1867d32510ecb8a78ace779226e11d49f2befe7008814ba412697"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "caf4786678faaabf947d5aec19b146473e53387ddd94e000057b8e686a620586",
+      "rgbaSha256": "02445d5d10404d93331c849658cd7f2a2025dd3da3f5092756dfd8d35e8dfa5f"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8b5cbae46715d2ffaea93dfc5195a01de39cc995d8925f7ba85fc98278d502cc",
+      "rgbaSha256": "a1821e16d11449c216265e2c52a4847dab3ed498120214fa8feef0843118ee61"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "858445b5f52bafe56818481834167bd8a501f6f03cc6e5aed3aadf7c93c78223",
+      "rgbaSha256": "3544aa2099f6dbae470abcd0e975058e4a5c56c56cf73db43be267737eade3ff"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4cd64fb057634dd87b9daa9e036a9d7dec46918a56ad59cfcb2557b3514b4d4f",
+      "rgbaSha256": "525f21e74f701b104f49d77298f2c4bd4a818fdbf12c30bf2434a598aec097f1"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-narrow-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "877df76ed13d459593ac851cae2e8339b138ba2b7a5c308b850c985f46480865",
+      "rgbaSha256": "728159d56b851c799290750042164ca242e29b18dff22abbc0d822b98b9ceb89"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7145c12c72bb60976a1c502ad51f2bf6a379a022f9ea3d049d0b2f3bc061d7ed",
+      "rgbaSha256": "659ef11d0a85fbc9d5027b642a62884b8aec66912daeb1ce2edbac764fe0e771"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b81c7ecc38453cc2a0b893244da882d8fb804b6c40c74a30975217a84c7d54a7",
+      "rgbaSha256": "de05119bc7e7a4c05a2b2269d244339637a59b3f3b4d7befff6805c487b32b81"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7145c12c72bb60976a1c502ad51f2bf6a379a022f9ea3d049d0b2f3bc061d7ed",
+      "rgbaSha256": "659ef11d0a85fbc9d5027b642a62884b8aec66912daeb1ce2edbac764fe0e771"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b81c7ecc38453cc2a0b893244da882d8fb804b6c40c74a30975217a84c7d54a7",
+      "rgbaSha256": "de05119bc7e7a4c05a2b2269d244339637a59b3f3b4d7befff6805c487b32b81"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b7602990cab105dff1322d3c6c91752de887890e75c9b9c0282d0a2d23c064a1",
+      "rgbaSha256": "a43117e3d9fd9968881472187792f31faea16f961291ee517711b914d85d08a4"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f568d8399e349a1e373fd0aaa4248ce0ac709a1835cdf3cdef7b4026fdb0841b",
+      "rgbaSha256": "5b02fca77630e2d5a17ef4ee50fe91aae0c2f88d12fef4595c99f772081ef086"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7b0cdd8dd895945ef33c985baebac39e949cd09516c7c7c16d326ab4e669f027",
+      "rgbaSha256": "c96b48305ecf4de6107944b6101f9f0c7b33ea5caffc6711594d7a478e96c2db"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e1b3153e98ce2526374c757fd7e662a395f916e143a2a5f101cf55f2230cb71a",
+      "rgbaSha256": "085ed1da6b27a4f1d321c2af0934d05a3f08dee4bcd6c57880594b0139fda6e8"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "78adff05bf56687dc936e91e47404578d37f41f1b19dd8f3fc75dae65ace26d2",
+      "rgbaSha256": "ecd5e7cb63e09eb8da7756939d9a2046ddd444c5abc282765ad18635fddd8154"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5433d5923d594de344f4530b097292c224048240f7690f7f5240d7d9c6d3c5f9",
+      "rgbaSha256": "35ebb35d15d9412b92938f00687868debc6e691184b2686ebad9be75c8ea921d"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6f1b355f039118ed8a1dbd814906f3c06c946d11ea6262fc0752fb02fed3d4b7",
+      "rgbaSha256": "8b6e24c33a42b846ac0ef33bccdc93479c5565b2a5cd321f78a685b6dad4051c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "2e19909bc17b0ee713577bda249bdc28bc5907b6f1b3e7d530ed3485c4f3c149",
+      "rgbaSha256": "188760638b5833828187d1f7567592e38a8322506906238517bf13eef9f7da4e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6f1b355f039118ed8a1dbd814906f3c06c946d11ea6262fc0752fb02fed3d4b7",
+      "rgbaSha256": "8b6e24c33a42b846ac0ef33bccdc93479c5565b2a5cd321f78a685b6dad4051c"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "2e19909bc17b0ee713577bda249bdc28bc5907b6f1b3e7d530ed3485c4f3c149",
+      "rgbaSha256": "188760638b5833828187d1f7567592e38a8322506906238517bf13eef9f7da4e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e7ee0d6aac64e15fb924587d32c4f9cec82f0a00bde33a5f1aecced0f63a2543",
+      "rgbaSha256": "2bc87273aef2d13e560391c3c464037b80957b5e541d518da13928b9e7216ba1"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5b531580df365816a107452f33efcd542726f6d097abe1782c8e448e60cc9b42",
+      "rgbaSha256": "58f59a70cac32b24ed36006396d080c6a7b32bced93a63b0232717b69c7e3b0d"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3425c7036284a28ef197ca78f33ed823daacfbe6498f5f72b0233730a1cdb916",
+      "rgbaSha256": "aec8d47a5a93975ec46a41e0cb87de183b73557e0fd27f3f06dc153187eb11d0"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "33c8a4987b1317be72ddf9a9064faf8f132662dbc9418ad401dc9d383e1621d5",
+      "rgbaSha256": "a65a31205949c3a97b86119c84acad6bb3c23b3d62e433e258d147ed93b65e91"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9b4c842cedee6bb28d98a24984db54d3704371e58b0c2cf19393c2672d02c260",
+      "rgbaSha256": "f1fb9f75f3cf48ebbfbf7c07500972c1a5df1978dd6018f7ce6c499e1367a005"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap3-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9d5896034fafb356148aa9b3320aaff7413b0bddbb0934ccdfff1d292801fb6d",
+      "rgbaSha256": "dca6405775d8e7b23e796b86fadeb5645e109f771f7e908a8207247207147125"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d8fec1d4ab1f9bbc264734e8aee1273c6328fb65c74a39946077603558c5873d",
+      "rgbaSha256": "9f3f333c4ab9bc8481442f36fcae7c82664622a0388672d5e169364aa3a3e80e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "4d29e2a117b10b6f856b6ca60820943aab460903765a157b1922f287baeb2c6e",
+      "rgbaSha256": "0759ea2fbdd16569348905c3e75a5359171f75e0585d2b6fc0369d5eff62812e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d8fec1d4ab1f9bbc264734e8aee1273c6328fb65c74a39946077603558c5873d",
+      "rgbaSha256": "9f3f333c4ab9bc8481442f36fcae7c82664622a0388672d5e169364aa3a3e80e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "4d29e2a117b10b6f856b6ca60820943aab460903765a157b1922f287baeb2c6e",
+      "rgbaSha256": "0759ea2fbdd16569348905c3e75a5359171f75e0585d2b6fc0369d5eff62812e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b2fd4d0fd86669d41c55b9ded11199a79d1ff75898cc7a7f7f7e0604ba3b32c8",
+      "rgbaSha256": "d0bcef22ee4f90bb8ce11c7622098c5f74144c82e9f09bb14c8069cd18f9a5d2"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3a753540720f93cb1750a6b56af314bb5f77418fed1c4636abf27430174310dc",
+      "rgbaSha256": "6a1288a0995adb121b621a8bebf87695b85309fc11dd8875ea02408b709bdd57"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "54aeac6c46fa687c3d2df42f6e7ac16b23ca4dd3f0b426856f5432a3c3d1388a",
+      "rgbaSha256": "b973e90d370cbc53ca98ca49ff3ad0087b31119bf26dfd65ceb7382a757e3622"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "2b25ed2745fad5961ed6458c54538cee50543cfdc5db72ad327adaa18d006ae4",
+      "rgbaSha256": "26da559d0e5d27c3aefa5d3b2b1e035814fd872f0f54ef1be6a72d516aeb3ce0"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c824d6cb1e10a710b3b6e413ed32ac3a339c1c59b0b318044c26f710eca8061e",
+      "rgbaSha256": "6b43b9ff546e1c361a6c757e4ad3dbc80697171fc532240888f75b1525827022"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap4-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "27d2ae35dda8df891f628853d91b45de44d5e781655518cc00a4081e5bf17cc0",
+      "rgbaSha256": "98539cd97b6266ea94d8a3dfe0c5725953b48f3bcadc9ae7194e7ccaa3c90737"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1a65798ffa4d664a25194a689c4c1fbd7e9c141885c7d0392b59c0cc1517a11c",
+      "rgbaSha256": "5d06ebd562462e4496d75f97d7e90676d4f1c937af64567cd45c3c9ad891a038"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "96761f7e1c6812c559f814e0e2501b98cd55e55dbcf2abbbae315628efbc045c",
+      "rgbaSha256": "339965c622690f12863d995376c7f55cf924c3fe9eaa9e0e757b67eccaae5710"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1a65798ffa4d664a25194a689c4c1fbd7e9c141885c7d0392b59c0cc1517a11c",
+      "rgbaSha256": "5d06ebd562462e4496d75f97d7e90676d4f1c937af64567cd45c3c9ad891a038"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "96761f7e1c6812c559f814e0e2501b98cd55e55dbcf2abbbae315628efbc045c",
+      "rgbaSha256": "339965c622690f12863d995376c7f55cf924c3fe9eaa9e0e757b67eccaae5710"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "adf54446dfe2b790fd73b1d0d072b15da742204094280d567e49902df8a55366",
+      "rgbaSha256": "ba1ed5f6ee5b02c79177904be8f5a0f16ca262bedb38c1cce392db166837f19a"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d375a5a42cd72a3e7275a5181096ee890a8373ebecde097b8f1134c9d9724839",
+      "rgbaSha256": "c86330d0073468237faf1db01aba7b624ab97008ba283c39035ad543f368ce40"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "512af36c205e87d1dba34b02b56db08dc49c9ee6ec05b342f7026634886f01db",
+      "rgbaSha256": "646cbc0bdbd1e5c35444db9b1e0eef976b72663c6fdbbe2cdebe31d3ed23f912"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a243a2a0df6c6585bccda9513ce115b3c5d34c6c9a74975d3fa6f00b66ad98cd",
+      "rgbaSha256": "f70d5e5edc3f6edec96d28297f7204ef4950ae32ac17eaa26ff75198cf40d896"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a4cb4613dc1896ef9d665840abcb6781525d85c5dc1f787431833e07b2291310",
+      "rgbaSha256": "10da51723ff6ca24baee56425b797e871634996d254649c83416c7418b0faf19"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-wide-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f85b21bc868bf82ebceba567a1034db2df5a3c61cd75adf37d2992158dd969a7",
+      "rgbaSha256": "6bece1db6c8292a6f713c06c5e1d154acfcde8e24eec1e2f01361a2f5ab62d8a"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e17118b8c16524d1e53fab1701590230b34c5d9109dfdceb7cbafbdc778dec34",
+      "rgbaSha256": "d5382267c7100e37452db9a94f8be9d620bf804cd68bf383ee3d2fd564b6d25d"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "d539e557ba2725f0319f7b33d7c21d353f7f29f091a4a6c853cfff516d8dd5ed",
+      "rgbaSha256": "364d969d1932e1723f9459ea9ebcfae98a3603d97bf930906aef80f041042a60"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e17118b8c16524d1e53fab1701590230b34c5d9109dfdceb7cbafbdc778dec34",
+      "rgbaSha256": "d5382267c7100e37452db9a94f8be9d620bf804cd68bf383ee3d2fd564b6d25d"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "d539e557ba2725f0319f7b33d7c21d353f7f29f091a4a6c853cfff516d8dd5ed",
+      "rgbaSha256": "364d969d1932e1723f9459ea9ebcfae98a3603d97bf930906aef80f041042a60"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bcf630f712f7bbec82bc38a59f523fe5bcfe7d868d2f01d0c53e4ddaa71da528",
+      "rgbaSha256": "84b8bd2a9258f31c8cb55b2fdb2351d2a62f07bbdbf1039319f754cf6ba5a139"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "717fcb61d651b2cfea69291a2b9c2785bb64146851b20ead2043baa2927b7b21",
+      "rgbaSha256": "57f63fc194fb1d486e0146ef50fdb3c64ea87e21729d7dd427357183f3ef0cf0"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "66e6823117e7f08d6d64636ba77e4e8decc19c30090c06768bbfe894592c6ad4",
+      "rgbaSha256": "af41ed034035b43336c54fe3c587b48ad1503f4c2f203cc7ccbdf0d994dc518e"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5c4f4e37299bdf57fa13238ba49d1911fc073a8dc0877e370a00fbc7b775c344",
+      "rgbaSha256": "e4a463247178eb6db7183b35940a58be6cedb2522c050803d3cb7f7c0a284dd6"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8c0e7a52178e2b87fc965525299f6acb876ab9d6c0b91e007d37ebc99a275854",
+      "rgbaSha256": "c39a287422c80d00117bc3fda6311b297b90228663a1d570303f56ea29d30ff9"
+    },
+    {
+      "path": "Media/Overwatch/segments-10-gap6-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4c665c6d25e6fab98a0a1859ff7762b01147f668330700e3d86cb2ec2b6ac15d",
+      "rgbaSha256": "60a0cc972b08a1e2f06f33baff22bd339d5b9b3d03aeada78233691c02d8d13b"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f3cb8a97bfd14c2ea9b7cf42fc8221eeb270bff615d65a67b61da2b80dd12034",
+      "rgbaSha256": "15892b8626b7f98e79eab91c092692eeea14843fca4ad24f4e1d4e06763b1a0e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "5fd9cf46ad5437cf6f874e8f1eece582292502263e63919a9c073337d1f8aff3",
+      "rgbaSha256": "67d088a10d08588d30e9d0543bf27b1b04469c6e4e05af86ed8ee597e07d1a19"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9b8e047963c378b25900c153dec3e1ac9ea610a68fed5d5c8cd738003af550ef",
+      "rgbaSha256": "4c090851eedd020de1338d5c00e1da5ba629435f8111fd72865cf813ea0a6780"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "abc487b469d169225b191a5bca07c071424704fc0676b6fc9c109da2a308fc88",
+      "rgbaSha256": "ea86af0079dae2a99caa1a2689a8e611a452a311dd1b135e711e26c4207b5d94"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1b874f972b7aae2af85bfe6512ce1070eea594b58e8f5311ecf9a5d8d7587edd",
+      "rgbaSha256": "8ead4e836823410da98f5bbb5918bc31a5318b21253be963fddd5b52ddc82a78"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0d271de36bfdecba851bd00d5838cbb83ccb4c4437041142bf97b5a90a66e944",
+      "rgbaSha256": "a4d5a7e62fc58de6180b23b3af0569dc41e00d7c6389cdf5d40955b92a14965c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8b738971d5f6617333d9c79c6101a60e67cf59a8ccb7b9d9bc8e6b2cbcccd5f9",
+      "rgbaSha256": "c2135a7b847aada4487160dd9153c683038f6409bf3d9d0d597213e0a3def936"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "474535f50af8df596b8254826d8ed9e50847d86bb408120e22d7f1f7c6368ea0",
+      "rgbaSha256": "b404caed1e5eecf74fc44a272d6da50e6cba7b542ef71b7187640d0a77a66293"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1a13a948c04f9c411d3b8e576d7e73891be6cea0bafb6de1cdfec2769e4d68a5",
+      "rgbaSha256": "c5af3834892fd9b9d037124286004c9912cea059cfe9335e562705e4ce51f8b2"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "89eb616eb7ee1375f3dbc43f96858907cd933b5c594ea1c0ec686ea603f6b823",
+      "rgbaSha256": "cfa5af5c51e70f35df1c686112d59e3d6f0b2ce98c0b074f6edc862027da428a"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "692eb167f1dfa3d56c4252798d25b6b9503f9ab794b2583916855e53bb207631",
+      "rgbaSha256": "0db4c3152b16cf9c58868bc1358d4d412f3738a40e2035f54d82c740a3ed040d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "e3f947d7692de4d5bc41d9157c5cbc4fd5cf5e3d46d6eca4a2884867d7f505eb",
+      "rgbaSha256": "e4678247e8291a3ec572dfb2cf913d49e9fb5d1bc744c4b57d9dc679bf5b2d82"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c8081c3f23bad5507043b468656ac32f781a81a4b93a07ff4b383a0cc7edbca0",
+      "rgbaSha256": "b2b0649df5ca0a3fa1504aba6a3ee460e1707d966b8e543955e0c00c4be1ce5f"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "2dbb1be2aec4b02f493b42ca95908950c3dd64e8a9acde68f6495276779c8b5a",
+      "rgbaSha256": "f7ba951ef52f777b4f74edc489da140b846b5bb466ba3b57de183691b08f1d4e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f6b07d5886699a06316b0ffd3e11b62ec013fc30610123cdf50ffd5f10f3b5e3",
+      "rgbaSha256": "246e465e58020ac24acbdc4c3c0180ae023a0ebb5ba5fab35eec555cc031735e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "36655cc38226b6a0a1bc2671c5a7c20e3c92cce434fab1f64458391de1142892",
+      "rgbaSha256": "825e01d11f550cfb6e0f60d61e3b975fa28bd1a3ecee4f81e5985f6907168201"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "197812bb6eac7f090d78010aaf6ecb9da6bd866c0d7d62b8dee55202f5967d88",
+      "rgbaSha256": "90715c8e5d8dd3116cbb61034ed41ef3496dc9e5f1e0b072c4b002ee83e605e1"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ed6f4fd9275cd1fc682e265a1a0a80e65c7a4eac9dff06d5ce13518acbec2bd4",
+      "rgbaSha256": "383c07bbba4a210ca32cfae092b0c31da653d96fb67fa62c5e08f4e25b54870d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "38b61d306a024fdd023bf124819f400bb7a5dfb5501b5d52d51c9d02654663a1",
+      "rgbaSha256": "955cf91298a5a1c23bd34de5635b4984c372b5a8538ba0c2815ec98d9a6dcbc3"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c6e2081d359c1e739d69d2b4c0f3657128473948e485e547bc93aeb7a932c5ee",
+      "rgbaSha256": "b949327c9c6908308a1ed882f9a1de7b1cd335682ea9cccfe2b2a6f801e18bdb"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "30bff5e0625c07e74aa84da5f933bb6851f116e6b6542bbac4c7a851ed87cd0a",
+      "rgbaSha256": "90346a7127749d7ff33c19761085561f9d7bcfe2c59c94fbc8a84a2ac7e45048"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "417202e48a6172a81d7737514248a5b3bdf12444babbfbe534e2657b73e913df",
+      "rgbaSha256": "987e1a92c966f969067e6a57f369a7a97d82bc5f040e22c7f33baf437ff8fdd8"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9a335d9d72991e941c2ce6f11480166de2d2fac3dbe0ff3b214fd367d7597d78",
+      "rgbaSha256": "90c76716004c119601444b9c802f7b38f46117639ff7ecbe17a6d1cee6f2fcf8"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "00903fc2ff8a747e31c8a28989f8d9f2d89484a602226beb5e1a1570cf7e75a8",
+      "rgbaSha256": "f67c608a1c28650856ca0dc6cf4528fa3c90c4b7d4cb8bf669cdbcdb409d3758"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "68fa38ecbcb8ce94130b585aa1d4546eb99d693c86b1781a30f2450e77809fe8",
+      "rgbaSha256": "c9686ea2015de568bc1683a1615893ddb852e34b288e16aef5a2ce240da73b30"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c4d9842cdcc998376ad6d6fd2d16d5d38fa20a9df5bd62ccd3e5d039e7e4fd2e",
+      "rgbaSha256": "e6c7459f25b78d28764515eb18eb230375d8b3d840d22dc0840dc5715a8769a2"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9b4410a25948a8ef7be844f7a41d1e14956c438ae083b07df5950e81690d2025",
+      "rgbaSha256": "c93a82a663ff926dcf3a5b0ffd119e9ebf68146aba3801335424125b48dbef8a"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "37d5654312997229ecb80945a73451e051446c3094b86bc056ea4f3f71136dad",
+      "rgbaSha256": "d7a2ba94daf13cdef740f3da8af3a9ebe8f6d55493b6b4cd02c80eeb86bff42c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "fdaae92e3fe7e382d7b7983768acb99a447ae1db6413d18242ca5cbef2cf5340",
+      "rgbaSha256": "8b331afb9d096ac4752992a64a6597b2697f3b68916214c7a7f2ba78b7ddd44e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "428267b4a921f17014afcb048ffc2bd4f3c62acc08b9c3c662b3dc541deeb768",
+      "rgbaSha256": "cc55883a51535f6bc82265f3f7155093f3fed399fe2f23b424bf64911a13f433"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6929b81b7ed59b8d9601c144a911c9e1da81a8af51698de3608a4193ce19cc83",
+      "rgbaSha256": "dc13a9c9ee8b919356e89a90260eb59f05cf9d2de82335b812d4908c45958d08"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "fed63602b0adbb1f73ff08cd77bda88de3a1c4f1535e2d21554e638bbf871273",
+      "rgbaSha256": "74530ef8ebc0df47aba9de91a19df35f31b902f46b880ff624239f494080e45c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c0d63910e78b184ae5c50cbb3d08ea16e0b5129c64e213c18ac364386c9578a4",
+      "rgbaSha256": "079600ed8a104b2e9b79b06c2392e8784f9e4f4d120a60486f24913422cd3e5d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "40da693336ed7e217437b1a401a83f2f3539b32199d6ffb1298ca162e9931c35",
+      "rgbaSha256": "d6c31266efc95045adac08643c574368ed9d735c959067c3343e1ae98a92e20f"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8c237e68d9e72514ceebf1e170c69fd33ba7e6e625892ff353764916be794fad",
+      "rgbaSha256": "407fb1f6fa230ab1239ddad94378a51a1b7747abd6e4801aa38c076156e87de2"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1a121ddef3fc1cfb70df06c16b0eadfde3774b5a2672d4810a51737914a26e1e",
+      "rgbaSha256": "852ade767558bf75e916f581121251f0b0da675673dcf3d20c7d6e7320ee9e4f"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8795ab982c0e63800d09b8c193fd2d63e9dbc5f49e12ae3f57d3eebd0e38471c",
+      "rgbaSha256": "cf84c8b295e77496e7285da7e6906f2184682f249e13f234368ed47db13b8e5d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4d35aaffd2212fffb55ad9fad070d9c5f23a9df7dd25e288155de8901fe7dac6",
+      "rgbaSha256": "96d7f4e610bb39af38e9fab0fe902918e3e80d9e3e34dba223b9b42e1c5a7afc"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a09fdde3384a3f56b396180ac705c33939ba9176be4dbc865d335f556faabbd1",
+      "rgbaSha256": "2f377c53a34440290242b00b456c0146eb1f32fc85a889ffdc980731a66cb06d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6fbeec90c5de46a1d399a4ca6385f1d960ad82e931962fe238e722e254c81d6c",
+      "rgbaSha256": "ee6f9b2836001a76071bb57db0b81e71bffc107fd5c8338c7acd6b11af7c7b88"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "e3ae5a59c02605f50134c0986c65597376134c8999dfdc9ffb6881cee4c02dcf",
+      "rgbaSha256": "1b8adf58c3d5fb44cbf8515164065f4e9a0c1f8a71d9e958ef05fc9dc4dc763b"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "e280ea890d97d62895ab25e65ac9d179efd67334eacda7a228539e2201ab401a",
+      "rgbaSha256": "6cb3b59ee8623f1f36cc2af3c461f8909d43a9e023456f67d83d616358ff5181"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d1266c0c0fd00a4fe1889cede354607624519e3b15ff83f414c6e20454563402",
+      "rgbaSha256": "0dd73d73a8718989e6b9b0e6fb24def0c71e9e1b19412d6650cfe1c84474c62e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "50862c3e7b219c8582e357c2a5eda753ab99e8b38641335056ad3e42b8aa3ca4",
+      "rgbaSha256": "389d27f8b4b8c3f7aa28aaf5043a67842e2fb50d4e6a97d5b4da3a8eb9092594"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "266acb22967bd6bbb47f8dc4d9605431e60236413cc1aa12864f93c5594e40f7",
+      "rgbaSha256": "37a4a9313b9d2ecedfadb738ee57951a7108eb2acd4385ddb9d4058562b228ae"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ae935a2d9b0d53dbc40a3a280dd2f02b4efa5dfaab60ebdd8a4c9fcce0677a0f",
+      "rgbaSha256": "4d12d8eb2ceff14c6cbb59cf2c76e020acd7e02df1a87cfd1e2becd57a852440"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ba321a04ab39b5d1643334904d63229c9dff6da09ac0cc6f31276cda66a18243",
+      "rgbaSha256": "82bdc4e16b4eaa724a52529f1dc30a14a3e6c57a5fcf3dfeee5962a44f61c7c0"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5b0323692da3a3f2fa279f824ee1f648d730b7ce785b15461be6b5b2e97839bf",
+      "rgbaSha256": "88a1ce0c499ee919c5e2389face62bba19526b2051bd563baf4dd82f656735d1"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6387362a79b86c40a294a829fce9d129ff2c595811c3cca86d7d1b60c1b45558",
+      "rgbaSha256": "54d044204bff0a7179de820cce2e0fd05b095786317fb0980cbf2914b8d23c0e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ab23f2ec152e5f708c7e4e4ef61276395f39111599e0cfda854e82d6af6f3a9d",
+      "rgbaSha256": "f801c663d1a26e1185896e293c3b3bb1f1b80aec710d8d6cb2774b007560dca5"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d6935ffe6a3d84c1da78cce5d775c3732fd1189e48513b04fb14b12d7f18db21",
+      "rgbaSha256": "e16a3d84d2d56d919c7cf60e7fc68722b49c7be19e6bc6247c1f71280d5de0e8"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b13cc22b8bd1d6670e0f8c266e2ff751cf2a976795e94acb46fddebecc198538",
+      "rgbaSha256": "0c4609c776cafd57c37fbf19e697e9c832329bbe8a6379443aeb670eac4b4c1b"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3a0895f2410e6c4c45d25830f0ffff5743210a0ff3b768fda356eb8f24221a8a",
+      "rgbaSha256": "1cc78cf18796719df7acc169fe212b76fd8c272718c8ef3ddbaf83dc957865f5"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "febc971b59db991a6b1bca474fa838edde15ebda0345b87a0dda6b43ad997989",
+      "rgbaSha256": "831649a7e0323d7c1e24d6b20e3b68ece2a567a6e0207932f5ee22b1d5d86f7c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "60e1d91f06843d77905f166ec23fcad4a2ceb12be3b76c3cd9b79716dc5bea45",
+      "rgbaSha256": "ad0760f41f8cedd29e87d6168819e9a1cb5e1591522ae30380ae3f8384a60ee0"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "94a4ec37b62681a57f3acd2fe47ef9cf6fe78d415cbd1cdd470de98cdd51e5f2",
+      "rgbaSha256": "7e80b7af06cda1ce2d1e9a4079d028d396abce2b6df30d3d6ee33704fb19bbff"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c6889b192cf6847f24174c5f74f8090810df8739c77da228b30f82cd3985afe2",
+      "rgbaSha256": "672d7d465e9879af4baf1fbfee8eec7281ecd6638edcfca0d1373d4a88d2ceab"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0a0d7ff081a9ce216ca8b2fcf0bc9e6eedc21ae556896f9001265c6d4a602993",
+      "rgbaSha256": "75573edb4693712ac5afd27ad9ede57624ff3a147b5c9493016b72b2b61ce3a9"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7c00f12692f61553d4d0d894a5cc1b5f914bc2043d2295a5f64bbca59d87698f",
+      "rgbaSha256": "da349837ad23d0d72bd5fcc4ca0ebfec1323929753ae269df6aed46810489a4c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "48b3dc507715288e05176931c168755cbeeaf61c81f3b6a801db1b734160995f",
+      "rgbaSha256": "1befb8f7c1bbc3a3cdf655e446f2c48a30aaa89e701eca1109a316242efe751d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5cfac05ed5b0078c0fb268ede993732a7e29bc15ac129fdac029e980e8be3821",
+      "rgbaSha256": "2990e9d36e20e667ed1dba774d5e266d92b553b229a8b855432095ac17399216"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b1c9a14bf1b10e171a7972465d019d6a864fc076aeab7e2b6df83ad9a9587fb1",
+      "rgbaSha256": "a607efedcb24f57fa8ae3779324e7204fc07997c1abd5b477f1b14ae90cf706d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5cfac05ed5b0078c0fb268ede993732a7e29bc15ac129fdac029e980e8be3821",
+      "rgbaSha256": "2990e9d36e20e667ed1dba774d5e266d92b553b229a8b855432095ac17399216"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "b1c9a14bf1b10e171a7972465d019d6a864fc076aeab7e2b6df83ad9a9587fb1",
+      "rgbaSha256": "a607efedcb24f57fa8ae3779324e7204fc07997c1abd5b477f1b14ae90cf706d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "64d551e8bdd132bc02e44ba9fcbcd20f4506e90b6b1ee6abc750b5d2dff36f93",
+      "rgbaSha256": "c3599f2b4536b952ccf2114984962a620ea8cc8d4b5114d7cc44fe32f780bfed"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "3982ba9dc32fc414ded233faa6af3317e661cd171ef7bce670f306cd1c34601c",
+      "rgbaSha256": "e8ef930fb0c8ba2463b0167cb77bddbe8a0ad5c7a823e11af4fe8e7f14281f83"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "ef48bc0f75a27cef2316718709b51062254d8ac336c993bdda055ccd51e5bd2d",
+      "rgbaSha256": "036d847d93296c2953e60132bb7fee0a6570e38a932e391bd9ed1039f3c866d3"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "96a6fbf48826cdf848847e68b56012f2dc135bfac70cbe658e8d54bb48a98c5d",
+      "rgbaSha256": "5d744c9d7e223c75d07a079b31e6f86f872afc9010c4869562a68c433f273cd3"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1e54fdad611d92a25b82169ef5eb2d75d3f94b61108fd38293858c34f1a5bada",
+      "rgbaSha256": "3dcd5133972e4dbb3063a4ba5ccd3420ffbd61d62232c6a5c742a39bbf3e56ae"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-narrow-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "b023cedd769f3d362d2b87dc96f14ec2ecb46389a1ad45fd8669a08fa66c1b84",
+      "rgbaSha256": "226ff81bbe5aec9e738130665936be7c5fa3e31432207b23ff5e50da56f52f46"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "412212ec89119830fbac2a08843e14fe8958e849572789a56c337b90d68f99d2",
+      "rgbaSha256": "f583c4ee0e91422791754de7ca1e300fbc56acd707b58281fdb8a77c1fa789a6"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "26845dba7c13ee6e3b30756a04df04c02ec51db4fce310df6ea19d7668e29aa5",
+      "rgbaSha256": "01194ba2c4bb07f175d4c5be6a8f548dabcfce91b358248aa06d009eb9316ffa"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "412212ec89119830fbac2a08843e14fe8958e849572789a56c337b90d68f99d2",
+      "rgbaSha256": "f583c4ee0e91422791754de7ca1e300fbc56acd707b58281fdb8a77c1fa789a6"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "26845dba7c13ee6e3b30756a04df04c02ec51db4fce310df6ea19d7668e29aa5",
+      "rgbaSha256": "01194ba2c4bb07f175d4c5be6a8f548dabcfce91b358248aa06d009eb9316ffa"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "61ea421e33e90e80b38463010f223a2f74963a092e9e595e6ec8c77697d415ef",
+      "rgbaSha256": "08587fbb62aac23e65ba9809392a4b9ed364d82c9ff98c640f4a820399acef4e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "d9d1cacd28e32d8a5b6070d521e53dd82e18902b065bad0d16688a506ae1a9c2",
+      "rgbaSha256": "f2e5b5922e7ce618c5f8985d1613304adf5a6d0b9c577d430b2bf8eaf57fed1b"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "8b02eabd1fe0d6210b1f3d02208b97d8ad9591118ffc4ec77ea264f8c7df9699",
+      "rgbaSha256": "24b5b949e22b6971a82ad89cd225bd28437338132ce727150be8cb2fa39fd723"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "c2923da50f65285ab73974c86eb4161a51e8bc3c0400f30b4c3d0dee399eec99",
+      "rgbaSha256": "bea7459212db2072df5875e6880a64764ef1c1b64a5064cadb0e17cbaaf8a0e6"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4b6b834eaf81a1c74ba7ad82977303ce3a11697fa7e4ddcd4a361a421c8f8800",
+      "rgbaSha256": "e2b29280945fbb2183d95656b176beb8f158def6cfd77103d4d45731df08c657"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "db7f56b8880bb1f7204111024755aed78004f80f46a4a6da2ca17513c2c67333",
+      "rgbaSha256": "78c83df28c237575a168e042cbade6499705af79bbe10e2491a928e8a686f82e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f3c9e41f5d71994ac00ce72fe6ef65dbc4bba2685724458f3147ffe5c5ff0159",
+      "rgbaSha256": "6aebb35916ee7a27975013f61312daebfeeb5faedb6c75fabd0ad526c519024e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "c1f5bd6caa47e2ffb65ec7436838931312ab989e7f88547b6ebdcee13695dfa2",
+      "rgbaSha256": "d3f234cdeddb91e9404fc0ec44c4bda95fc0648396d50a6bd04abe45df0e892c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "f3c9e41f5d71994ac00ce72fe6ef65dbc4bba2685724458f3147ffe5c5ff0159",
+      "rgbaSha256": "6aebb35916ee7a27975013f61312daebfeeb5faedb6c75fabd0ad526c519024e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "c1f5bd6caa47e2ffb65ec7436838931312ab989e7f88547b6ebdcee13695dfa2",
+      "rgbaSha256": "d3f234cdeddb91e9404fc0ec44c4bda95fc0648396d50a6bd04abe45df0e892c"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0e8c75c2182ee9d66c92469bd4aecaff98ebbba3558423aca4bb620248c28301",
+      "rgbaSha256": "4cee47e620b92d40bbaf0efd11f618158a59f7f191430b3448aedd3c6e99de02"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "48d2483174b57940db3e6c63c90fe33118c51baef0caafb562d77c434528f44c",
+      "rgbaSha256": "4e9e72434bfa6973753e379a5ef9180b65f2764af5bb3fcc602ce4755a95ba83"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9453221df762f099bdcdf7e69929b1079c95daa8e59474eeddc8f33a40b21b80",
+      "rgbaSha256": "56bce3bc0de593612c3b4bfa89c0fab3720ef79ad2990fa25d08990f5c43314d"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "4e2dd8059c6c9d72d202ecc386aa97f6513e9f1872cb8b943b5fbfadc1044b58",
+      "rgbaSha256": "ce2b87e0c535223d12eb0dbd41315ec1adef7378b7023e83930bfde208141267"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5bf718123b1e7335875d2537254f890c62f44cd79c546e88d559d77fdc8aab35",
+      "rgbaSha256": "e913a176d16e1fdbb47875d155579eea27e894fa19d2368729b5b275dfc55ee4"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap3-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "76541480c6e82ee002cd4f1ea1ab26368808f547cf6ba8f97974edf018a3c922",
+      "rgbaSha256": "71d1f381f5d405af34ee6b804f85bff55ba51a0e459a26dcadbff9d379b3e9ec"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "21e946a66ff2ff864f9fa48fc26709decb25f5d8c78f4eefaf964cd900d94b03",
+      "rgbaSha256": "582ebb7366a95eb39a0749f044a86c3d8e1b90234e8e4babb0625188683d9d37"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "a2d8be158e2cce50c5e5da69acd75e2f79cc590cab399cea56876d1b10bfb3b7",
+      "rgbaSha256": "dc457acbc6f9f8ce135b25e9ddca68c6de3684b62e9fa38718c295a9e2217da5"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "21e946a66ff2ff864f9fa48fc26709decb25f5d8c78f4eefaf964cd900d94b03",
+      "rgbaSha256": "582ebb7366a95eb39a0749f044a86c3d8e1b90234e8e4babb0625188683d9d37"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "a2d8be158e2cce50c5e5da69acd75e2f79cc590cab399cea56876d1b10bfb3b7",
+      "rgbaSha256": "dc457acbc6f9f8ce135b25e9ddca68c6de3684b62e9fa38718c295a9e2217da5"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a6fa3ef205290c416891d8188fa15111b0cf65ecb48ea82bf67e364e64251cc5",
+      "rgbaSha256": "d01f937b6402f01d2e31e3f025a1d52cf95024e5802b03deff01d911a1e92a40"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "1ea7ac2f9191d1a497126ef4856f6fd28a3481ade5749261f13665a06fc4cfcb",
+      "rgbaSha256": "7cc14c6bfcf37e997e0948dff1712732e5b31dabdb46a9b593755ea134cacb6e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "7c6dfc00f7ddd6e068b6ef1ed916006d802f097a4a5350f01854ff95371c9dd2",
+      "rgbaSha256": "cc4e4f3d992d7fbeaecebdb88052804b074eef90ed38d2a38271fa733e8242db"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0d1147b07f5a5a61406488d4b69ad5ade481510f2083c9af4ab5740747a0f767",
+      "rgbaSha256": "cb4ed5f50d995f90e0fdfbc17cdc25f03aa8f6375d5f9ee0af4d34d4eba48f51"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "892cb7674f62802dc50298cc38718c8d183fb17e78c11f706b295baa280499cf",
+      "rgbaSha256": "60232d7b3cbe22e1ca76b0b3e7c44b23f035ae8b308c7b8e742aa3431f20301e"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap4-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5ee0de4c59f2fbc59fd20dc9bb1ce415e0d8551007be3b667f092a7873a42919",
+      "rgbaSha256": "9071b076c6a234f24dccfc7a7f7e50e8c97a445d9f986fe9a271346ed0a39c7f"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0a3b39612a2e99c882dcde5fa71ac95add5882193d7b6dc4ecccad8a579ad8ba",
+      "rgbaSha256": "bd3be8e3387009887d648cd4dfdef38a553ce9e2caedefbaf8cfa31442ddfe90"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "c38fb7dfe1a10bf577ee66d058422c23f41cb4d1f3dac6a26babed8a781474e7",
+      "rgbaSha256": "11e2b666b1cd70475973acdd82e67dbcaba751de59858703a46d8ac9b55ea123"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "0a3b39612a2e99c882dcde5fa71ac95add5882193d7b6dc4ecccad8a579ad8ba",
+      "rgbaSha256": "bd3be8e3387009887d648cd4dfdef38a553ce9e2caedefbaf8cfa31442ddfe90"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "c38fb7dfe1a10bf577ee66d058422c23f41cb4d1f3dac6a26babed8a781474e7",
+      "rgbaSha256": "11e2b666b1cd70475973acdd82e67dbcaba751de59858703a46d8ac9b55ea123"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "213455c4ea7788c06d8131487a9e216a2c6ac3ac809668167a251edc3625e072",
+      "rgbaSha256": "d0a88f7af7668d4c8e64bd6cca1db3cb4410a9a622cb1bde698c8e54748447e2"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "5a1688506dcabb3fe80f503954683441c157a47bb09336b89e8a729a73a0a05d",
+      "rgbaSha256": "502ac4cf2d44289796177ebfd91e04254f90e74b8fe34f870983677999227c58"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "9536841a82ae3da5f370bdf17e63ffdedc3ed57c50e7f53bc85485d85ae1e442",
+      "rgbaSha256": "0fe05be3f7dfe3bb1ea7e41c57bd9ec88f5787f7637a82b882de8e836752a0cb"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "08d76d3b1793b54e3710e6dc114a82e8407bb4a11b952c43d009e9467aff373f",
+      "rgbaSha256": "8d9baf88de18b0f313304b31fe48c3071fbec138669efa67e2928402cc2ccb7f"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6818e4fc93640dd42ae0065e598549b6840f7db836abf448e2ed1f44a50652d8",
+      "rgbaSha256": "66f3fa516a3b8b0b8ca8ec76a51900067b9e85df63f13222ab895e10f60e3d62"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-wide-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "a0a0b796e15ded7c84c0436d5c0b79b385809109717978194cabe3dec5ee1bc3",
+      "rgbaSha256": "50753de0c28a6746378e9775eb117ae712ab25a22b79352fb3f77418091f7d99"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-mask.tga",
+      "kind": "mask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "35ff8806f0cf97a0c55a3918d7f1ad8eb1fff467651d2dc4bab3b53cf239c8a0",
+      "rgbaSha256": "8b0443b44599ed8793d8ce94e491c7469fb579cf671add90874c2ae711d63554"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-mask-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "7e13b962069689531d454f00aabdd942523e7ea14f31a35595f083d69a152179",
+      "rgbaSha256": "d0bae9abbb37743a2e05662e0f7057cc185621fa2a8c0aa00f15ab82df84399a"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-mask-reverse.tga",
+      "kind": "orientedMask",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "35ff8806f0cf97a0c55a3918d7f1ad8eb1fff467651d2dc4bab3b53cf239c8a0",
+      "rgbaSha256": "8b0443b44599ed8793d8ce94e491c7469fb579cf671add90874c2ae711d63554"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-mask-reverse-vertical.tga",
+      "kind": "orientedMask",
+      "size": [
+        128,
+        512
+      ],
+      "sha256": "7e13b962069689531d454f00aabdd942523e7ea14f31a35595f083d69a152179",
+      "rgbaSha256": "d0bae9abbb37743a2e05662e0f7057cc185621fa2a8c0aa00f15ab82df84399a"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border-1.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "80c59ee70d0fa4ebbd3437ac4dc83287506f98725201869e4833f9f5e53eee6b",
+      "rgbaSha256": "3d87775da40600651e1eab9ac53de2d5d68220c62357336cfc8e577b5b8bd069"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "cabe6911c15492fc1396fdedcc474a05913918fa98691634ed293baf4fd6a88d",
+      "rgbaSha256": "5414fdf240b9a83d0f3c3a2ab15661e1776f7afac309633aa74fee2b24c445ff"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border-3.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "29fdfb5a2e85c0af3d1f0ac01fcbd7a36827b9a998d87ef23dc3735db8f6b6e1",
+      "rgbaSha256": "28c3b2d4296b46fab4abc14542449fffd89cb822d471672f116f44187e66a7cf"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border-4.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "bda4550308917469e19e46210ec741306d319cff844ffc2d66b2277fd69be152",
+      "rgbaSha256": "27dfa6f16106bb56c3072ec918407100783d855adf1b5bb8befae7940c20f949"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border-5.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "164a23384b7ee5d97d6d157d53e5edc69a3b0a2c4c22960ce987f8bccc880030",
+      "rgbaSha256": "54672ddf7f242aa275ee50bb5939de830232abc3d6d809e2f99e1f22e2172e37"
+    },
+    {
+      "path": "Media/Overwatch/segments-20-gap6-rounded-border-6.tga",
+      "kind": "border",
+      "size": [
+        512,
+        128
+      ],
+      "sha256": "6baf2968ca451d992d850b093767efe93c573f68e9d33da5cec9780233a61db7",
+      "rgbaSha256": "54b4421466102aa629103ce014af504e8da24bf7e17911ad0e29cf1b3003eab4"
+    },
+    {
+      "path": "Media/Overwatch/portrait-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1b7dfa6221bf27b311943b9e4bde60e90b1802ecbcaf1f02fb7129fd5d95eec8",
+      "rgbaSha256": "a2b95bdba18b6a70dea3cfa85a013119d1b242f5b3241ae1937102611ae036d3"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "43b7518cb53a1215be7a3803fbfd233d91f9cfdac6204f6d846e0997f039d24d",
+      "rgbaSha256": "17b6e9c0213a240088efc2d3fb864ef6678f1b513c5a3bfb38e15a4ff2b8cf07"
+    },
+    {
+      "path": "Media/Overwatch/portrait-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "26a95e407c8c72f479de94efbe82605fd82b2e8d15a2d1924a940029239ac5a0",
+      "rgbaSha256": "6433217e98728a29e4c06a1b3c5ed77e7443552775a7b6783a93b1d2f8d22641"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "94396ddaeb0dca48acd179e4845c1693d342a74e0f6af70371b15e16d6b78427",
+      "rgbaSha256": "b5fa8f09306f592ced94a8664a2c9af902378fcdb8f998f39fa9e0bbb8889cf2"
+    },
+    {
+      "path": "Media/Overwatch/portrait-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "659bc72df3a9615ac206dd8091eb41f3bd9885c4819812596d5e2245bd53d63a",
+      "rgbaSha256": "7829bfe6749965386d4d93294b4280e7c63094cac7e678cf6f6329a99c0fd3fe"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d24be0e43cc6de566dc30a6d93352cadc41a5262561c42cbd64f7e1b6dd8d2c0",
+      "rgbaSha256": "66c54e33bbe1ee88add6bbe8494dfc6cc9e8a7b7569e7c06d434ace653ce3ad8"
+    },
+    {
+      "path": "Media/Overwatch/portrait-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "0e95d4390395a83dc2ef08c2881be89fd1052c3e12dea5a18e763f00ec981da7",
+      "rgbaSha256": "e484f80244374d5336cd0dc9a7dcbacf2463878e80a388d63f63aa2761201fc9"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "cf7d6f4265fd25c6167e28a1b445f9fc615d12786eb44410ab44ad4fa07fbbfc",
+      "rgbaSha256": "a37cc6a3ffe70522703d4977c0f60d24afc14713404bbf4e85dc00293ea170fd"
+    },
+    {
+      "path": "Media/Overwatch/portrait-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "55a2d64d131eefa6adf90a145fe181716b25d6dab5c3cd6eff7aaf86aea8f904",
+      "rgbaSha256": "c1834094fc48961ef173e11374884f5d119f8bc4e2da1b07037a2386d3307499"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c007edce5d507c56eb16d8bd796f8b3fd57e73ca34ca2d47f3acb958668db56c",
+      "rgbaSha256": "b902f47ac29d8d414f17170f64aad872ac249db7ee6ff35aa0a707d80a83be61"
+    },
+    {
+      "path": "Media/Overwatch/portrait-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d321e2a3d33638ece24fef588fa478cc8730fa1041ce5a6adc438f254c9af6e4",
+      "rgbaSha256": "2dda90cdacab2cf0a15e5bbdaf8e7cdaa6c11e1bb1fd92263ac7806c20069901"
+    },
+    {
+      "path": "Media/Overwatch/portrait-front-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "416792a983e5a3874923918bd9534be1f3d5c4a0975ef2d933254b4c74f8c293",
+      "rgbaSha256": "cfbd13854eb311ebd27d9f02abdebddfbc8a2822404cba1414f3458c00b3a8d8"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a6fadb4cddb7e1a1d3f268a37b50d687a2a62c525d9393f943c48160845a20fb",
+      "rgbaSha256": "566c7b62d7829d43dcab0d82376b6746fcfd72e41c27c1ac59dcfec1cca3bdd2"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ac3d8cd9272e3021d626bb023c715c5285ad314fc8b58d3de18eebf4974d921d",
+      "rgbaSha256": "b570dd56ae0b0c6c7a3d6126187ff2081d58fd4bcc894337f1c9db8d8e0c1a74"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f6c1edab8c7a829111222ebb59b40e0ccb289faed5cbf30179b0675377b93c6a",
+      "rgbaSha256": "d1f5d35a0bcae5061a60325e66a13a206de92f2eaaf96f0280be94cb3b7a0daf"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "4f1b793f601d40afff751249336840611dd0937391ecc917e5bad61ddc5c45d3",
+      "rgbaSha256": "76dc9b8c2c2fe884488d477a379181886d24b349db201cbb1b53dea4270754fa"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "31213618a4847229d21a7d6f21a3e6a47da85070578f69c744ee69e4a0f6a70a",
+      "rgbaSha256": "40f1560cc14e3c565e5e38577a5de2168d24205debb2a1ffc71151bc9584c77d"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "32c6cdcede0277fbd5b5baf391499aa8b4ac1e844cbd41e3ce56d375c6b4bda6",
+      "rgbaSha256": "286a259b1631bca6337ac281bccea5bce66b9532c353720e7dea8ba2b5742221"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "13fa012171dabf9f27b7d40d3e18fd177fb3ffe06200001d4b7daf5bdf904885",
+      "rgbaSha256": "38324b06b7a8ed0cdb68d529e4e32597e5acdcd903ac1fefefcdb03e68bc9cc7"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "8e63bd288210cc9ef829cd185266429770fa45bd98cde5dd184cf2e4b4b0265b",
+      "rgbaSha256": "defa1f00ca999a712c581190a7a5ed0b9be7c088c72d970f5895b1047ceff967"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "84085cb862d8f8884b5c653c60f80e372e104e24a25cd25485d2b2aa29d6c566",
+      "rgbaSha256": "e7aa7c0d5a11981703b778d802256941fc77324e9a962e36eb570c2a32b997c1"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f70994e6c0ac633395471207f7bc9db59fc369b360fa4f4af01ff15882edd68a",
+      "rgbaSha256": "79a6b9c5e8b0f27a49b3c99047def44a540d6d6dd1058a6288a9a1c8ee33707e"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "de5a55aa7038f06138e61ab31729c99f0d369703105efd006e868184fee70d05",
+      "rgbaSha256": "39b401777321734dfe49a26d052c8e5274d617e80b2f273ca0679bd4e4250895"
+    },
+    {
+      "path": "Media/Overwatch/portrait-circle-front-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d0d1c1e7a781d7741f0c1ece6369f168bcd5ad8d2bf50e5621fb46da4427f9c0",
+      "rgbaSha256": "61a3bcac851ab29a6d5baa2863dbe5f4b6999f3fe179597e4f88e468769234eb"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1cce95e9f52ce9783a78722f0000925153f1051ff0e74f9f107ac396b63e8341",
+      "rgbaSha256": "4196081df28f8a4d1281b3066d00a14402789d5a8ffe37ea7a6eca8c90bc7770"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "9dc23ea4d645bbf074b8e05e006296729a1f155d0ab92eac87df8c0d4dfcb9e1",
+      "rgbaSha256": "453f1ed9db4f91078cefe48e63cf2dfc9da8092e4780881a27cf4dc8bb7a1dbb"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "179a90cbf26ccce9939e7e6111918c8787ba8d4375dd390640a88c24c0020092",
+      "rgbaSha256": "00cc74e124fca88552c49bfded40b57a23b688363fe42d7740275facea9cc7bf"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "9c4bedbce1fdcb6c9d0b8b6890f87ef10988c4098de34bb9e2074e4dc6a52520",
+      "rgbaSha256": "5f289254fc2ed90b68288211b2042d8eb3dbca94a5e33e9873fd83454156629b"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "80b92c2ef40c7848fd743e06538d3ab8a0f701ce4f62249a69f0b88e9d394043",
+      "rgbaSha256": "62313deac99f605adc2fd5779f636fb92eff98704a3dadaffd322ab04a38349d"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "171e70ba194a4703913eef264dbc87e64652e7df358e810b4769f4e0755379e1",
+      "rgbaSha256": "53379213103d260ab83e355f6a6292dd148d0a27b9bda39a120d5104c45fd85f"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "242c02a12c2c9aee83707dc2878d324c329d15ba33c4f69cd30ab99cb8ab76ff",
+      "rgbaSha256": "7056bf4af9866b75a7b08f186fbe62cfc0694f9162b6a4bd347d38803cd5c745"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "fd4edb352d27f5ef6face37ce5ac950fdd0e83b6e87a108619bcea1a7a893770",
+      "rgbaSha256": "a9f1ce2776e385e19cf3b4f39ead1fb8d5b5aeaf741bc74034a5c05130e7bd08"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ce075793ec2f592d5ad08940cb6644d82d71fcf8d148c5f9f38bd0ffe5f464e5",
+      "rgbaSha256": "ac60bfd4f137ac7e7fce90613493b01382c3b6415e9c45813f580c0160422758"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "966b96e82e7b46ca08ab007aad0f1050268119adc4ff19f137df1589437dc0fa",
+      "rgbaSha256": "ade79655bc9d0ecf237bcdfab2a422c5cdb3f120171f69ace4bb13ab3662940a"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "fc8623cdfefa108c4603a5118b3d69e7d09ba4b7d3bcd715e40e42eee3024340",
+      "rgbaSha256": "ba2133a60b40ff555b2648b06732f2f2b46659aa196b83e6956b767409f01535"
+    },
+    {
+      "path": "Media/Overwatch/portrait-square-front-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5c8b0a37fa2306b8b85021c90c4be04cc5bfa600742f41f653b02c7715d92231",
+      "rgbaSha256": "8aa5bc070b55cbac1741e186a9cc03d52c6e35f54d746853c0e11a3d5d7a1351"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "7b93098a6d3e1bbb5c5226b39fae02ea67f3eef3be33633daa66210b59367475",
+      "rgbaSha256": "f71fe803b425cad61683c8b51e66e9f412d9130b5d13180c8346e48248c96a42"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-base.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "90c285306dbe497bd5cbdd534a5b75e2227fdfca0ffdbfc97eb2881aefbff8ba",
+      "rgbaSha256": "8484d890d478001ac71bf03bf9992f672817a6c8264e257d99c64ddb95804a95"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "378786ab7241e49ea5bd26e0be618f14c7a67cef3d1c642708eb7a87100e21b5",
+      "rgbaSha256": "95b9a37de1fa2f152c73aeece2169fcb57fa93109d9527e28de6c40e466f423e"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-rim-1.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "24b91a0b4b869fc8f5ffa951fe496dbdfdcce71b140faad8d70c8c852be13628",
+      "rgbaSha256": "22c9c4ff0f2665984e4993ace81871b440b1fdd026311b2c3ce8f63270cc3550"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "e3367268c87962af638263672b3dff2bb9adfb47ce9751caf45b86f85e0517be",
+      "rgbaSha256": "f5be294750d849af2d8c8cea434f69b1c03df6c554dd2119da016a62c683773b"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-rim-2.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1e127a28e1c6a21aa1de3add7dadc2b2f7eef0848102d6c5b9450e1826066a9f",
+      "rgbaSha256": "4909d82451f85598aaf507836bcf60b4a1855fd12334196aef3c45c60add23a1"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1893add450609ed6b567c85e01b3eb61c7ba63aed50723ea88f7a485ca6247f3",
+      "rgbaSha256": "548b59b5db88dbf66e90c0e4ac2291efb02546b3907c31532dc13ed5cb2a49c4"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-rim.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2eb75cb0949ccd3007dd84acf87ced3a41458873bd4f198bb53f84e3b69370bf",
+      "rgbaSha256": "669a8c08c083615082e543c1ee8e55a60e4d3cc6cf5e6c3da3c0d64d289b8604"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ae32cb6fb568f8e7c7db450609639d5403405aafaa3c895985edd470cf7fbf1d",
+      "rgbaSha256": "1f83310336d1a56ea97c2844e52e3b3c563781718b27f59205324f84a560f46e"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-rim-4.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a294b6fa96ca01e37bfa3d8ed3ca5c3c71c98c7970d05bdbc367021c6340f9e8",
+      "rgbaSha256": "c258693564ccff23f4431ca3031679476ef67aeeefa1a4b4e2cf4c6fd5cc5b65"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a114f3e57bff2517766028f3fcac36929ad57816befc914ac4746bfa4e1b65c7",
+      "rgbaSha256": "a6e465f9ec8fdce8dde6d53bbb3499da475c3b8c2c47cde875ad398274df2107"
+    },
+    {
+      "path": "Media/Overwatch/portrait-diamond-front-rim-5.tga",
+      "kind": "portrait",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d9969ad96a7c2a5bfcef51275a8ff57eb6161a95a7efe5f46203c33e26e5cce5",
+      "rgbaSha256": "f2515b7d1a98f8f4d2610f30448105dccbb457fe8dc80608ccc971e43dbfde98"
+    }
+  ]
+}

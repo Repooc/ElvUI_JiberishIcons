@@ -11,6 +11,9 @@ local shapes = {
 	circlethin = {border = 'circle-thin', mask = 'circle-thin-mask'},
 	dropletthin = {border = 'droplet-thin', mask = 'droplet-thin-mask'},
 	dropletleftthin = {border = 'droplet-thin', mask = 'droplet-left-thin-mask', reverse = true},
+	shield = {border = 'portrait-rim', mask = 'portrait-base', modelMedia = true},
+	square = {border = 'portrait-square-rim', mask = 'portrait-square-base', modelMedia = true},
+	diamond = {border = 'portrait-diamond-rim', mask = 'portrait-diamond-base', modelMedia = true},
 	none = {},
 }
 local function IsAdditional(key) return key:match('^additional[123]$') ~= nil end
@@ -35,7 +38,7 @@ end
 local function FrameUnit(frame)
 	local unit = frame.__unit
 	if IsSecret(unit) then return nil, true end
-	if not unit then unit = frame.unit end
+	if not unit then unit = frame.unit or frame._euiUnit end
 	if IsSecret(unit) then return nil, true end
 	if not unit and frame.GetAttribute then unit = frame:GetAttribute('unit') end
 	if IsSecret(unit) then return nil, true end
@@ -50,12 +53,15 @@ local function Anchor(key, db)
 		if type(name) ~= 'string' or name:find('^JiberishIconsPortrait') then return end
 		local frame = _G[name]
 		if (type(frame) == 'table' or type(frame) == 'userdata') and frame.GetCenter and frame.IsShown then return frame end
+	elseif db.anchor == 'ellesmereui' then
+		return JI:GetLayoutHostFrame('ellesmereui', key)
 	elseif db.anchor == 'elvui' then
 		local E = _G.ElvUI and _G.ElvUI[1]
 		-- A party self-button can also represent "player". Prefer ElvUI's
 		-- canonical individual frame, even while its visibility is changing.
 		local UF = E and E.UnitFrames
 		local direct = UF and (UF[key] or (UF.units and UF.units[key]))
+		direct = direct or JI:GetLayoutHostFrame('elvui', key)
 		if direct then return direct end
 		local objects = E and E.oUF and E.oUF.objects
 		if objects then
@@ -105,12 +111,14 @@ local function Paint(frame)
 	local db = Settings(frame.key)
 	local visible = Visible(frame, db)
 	frame.visible = visible
-	frame.background:SetShown(visible and db.shape ~= 'none')
-	frame.border:SetShown(visible and db.shape ~= 'none')
+	frame.background:SetShown(visible and db.mode ~= 'model' and db.shape ~= 'none')
+	frame.border:SetShown(visible and db.mode ~= 'model' and db.shape ~= 'none')
 	frame.icon:Hide(); frame.portrait:Hide()
+	if frame.modelView then frame.modelView:Hide() end
 	frame.label:SetShown(visible and unlocked)
 	frame.mover:SetShown(visible and unlocked)
 	if not visible then
+		if frame.modelView then frame.modelView.model:ClearModel() end
 		JI:StopPortraitCast(frame)
 		return
 	end
@@ -132,7 +140,7 @@ local function Paint(frame)
 		frame.icon:SetTexture(path)
 		frame.icon:SetTexCoord(JI:GetIconTexCoords(icon.texCoords, db.reverse))
 		frame.icon:Show()
-	elseif db.mode == 'portrait' or (db.mode ~= 'static' and db.fallback == 'portrait') then
+	elseif db.mode == 'portrait' or (db.mode == 'icon' and db.fallback == 'portrait') then
 		-- The game's portrait renderer supports players, pets and NPCs directly.
 		frame.portrait:SetTexture(nil)
 		SetPortraitTexture(frame.portrait, unit)
@@ -140,16 +148,18 @@ local function Paint(frame)
 		frame.portrait:SetTexCoord(db.reverse and 1 - zoom or zoom, db.reverse and zoom or 1 - zoom, zoom, 1 - zoom)
 		frame.portrait:Show()
 	end
-	Color(frame.border, db.borderColor, true)
+	local borderColor = db.borderColor
+	Color(frame.border, borderColor, true)
 	if db.classColor then
 		local _, class = UnitClass(unit)
 		if db.mode == 'static' then class = selectedClass end
 		if not IsSecret(class) and type(class) == 'string' then
 			local colors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 			local color = colors and colors[class]
-			if color then frame.border:SetVertexColor(color.r, color.g, color.b, db.borderColor[4]) end
+			if color then borderColor = {color.r, color.g, color.b, db.borderColor[4]}; Color(frame.border, borderColor, true) end
 		end
 	end
+	if db.mode == 'model' then JI:PaintPortraitModel(frame, unit, borderColor) end
 	JI:UpdatePortraitCast(frame)
 end
 
@@ -226,15 +236,16 @@ end
 local function Layout(frame, db)
 	local shape = shapes[db.shape] or shapes.circle
 	local size = Number(db.size, 80, 24, 320)
-	frame:SetSize(size, size)
+	frame:SetSize(size, db.shape == 'shield' and size * 1.1 or size)
 	frame:SetClampedToScreen(false)
 	if frame.SetUserPlaced then frame:SetUserPlaced(false) end
 	frame:SetFrameStrata(strata[db.strata] and db.strata or 'MEDIUM')
 	frame:SetFrameLevel(Number(db.level, 10, 1, 100))
-	local suffix = TextureSuffix(frame, size)
-	frame.border:SetTexture(shape.border and (media..shape.border..suffix..'.tga') or nil, 'CLAMP', 'CLAMP', 'LINEAR')
+	local suffix = shape.modelMedia and '' or TextureSuffix(frame, size)
+	local textureMedia = shape.modelMedia and JI.MediaPath..[[Overwatch\]] or media
+	frame.border:SetTexture(shape.border and (textureMedia..shape.border..suffix..'.tga') or nil, 'CLAMP', 'CLAMP', 'LINEAR')
 	frame.border:SetTexCoord(shape.reverse and 1 or 0, shape.reverse and 0 or 1, 0, 1)
-	if shape.mask then frame.mask:SetTexture(media..shape.mask..suffix..'.tga', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE', 'LINEAR') end
+	if shape.mask then frame.mask:SetTexture(textureMedia..shape.mask..suffix..'.tga', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE', 'LINEAR') end
 	local masked = shape.mask ~= nil
 	if masked ~= frame.masked then
 		for _, texture in ipairs({frame.background, frame.portrait, frame.icon}) do
@@ -252,6 +263,7 @@ local function Layout(frame, db)
 	frame:SetPoint(points[db.point] and db.point or 'CENTER', anchor or UIParent,
 		points[db.relativePoint] and db.relativePoint or 'CENTER', Number(db.x, 0, -10000, 10000), Number(db.y, 0, -10000, 10000))
 	frame:EnableMouse(unlocked and db.enable)
+	JI:LayoutPortraitModel(frame, db)
 	JI:LayoutPortraitCast(frame, frame.border:GetTexture())
 end
 
@@ -307,7 +319,7 @@ local function Tick(_, delta)
 			if anchorElapsed >= 1 and not InCombatLockdown() and not frame.dragging and Anchor(key, db) ~= frame.anchor then Layout(frame, db) end
 			-- ToT changes do not always emit portrait events. Other units repaint
 			-- from events; this lightweight check only follows anchor visibility.
-			if SourceUnit(key, db) == 'targettarget' or Visible(frame, db) ~= frame.visible then Paint(frame) end
+			if SourceUnit(key, db) == 'targettarget' or SourceUnit(key, db) == 'focustarget' or Visible(frame, db) ~= frame.visible then Paint(frame) end
 		end
 	end
 	if anchorElapsed >= 1 then anchorElapsed = 0 end
@@ -356,6 +368,7 @@ function JI:SetupPortraits()
 					or (event == 'UNIT_PET' and unit == 'player' and db.sourceUnit == 'pet')) then Paint(extra) end
 			end
 			if event == 'UNIT_TARGET' and unit == 'target' and frames.targettarget then Paint(frames.targettarget) end
+			if event == 'UNIT_TARGET' and unit == 'focus' and frames.focustarget then Paint(frames.focustarget) end
 			if event == 'UNIT_PET' and unit == 'player' and frames.pet then Paint(frames.pet) end
 		else for _, frame in pairs(frames) do Paint(frame) end end
 	end)
