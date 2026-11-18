@@ -4049,4 +4049,558 @@ test('ElvUI sidebar brand survives selected color stripping without changing oth
     E:Config_SetButtonText(button,true); equal(button.text,'Eltruism')
 end)
 
+
+-- Nameplate nav tape and aura timeline ------------------------------------------------
+local function hudFixture(host)
+	local f = fixture(false)
+	local env, state, world = f.env, f.state, f.world
+	local methods = getmetatable(env.UIParent).__index
+	-- Secret values: any arithmetic, comparison, concatenation, length or
+	-- indexing in Lua fails the test, as it would in the game.
+	local function refuse() error('secret value used in Lua', 2) end
+	local secretMeta = {__tostring = function() return 'secret' end, __add = refuse, __sub = refuse, __mul = refuse,
+		__div = refuse, __mod = refuse, __pow = refuse, __unm = refuse, __concat = refuse, __len = refuse,
+		__lt = refuse, __le = refuse, __index = refuse, __newindex = refuse, __call = refuse}
+	local function Secret(value) return setmetatable({secretValue = value}, secretMeta) end
+	f.Secret = Secret
+	env.issecretvalue = function(v) return type(v) == 'table' and getmetatable(v) == secretMeta end
+	-- Errors the modules catch must still fail the test.
+	env.geterrorhandler = function() return function(err) error(err, 0) end end
+	-- Our own frames may move in combat (they are not protected), so record
+	-- points instead of refusing them.
+	function methods:SetPoint(point, rel, relPoint, x, y)
+		if type(rel) == 'number' then rel, relPoint, x, y = nil, point, rel, relPoint end
+		self.points = self.points or {}
+		self.points[#self.points + 1] = {point, rel or self.parent, relPoint or point, x or 0, y or 0}
+		self.point = {point, rel, relPoint, x, y}
+	end
+	function methods:ClearAllPoints() self.points, self.point = {}, nil end
+	function methods:SetSize(w, h) self.width, self.height = w, h end
+	function methods:SetWidth(w) self.width = w end
+	function methods:SetHeight(h) self.height = h end
+	function methods:GetWidth()
+		if self.width then return self.width end
+		local left, right
+		for _, p in ipairs(self.points or {}) do
+			if p[1]:find('LEFT') then left = p elseif p[1]:find('RIGHT') then right = p end
+		end
+		if left and right and left[2] and left[2] == right[2] then return left[2]:GetWidth() + right[4] - left[4] end
+		if self.allPoints then return self.allPoints:GetWidth() end
+		return 0
+	end
+	function methods:GetHeight() return self.height or 0 end
+	function methods:GetSize() return self:GetWidth(), self:GetHeight() end
+	function methods:IsVisible() return self:IsShown() end
+	function methods:GetParent() return self.parent end
+	function methods:SetParent(parent)
+		if self.parent then
+			for i, child in ipairs(self.parent.children) do if child == self then table.remove(self.parent.children, i) break end end
+		end
+		self.parent = parent
+		if parent then parent.children[#parent.children + 1] = self end
+	end
+	function methods:SetScale(scale) self.scale = scale end
+	function methods:GetScale() return self.scale or 1 end
+	function methods:GetName() return self.name end
+	function methods:RegisterUnitEvent(event) self.events[event] = true end
+	function methods:SetAlphaFromBoolean(value, yes, no)
+		if env.issecretvalue(value) then value = rawget(value, 'secretValue') end
+		self.alpha = value and (yes or 1) or (no or 0)
+		self.alphaFromBoolean = true
+	end
+	function methods:SetRotation(value) self.rotation = value end
+	function methods:SetBlendMode(mode) self.blend = mode end
+	function methods:SetShadowColor(...) self.shadowColor = {...} end
+	function methods:SetShadowOffset(...) self.shadowOffset = {...} end
+	function methods:GetText() return self.text end
+	function methods:GetFont() return self.font and self.font[1], self.font and self.font[2], self.font and self.font[3] end
+	function methods:SetFormattedText(fmt, value)
+		self.formatted = {fmt, value}
+		self.text = env.issecretvalue(value) and 'secret' or string.format(fmt, value)
+	end
+	function methods:SetStatusBarTexture(path) self.fill = self.fill or self:CreateTexture(); self.fill.path = path end
+	function methods:GetStatusBarTexture() return self.fill end
+	function methods:SetOrientation(value) self.orientation = value end
+	function methods:SetReverseFill(value) self.reverseFill = value end
+	function methods:SetMinMaxValues(low, high) self.min, self.max = low, high end
+	function methods:SetValue(value) self.value = value end
+	local create = env.CreateFrame
+	env.CreateFrame = function(kind, name, parent)
+		local obj = create(kind, name, parent)
+		obj.kind, obj.name = kind, name
+		if name then env[name] = obj end
+		return obj
+	end
+	env.UIParent.width, env.UIParent.height = 1365, 768
+	env.GetPhysicalScreenSize = function() return 1920, 1080 end
+	env.STANDARD_TEXT_FONT = 'Fonts\\FRIZQT__.TTF'
+	state.now = 100
+	env.GetTime = function() return state.now end
+	env.Enum = {SpellBookSpellBank = {Player = 0}, SpellBookItemType = {Spell = 1},
+		StatusBarInterpolation = {Immediate = 0}, LuaCurveType = {Step = 1}}
+	-- A spellbook: Auto Attack (melee) and a 30 yard throw; interact checks add 10 and 28.
+	local book = {6603, 57755}
+	local ranges = {[6603] = 0, [57755] = 30}
+	env.IsPlayerSpell = function(id) return ranges[id] ~= nil end
+	env.C_SpellBook = {
+		GetNumSpellBookSkillLines = function() return 1 end,
+		GetSpellBookSkillLineInfo = function() return {itemIndexOffset = 0, numSpellBookItems = #book} end,
+		GetSpellBookItemInfo = function(slot) return {spellID = book[slot], isPassive = false, itemType = 1} end,
+		IsSpellKnown = function(id) return ranges[id] ~= nil end,
+	}
+	local cooldowns, auras, actions = {}, {}, {}
+	f.cooldowns, f.auras, f.actions = cooldowns, auras, actions
+	env.C_Spell = {
+		GetSpellInfo = function(id) return ranges[id] and {minRange = 0, maxRange = ranges[id]} end,
+		IsSpellHarmful = function(id) return ranges[id] ~= nil end,
+		IsSpellHelpful = function() return false end,
+		IsSpellInRange = function(id, unit)
+			local u = world[f.resolve(unit)]
+			local reach = id == 6603 and 5 or ranges[id]
+			local inRange = u.distance <= reach
+			if state.secretRange then return Secret(inRange) end
+			return inRange
+		end,
+		GetSpellCooldown = function(id) return cooldowns[id] end,
+		GetSpellTexture = function(id) return 'spell'..id end,
+	}
+	env.CheckInteractDistance = function(unit, index)
+		expect(not state.combat, 'interact distances are not asked in combat')
+		return world[f.resolve(unit)].distance <= (index == 3 and 10 or 28)
+	end
+	state.target = nil
+	function f.resolve(unit)
+		if unit == 'target' then return state.target end
+		local base = unit and unit:match('^(nameplate%d+)target$')
+		if base then return world[base] and world[base].targeting end
+		return unit
+	end
+	env.UnitCanAttack = function(_, unit) local u = world[f.resolve(unit)]; return u and u.enemy or false end
+	env.UnitIsUnit = function(a, b)
+		if state.secretFacing and a:find('target$') then return Secret(f.resolve(a) == f.resolve(b)) end
+		return f.resolve(a) ~= nil and f.resolve(a) == f.resolve(b)
+	end
+	env.GetUnitSpeed = function() return 0 end
+	env.GetPlayerFacing = function() return 0 end
+	local bases = {}
+	f.bases = bases
+	env.C_NamePlate = {GetNamePlateForUnit = function(unit) local r = f.resolve(unit); return r and bases[r] end}
+	env.C_ActionBar = {HasAction = function(slot) return actions[slot] ~= nil end}
+	env.GetActionInfo = function(slot) return 'spell', actions[slot] end
+	env.C_UnitAuras = {GetAuraDataByIndex = function(_, index, filter)
+		local seen = 0
+		for _, aura in ipairs(auras) do
+			local wanted = filter:find('HARMFUL') and aura.harmful or (not filter:find('HARMFUL') and not aura.harmful)
+			if wanted and (not filter:find('PLAYER') or aura.mine) then
+				seen = seen + 1
+				if seen == index then return aura end
+			end
+		end
+	end}
+	env.C_CurveUtil = {CreateCurve = function()
+		local curve = {points = {}}
+		function curve:SetType(kind) self.kind = kind end
+		function curve:AddPoint(x, y) self.points[#self.points + 1] = {x, y} end
+		function curve:Evaluate(x)
+			local y = 0
+			for _, p in ipairs(self.points) do if x >= p[1] then y = p[2] end end
+			return y
+		end
+		return curve
+	end}
+	if host == 'elvui' then
+		local E = {media = {rgbvaluecolor = {0.1, 0.6, 0.9, r = 0.1, g = 0.6, b = 0.9}, bordercolor = {r = 0, g = 0, b = 0},
+			backdropcolor = {r = 0.1, g = 0.1, b = 0.1}, normFont = 'ElvUIFont'}, Initialized = true, CreatedMovers = {}, DisabledMovers = {}}
+		local NP = {Plates = {}}
+		function NP:PlateDB(plate) return {nameOnly = plate.testNameOnly} end
+		for _, name in ipairs({'StylePlate', 'UpdatePlate', 'TargetChanged', 'SetupTarget', 'ConfigureAll'}) do NP[name] = function() end end
+		E.NamePlates = NP
+		function E:CreateMover(parent, name, text, overlay, snap, postdrag, types, shouldDisable, configString)
+			self.CreatedMovers[name] = {parent = parent, text = text, shouldDisable = shouldDisable, configString = configString}
+		end
+		function E:DisableMover(name) self.DisabledMovers[name] = self.CreatedMovers[name]; self.CreatedMovers[name] = nil end
+		function E:EnableMover(name) self.CreatedMovers[name] = self.DisabledMovers[name]; self.DisabledMovers[name] = nil end
+		function E:ToggleMovers(show) self.configMode = show end
+		function E:ToggleMoveMode() self:ToggleMovers(not self.configMode) end
+		env.ElvUI = {E}
+		state.addons.ElvUI = true
+		f.E, f.NP = E, NP
+	elseif host == 'ellesmereui' then
+		local NameplateFrame = {}
+		function NameplateFrame:SetUnit(unit, nameplate) self.unit, self.nameplate = unit, nameplate end
+		function NameplateFrame:ClearUnit() self.unit = nil end
+		function NameplateFrame:ApplyTarget() end
+		local internals = setmetatable({NameplateFrame = NameplateFrame, broken = false}, {__index = function(_, key)
+			error('ns._npInternals has no entry '..tostring(key))
+		end})
+		local ns = {plates = {}, friendlyPlates = {}, _npInternals = internals}
+		local EUI = {_ModuleNS = {EllesmereUINameplates = ns}, ELLESMERE_GREEN = {r = 0.05, g = 0.8, b = 0.5},
+			DARK_BG = {r = 0.05, g = 0.05, b = 0.05}, unlock = {}}
+		function EUI.GetFontPath() return 'EllesmereFont' end
+		function EUI:RegisterUnlockElements(elements, folder) for _, e in ipairs(elements) do self.unlock[e.key] = e end end
+		function EUI.MakeUnlockElement(o) return {key = o.key, label = o.label, getFrame = o.getFrame, getSize = o.getSize,
+			savePosition = o.savePos, loadPosition = o.loadPos, clearPosition = o.clearPos, applyPosition = o.applyPos, isHidden = o.isHidden} end
+		function EUI:RegisterUnlockModeListener(owner, fn) self.listener = fn end
+		function EUI:ToggleUnlockMode() self.toggled = (self.toggled or 0) + 1 end
+		env.EllesmereUI = EUI
+		f.EUI, f.ns, f.NameplateFrame = EUI, ns, NameplateFrame
+	end
+	f.load('Core/HudStyle.lua')
+	f.load('Core/NavTape.lua')
+	f.load('Core/NavTapeOptions.lua')
+	f.load('Core/AuraTimeline.lua')
+	f.load('Core/AuraTimelineOptions.lua')
+	-- A nameplate whose host plate carries a 150 px health bar.
+	function f.plate(unit, data)
+		world[unit] = data
+		local base = env.CreateFrame('Frame', nil, env.UIParent)
+		base.centerX = data.x or 680
+		bases[unit] = base
+		local plate, health
+		if host == 'elvui' then
+			plate = env.CreateFrame('Button', 'ElvNP_'..unit, base)
+			plate.Health = env.CreateFrame('StatusBar', nil, plate)
+			health = plate.Health
+			base.unitFrame = plate
+			f.NP.Plates[plate] = plate.name
+		else
+			plate = env.CreateFrame('Frame', nil, base)
+			for key, fn in pairs(f.NameplateFrame) do plate[key] = fn end -- the host's Mixin, after our hooks
+			plate.health = env.CreateFrame('StatusBar', nil, plate)
+			health = plate.health
+			plate:SetUnit(unit, base)
+			f.ns.plates[unit] = plate
+		end
+		plate.centerX = base.centerX
+		health.width, health.height = 150, 12
+		f.fire('NAME_PLATE_UNIT_ADDED', unit)
+		return plate, health
+	end
+	function f.tape(plate)
+		for _, child in ipairs(plate.children) do if child.tape then return child end end
+	end
+	function f.frames(dt, count)
+		for _ = 1, count or 1 do
+			state.now = state.now + dt
+			for _, obj in ipairs(f.objects) do
+				if obj.scripts.OnUpdate and obj.shown then obj.scripts.OnUpdate(obj, dt) end
+			end
+		end
+	end
+	-- The one distance label that can be seen: plain text, or the secret layer
+	-- whose label and gate both show.
+	function f.readout(bar)
+		if bar.yards:IsShown() then return bar.yards.text end
+		local shown = {}
+		for _, layer in ipairs(bar.layers) do
+			if layer.gate.shown and (layer.gate.alpha or 1) == 1 and (layer.label.alpha or 1) == 1 then shown[#shown + 1] = layer.label.text end
+		end
+		equal(#shown, 1, 'exactly one secret bracket shows')
+		return shown[1]
+	end
+	return f
+end
+
+for _, host in ipairs({'elvui', 'ellesmereui'}) do
+	test('nav tape follows the '..host..' target plate with bracket distances', function()
+		local f = hudFixture(host)
+		local JI, db = f.JI, f.JI.db.navTape
+		expect(not db.enable, 'nav tape defaults off')
+		f.JI:SetupNavTape(); f.flush()
+		local first, health = f.plate('nameplate1', {enemy = true, distance = 20, x = 500})
+		local second = f.plate('nameplate2', {enemy = true, distance = 3, x = 900})
+		f.state.target = 'nameplate1'; f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+		equal(f.tape(first), nil, 'nothing until enabled')
+		db.enable = true; JI:UpdateNavTape(); f.flush()
+		local bar = f.tape(first)
+		expect(bar and bar:IsShown(), 'the target plate carries a tape')
+		equal(f.tape(second), nil, 'other plates carry none')
+		equal(bar.points[1][2], health, 'anchored to the host health bar')
+		equal(f.readout(bar), '10-28 YD')
+		f.world.nameplate1.distance = 35; f.frames(0.1, 2)
+		equal(f.readout(bar), '> 30 YD')
+		-- In combat the interact distances are not asked.
+		f.state.combat = true; f.world.nameplate1.distance = 20; f.frames(0.1, 2)
+		equal(f.readout(bar), '< 30 YD')
+		f.state.combat = false
+		-- Retarget: the tape moves to the new target, MELEE in red with the lamp.
+		f.state.target = 'nameplate2'; f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+		expect(not bar:IsShown(), 'old target tape hidden')
+		local near = f.tape(second)
+		expect(near and near:IsShown())
+		equal(f.readout(near), 'MELEE')
+		expect(near.lamp:IsShown(), 'melee lamp')
+		equal(near.yards.textColor[1], 1)
+		-- Drawing runs on every frame while shown: ticks, marker and lens.
+		f.frames(1 / 60, 10)
+		expect(near.tickCount > 8 and near.ticks[1].alpha ~= nil, 'ticks drawn')
+		expect(near.marker.point and near.marker.point[2] == near.tape, 'marker on the tape')
+		-- Disabling detaches every tape.
+		db.enable = false; JI:UpdateNavTape(); f.flush()
+		expect(not near:IsShown())
+	end)
+end
+
+test('nav tape picks secret brackets with SetAlphaFromBoolean and never reads them', function()
+	local f = hudFixture('elvui')
+	local db = f.JI.db.navTape
+	db.enable = true; f.JI:SetupNavTape(); f.flush()
+	local plate = f.plate('nameplate1', {enemy = true, distance = 20})
+	f.state.target = 'nameplate1'; f.state.secretRange = true; f.state.secretFacing = true
+	f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+	local bar = f.tape(plate)
+	expect(not bar.yards:IsShown(), 'plain text gives way to the stacked labels')
+	equal(f.readout(bar), '10-28 YD')
+	f.world.nameplate1.distance = 29; f.frames(0.1, 2)
+	equal(f.readout(bar), '28-30 YD')
+	f.world.nameplate1.distance = 4; f.frames(0.1, 2)
+	equal(f.readout(bar), 'MELEE')
+	f.world.nameplate1.targeting = 'player'; f.frames(0.1, 2)
+	expect(bar.alert.alphaFromBoolean and bar.alert.alpha == 1 and bar.calm.alpha == 0, 'targeting you, from a secret answer')
+	-- Back to plain answers: one string again.
+	f.state.secretRange = false; f.world.nameplate1.distance = 20; f.frames(0.1, 2)
+	expect(bar.yards:IsShown()); equal(bar.yards.text, '10-28 YD')
+end)
+
+test('nav tape styles: presets, distance styles, nameplate options and preview', function()
+	local f = hudFixture('elvui')
+	local JI, db = f.JI, f.JI.db.navTape
+	db.enable = true; JI:SetupNavTape(); f.flush()
+	local plate = f.plate('nameplate1', {enemy = true, distance = 20})
+	f.state.target = 'nameplate1'; f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+	local bar = f.tape(plate)
+	for key in pairs(JI.NavTapePresets) do
+		JI:ApplyNavTapePreset(key); f.flush(); f.frames(1 / 60, 3)
+		equal(db.preset, key)
+		equal(db.tickStyle, JI.NavTapePresets[key].tickStyle)
+	end
+	JI:ApplyNavTapePreset('ellesmereui'); f.flush()
+	equal(db.yardsPosition, 'right'); expect(bar.base:IsShown(), 'baseline preset')
+	db.yardsStyle = 'single'; JI:UpdateNavTape(); f.flush(); f.frames(0.1, 2)
+	equal(f.readout(bar), '28 YD')
+	db.yardsStyle = 'far'; db.yardsSuffix = false; JI:UpdateNavTape(); f.flush(); f.frames(0.1, 2)
+	equal(f.readout(bar), '> 10')
+	-- Position below the health bar, with offsets.
+	db.position, db.yOffset = 'below', 6; JI:UpdateNavTape(); f.flush()
+	equal(bar.points[1][1], 'TOPLEFT'); equal(bar.points[1][5], -6)
+	-- Every option node is in JiberishIcons' own config and writes through.
+	local root = JI.Options.args.navTape
+	for _, group in ipairs({'general', 'distance', 'ticks', 'marker', 'colors'}) do expect(root.args[group], group) end
+	root.set({'navTape', 'ticks', 'ticks'}, 30); equal(db.ticks, 30)
+	db.colors = 'custom'; root.args.colors.args.lensColor.set(nil, 1, 0, 0); equal(db.lensColor[1], 1)
+	root.args.preset.set(nil, 'bold'); equal(db.tickStyle, 'bars')
+	-- Preview: a sample tape over the screen, hidden by combat.
+	JI:ToggleNavTapePreview(); expect(JI:IsNavTapePreviewShown()); f.frames(1 / 30, 20)
+	f.fire('PLAYER_REGEN_DISABLED'); expect(not JI:IsNavTapePreviewShown())
+end)
+
+test('nav tape skips name-only ElvUI plates and enemies-mode tracks every hostile plate', function()
+	local f = hudFixture('elvui')
+	local db = f.JI.db.navTape
+	db.enable, db.show = true, 'enemies'; f.JI:SetupNavTape(); f.flush()
+	local a = f.plate('nameplate1', {enemy = true, distance = 20})
+	local b = f.plate('nameplate2', {enemy = false, distance = 20})
+	local c = f.plate('nameplate3', {enemy = true, distance = 20}); c.testNameOnly = true
+	f.flush()
+	expect(f.tape(a) and f.tape(a):IsShown()); equal(f.tape(b), nil); equal(f.tape(c), nil)
+	f.fire('NAME_PLATE_UNIT_REMOVED', 'nameplate1'); f.bases.nameplate1 = nil; f.flush()
+	expect(not f.tape(a):IsShown(), 'removed plates lose their tape')
+end)
+
+local function aura(id, data)
+	data.auraInstanceID, data.spellId = id, data.spellId or id
+	data.icon = data.icon or ('icon'..id)
+	return data
+end
+
+local function timelineKeys(f)
+	local holder = f.env.JiberishIconsAuraTimeline
+	local inner = holder.children[1]
+	local clip
+	for _, child in ipairs(inner.children) do if child.clipsChildren then clip = child end end
+	local keys = {}
+	for _, bar in ipairs(clip.children) do
+		if bar.kind == 'StatusBar' and bar.shown then
+			for _, gate in ipairs(bar.children) do
+				local window = gate.children[1]
+				local motion = window and window.children[1]
+				if motion and motion.children[1] then
+					keys[#keys + 1] = {bar = bar, gate = gate, window = window, key = motion.children[1]}
+				end
+			end
+		end
+	end
+	return keys, holder
+end
+
+local function byIcon(keys, icon)
+	for _, k in ipairs(keys) do if k.key.icon.path == icon then return k end end
+end
+
+test('aura timeline shows only what is on the line and slides long timers in from the far end', function()
+	local f = hudFixture()
+	local JI, db, now = f.JI, f.JI.db.auraTimeline, f.state.now
+	expect(not db.enable, 'timeline defaults off')
+	JI:SetupAuraTimeline(); f.flush()
+	equal(f.env.JiberishIconsAuraTimeline, nil, 'nothing is created until enabled')
+	f.auras[1] = aura(1, {mine = true, duration = 10, expirationTime = now + 8})
+	f.auras[2] = aura(2, {mine = true, duration = 600, expirationTime = now + 300})
+	f.auras[3] = aura(3, {mine = true, duration = 0, expirationTime = 0}) -- lasts until cancelled
+	f.auras[4] = aura(4, {mine = false, duration = 20, expirationTime = now + 15}) -- someone else's
+	f.actions[1] = 555; f.cooldowns[555] = {isActive = true, isOnGCD = false, duration = 20, startTime = now}
+	db.enable = true; JI:UpdateAuraTimeline(); f.flush(); f.frames(1 / 30, 2)
+	local keys, holder = timelineKeys(f)
+	expect(holder:IsShown())
+	equal(#keys, 3, 'short buff, cooldown and the waiting long buff')
+	equal(byIcon(keys, 'icon1').window.alpha, 1)
+	equal(byIcon(keys, 'spell555').window.alpha, 1)
+	equal(byIcon(keys, 'icon2').window.alpha, 0, 'a five-minute buff waits beyond the line')
+	equal(byIcon(keys, 'icon3'), nil, 'lasting auras never show'); equal(byIcon(keys, 'icon4'), nil)
+	expect(byIcon(keys, 'icon1').bar.value < 8 and byIcon(keys, 'icon1').bar.max == 360, 'the client places keys by value')
+	-- Time passes: the long buff drops onto the line; the short one runs out.
+	f.frames(1, 245)
+	equal(byIcon(keys, 'icon2').window.alpha, 1, 'slid onto the line')
+	table.remove(f.auras, 1); f.cooldowns[555] = nil; f.fire('UNIT_AURA', 'player'); f.fire('SPELL_UPDATE_COOLDOWN'); f.flush()
+	keys = timelineKeys(f)
+	equal(#keys, 1)
+	-- Disabling hides it.
+	db.enable = false; JI:UpdateAuraTimeline(); f.flush()
+	expect(not holder:IsShown())
+end)
+
+test('aura timeline keeps secret times out of Lua and stacks overlapping keys into lanes', function()
+	local f = hudFixture()
+	local JI, db, now = f.JI, f.JI.db.auraTimeline, f.state.now
+	local function Duration(left)
+		local d = {}
+		function d:GetRemainingDuration() return f.Secret(left - (f.state.now - now)) end -- read only by the client
+		function d:EvaluateRemainingDuration(curve) return curve:Evaluate(left - (f.state.now - now)) end
+		function d:IsZero() return f.Secret(false) end
+		return d
+	end
+	local durations = {}
+	f.env.C_UnitAuras.GetAuraDuration = function(_, id) return durations[id] end
+	for i, left in ipairs({20, 20.5, 21, 200}) do
+		f.auras[i] = aura(i, {mine = true, duration = f.Secret(30), expirationTime = f.Secret(now + left), applications = f.Secret(2)})
+		durations[i] = Duration(left)
+	end
+	f.env.C_UnitAuras.GetAuraApplicationDisplayCount = function() return '2' end
+	db.enable = true; JI:SetupAuraTimeline(); f.flush(); f.frames(1 / 30, 3)
+	local keys = timelineKeys(f)
+	equal(#keys, 4)
+	for i = 1, 3 do
+		local k = byIcon(keys, 'icon'..i)
+		equal(k.window.alpha, 1, 'on the line, from the curve')
+		expect(f.env.issecretvalue(k.bar.value), 'the secret time goes straight to the bar')
+		equal(k.key.count.text, '2')
+	end
+	equal(byIcon(keys, 'icon4').window.alpha, 0, 'beyond the line, from the curve')
+	-- Three keys at nearly the same time take three lanes.
+	f.frames(0.25, 2)
+	local heights = {}
+	for i = 1, 3 do
+		local point = byIcon(keys, 'icon'..i).key.point
+		heights[point[5]] = true
+	end
+	local count = 0; for _ in pairs(heights) do count = count + 1 end
+	equal(count, 3, 'overlapping keys stack into lanes')
+	-- Lanes below the line in "down" mode.
+	db.stack = 'down'; JI:UpdateAuraTimeline(); f.flush(); f.frames(0.25, 8)
+	expect(byIcon(keys, 'icon1').key.point[5] < 0, 'lanes grow downward')
+end)
+
+test('aura timeline skins and presets fit ElvUI and EllesmereUI', function()
+	local f = hudFixture('elvui')
+	local JI, db = f.JI, f.JI.db.auraTimeline
+	f.auras[1] = aura(1, {mine = true, duration = 10, expirationTime = f.state.now + 8, applications = 3})
+	db.enable = true; JI:SetupAuraTimeline(); f.flush(); f.frames(1 / 30, 2)
+	local key = timelineKeys(f)[1].key
+	equal(key.count.text, '3')
+	equal(key.edges[1].vertex[1], 0, 'ElvUI border color')
+	equal(key.time.font[1], 'ElvUIFont', 'ElvUI font')
+	JI:ApplyAuraTimelinePreset('ellesmereui'); f.flush(); f.frames(1 / 30, 2)
+	key = timelineKeys(f)[1].key
+	equal(db.keyStyle, 'round'); expect(key.ring:IsShown() and key.icon.mask == key.mask, 'round keys are masked')
+	expect(key.chip:IsShown(), 'time chip')
+	JI:ApplyAuraTimelinePreset('minimal'); f.flush(); f.frames(1 / 30, 2)
+	expect(not key.ring:IsShown() and not key.back:IsShown(), 'borderless keys')
+	for _, style in ipairs({'solid', 'bar', 'dashed', 'none'}) do
+		db.lineStyle = style; JI:UpdateAuraTimeline(); f.flush()
+	end
+	db.orientation, db.reverse = 'vertical', true; JI:UpdateAuraTimeline(); f.flush(); f.frames(1 / 30, 3)
+	db.colors = 'class'; JI:UpdateAuraTimeline(); f.flush()
+	local root = JI.Options.args.auraTimeline
+	for _, group in ipairs({'tracked', 'line', 'keys', 'frame', 'colors'}) do expect(root.args[group], group) end
+	root.set({'auraTimeline', 'keys', 'iconSize'}, 32); equal(db.iconSize, 32)
+end)
+
+test('aura timeline uses ElvUI movers, else EllesmereUI unlock mode, else saved offsets', function()
+	local f = hudFixture('elvui')
+	local db = f.JI.db.auraTimeline
+	db.enable = true; f.JI:SetupAuraTimeline(); f.flush()
+	local mover = f.E.CreatedMovers.JiberishIconsAuraTimelineMover
+	expect(mover and mover.parent == f.env.JiberishIconsAuraTimeline, 'ElvUI mover')
+	equal(mover.configString, 'jiberishicons,plus,auraTimeline')
+	f.JI:ToggleAuraTimelineMovers(); expect(f.E.configMode and f.JI:IsAuraTimelinePreviewShown(), 'movers show sample keys')
+	f.JI:ToggleAuraTimelineMovers(); expect(not f.JI:IsAuraTimelinePreviewShown())
+	db.enable = false; f.JI:UpdateAuraTimeline()
+	expect(f.E.DisabledMovers.JiberishIconsAuraTimelineMover and not f.E.CreatedMovers.JiberishIconsAuraTimelineMover)
+
+	local g = hudFixture('ellesmereui')
+	local gdb = g.JI.db.auraTimeline
+	gdb.enable = true; g.JI:SetupAuraTimeline(); g.flush()
+	local element = g.EUI.unlock.JiberishIcons_AuraTimeline
+	expect(element and element.getFrame() == g.env.JiberishIconsAuraTimeline, 'EllesmereUI unlock element')
+	equal(element.loadPosition(), nil)
+	element.savePosition('JiberishIcons_AuraTimeline', 'CENTER', 'CENTER', 40, -120)
+	local pos = element.loadPosition()
+	equal(pos.point, 'CENTER'); equal(pos.x, 40); equal(pos.y, -120)
+	local holder = g.env.JiberishIconsAuraTimeline
+	equal(holder.point[1], 'CENTER'); equal(holder.point[4], 40)
+	g.JI:ToggleAuraTimelineMovers(); equal(g.EUI.toggled, 1)
+	g.EUI.listener(true); expect(g.JI:IsAuraTimelinePreviewShown())
+
+	local h = hudFixture()
+	local hdb = h.JI.db.auraTimeline
+	hdb.enable = true; h.JI:SetupAuraTimeline(); h.flush()
+	h.JI:SetAuraTimelinePosition(15, 300)
+	local point = h.env.JiberishIconsAuraTimeline.point
+	equal(point[1], 'BOTTOM'); equal(point[4], 15); equal(point[5], 300)
+end)
+
+test('review fixes: melee lamp follows the distance switch, preview ends with the timeline, scale stays out of placement', function()
+	local f = hudFixture('elvui')
+	local db = f.JI.db.navTape
+	db.enable = true; f.JI:SetupNavTape(); f.flush()
+	local plate = f.plate('nameplate1', {enemy = true, distance = 3})
+	f.state.target = 'nameplate1'; f.fire('PLAYER_TARGET_CHANGED'); f.flush()
+	local bar = f.tape(plate)
+	expect(bar.lamp:IsShown(), 'lamp in melee')
+	db.yards = false; f.JI:UpdateNavTape(); f.flush(); f.frames(0.1, 2)
+	expect(not bar.lamp:IsShown(), 'no lamp without the distance')
+
+	local h = hudFixture()
+	local tdb = h.JI.db.auraTimeline
+	tdb.enable = true; h.JI:SetupAuraTimeline(); h.flush()
+	h.JI:SetAuraTimelinePreview(true); expect(h.JI:IsAuraTimelinePreviewShown())
+	tdb.enable = false; h.JI:UpdateAuraTimeline(); h.flush()
+	expect(not h.JI:IsAuraTimelinePreviewShown() and not h.env.JiberishIconsAuraTimeline:IsShown(), 'disabling ends the preview')
+	tdb.enable, tdb.scale = true, 2; h.JI:UpdateAuraTimeline(); h.flush()
+	local outer = h.env.JiberishIconsAuraTimeline
+	local inner = outer.children[1]
+	equal(inner.scale, 2); equal(outer.scale, nil, 'the placed frame stays unscaled')
+	equal(outer.width, inner.width * 2); equal(outer.height, inner.height * 2)
+	equal(outer.point[5], 260, 'offsets are not divided by the scale')
+end)
+
+test('nav tape and aura timeline appear in the settings tree with distinct icons', function()
+	local f = hudFixture('elvui')
+	f.load('Core/SettingsWindow.lua')
+	f.JI:StyleNativeOptions()
+	local plus = f.JI.SettingsOptions.args.plus.args
+	expect(plus.navTape == f.JI.Options.args.navTape and plus.auraTimeline == f.JI.Options.args.auraTimeline)
+	expect(plus.navTape.icon:find('navtape.tga', 1, true) and plus.auraTimeline.icon:find('timeline.tga', 1, true))
+	expect(plus.navTape.icon ~= plus.crosshair.icon)
+end)
+
 print(passed..' integration tests passed')

@@ -130,6 +130,8 @@ function JI:Init(event, addon)
 			JI:SetupEllesmereUI()
 			JI:SetupPortraits()
 			JI:SetupCrosshair()
+			JI:SetupNavTape()
+			JI:SetupAuraTimeline()
 			JI:SetupUnitFrameThemes()
 			JI:SetupSpecializationIcons()
 

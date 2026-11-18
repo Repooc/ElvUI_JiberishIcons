@@ -103,7 +103,7 @@ function JI:BuildProfileSharingOptions(profiles)
 	local exportText, importText, name, message = '', '', 'Shared layout', ''
 	local share = ACH:Group('Export / import', nil, 100, nil, nil, nil, function() return InCombatLockdown() end)
 	share.inline = true; profiles.args.sharing = share
-	share.args.description = ACH:Description('Share all JiberishIcons settings in the current profile: unit-frame themes, end caps, portraits and model fit, crosshair/GCD, icon choices, chat and meter settings, plus custom icon-pack definitions. ElvUI/EllesmereUI frame dimensions, positions, text, colors and Eltruism gradients belong to those addons: share their profiles too for the complete UI. Custom image files are not embedded.', 0)
+	share.args.description = ACH:Description('Share all JiberishIcons settings in the current profile: unit-frame themes, end caps, portraits and model fit, crosshair/GCD, nameplate nav tape, aura timeline, icon choices, chat and meter settings, plus custom icon-pack definitions. ElvUI/EllesmereUI frame dimensions, positions (including the aura timeline\'s ElvUI mover), text, colors and Eltruism gradients belong to those addons: share their profiles too for the complete UI. Custom image files are not embedded.', 0)
 	share.args.export = ACH:Execute('Generate export string', nil, 1, function()
 		local err; exportText, err = JI:ExportProfileString(); message = err or 'Export ready. Select and copy the complete string.'; exportText = exportText or ''
 	end)

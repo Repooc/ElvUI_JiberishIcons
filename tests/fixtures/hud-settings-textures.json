@@ -1,0 +1,22 @@
+{
+  "textures": [
+    {
+      "path": "Media/Settings/navtape.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "200a30f00387b67bb6c46db6be1439512e2ca6b644fa209e68a1c8b684a101da",
+      "rgbaSha256": "a10c0380c10f1ef0eead791c2005868c7368caf524ff39f34a6078dec5e209b2"
+    },
+    {
+      "path": "Media/Settings/timeline.tga",
+      "size": [
+        64,
+        64
+      ],
+      "sha256": "10e6481157b5355d5c0a6b987e5b88a1b3ae96355e0a85a92a45e01ffd281296",
+      "rgbaSha256": "8f522b9632b414e03e54800648f4ed28292cdd5f655f9f33d0f0fab49a7a65db"
+    }
+  ]
+}

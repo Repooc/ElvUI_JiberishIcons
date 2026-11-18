@@ -13,6 +13,11 @@
 	<Script file="PortraitOptions.lua"/>
 	<Script file="Crosshair.lua"/>
 	<Script file="CrosshairOptions.lua"/>
+	<Script file="HudStyle.lua"/>
+	<Script file="NavTape.lua"/>
+	<Script file="NavTapeOptions.lua"/>
+	<Script file="AuraTimeline.lua"/>
+	<Script file="AuraTimelineOptions.lua"/>
 	<Script file="UnitFrameThemes.lua"/>
 	<Script file="UnitFrameThemeOptions.lua"/>
 	<Script file="SettingsWindow.lua"/>
