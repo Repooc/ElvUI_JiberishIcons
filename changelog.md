@@ -1,3 +1,9 @@
+# Unreleased — Nameplate nav tape and aura timeline
+
+- Add a nameplate nav tape for ElvUI and EllesmereUI nameplates: bracket distances from your own spellbook (one check per distinct range; harmful spells for enemies, helpful for friends, Auto Attack for melee, interact distances out of combat), MELEE in red with a lamp, a screen-bearing marker that changes color while the unit targets you, a lens of lifting ticks and a tape that scrolls with movement. Secret range and targeting answers choose the label through SetAlphaFromBoolean without being read. Includes five presets and options for distance style, placement, ticks, marker, lens, backdrop and colors, plus an on-screen preview.
+- Add an aura timeline of your own buffs and ability cooldowns. Only timers shorter than the line (1 minute by default) show, through a per-key window driven by a duration step curve, so secret combat times stay out of Lua. Lasting auras are never shown; long timers slide on from the far end. Overlapping keys stack into lanes. Square, round and borderless keys; time text, chips or on-icon time; hairline, bar or dashed lines; lanes up, down or both; ElvUI, EllesmereUI and Minimal presets. Placed with ElvUI movers or EllesmereUI Unlock Mode.
+- Both features default off, never modify ElvUI or EllesmereUI files, and keep their state in side tables rather than on host or Blizzard frames.
+
 # 1.7.0 — Unit frame themes, 3D portraits, crosshair and profile sharing (November 10, 2026)
 
 - Supports Retail 12.1.5 (120105), Forever 1.60.1 (16001), Mists, Titan, Anniversary and Classic Era clients.

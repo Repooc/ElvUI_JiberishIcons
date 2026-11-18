@@ -35,6 +35,40 @@ P.crosshair = {
     },
 }
 
+-- Nameplate nav tape. Sizes are physical pixels; colors {r, g, b, a} are used
+-- when colors = 'custom' ('host' follows ElvUI/EllesmereUI, 'class' tints the
+-- lens and marker with your class color).
+P.navTape = {
+    enable = false, show = 'target', position = 'above', xOffset = 0, yOffset = 14, inset = 2, level = 10,
+    preset = 'elvui', font = 'host', reduceMotion = false,
+    yards = true, yardsStyle = 'bracket', yardsPosition = 'above', yardsSize = 10, yardsSuffix = true,
+    yardsOutline = true, meleeLamp = true,
+    bearing = true, facing = true, lens = true, tape = true,
+    tickStyle = 'lines', ticks = 24, tickMinor = 3, tickMajor = 6, tickWeight = 1, majorEvery = 5, lensLift = 4,
+    edgeFade = true, tapeWidth = 100, background = 'backdrop', backdropAlpha = 0.6, markerStyle = 'caret', markerSize = 3,
+    colors = 'host',
+    tickColor = {0.55, 0.57, 0.6, 1}, majorColor = {0.96, 0.96, 0.96, 1}, lensColor = {0.09, 0.51, 0.82, 1},
+    markerColor = {0.09, 0.51, 0.82, 1}, alertColor = {1, 0.24, 0.2, 1}, yardsColor = {0.96, 0.96, 0.96, 1},
+    meleeColor = {1, 0.24, 0.2, 1}, baseColor = {0.55, 0.57, 0.6, 1},
+}
+
+-- Aura timeline: your buffs and ability cooldowns sliding toward zero along a
+-- line; only what has less time left than the line's length shows.
+P.auraTimeline = {
+    enable = false, preset = 'elvui', reduceMotion = false,
+    buffs = 'mine', debuffs = false, cooldowns = true, longBuffs = 0, minCooldown = 5, maxEntries = 12, blacklist = '',
+    maxTime = 60, length = 260, orientation = 'horizontal', reverse = false, scale = 1, strata = 'MEDIUM',
+    x = 0, y = 260,
+    lineStyle = 'solid', lineWeight = 1, lineShadow = true, zeroCap = 'dot', farCap = true,
+    ticks = true, labels = true, labelSize = 9, font = 'host',
+    lanes = 3, stack = 'up', spacing = 3, stems = true,
+    iconSize = 26, keyStyle = 'square', borderWeight = 1, kindBorders = true, timeStyle = 'text', timeSize = 11, counts = true,
+    colors = 'host',
+    lineColor = {0.96, 0.96, 0.96, 0.85}, tickColor = {0.55, 0.57, 0.6, 0.8}, labelColor = {0.55, 0.57, 0.6, 1},
+    accentColor = {0.09, 0.51, 0.82, 1}, borderColor = {0, 0, 0, 1}, harmColor = {1, 0.24, 0.2, 1},
+    cooldownColor = {0.09, 0.51, 0.82, 1}, textColor = {0.96, 0.96, 0.96, 1}, chipColor = {0.06, 0.06, 0.07, 0.85},
+}
+
 JI.dataHelper.portraitUnits = {
     {key = 'player', name = 'Player', x = -260, y = -160},
     {key = 'target', name = 'Target', x = 260, y = -160},

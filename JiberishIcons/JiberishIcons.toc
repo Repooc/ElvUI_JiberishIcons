@@ -4,7 +4,7 @@
 ## SavedVariables: JiberishIconsDB
 ## Version: 1.7.0
 ## Notes: Fabled class, race, and specialization icons for your UI
-## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI, EllesmereUIUnitFrames, EllesmereUIRaidFrames, EllesmereUIDamageMeters, Details
+## OptionalDeps: ElvUI, ShadowedUnitFrames, ElvUI_mMediaTag, ElvUI_EltreumUI, EllesmereUI, EllesmereUINameplates, EllesmereUIUnitFrames, EllesmereUIRaidFrames, EllesmereUIDamageMeters, Details
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\JiberishIcons\Media\Logo\SmallLogo
 ## X-Curse-Project-ID: 978121

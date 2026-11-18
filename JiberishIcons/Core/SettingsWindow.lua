@@ -10,6 +10,8 @@ local sectionNames = {
     unitFrameThemes = {'Frames', 'frames', 2, {.28, .85, 1, .40, .55, 1}},
     portraits = {'Portraits', 'portrait', 3, {.77, .52, 1, 1, .49, .74}},
     crosshair = {'Crosshair', 'crosshair', 4, {.30, .94, .77, .35, .70, 1}},
+    navTape = {'Nav tape', 'navtape', 5, {.36, .84, 1, .55, .95, .62}},
+    auraTimeline = {'Timeline', 'timeline', 6, {1, .78, .36, .45, .82, 1}},
     elvui = {'ElvUI', 'elvui', 10, {.47, .81, 1, .57, .57, 1}},
     ellesmereui = {'Ellesmere', 'ellesmere', 11, {.39, .90, .85, .66, .85, .43}},
     blizzard = {'Blizzard', 'blizzard', 12, {.71, .91, 1, .37, .63, 1}},
@@ -19,7 +21,7 @@ local sectionNames = {
     profiles = {'Profiles', 'profiles', 90, {1, .52, .75, 1, .73, .40}},
     Information = {'Help', 'help', 100, {1, .84, .46, .83, .64, 1}},
 }
-local sectionParents = {unitFrameThemes='plus', portraits='plus', crosshair='plus'}
+local sectionParents = {unitFrameThemes='plus', portraits='plus', crosshair='plus', navTape='plus', auraTimeline='plus'}
 for key, data in pairs(sectionNames) do
     if key ~= 'profiles' and key ~= 'Information' and not sectionParents[key] then sectionParents[key] = 'icons' end
     for i, color in ipairs(data[4]) do data[4][i] = color + (1 - color) * .12 end
@@ -155,7 +157,7 @@ function JI:StyleNativeOptions()
     options.args.version = ACH:Description(function()
         return 'Version '..self.Version..'   |   Profile: |cffd8dce8'..self.data:GetCurrentProfile()..'|r'
     end, .1, 'small', nil, nil, nil, nil, 'full')
-    options.args.settingsHint = ACH:Description('JiberishIcons: icon packs and integrations. Jiberish Plus: frame themes, 3D portraits and crosshair.', .2, 'small')
+    options.args.settingsHint = ACH:Description('JiberishIcons: icon packs and integrations. Jiberish Plus: frame themes, 3D portraits, crosshair, nameplate nav tape and aura timeline.', .2, 'small')
     for key, data in pairs(sectionNames) do
         local group = options.args[key]
         if group then

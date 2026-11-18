@@ -678,6 +678,8 @@ function JI:BuildProfile()
 		profile = {
 			unitFrameThemes = JI:CopyTable({}, JI.DF.profile.unitFrameThemes),
 			crosshair = JI:CopyTable({}, JI.DF.profile.crosshair),
+			navTape = JI:CopyTable({}, JI.DF.profile.navTape),
+			auraTimeline = JI:CopyTable({}, JI.DF.profile.auraTimeline),
 			portraits = JI:CopyTable({}, JI.DF.profile.portraits),
 			ellesmereui = JI:CopyTable({}, JI.DF.profile.ellesmereui),
 			damageMeters = JI:CopyTable({}, JI.DF.profile.damageMeters),
@@ -776,6 +778,8 @@ function JI:SetupProfile()
 	if JI.UpdateUnitFrameThemes then JI:UpdateUnitFrameThemes() end
 	if JI.LockCrosshair then JI:LockCrosshair(true) end
 	if JI.UpdateCrosshair then JI:UpdateCrosshair() end
+	if JI.UpdateNavTape then JI:UpdateNavTape() end
+	if JI.UpdateAuraTimeline then JI:UpdateAuraTimeline() end
 	if JI.LockPortraits then JI:LockPortraits(true) end
 	if JI.UpdatePortraits then JI:UpdatePortraits() end
 	JI:UpdateMedia()
